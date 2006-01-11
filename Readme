@@ -1,0 +1,46 @@
+
+
+	HepMC - a C++ Event Record for Monte Carlo Generators
+
+Authors: Matt Dobbs, University of Victoria and Jorgen Beck Hansen, CERN
+
+Refer to: 
+  http://cern.ch/HepMC/ for online documentation.
+and:
+  M. Dobbs and J.B. Hansen, 
+  "The HepMC C++ Monte Carlo Event Record for High Energy Physics", 
+  Computer Physics Communications, Vol. 134 (2001) 41-46, [ATL-SOFT-2000-001].
+
+ Copyright (C) 2000 by Matt Dobbs, University of Victoria
+                       and Jorgen Beck Hansen, CERN
+
+ The HepMC Event Record Package is the intellectual property of
+ the package authors. Anyone may copy and distribute this package
+ freely.
+
+        *****************************************************
+
+2002-01-23 HepMC was developed on Linux with gcc.
+        Thanks to the work of Witold Pokorski and Pere Mato, 
+        it now compiles and runs on Windows with Microsoft Visual C++. 
+	To compile with Microsoft Visual C++, you need to define the 
+	_WIN32 variable.
+	
+        *****************************************************
+
+	NOTE re: linking to Pythia in the examples
+
+Some of the files in the examples directory are aimed at showing you how
+to use HepMC with Pythia. Currently it links to Pythia6.1.
+
+Some platforms require the initialization of pythia PYDATA block 
+data as external this is accomplished by the initpydata() call. If you get
+pythia initialization errors try commenting in/out the initpydata()
+call in the MyPythia examples.
+
+Note the Pythia wrappers are not intended to be part of the HepMC package,
+they are only provided to make the examples run.
+
+        *****************************************************
+
+
