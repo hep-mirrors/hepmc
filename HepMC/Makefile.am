@@ -12,6 +12,7 @@ pkginclude_HEADERS = \
 	GenEvent.h	\
 	GenParticle.h	\
 	GenVertex.h	\
+	HeavyIon.h	\
 	HEPEVT_Wrapper.h	\
 	HerwigWrapper6_4.h	\
 	HerwigWrapper.h	\
