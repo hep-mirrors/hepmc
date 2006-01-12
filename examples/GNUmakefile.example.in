@@ -14,7 +14,8 @@
 #    are for developers only, ignore them.
 #
   HepMCdir             = ../
-  HepMClib             = libHepMC.so
+  HepMClib             = $(HepMCdir)lib/libHepMC.a
+  HepMCfiolib          = $(HepMCdir)lib/libHepMCfio.a
   CLHEPdir             = @CLHEPdir@
   CERNLIBdir           = /cern/2002/lib
   Pythia_LIB	= -L$(CERNLIBdir) -lpythia6205 -lpythiad $(initpydata_OBJ) 
@@ -129,49 +130,49 @@ all:	$(initpydata_OBJ) $(EXAMPLES)
 example_BuildEventFromScratch.exe: $(initpydata_OBJ) example_BuildEventFromScratch.o
 	@echo "Building $@ ..."
 	$(CXX) $(FLAGS) example_BuildEventFromScratch.o \
-		$(HepMCdir)lib/$(HepMClib) \
+		$(HepMClib) \
 	        $(LINK_LIBS) -o $@
 
 example_EventSelection.exe: $(initpydata_OBJ) example_EventSelection.o
 	@echo "Building $@ ..."
 	$(CXX) $(FLAGS) example_EventSelection.o \
-		$(HepMCdir)lib/$(HepMClib) \
+		$(HepMClib) \
 	        $(LINK_LIBS) -o $@
 
 example_MyHerwig.exe: $(initpydata_OBJ) example_MyHerwig.o
 	@echo "Building $@ ..."
 	$(CXX) $(FLAGS) example_MyHerwig.o \
-		$(HepMCdir)lib/$(HepMClib) \
+		$(HepMClib) $(HepMCfiolib) \
 	        $(Herwig_LIB) $(LINK_LIBS) -o $@
 
 example_MyPythia.exe: $(initpydata_OBJ) example_MyPythia.o
 	@echo "Building $@ ..."
 	$(CXX) $(FLAGS) example_MyPythia.o \
-		$(HepMCdir)lib/$(HepMClib) \
+		$(HepMClib) $(HepMCfiolib) \
 	        $(Pythia_LIB) $(LINK_LIBS) -o $@
 
 example_MyPythiaOnlyToHepMC.exe: $(initpydata_OBJ) example_MyPythiaOnlyToHepMC.o
 	@echo "Building $@ ..."
 	$(CXX) $(FLAGS) example_MyPythiaOnlyToHepMC.o \
-		$(HepMCdir)lib/$(HepMClib) \
+		$(HepMClib) $(HepMCfiolib) \
 	        $(Pythia_LIB) $(LINK_LIBS) -o $@
 
 example_MyPythiaWithEventSelection.exe: $(initpydata_OBJ) example_MyPythiaWithEventSelection.o
 	@echo "Building $@ ..."
 	$(CXX) $(FLAGS) example_MyPythiaWithEventSelection.o \
-		$(HepMCdir)lib/$(HepMClib) \
+		$(HepMClib) $(HepMCfiolib) \
 	        $(Pythia_LIB) $(LINK_LIBS) -o $@
 
 example_ReadPDGtable.exe: $(initpydata_OBJ) example_ReadPDGtable.o
 	@echo "Building $@ ..."
 	$(CXX) $(FLAGS) example_ReadPDGtable.o \
-		$(HepMCdir)lib/$(HepMClib) \
+		$(HepMClib) \
 	        $(LINK_LIBS) -o $@
 
 example_UsingIterators.exe: $(initpydata_OBJ) example_UsingIterators.o
 	@echo "Building $@ ..."
 	$(CXX) $(FLAGS) example_UsingIterators.o \
-		$(HepMCdir)lib/$(HepMClib) \
+		$(HepMClib) \
 	        $(LINK_LIBS) -o $@
 
 ###############################################################################
