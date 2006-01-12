@@ -1,3 +1,14 @@
+2006-01-12 Lynn Garren
+
+	HepPDT 1.26 is available at https://savannah.cern.ch/projects/hepmc/
+	
+	* HepMC/HeavyIon.h implements information requested by CMS
+	* HepMC/GenParticle.h has pointer (null by default) to HeavyIon
+	* code providing interfaces to Fortran common blocks has been moved
+	out of libHepMC and into libHepMCfio
+
+	--------------------  HepMC-01-02-26  ---------------------------------
+
 	--------------------  HepMC-01-02-21  ---------------------------------
 
 2005-04-27 Matt Dobbs and Giorgos
