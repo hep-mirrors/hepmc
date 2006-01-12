@@ -79,7 +79,8 @@ AC_CONFIG_FILES([fio/Makefile])
 AC_CONFIG_FILES([src/Makefile])
 AC_CONFIG_FILES([doc/Makefile])
 ##AC_CONFIG_FILES([tests/Makefile])
-##AC_CONFIG_FILES([examples/Makefile])
+AC_CONFIG_FILES([examples/Makefile])
+AC_CONFIG_FILES([examples/GNUmakefile.example])
 
 
 # ----------------------------------------------------------------------
