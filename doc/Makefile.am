@@ -7,7 +7,7 @@ endif
 TEX = latex
 doc_srcdir = $(top_srcdir)/doc
 doc_builddir = $(top_builddir)/doc
-doc_installdir = $(prefix)/doc/@PACKAGE@
+doc_installdir = $(prefix)/doc
 
 install-data-local: install-docs
 
