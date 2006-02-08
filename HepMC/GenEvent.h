@@ -113,6 +113,7 @@ namespace HepMC {
 #include "HepMC/GenVertex.h"
 #include "HepMC/GenParticle.h"
 #include "HepMC/WeightContainer.h"
+#include "HepMC/HeavyIon.h"
 #include <map>
 #include <vector>
 #include <algorithm>
@@ -157,6 +158,8 @@ namespace HepMC {
 	WeightContainer&        weights();
 	const WeightContainer&  weights() const;
 
+	HeavyIon*            heavy_ion() const;
+
 	std::vector<long int> random_states() const;
 
 	void set_signal_process_id( int id );
@@ -166,6 +169,8 @@ namespace HepMC {
 	void set_alphaQED( double a );
 	void set_signal_process_vertex( GenVertex* );
 	void set_random_states( const std::vector<long int>& randomstates );
+
+	void set_heavy_ion( HeavyIon* ion );
 
 	int     particles_size() const;
 	bool    particles_empty() const;
@@ -364,6 +369,7 @@ namespace HepMC {
 
 	std::map< int,GenVertex*,std::greater<int> >   m_vertex_barcodes;
 	std::map< int,GenParticle*,std::less<int> >    m_particle_barcodes;
+	HeavyIon*        m_heavy_ion; 	      // undefined by default
 
 	static unsigned int   s_counter;
     };
@@ -393,6 +399,9 @@ namespace HepMC {
     inline const WeightContainer& GenEvent::weights() const 
     { return m_weights; }
 
+    inline HeavyIon* GenEvent::heavy_ion() const 
+    { return m_heavy_ion; }
+
     inline std::vector<long int> GenEvent::random_states() const 
     { return m_random_states; }
 
@@ -413,6 +422,9 @@ namespace HepMC {
 	m_signal_process_vertex = vtx;
 	if ( m_signal_process_vertex ) add_vertex( m_signal_process_vertex );
     }
+
+    inline void GenEvent::set_heavy_ion( HeavyIon* ion )
+    { m_heavy_ion = ion; }
 
     inline void GenEvent::set_random_states( const std::vector<long int>&
 					     randomstates )

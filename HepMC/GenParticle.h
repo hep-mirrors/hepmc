@@ -37,7 +37,6 @@
 
 #include "HepMC/Flow.h"
 #include "HepMC/Polarization.h"
-#include "HepMC/HeavyIon.h"
 #include "CLHEP/Vector/LorentzVector.h"
 #include <iostream>
 
@@ -82,7 +81,6 @@ namespace HepMC {
 	GenVertex*           production_vertex() const;
 	GenVertex*           end_vertex() const;
 	GenEvent*            parent_event() const;
-	HeavyIon*            heavy_ion() const;
 
 	//
 	// The barcode is the particle's reference number, every vertex in the
@@ -101,7 +99,6 @@ namespace HepMC {
 	void   set_flow( int code_index, int code = 0 );
 	void   set_polarization( const Polarization& polarization =
 				 Polarization(0,0) );
-	void   set_heavy_ion( HeavyIon* ion );
 
     protected: // for internal use only by friend GenVertex class
 
@@ -119,7 +116,6 @@ namespace HepMC {
 	Polarization     m_polarization;
 	GenVertex*       m_production_vertex; // null if vacuum or beam
 	GenVertex*       m_end_vertex;        // null if not-decayed
-	HeavyIon*        m_heavy_ion; 	      // null by default
 	int              m_barcode;           // unique identifier in the event
 
 	static unsigned int s_counter;
@@ -141,9 +137,6 @@ namespace HepMC {
 
     inline GenVertex* GenParticle::production_vertex() const 
     { return m_production_vertex; }
-
-    inline HeavyIon* GenParticle::heavy_ion() const 
-    { return m_heavy_ion; }
 
     inline GenVertex* GenParticle::end_vertex() const { return m_end_vertex; }
 
@@ -175,9 +168,6 @@ namespace HepMC {
 
     inline void GenParticle::set_polarization( const Polarization& polar )
     { m_polarization = polar; }
-
-    inline void GenParticle::set_heavy_ion( HeavyIon* ion )
-    { m_heavy_ion = ion; }
 
     inline int  GenParticle::barcode() const { return m_barcode; }
 

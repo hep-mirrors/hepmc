@@ -112,7 +112,7 @@ HeavyIon::HeavyIon( HeavyIon const & orig )
       m_Nwounded_Nwounded_collisions(orig.m_Nwounded_Nwounded_collisions),
       m_spectator_neutrons(orig.m_spectator_neutrons),
       m_spectator_protons(orig.m_spectator_protons),
-      m_impact_parameter(orig.m_impact_parameter)
+      m_impact_parameter(orig.m_impact_parameter),
       m_event_plane_angle(orig.m_event_plane_angle)
    {}
 
