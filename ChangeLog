@@ -1,3 +1,8 @@
+2006-02-17 Lynn Garren
+
+	* HepMC/HeavyIon.h names have been changed to match both HepMC and
+	wishes of heavy ion users
+
 2006-01-12 Lynn Garren
 
 	HepPDT 1.26 is available at https://savannah.cern.ch/projects/hepmc/
