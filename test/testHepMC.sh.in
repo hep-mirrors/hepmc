@@ -1,0 +1,7 @@
+#! /bin/sh
+# @configure_input@
+# you can compare testHepMC.out to @srcdir@/testHepMC.dat, 
+# but the particles within a vertex are printed in "random" order
+
+./testHepMC@EXEEXT@ \
+ | @DIFF_Q@ - @srcdir@/testHepMC.output > /dev/null
