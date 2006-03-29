@@ -1,4 +1,9 @@
 
+2006-03-29 Lynn Garren
+
+	* HepMC/ParticleData.h remove dependency on CLHEP/Units by HepMC_hbarc
+	* HepMC/Polarization.h remove dependency on CLHEP/Units by HepMC_pi
+
 	--------------------  HepMC-01-27-00  ---------------------------------
 
 2006-03-07 Lynn Garren

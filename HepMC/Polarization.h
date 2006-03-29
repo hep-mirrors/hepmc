@@ -11,13 +11,12 @@
 //////////////////////////////////////////////////////////////////////////
 
 #include "CLHEP/Geometry/Normal3D.h"
-#include "CLHEP/Units/PhysicalConstants.h"
 #include <iostream>
 #include <cmath>
 
 namespace HepMC {
 
-    static const double HepMC_pi = pi; // use pi from CLHEP
+    static const double HepMC_pi = 3.14159265358979323846;  // copy of pi from CLHEP
     
     class Polarization {
 

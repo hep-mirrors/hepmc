@@ -46,15 +46,15 @@
 // or if you just wanted two know the electron mass, you could do:
 //        pdt.find(11)->mass();
 
-#include "CLHEP/Units/PhysicalConstants.h"
 #include <iostream>
 #include <string>
 #include <cmath>
 
 namespace HepMC {
 
-    // hbar * c --> the CLHEP version is in [mm*MeV], we transform to [mm*GeV]
-    static const double HepMC_hbarc = hbarc * GeV / MeV;
+    // hbar * c --> calculated with units of [mm*GeV]
+    static const double HepMC_hbarc   = (6.6260755e-34 * (1.e-6/1.60217733e-19) / (2*3.14159265358979323846))
+                                        * (2.99792458e+8 * 1000.) * 1.e+3;
 
     // if you want to instantiate the particle lifetime from its width,
     // use this static method inside the constructor:
