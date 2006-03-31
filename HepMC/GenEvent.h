@@ -129,7 +129,7 @@ namespace HepMC {
 		  GenVertex* signal_vertex = 0,
 		  const WeightContainer& weights = std::vector<double>(),
 		  const std::vector<long int>& randomstates
-		  = std::vector<long int>() );
+		  = std::vector<long int>(), HeavyIon* ion = 0 );
 	GenEvent( const GenEvent& inevent );          // deep copy
 	GenEvent& operator=( const GenEvent& inevent ); // deep.
 	virtual ~GenEvent(); //deletes all vertices/particles in this evt

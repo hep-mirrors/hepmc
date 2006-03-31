@@ -1,4 +1,9 @@
 
+2006-03-31 Lynn Garren
+
+	* GenEvent.h, GenEvent.cc make sure m_heavy_ion is initialized to 0
+
+
 2006-03-29 Lynn Garren
 
 	* HepMC/ParticleData.h remove dependency on CLHEP/Units by HepMC_hbarc

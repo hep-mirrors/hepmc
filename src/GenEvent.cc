@@ -19,11 +19,11 @@ namespace HepMC {
 				    GenVertex* signal_vertex,
 				    const WeightContainer& weights,
 				    const std::vector<long int>& 
-				    random_states ) :
+				    random_states, HeavyIon* ion ) :
 	m_signal_process_id(signal_process_id), m_event_number(event_number),
 	m_event_scale(-1), m_alphaQCD(-1), m_alphaQED(-1),
 	m_signal_process_vertex(signal_vertex), m_weights(weights),
-	m_random_states(random_states)
+	m_random_states(random_states), m_heavy_ion(ion)
     {
 	// note: default values for m_event_scale, m_alphaQCD, m_alphaQED
 	//       are as suggested in hep-ph/0109068, "Generic Interface..."
@@ -97,6 +97,7 @@ namespace HepMC {
 	set_alphaQCD( inevent.alphaQCD() );
 	set_alphaQED( inevent.alphaQED() );
 	set_random_states( inevent.random_states() );
+	set_heavy_ion( inevent.heavy_ion() );
 	weights() = inevent.weights();
 	return *this;
     }
