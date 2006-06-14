@@ -1,0 +1,6 @@
+#! /bin/sh
+# @configure_input@
+
+./testPrintBug@EXEEXT@ 
+@DIFF_Q@ testPrintBug.out @srcdir@/testPrintBug.output > /dev/null
+

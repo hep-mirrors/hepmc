@@ -29,21 +29,22 @@ endif
 endif
 
 # Identify executables needed during testing:
-check_PROGRAMS = testHepMC 
+check_PROGRAMS = testHepMC  testPrintBug
 
-#check_SCRIPTS = testHepMC.sh
+check_SCRIPTS = testHepMC.sh testPrintBug.sh
 
 # Identify test(s) to run when 'make check' is requested:
-TESTS = testHepMC.sh
+TESTS = testHepMC.sh testPrintBug.sh
 
 # Identify the test(s) for which failure is the intended outcome:
 XFAIL_TESTS = 
 
 # Identify the dependencies on a per-test basis:
 testHepMC_SOURCES = testHepMC.cc
+testPrintBug_SOURCES         = testPrintBug.cc
 
 # Identify input data file(s) and prototype output file(s):
-EXTRA_DIST = testHepMC.input testHepMC.dat
+EXTRA_DIST = testHepMC.input testHepMC.dat testPrintBug.output
 
 # Identify generated file(s) to be removed when 'make clean' is requested:
-CLEANFILES = testHepMC.out
+CLEANFILES = testHepMC.out testPrintBug.out
