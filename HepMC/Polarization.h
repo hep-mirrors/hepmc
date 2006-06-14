@@ -14,6 +14,8 @@
 #include <iostream>
 #include <cmath>
 
+typedef HepGeom::Normal3D<double> HepNormal3D;
+
 namespace HepMC {
 
     static const double HepMC_pi = 3.14159265358979323846;  // copy of pi from CLHEP

@@ -30,6 +30,10 @@
 #include <set>
 #include <algorithm>
 
+// these statements should allow HepMC to with with both CLHEP 1.9 and 1.8
+typedef HepGeom::Point3D<double> HepPoint3D;
+using namespace CLHEP;
+
 namespace HepMC {
 
     enum IteratorRange { parents, children, family, 

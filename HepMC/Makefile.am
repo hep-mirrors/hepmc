@@ -31,6 +31,7 @@ pkginclude_HEADERS = \
 	PythiaWrapper6_2_WIN32.h	\
 	PythiaWrapper.h	\
 	WeightContainer.h	\
+	HepMC_CLHEP20.h	\
 	defs.h
 
 # Identify generated file(s) to be removed when 'make clean' is requested:

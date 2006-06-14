@@ -40,6 +40,9 @@
 #include "CLHEP/Vector/LorentzVector.h"
 #include <iostream>
 
+// this statement should allow HepMC to with with both CLHEP 1.9 and 1.8
+using namespace CLHEP;
+
 namespace HepMC {
 
     class GenVertex;
