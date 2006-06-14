@@ -1,4 +1,9 @@
 
+2006-06-14 Lynn Garren
+
+	* GenEvent.cc, GenParticle.cc,  GenVertex.cc use standard C++ output
+	* testPrintBug new test for output problems with gcc 4.x
+
 	--------------------  HepMC-01-27-01  ---------------------------------
 
 2006-03-31 Lynn Garren
