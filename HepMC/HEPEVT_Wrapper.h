@@ -76,9 +76,11 @@ extern "C" HEPEVT_DEF HEPEVT;
 #define hepevt HEPEVT
 
 #else
+extern "C" {
     extern struct {
 	char data[hepevt_bytes_allocation];
     } hepevt_;
+}
 #define hepevt hepevt_
 
 #endif // Platform

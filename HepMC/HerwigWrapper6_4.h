@@ -14,29 +14,35 @@
 // HERWIG Common Block Declarations
 
 //        COMMON/HWPROC/EBEAM1,EBEAM2,PBEAM1,PBEAM2,IPROC,MAXEV
+extern "C" {
     extern struct {
 	double EBEAM1,EBEAM2,PBEAM1,PBEAM2;
         int IPROC,MAXEV;
     } hwproc_;
+}
 #define hwproc hwproc_
 
 //        CHARACTER*8 PART1,PART2
 //        COMMON/HWBMCH/PART1,PART2
+extern "C" {
     extern struct {
 	char PART1[8],PART2[8];
     } hwbmch_;
+}
 #define hwbmch hwbmch_
 
 //  COMMON/HWEVNT/AVWGT,EVWGT,GAMWT,TLOUT,WBIGST,WGTMAX,WGTSUM,WSQSUM,
 //       & IDHW(NMXHEP),IERROR,ISTAT,LWEVT,MAXER,MAXPR,NOWGT,NRN(2),NUMER,
 //       & NUMERU,NWGTS,GENSOF
 const int herwig_hepevt_size = 4000;
+extern "C" {
     extern struct {
 	double AVWGT,EVWGT,GAMWT,TLOUT,WBIGST,WGTMAX,WGTSUM,WSQSUM;
 	int IDHW[herwig_hepevt_size],IERROR,ISTAT,LWEVT,MAXER,MAXPR;
 	int NOWGT,NRN[2],NUMER,NUMERU,NWGTS;
 	int GENSOF; //Beware! in F77 this is logical
     } hwevnt_;
+}
 #define hwevnt hwevnt_
 
 //  C Basic parameters (and quantities derived from them)
@@ -51,6 +57,7 @@ const int herwig_hepevt_size = 4000;
 //       & AZSOFT,AZSPIN,CLDIR(2),HARDME,NOSPAC,PRNDEC,PRVTX,SOFTME,ZPRIME,
 //       & PRNDEF,PRNTEX,PRNWEB
 
+extern "C" {
     extern struct {
 	double AFCH[2][16],ALPHEM,B1LIM,BETAF,BTCLM,CAFAC,CFFAC,
 	    CLMAX,CLPOW,CLSMR[2],CSPEED,ENSOF,ETAMIX,F0MIX,F1MIX,F2MIX,GAMH,
@@ -63,6 +70,7 @@ const int herwig_hepevt_size = 4000;
 	int AZSOFT,AZSPIN,CLDIR[2],HARDME,NOSPAC,PRNDEC,PRVTX,SOFTME,
 	    ZPRIME,PRNDEF,PRNTEX,PRNWEB; //Beware! in F77 these are logical
     } hwpram_;
+}
 #define hwpram hwpram_
 
 //--------------------------------------------------------------------------

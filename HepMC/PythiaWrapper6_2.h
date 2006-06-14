@@ -29,79 +29,101 @@ extern "C" {
 }
 #define initpydata initpydata_
 
+extern "C" {
 extern struct {
     int iprocess;
 } process_;
+}
 #define process process_   // This common is for ATLfast.
 
 //--------------------------------------------------------------------------
 // PYTHIA Common Block Declarations
 
 const int pyjets_maxn =4000;
+extern "C" {
     extern struct {
 	int n, npad, k[5][pyjets_maxn];
 	double p[5][pyjets_maxn], v[5][pyjets_maxn];
     } pyjets_;
+}
 #define pyjets pyjets_
 
+extern "C" {
     extern struct {
         int mstu[200];
         double paru[200];
         int mstj[200];
         double parj[200];
     } pydat1_;
+}
 #define pydat1 pydat1_
 
+extern "C" {
     extern struct {
 	int kchg[4][500];
 	double pmas[4][500], parf[2000], vckm[4][4];  
     } pydat2_;
+}
 #define pydat2 pydat2_
 
+extern "C" {
     extern struct {
 	int mdcy[3][500], mdme[2][8000];
 	double brat[8000];
 	int kfdp[5][8000];
     } pydat3_;
+}
 #define pydat3 pydat3_
 
+extern "C" {
     extern struct {
 	int mrpy[6];
 	double rrpy[100];
     } pydatr_;
+}
 #define pydatr pydatr_
 
+extern "C" {
     extern struct {
 	int msel, mselpd, msub[500], kfin[81][2];
 	double ckin[200];
     } pysubs_;
+}
 #define pysubs pysubs_
 
+extern "C" {
     extern struct {
 	int mstp[200];
 	double parp[200];
 	int msti[200];
 	double pari[200];
     } pypars_;
+}
 #define pypars pypars_
 
+extern "C" {
     extern struct {
 	int mint[400];
 	double vint[400];
     } pyint1_;
+}
 #define pyint1 pyint1_
 
+extern "C" {
     extern struct {
 	int iset[500], kfpr[2][500];
 	double coef[20][500];
 	int icol[2][4][40];       // was [320] was [40][4][2]
     } pyint2_;
+}
 #define pyint2 pyint2_
 
+extern "C" {
     extern struct {
 	int ngenpd, ngen[3][501];
 	double xsec[3][501];
     } pyint5_;
+}
 #define pyint5 pyint5_
 
 //--------------------------------------------------------------------------
