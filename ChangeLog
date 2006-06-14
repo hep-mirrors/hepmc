@@ -3,6 +3,13 @@
 
 	* GenEvent.cc, GenParticle.cc,  GenVertex.cc use standard C++ output
 	* testPrintBug new test for output problems with gcc 4.x
+	* HepMC/HepMC_CLHEP20.h defines several typedefs needed when compiling 
+	   with CLHEP 2.0.x
+	* HEPEVT_Wrapper.h, HerwigWrapper6_4.h, PythiaWrapper6_2.h
+	   need extern "C" statements for gcc 4.x
+	* HepMC_CLHEP20.h, Polarization.h, GenVertex.h, GenParticle.h
+	   HepMC will work with both CLHEP 1.9.x and 2.0.x
+
 
 	--------------------  HepMC-01-27-01  ---------------------------------
 
