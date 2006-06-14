@@ -6,7 +6,7 @@
 #include "HepMC/GenParticle.h"
 #include "HepMC/GenVertex.h"
 #include "HepMC/GenEvent.h"
-#include <cstdio>       // needed for formatted output using sprintf 
+#include <iomanip>       // needed for formatted output
 
 namespace HepMC {
 
@@ -124,39 +124,83 @@ namespace HepMC {
     }  
 
     void GenVertex::print( std::ostream& ostr ) const {
-	char outline[80];
 	if ( barcode()!=0 ) {
 	    if ( position() != HepLorentzVector(0,0,0,0) ) {
-		sprintf( outline,
-			 "Vertex:%9d ID:%5d (X,cT)=%+9.2e,%+9.2e,%+9.2e,%+9.2e"
-			 ,barcode(), id(),
-			 position().x(),
-			 position().y(),
-			 position().z(),
-			 position().t() );
+	        ostr << "Vertex:";
+		ostr.width(9);
+		ostr << barcode();
+		ostr << " ID:";
+		ostr.width(5);
+		ostr << id();
+		ostr << " (X,cT)=";
+		ostr.width(9);
+                ostr.precision(2);
+                ostr.setf(std::ios::scientific, std::ios::floatfield);
+		ostr.setf(std::ios_base::showpos);
+		ostr << position().x() << ",";
+		ostr.width(9);
+                ostr.precision(2);
+		ostr << position().y() << ",";
+		ostr.width(9);
+                ostr.precision(2);
+		ostr << position().z() << ",";
+		ostr.width(9);
+                ostr.precision(2);
+		ostr << position().t();
+                ostr.setf(std::ios::fmtflags(0), std::ios::floatfield);
+		ostr.unsetf(std::ios_base::showpos);
+	        ostr << std::endl;
 	    } else {
-		sprintf( outline, "GenVertex:%9d ID:%5d (X,cT):0", 
-			 barcode(), id() );
+		ostr << "GenVertex:";
+		ostr.width(9);
+		ostr << barcode();
+		ostr << " ID:";
+		ostr.width(5);
+		ostr << id();
+		ostr << " (X,cT):0";
+	        ostr << std::endl;
 	    }
 	} else {
 	    // If the vertex doesn't have a unique barcode assigned, then
 	    //  we print its memory address instead... so that the
 	    //  print out gives us a unique tag for the particle.
 	    if ( position() != HepLorentzVector(0,0,0,0) ) {
-		sprintf( outline,
-			 "Vertex:%9p ID:%5d (X,cT)=%+9.2e,%+9.2e,%+9.2e,%+9.2e"
-			 ,(void*)this, id(),
-			 position().x(),
-			 position().y(),
-			 position().z(),
-			 position().t() );
+	        ostr << "Vertex:";
+		ostr.width(9);
+		ostr << (void*)this;
+		ostr << " ID:";
+		ostr.width(5);
+		ostr << id();
+		ostr << " (X,cT)=";
+		ostr.width(9);
+                ostr.precision(2);
+                ostr.setf(std::ios::scientific, std::ios::floatfield);
+		ostr.setf(std::ios_base::showpos);
+		ostr << position().x();
+		ostr.width(9);
+                ostr.precision(2);
+		ostr << position().y();
+		ostr.width(9);
+                ostr.precision(2);
+		ostr << position().z();
+		ostr.width(9);
+                ostr.precision(2);
+		ostr << position().t();
+                ostr.setf(std::ios::fmtflags(0), std::ios::floatfield);
+		ostr.unsetf(std::ios_base::showpos);
+	        ostr << std::endl;
 	    } else {
-		sprintf( outline, "GenVertex:%9p ID:%5d (X,cT):0", 
-			 (void*)this, id() );
+	        ostr << "GenVertex:";
+		ostr.width(9);
+		ostr << (void*)this;
+		ostr << " ID:";
+		ostr.width(5);
+		ostr << id();
+		ostr << " (X,cT):0";
+	        ostr << std::endl;
 	    }
 	}
 
-	ostr << outline << std::endl;
 	// print the weights if there are any
 	if ( ! weights().empty() ) {
 	    ostr << " Wgts(" << weights().size() << ")=";
@@ -168,9 +212,9 @@ namespace HepMC {
 	for ( particles_in_const_iterator part1 = particles_in_const_begin();
 	      part1 != particles_in_const_end(); part1++ ) {
 	    if ( part1 == particles_in_const_begin() ) {
-		char label[5];
-		sprintf( label," I:%2d",m_particles_in.size() );
-		ostr << label; 
+		ostr << " I:";
+		ostr.width(2);
+		ostr << m_particles_in.size();
 	    } else { ostr << "     "; }
 	    //(*part1)->print( ostr );  //uncomment for long debugging printout
 	    ostr << **part1 << std::endl;
@@ -178,9 +222,9 @@ namespace HepMC {
 	for ( particles_out_const_iterator part2 = particles_out_const_begin();
 	      part2 != particles_out_const_end(); part2++ ) {
 	    if ( part2 == particles_out_const_begin() ) { 
-		char label[5];
-		sprintf( label," O:%2d",m_particles_out.size() );
-		ostr << label; 
+		ostr << " O:";
+		ostr.width(2);
+		ostr << m_particles_out.size();
 	    } else { ostr << "     "; }
 	    //(*part2)->print( ostr ); // uncomment for long debugging printout
 	    ostr << **part2 << std::endl;

@@ -11,7 +11,6 @@
 //////////////////////////////////////////////////////////////////////////
 
 #include "HepMC/GenEvent.h"
-#include <cstdio>       // needed for formatted output using sprintf 
 
 namespace HepMC {
 
@@ -136,11 +135,10 @@ namespace HepMC {
 	     << " [energy] \t alphaQCD=" << alphaQCD() 
 	     << "\t alphaQED=" << alphaQED() << std::endl;
 	// print a legend to describe the particle info
-	char particle_legend[80];
-	sprintf( particle_legend,"      %9s %8s %9s,%9s,%9s,%8s %4s %9s",
-		 "Barcode","PDG ID","( Px","Py","Pz","E )","Stat","DecayVtx");
-	ostr << "                                    GenParticle Legend\n"
-	     << particle_legend << "\n";
+	ostr << "                                    GenParticle Legend\n";
+ 	ostr  << "        Barcode   PDG ID      "
+	      << "( Px,       Py,       Pz,     E )"
+	      << " Stat  DecayVtx\n";
 	ostr << "________________________________________"
 	     << "________________________________________\n";
 	// Print all Vertices

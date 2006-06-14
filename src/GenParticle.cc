@@ -7,7 +7,7 @@
 #include "HepMC/GenEvent.h"
 #include "HepMC/GenVertex.h"
 #include "HepMC/GenParticle.h"
-#include <cstdio>       // needed for formatted output using sprintf 
+#include <iomanip>       // needed for formatted output
 
 namespace HepMC {
 
@@ -164,25 +164,46 @@ namespace HepMC {
     // Friends //
     /////////////
     std::ostream& operator<<( std::ostream& ostr, const GenParticle& part ) {
-	char outline[80];
+	ostr << " ";
+	ostr.width(9);
+	ostr << part.barcode();
+	ostr.width(9);
+	ostr << part.pdg_id() << " ";
+	ostr.width(9);
+        ostr.precision(2);
+        ostr.setf(std::ios::scientific, std::ios::floatfield);
+	ostr.setf(std::ios_base::showpos);
+	ostr << part.momentum().px() << ",";
+	ostr.width(9);
+        ostr.precision(2);
+	ostr << part.momentum().py() << ",";
+	ostr.width(9);
+        ostr.precision(2);
+	ostr << part.momentum().pz() << ",";
+	ostr.width(9);
+        ostr.precision(2);
+	ostr << part.momentum().e() << " ";
+        ostr.setf(std::ios::fmtflags(0), std::ios::floatfield);
+	ostr.unsetf(std::ios_base::showpos);
 	if ( part.end_vertex() && part.end_vertex()->barcode()!=0 ) {
-	    sprintf( outline," %9d%9d %+9.2e,%+9.2e,%+9.2e,%+9.2e %3d %9d",
-		     part.barcode(), part.pdg_id(),
-		     part.momentum().px(),part.momentum().py(),
-		     part.momentum().pz(),part.momentum().e(),
-		     part.status(),
-		     part.end_vertex()->barcode() );
+	    ostr.width(3);
+	    ostr << part.status() << " ";
+	    ostr.width(9);
+	    ostr << part.end_vertex()->barcode();
+	} else if ( !part.end_vertex() ) {
+	    // There is no valid end_vertex 
+	    // For consistency across different compilers, do not print anything
+	    ostr.width(3);
+	    ostr << part.status();
 	} else {
 	    // In this case the end_vertex does not have a unique 
 	    //   barcode assigned, so we choose instead to print its address
-	    sprintf( outline," %9d%9d %+9.2e,%+9.2e,%+9.2e,%+9.2e %3d %9p",
-		     part.barcode(), part.pdg_id(),
-		     part.momentum().px(),part.momentum().py(),
-		     part.momentum().pz(),part.momentum().e(),
-		     part.status(),
-		     (void*)part.end_vertex() );
+	    ostr.width(3);
+	    ostr << part.status() << " ";
+	    ostr.width(9);
+	    ostr << (void*)part.end_vertex();
 	}
-	return ostr << outline;
+	return ostr;
     }
 
 } // HepMC
