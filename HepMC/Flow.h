@@ -137,7 +137,7 @@ namespace HepMC {
     inline Flow Flow::set_unique_icode( int flow_num ) {
 	// use this method if you want to assign a unique flow code, but
 	// do not want the burden of choosing it yourself
-	m_icode[flow_num] = int(this);
+	m_icode[flow_num] = size_t(this);
 	return *this;
     }
     inline bool Flow::empty() const { return (bool)m_icode.empty(); }
