@@ -1,4 +1,6 @@
 
+	--------------------  HepMC-01-27-02  ---------------------------------
+
 2006-06-14 Lynn Garren
 
 	* GenEvent.cc, GenParticle.cc,  GenVertex.cc use standard C++ output
