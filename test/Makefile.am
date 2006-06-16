@@ -16,7 +16,7 @@ if BUILD_STATIC
 else
 if BUILD_VISUAL
   LDADD = $(top_builddir)/src/HepMC.$(SHEXT) \
-          $(top_builddir)/fio/libHepMCfio.$(SHEXT) \
+          $(top_builddir)/fio/HepMCfio.$(SHEXT) \
           $(CLHEPdir)/lib/CLHEP.$(SHEXT)
 else
   LIBS += $(MY_LD)$(top_builddir)/src \
