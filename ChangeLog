@@ -1,6 +1,12 @@
 
 	--------------------  HepMC-01-27-02  ---------------------------------
 
+2006-06-19 Lynn Garren
+
+	* fix test for Windows
+	* add ReadMe.cygwin-VC71 and setup.cygwin-VC71
+
+
 2006-06-14 Lynn Garren
 
 	* GenEvent.cc, GenParticle.cc,  GenVertex.cc use standard C++ output
