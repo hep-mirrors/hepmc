@@ -10,6 +10,7 @@
 //
 
 #include "HepMC/IO_Ascii.h"
+#include "HepMC/IO_AsciiParticles.h"
 #include "HepMC/GenEvent.h"
 
 class IsGoodEvent {
@@ -36,6 +37,8 @@ int main() {
     HepMC::IO_Ascii ascii_in("@srcdir@/testHepMC.input",std::ios::in);
     // declare another IO_Ascii for writing out the good events
     HepMC::IO_Ascii ascii_out("testHepMC.out",std::ios::out);
+    // declare an IO_AsciiParticle for output
+    HepMC::IO_AsciiParticles particle_out("testHepMCParticle.out",std::ios::out);
     // declare an instance of the event selection predicate
     IsGoodEvent is_good_event;
     //........................................EVENT LOOP
@@ -49,6 +52,7 @@ int main() {
 				      << std::endl;
 	if ( is_good_event(evt) ) {
 	    ascii_out << evt;
+	    particle_out << evt;
 	    ++num_good_events;
 	}
 	delete evt;

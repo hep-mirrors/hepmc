@@ -17,6 +17,7 @@ pkginclude_HEADERS = \
 	HerwigWrapper6_4.h	\
 	HerwigWrapper.h	\
 	IO_Ascii.h	\
+	IO_AsciiParticles.h	\
 	IO_BaseClass.h	\
 	IO_HEPEVT.h	\
 	IO_HERWIG.h	\

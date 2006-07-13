@@ -5,3 +5,5 @@
 
 ./testHepMC@EXEEXT@ \
  | @DIFF_Q@ - @srcdir@/testHepMC.output > /dev/null
+
+@DIFF_Q@ testHepMCParticle.out @srcdir@/testHepMCParticle.output

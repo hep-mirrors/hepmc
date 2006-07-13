@@ -42,6 +42,7 @@ endif
 		  example_MyPythia.cc	\
 		  example_MyPythiaOnlyToHepMC.cc	\
 		  example_MyPythiaWithEventSelection.cc	\
+		  example_PythiaParticle.cc	\
 		  example_ReadPDGtable.cc	\
 		  example_UsingIterators.cc	\
 		  initpydata.f
@@ -52,6 +53,7 @@ endif
 		  example_MyPythia.exe	\
 		  example_MyPythiaOnlyToHepMC.exe	\
 		  example_MyPythiaWithEventSelection.exe	\
+		  example_PythiaParticle.exe	\
 		  example_ReadPDGtable.exe	\
 		  example_UsingIterators.exe
 
@@ -162,6 +164,13 @@ example_MyPythiaWithEventSelection.exe: $(initpydata_OBJ) example_MyPythiaWithEv
 	$(CXX) $(FLAGS) example_MyPythiaWithEventSelection.o \
 		$(HepMClib) $(HepMCfiolib) \
 	        $(Pythia_LIB) $(LINK_LIBS) -o $@
+
+example_PythiaParticle.exe: $(initpydata_OBJ) example_PythiaParticle.o
+	@echo "Building $@ ..."
+	$(CXX) $(FLAGS) example_PythiaParticle.o \
+		$(HepMClib) $(HepMCfiolib) \
+	        $(Pythia_LIB) \
+		$(CLHEP_LIB) $(LINK_LIBS) -o $@
 
 example_ReadPDGtable.exe: $(initpydata_OBJ) example_ReadPDGtable.o
 	@echo "Building $@ ..."

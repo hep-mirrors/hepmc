@@ -12,6 +12,7 @@ EXTRA_DIST = \
     example_MyPythia.cc \
     example_MyPythiaOnlyToHepMC.cc \
     example_MyPythiaWithEventSelection.cc \
+    example_PythiaParticle.cc	\
     example_ReadPDGtable.cc \
     example_UsingIterators.cc \
     initpydata.f \

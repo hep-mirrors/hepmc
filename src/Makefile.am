@@ -14,6 +14,7 @@ libHepMC_a_SOURCES = \
 	GenParticle.cc	\
 	GenVertex.cc	\
 	IO_Ascii.cc	\
+	IO_AsciiParticles.cc	\
 	IO_PDG_ParticleDataTable.cc	\
 	ParticleData.cc	\
 	Polarization.cc
