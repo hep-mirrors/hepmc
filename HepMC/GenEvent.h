@@ -114,6 +114,7 @@ namespace HepMC {
 #include "HepMC/GenParticle.h"
 #include "HepMC/WeightContainer.h"
 #include "HepMC/HeavyIon.h"
+#include "HepMC/PdfInfo.h"
 #include <map>
 #include <vector>
 #include <algorithm>
@@ -129,7 +130,7 @@ namespace HepMC {
 		  GenVertex* signal_vertex = 0,
 		  const WeightContainer& weights = std::vector<double>(),
 		  const std::vector<long int>& randomstates
-		  = std::vector<long int>(), HeavyIon* ion = 0 );
+		  = std::vector<long int>(), HeavyIon* ion = 0, PdfInfo* pdf = 0 );
 	GenEvent( const GenEvent& inevent );          // deep copy
 	GenEvent& operator=( const GenEvent& inevent ); // deep.
 	virtual ~GenEvent(); //deletes all vertices/particles in this evt
@@ -159,6 +160,7 @@ namespace HepMC {
 	const WeightContainer&  weights() const;
 
 	HeavyIon*            heavy_ion() const;
+	PdfInfo*             pdf_info() const;
 
 	std::vector<long int> random_states() const;
 
@@ -171,6 +173,7 @@ namespace HepMC {
 	void set_random_states( const std::vector<long int>& randomstates );
 
 	void set_heavy_ion( HeavyIon* ion );
+	void set_pdf_info( PdfInfo* p );
 
 	int     particles_size() const;
 	bool    particles_empty() const;
@@ -370,6 +373,7 @@ namespace HepMC {
 	std::map< int,GenVertex*,std::greater<int> >   m_vertex_barcodes;
 	std::map< int,GenParticle*,std::less<int> >    m_particle_barcodes;
 	HeavyIon*        m_heavy_ion; 	      // undefined by default
+	PdfInfo*         m_pdf_info; 	      // undefined by default
 
 	static unsigned int   s_counter;
     };
@@ -402,6 +406,9 @@ namespace HepMC {
     inline HeavyIon* GenEvent::heavy_ion() const 
     { return m_heavy_ion; }
 
+    inline PdfInfo* GenEvent::pdf_info() const 
+    { return m_pdf_info; }
+
     inline std::vector<long int> GenEvent::random_states() const 
     { return m_random_states; }
 
@@ -425,6 +432,9 @@ namespace HepMC {
 
     inline void GenEvent::set_heavy_ion( HeavyIon* ion )
     { m_heavy_ion = ion; }
+
+    inline void GenEvent::set_pdf_info( PdfInfo* p )
+    { m_pdf_info = p; }
 
     inline void GenEvent::set_random_states( const std::vector<long int>&
 					     randomstates )

@@ -24,6 +24,7 @@ pkginclude_HEADERS = \
 	IO_PDG_ParticleDataTable.h	\
 	ParticleData.h	\
 	ParticleDataTable.h	\
+	PdfInfo.h	\
 	Polarization.h	\
 	PythiaWrapper5_720.h	\
 	PythiaWrapper6_152.h	\

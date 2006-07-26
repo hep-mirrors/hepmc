@@ -1,4 +1,9 @@
 
+2006-07-26 Lynn Garren
+	
+	* HepMC/PdfInfo.h implements information requested by CMS
+	* GenEvent.h, GenEvent.cc make sure m_pdf_info is initialized to 0
+
 	--------------------  HepMC-01-27-02  ---------------------------------
 
 2006-06-19 Lynn Garren
