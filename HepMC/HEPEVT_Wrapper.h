@@ -206,7 +206,7 @@ namespace HepMC {
 
     inline void HEPEVT_Wrapper::set_sizeof_int( unsigned int size ) 
     {
-	if ( size != sizeof(short int) && size != sizeof(long int) ) {
+	if ( size != sizeof(short int) && size != sizeof(long int) && size != sizeof(int) ) {
 	    std::cerr << "HepMC is not able to handle integers "
 		      << " of size other than 2 or 4."
 		      << " You requested: " << size << std::endl;
@@ -255,6 +255,10 @@ namespace HepMC {
 	} else if ( s_sizeof_int == sizeof(long int) ) {
 	    long int* mylongint = (long int*)&hepevt.data[b];
 	    return (*mylongint);
+       // on some 64 bit machines, int, short, and long are all different
+	} else if ( s_sizeof_int == sizeof(int) ) {
+	    int* myint = (int*)&hepevt.data[b];
+	    return (*myint);
 	} else {
 	    std::cerr 
 		<< "HEPEVT_Wrapper: illegal integer number length." 
@@ -290,6 +294,10 @@ namespace HepMC {
 	} else if ( s_sizeof_int == sizeof(long int) ) {
 	    long int* mylongint = (long int*)&hepevt.data[b];
 	    (*mylongint) = (int)in;
+       // on some 64 bit machines, int, short, and long are all different
+	} else if ( s_sizeof_int == sizeof(int) ) {
+	    int* myint = (int*)&hepevt.data[b];
+	    (*myint) = (int)in;
 	} else {
 	    std::cerr 
 		<< "HEPEVT_Wrapper: illegal integer number length." 

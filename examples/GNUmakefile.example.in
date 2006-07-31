@@ -9,22 +9,22 @@
 # be placed in the examples directory.
 #
 ################################################################################ Define directory paths 
-#    You may have to change the CERNLIBdir and CLHEPdir paths.
+#    You may have to change Pythia_LIB and/or other variables.
 #    DOXYGENdir, DOXYGEN_REFERENCEdir, LATEX_USER_MANUALdir, DISTRIBUTIONdir
 #    are for developers only, ignore them.
 #
-  HepMCdir             = ../
-  HepMClib             = $(HepMCdir)lib/libHepMC.a
-  HepMCfiolib          = $(HepMCdir)lib/libHepMCfio.a
+  HepMCdir             = @prefix@
+  HepMClib             = $(HepMCdir)/lib/libHepMC.a
+  HepMCfiolib          = $(HepMCdir)/lib/libHepMCfio.a
   CLHEPdir             = @CLHEPdir@
-  CERNLIBdir           = /cern/2002/lib
-  Pythia_LIB	= -L$(CERNLIBdir) -lpythia6205 -lpythiad $(initpydata_OBJ) 
-  Herwig_LIB	= -L. -lHerwig dummy_uproutines.o
+  GENSERdir            = @GENSERdir@
+  Pythia_LIB	= -L$(GENSERdir)/lib -lpythia6_403 -lpythia6_403_dumm -lpythia6_403_pdfdumm $(initpydata_OBJ) 
+  Herwig_LIB	= -L$(GENSERdir)/lib -lherwig6_510 -lherwig6_510_dumm -lherwig6_510_pdfdumm
 
 ################################################################################ Compiler options
 #
   CXX           = @CXX@
-  INCLUDES 	= -I$(HepMCdir)include -I$(CLHEPdir)/include
+  INCLUDES 	= -I$(HepMCdir)/include -I$(CLHEPdir)/include
   CXXFLAGS      =  @AM_CXXFLAGS@ @CXXFLAGS@ $(INCLUDES)
 ifeq "$(CXX)" "g++"
    F77           = g77
@@ -46,7 +46,7 @@ endif
 		  example_ReadPDGtable.cc	\
 		  example_UsingIterators.cc	\
 		  initpydata.f
-  HDRS          = $(HepMCdir)include/HepMC/*.h
+  HDRS          = $(HepMCdir)/include/HepMC/*.h
   EXAMPLES	= example_BuildEventFromScratch.exe	\
 		  example_EventSelection.exe	\
 		  example_MyHerwig.exe	\

@@ -97,6 +97,7 @@ namespace HepMC {
 	set_alphaQED( inevent.alphaQED() );
 	set_random_states( inevent.random_states() );
 	set_heavy_ion( inevent.heavy_ion() );
+	set_pdf_info( inevent.pdf_info() );
 	weights() = inevent.weights();
 	return *this;
     }
