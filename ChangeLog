@@ -1,4 +1,6 @@
 
+	--------------------  HepMC-01-28-00  ---------------------------------
+
 2006-07-30 Lynn Garren
 
 	* HEPEVT_Wrapper.h: fix for 64bit machines
