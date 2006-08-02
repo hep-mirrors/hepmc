@@ -65,6 +65,11 @@ AC_ARG_WITH(CLHEP,
    [CLHEPdir=${withval}],[CLHEPdir=" "])
 AC_SUBST(CLHEPdir)
 
+AC_ARG_WITH(GENSER,
+   AC_HELP_STRING([--with-GENSER],[--with-GENSER=$GENSER_DIR: used by the examples]),
+   [GENSERdir=${withval}],[GENSERdir=" "])
+AC_SUBST(GENSERdir)
+
 # ----------------------------------------------------------------------
 # Identify the files that 'configure' is to produce:
 # ----------------------------------------------------------------------
