@@ -44,7 +44,9 @@ testHepMC_SOURCES = testHepMC.cc
 testPrintBug_SOURCES         = testPrintBug.cc
 
 # Identify input data file(s) and prototype output file(s):
-EXTRA_DIST = testHepMC.input testHepMC.dat testPrintBug.output
+EXTRA_DIST = testHepMC.input testHepMC.output testHepMCParticle.output \
+             testHepMCExtended.output testPrintBug.output
 
 # Identify generated file(s) to be removed when 'make clean' is requested:
-CLEANFILES = testHepMC.out testPrintBug.out
+CLEANFILES = testHepMC.out testHepMCParticle.out testHepMCExtended.out \
+             testPrintBug.out

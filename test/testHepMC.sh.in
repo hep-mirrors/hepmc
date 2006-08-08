@@ -7,3 +7,11 @@
  | @DIFF_Q@ - @srcdir@/testHepMC.output > /dev/null
 
 @DIFF_Q@ testHepMCParticle.out @srcdir@/testHepMCParticle.output
+
+# perform the following comparison by hand
+# Particles within a vertex are not written in a defined order
+# @DIFF_Q@ testHepMC.out @srcdir@/testHepMC.dat
+
+# This comparison should just show you a "F" line for the PdfInfo* that
+# is found in  testHepMCExtended.out, but not in testHepMC.out
+# diff testHepMCExtended.out testHepMC.out

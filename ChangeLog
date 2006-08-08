@@ -1,9 +1,15 @@
 
 	--------------------  HepMC-01-28-00  ---------------------------------
 
+2006-08-08 Lynn Garren
+
+	* HepMC/IO_ExtendedAscii.h: Extended format writes PdfInfo and HeavyIon
+	  if they are present in the event.  This is otherwise identical 
+	  to IO_Ascii.h.
+
 2006-07-30 Lynn Garren
 
-	* HEPEVT_Wrapper.h: fix for 64bit machines
+	* HepMC/HEPEVT_Wrapper.h: fix for 64bit machines
 
 2006-07-26 Lynn Garren
 	

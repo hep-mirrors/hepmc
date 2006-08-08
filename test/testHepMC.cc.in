@@ -6,11 +6,13 @@
 // Apply an event selection to the events in testHepMC.input
 // Events containing a photon of pT > 25 GeV pass the selection and are
 // written to "testHepMC.out"
+// Also write events using IO_AsciiParticles and IO_ExtendedAscii
 //////////////////////////////////////////////////////////////////////////
 //
 
 #include "HepMC/IO_Ascii.h"
 #include "HepMC/IO_AsciiParticles.h"
+#include "HepMC/IO_ExtendedAscii.h"
 #include "HepMC/GenEvent.h"
 
 class IsGoodEvent {
@@ -39,6 +41,8 @@ int main() {
     HepMC::IO_Ascii ascii_out("testHepMC.out",std::ios::out);
     // declare an IO_AsciiParticle for output
     HepMC::IO_AsciiParticles particle_out("testHepMCParticle.out",std::ios::out);
+    // declare an IO_ExtendedAscii for output
+    HepMC::IO_ExtendedAscii xout("testHepMCExtended.out",std::ios::out);
     // declare an instance of the event selection predicate
     IsGoodEvent is_good_event;
     //........................................EVENT LOOP
@@ -51,8 +55,13 @@ int main() {
 				      << " its # " << evt->event_number() 
 				      << std::endl;
 	if ( is_good_event(evt) ) {
+	    if( icount > 50 ) {
+	        HepMC::PdfInfo* pdf = new HepMC::PdfInfo( 11, 12, 0.54, 0.46, 0.0345, 0.11, 0.34);
+	        evt->set_pdf_info(pdf);
+	    }
 	    ascii_out << evt;
 	    particle_out << evt;
+	    xout << evt;
 	    ++num_good_events;
 	}
 	delete evt;
