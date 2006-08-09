@@ -150,8 +150,8 @@ namespace HepMC {
         static double py( int index );
         static double pz( int index );
         static double e( int index );             // Energy
-        static double m( int index );             // X Production vertex
-        static double x( int index );
+        static double m( int index );             // generated mass
+        static double x( int index );             // X Production vertex
         static double y( int index );
         static double z( int index );
         static double t( int index );             // production time
