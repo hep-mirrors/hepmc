@@ -17,7 +17,7 @@ namespace HepMC {
 	*this = inpolar;
     }
 
-    Polarization::Polarization( const HepNormal3D& vec3in ) {
+    Polarization::Polarization( const ThreeVector& vec3in ) {
 	set_theta( vec3in.theta() );
 	set_phi( vec3in.phi() );
     }
@@ -36,9 +36,9 @@ namespace HepMC {
     // access methods //
     ////////////////////
 
-    HepNormal3D  Polarization::normal3d() const {
+    ThreeVector  Polarization::normal3d() const {
 	// unit Hep3Vector for easy manipulation
-	HepNormal3D outvec(0,0,1);      // makes unit vector along Z
+	ThreeVector outvec(0,0,1);      // makes unit vector along Z
 	outvec.setTheta( theta() ); // sets phi keeping mag and theta constant
 	outvec.setPhi( phi() );     // sets theta keeping mag and phi constant
 	return outvec;
@@ -70,7 +70,7 @@ namespace HepMC {
 	set_phi( phi ) ;
     }
 
-    HepNormal3D Polarization::set_normal3d( const HepNormal3D& vec3in ) {
+    ThreeVector Polarization::set_normal3d( const ThreeVector& vec3in ) {
 	set_theta( vec3in.theta() );
 	set_phi( vec3in.phi() );
 	return vec3in;

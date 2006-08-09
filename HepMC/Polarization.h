@@ -10,11 +10,9 @@
 // Polarization object for a particle. All angles are in radians.
 //////////////////////////////////////////////////////////////////////////
 
-#include "CLHEP/Geometry/Normal3D.h"
+#include "HepMC/SimpleVector.h"
 #include <iostream>
 #include <cmath>
-
-typedef HepGeom::Normal3D<double> HepNormal3D;
 
 namespace HepMC {
 
@@ -27,7 +25,7 @@ namespace HepMC {
     public:
 	Polarization( double theta = 0, double phi = 0 );
 	Polarization( const Polarization& inpolar );
-	Polarization( const HepNormal3D& vec3in );
+	Polarization( const ThreeVector& vec3in );
 	virtual       ~Polarization() {}
 
 	Polarization& operator=( const Polarization& inpolar );
@@ -41,13 +39,13 @@ namespace HepMC {
 	////////////////////
 	double        theta() const;    // returns polar angle in radians
 	double        phi() const;      // returns azimuthal angle in radians
-	HepNormal3D   normal3d() const; // unit 3 vector for easy manipulation
+	ThreeVector   normal3d() const; // unit 3 vector for easy manipulation
 
 	double        set_theta( double theta );
 	double        set_phi( double phi ); 
 	void          set_theta_phi( double theta, double phi );
 	// sets polarization according to direction of 3 vec
-	HepNormal3D   set_normal3d( const HepNormal3D& vec3in ); 
+	ThreeVector   set_normal3d( const ThreeVector& vec3in ); 
 
     private:
 	double m_theta; //polar angle of polarization in radians 0< theta <pi

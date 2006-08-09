@@ -4,27 +4,21 @@ if USE_GMAKE
   MAKE = gmake
 endif
 
-CLHEPdir = @CLHEPdir@
-
-INCLUDES = -I$(top_builddir) -I$(top_srcdir) -I$(CLHEPdir)/include
+INCLUDES = -I$(top_builddir) -I$(top_srcdir) 
 
 # libraries to link, and whence
 if BUILD_STATIC
   LDADD = $(top_builddir)/src/libHepMC.a \
-          $(top_builddir)/fio/libHepMCfio.a \
-          $(CLHEPdir)/lib/libCLHEP.a
+          $(top_builddir)/fio/libHepMCfio.a 
 else
 if BUILD_VISUAL
   LDADD = $(top_builddir)/src/HepMC.$(SHEXT) \
-          $(top_builddir)/fio/HepMCfio.$(SHEXT) \
-          $(CLHEPdir)/lib/CLHEP.$(SHEXT)
+          $(top_builddir)/fio/HepMCfio.$(SHEXT) 
 else
   LIBS += $(MY_LD)$(top_builddir)/src \
-	  $(MY_LD)$(top_builddir)/fio \
-	  $(MY_LD)$(CLHEPdir)/lib
+	  $(MY_LD)$(top_builddir)/fio 
   LDADD = $(top_builddir)/src/libHepMC.$(SHEXT) \
-          $(top_builddir)/fio/libHepMCfio.$(SHEXT) \
-          $(CLHEPdir)/lib/libCLHEP.$(SHEXT)
+          $(top_builddir)/fio/libHepMCfio.$(SHEXT) 
 endif
 endif
 
@@ -45,7 +39,7 @@ testPrintBug_SOURCES         = testPrintBug.cc
 
 # Identify input data file(s) and prototype output file(s):
 EXTRA_DIST = testHepMC.input testHepMC.output testHepMCParticle.output \
-             testHepMCExtended.output testPrintBug.output
+             testPrintBug.output
 
 # Identify generated file(s) to be removed when 'make clean' is requested:
 CLEANFILES = testHepMC.out testHepMCParticle.out testHepMCExtended.out \

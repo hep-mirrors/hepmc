@@ -154,11 +154,11 @@ namespace HepMC {
 	for ( int i = 1; i <= particle_counter; ++i ) {
 	    HEPEVT_Wrapper::set_status( i, index_to_particle[i]->status() );
 	    HEPEVT_Wrapper::set_id( i, index_to_particle[i]->pdg_id() );
-	    HepLorentzVector m = index_to_particle[i]->momentum();
+	    FourVector m = index_to_particle[i]->momentum();
 	    HEPEVT_Wrapper::set_momentum( i, m.px(), m.py(), m.pz(), m.e() );
-	    HEPEVT_Wrapper::set_mass( i, m.m() );
+	    HEPEVT_Wrapper::set_mass( i, index_to_particle[i]->generatedMass() );
 	    if ( index_to_particle[i]->production_vertex() ) {
-		HepLorentzVector p = index_to_particle[i]->
+		FourVector p = index_to_particle[i]->
 				     production_vertex()->position();
 		HEPEVT_Wrapper::set_position( i, p.x(), p.y(), p.z(), p.t() );
 		int num_mothers = index_to_particle[i]->production_vertex()->
@@ -198,18 +198,18 @@ namespace HepMC {
 	// b. if no suitable production vertex exists - and the particle
 	// has atleast one mother or position information to store - 
 	// make one
-	HepLorentzVector prod_pos( HEPEVT_Wrapper::x(i), HEPEVT_Wrapper::y(i), 
+	FourVector prod_pos( HEPEVT_Wrapper::x(i), HEPEVT_Wrapper::y(i), 
 				   HEPEVT_Wrapper::z(i), HEPEVT_Wrapper::t(i) 
 	                         ); 
 	if ( !prod_vtx && (HEPEVT_Wrapper::number_parents(i)>0 
-			   || prod_pos!=HepLorentzVector(0,0,0,0)) )
+			   || prod_pos!=FourVector(0,0,0,0)) )
 	{
 	    prod_vtx = new GenVertex();
 	    prod_vtx->add_particle_out( p );
 	    evt->add_vertex( prod_vtx );
 	}
 	// c. if prod_vtx doesn't already have position specified, fill it
-	if ( prod_vtx && prod_vtx->position()==HepLorentzVector(0,0,0,0) ) {
+	if ( prod_vtx && prod_vtx->position()==FourVector(0,0,0,0) ) {
 	    prod_vtx->set_position( prod_pos );
 	}
 	// d. loop over mothers to make sure their end_vertices are
@@ -276,13 +276,13 @@ namespace HepMC {
 		end_vtx->add_particle_out( hepevt_particle[daughter] );
 		// 
 		// 2001-03-29 M.Dobbs, fill vertex the position.
-		if ( end_vtx->position()==HepLorentzVector(0,0,0,0) ) {
-		    HepLorentzVector prod_pos( HEPEVT_Wrapper::x(daughter), 
+		if ( end_vtx->position()==FourVector(0,0,0,0) ) {
+		    FourVector prod_pos( HEPEVT_Wrapper::x(daughter), 
 					       HEPEVT_Wrapper::y(daughter), 
 					       HEPEVT_Wrapper::z(daughter), 
 					       HEPEVT_Wrapper::t(daughter) 
 			);
-		    if ( prod_pos != HepLorentzVector(0,0,0,0) ) {
+		    if ( prod_pos != FourVector(0,0,0,0) ) {
 			end_vtx->set_position( prod_pos );
 		    }
 		}
@@ -316,12 +316,13 @@ namespace HepMC {
 	// Builds a particle object corresponding to index in HEPEVT
 	// 
 	GenParticle* p 
-	    = new GenParticle( HepLorentzVector( HEPEVT_Wrapper::px(index), 
+	    = new GenParticle( FourVector( HEPEVT_Wrapper::px(index), 
 						 HEPEVT_Wrapper::py(index), 
 						 HEPEVT_Wrapper::pz(index), 
 						 HEPEVT_Wrapper::e(index) ),
 			       HEPEVT_Wrapper::id(index), 
 			       HEPEVT_Wrapper::status(index) );
+        p->setGeneratedMass( HEPEVT_Wrapper::m(index) );
 	p->suggest_barcode( index );
 	return p;
     }

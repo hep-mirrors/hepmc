@@ -22,17 +22,12 @@
 #endif // Platform
 
 #include "HepMC/WeightContainer.h"
-#include "CLHEP/Vector/LorentzVector.h"
-#include "CLHEP/Geometry/Point3D.h"
+#include "HepMC/SimpleVector.h"
 #include <iostream>
 #include <iterator>
 #include <vector>
 #include <set>
 #include <algorithm>
-
-// these statements should allow HepMC to with with both CLHEP 1.9 and 1.8
-typedef HepGeom::Point3D<double> HepPoint3D;
-using namespace CLHEP;
 
 namespace HepMC {
 
@@ -58,7 +53,7 @@ namespace HepMC {
 #endif // NEED_SOLARIS_FRIEND_FEATURE
 
     public:
-	GenVertex( const HepLorentzVector& position =HepLorentzVector(0,0,0,0),
+	GenVertex( const FourVector& position =FourVector(0,0,0,0),
 		   int id = 0, 
 		   const WeightContainer& weights = std::vector<double>() );
 	GenVertex( const GenVertex& invertex );            // shallow copy
@@ -79,18 +74,17 @@ namespace HepMC {
 	//      delete vtx->remove_particle( particle );
 	GenParticle* remove_particle( GenParticle* particle );
 
-	operator HepLorentzVector() const; // conversion operator
-	operator HepPoint3D() const; // conversion operator
+	operator    FourVector() const; // conversion operator
+	operator   ThreeVector() const; // conversion operator
 
 	////////////////////
 	// access methods //
 	////////////////////
 
 	GenEvent*               parent_event() const;
-	HepPoint3D              point3d() const;
-	HepLorentzVector        position() const;
-	void                    set_position( const HepLorentzVector& position 
-					      = HepLorentzVector(0,0,0,0) );
+	ThreeVector             point3d() const;
+	FourVector              position() const;
+	void                    set_position( const FourVector& position = FourVector(0,0,0,0) );
 	// we don't define what you use the id for -- but we imagine,
 	// for example it might code the meaning of the weights()
 	int                     id() const;
@@ -271,7 +265,7 @@ namespace HepMC {
 	void delete_adopted_particles();
 	
     private: // GenVertex data members
-	HepLorentzVector     m_position;      //4-vec of vertex [mm]
+	FourVector                  m_position;      //4-vec of vertex [mm]
 	std::set<GenParticle*>  m_particles_in;  //all incoming particles
 	std::set<GenParticle*>  m_particles_out; //all outgoing particles
 	int                  m_id;
@@ -286,16 +280,16 @@ namespace HepMC {
     // INLINES access methods //
     ////////////////////////////
 
-    inline GenVertex::operator HepLorentzVector() const { return position(); }
+    inline GenVertex::operator FourVector() const { return position(); }
 
-    inline GenVertex::operator HepPoint3D() const { return point3d(); }
+    inline GenVertex::operator ThreeVector() const { return point3d(); }
 
-    inline HepLorentzVector GenVertex::position() const { return m_position; }
+    inline FourVector GenVertex::position() const { return m_position; }
 
     inline GenEvent* GenVertex::parent_event() const { return m_event; }
 
-    inline HepPoint3D GenVertex::point3d() const { 
-	return (HepPoint3D)m_position; 
+    inline ThreeVector GenVertex::point3d() const { 
+	return ThreeVector(m_position.x(),m_position.y(),m_position.z()); 
     }
 
     inline int GenVertex::id() const { return m_id; }
@@ -308,7 +302,7 @@ namespace HepMC {
     inline const WeightContainer& GenVertex::weights() const 
     { return m_weights; }
 
-    inline void GenVertex::set_position( const HepLorentzVector& position ) {
+    inline void GenVertex::set_position( const FourVector& position ) {
 	m_position = position;
     }
 

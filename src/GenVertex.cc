@@ -10,7 +10,7 @@
 
 namespace HepMC {
 
-    GenVertex::GenVertex( const HepLorentzVector& position,
+    GenVertex::GenVertex( const FourVector& position,
 			  int id, const WeightContainer& weights ) 
 	: m_position(position), m_id(id), m_weights(weights), m_event(0),
 	  m_barcode(0)
@@ -125,7 +125,7 @@ namespace HepMC {
 
     void GenVertex::print( std::ostream& ostr ) const {
 	if ( barcode()!=0 ) {
-	    if ( position() != HepLorentzVector(0,0,0,0) ) {
+	    if ( position() != FourVector(0,0,0,0) ) {
 	        ostr << "Vertex:";
 		ostr.width(9);
 		ostr << barcode();
@@ -164,7 +164,7 @@ namespace HepMC {
 	    // If the vertex doesn't have a unique barcode assigned, then
 	    //  we print its memory address instead... so that the
 	    //  print out gives us a unique tag for the particle.
-	    if ( position() != HepLorentzVector(0,0,0,0) ) {
+	    if ( position() != FourVector(0,0,0,0) ) {
 	        ostr << "Vertex:";
 		ostr.width(9);
 		ostr << (void*)this;
@@ -400,7 +400,7 @@ namespace HepMC {
 	if ( vtx.barcode()!=0 ) ostr << "BarCode " << vtx.barcode();
 	else ostr << "Address " << &vtx;
 	ostr << " (X,cT)=";
-	if ( vtx.position() != HepLorentzVector(0,0,0,0)) {
+	if ( vtx.position() != FourVector(0,0,0,0)) {
 	    ostr << vtx.position().x() << ","
 		 << vtx.position().y() << ","
 		 << vtx.position().z() << ","

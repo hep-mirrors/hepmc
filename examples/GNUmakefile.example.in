@@ -2,22 +2,18 @@
 # Matt.Dobbs@CERN.CH  1.2000
 #
 # This makefiles also works to compile the example programs.
-# I.E.: syntax for compiling the example_MyPythia.cxx example:
-#       gmake examples/example_MyPythia.exe
-# or simply   gmake examples     to compile all examples.
-# This should be run from the main HepMC directory. The executables will
-# be placed in the examples directory.
+# I.E.: syntax for compiling the example_MyPythia.cc example:
+#       gmake example_MyPythia.exe
+# or simply   gmake all     to compile all examples.
 #
 ################################################################################ Define directory paths 
-#    You may have to change Pythia_LIB and/or other variables.
-#    DOXYGENdir, DOXYGEN_REFERENCEdir, LATEX_USER_MANUALdir, DISTRIBUTIONdir
-#    are for developers only, ignore them.
+#    You may have to change GENSERdir and/or other variables
 #
   HepMCdir             = @prefix@
   HepMClib             = $(HepMCdir)/lib/libHepMC.a
   HepMCfiolib          = $(HepMCdir)/lib/libHepMCfio.a
-  CLHEPdir             = @CLHEPdir@
   GENSERdir            = @GENSERdir@
+  CLHEPdir             = @CLHEPdir@
   Pythia_LIB	= -L$(GENSERdir)/lib -lpythia6_403 -lpythia6_403_dumm -lpythia6_403_pdfdumm $(initpydata_OBJ) 
   Herwig_LIB	= -L$(GENSERdir)/lib -lherwig6_510 -lherwig6_510_dumm -lherwig6_510_pdfdumm
 
@@ -127,21 +123,22 @@ endif
 ###############################################################################
 #
 .SUFFIXES:      .o .cxx .f .exe
-all:	$(initpydata_OBJ) $(EXAMPLES)
+all:	$(EXAMPLES)
 
-example_BuildEventFromScratch.exe: $(initpydata_OBJ) example_BuildEventFromScratch.o
+example_BuildEventFromScratch.exe: example_BuildEventFromScratch.o
 	@echo "Building $@ ..."
 	$(CXX) $(FLAGS) example_BuildEventFromScratch.o \
 		$(HepMClib) \
+		$(CLHEP_LIB) \
 	        $(LINK_LIBS) -o $@
 
-example_EventSelection.exe: $(initpydata_OBJ) example_EventSelection.o
+example_EventSelection.exe: example_EventSelection.o
 	@echo "Building $@ ..."
 	$(CXX) $(FLAGS) example_EventSelection.o \
 		$(HepMClib) \
 	        $(LINK_LIBS) -o $@
 
-example_MyHerwig.exe: $(initpydata_OBJ) example_MyHerwig.o
+example_MyHerwig.exe: example_MyHerwig.o
 	@echo "Building $@ ..."
 	$(CXX) $(FLAGS) example_MyHerwig.o \
 		$(HepMClib) $(HepMCfiolib) \
@@ -170,15 +167,15 @@ example_PythiaParticle.exe: $(initpydata_OBJ) example_PythiaParticle.o
 	$(CXX) $(FLAGS) example_PythiaParticle.o \
 		$(HepMClib) $(HepMCfiolib) \
 	        $(Pythia_LIB) \
-		$(CLHEP_LIB) $(LINK_LIBS) -o $@
+		$(LINK_LIBS) -o $@
 
-example_ReadPDGtable.exe: $(initpydata_OBJ) example_ReadPDGtable.o
+example_ReadPDGtable.exe: example_ReadPDGtable.o
 	@echo "Building $@ ..."
 	$(CXX) $(FLAGS) example_ReadPDGtable.o \
 		$(HepMClib) \
 	        $(LINK_LIBS) -o $@
 
-example_UsingIterators.exe: $(initpydata_OBJ) example_UsingIterators.o
+example_UsingIterators.exe: example_UsingIterators.o
 	@echo "Building $@ ..."
 	$(CXX) $(FLAGS) example_UsingIterators.o \
 		$(HepMClib) \

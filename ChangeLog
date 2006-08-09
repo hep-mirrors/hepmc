@@ -1,3 +1,21 @@
+2006-08-01 Lynn Garren
+
+	* HepMC/is_arithmetic.h, HepMC/enable_if.h supplied by Walter Brown 
+	  for a clean template constructor implementation.
+
+2006-07-23 Lynn Garren
+
+	* HepMC/SimpleVector.h: add a templated constructor for both FourVector
+          and ThreeVector that will take any lorentz vector which has the 
+          x(), y(), z(), and t() methods.  This should enable existing code 
+          that uses CLHEP Vector classes to keep working.
+
+2006-07-19 Lynn Garren
+
+	* replace CLHEP/Vector/LorentzVector.h and CLHEP/Vector/ThreeVector.h  
+	  with HepMC/SimpleVector.h
+	  implement some of the basic vector properties so user code won't break
+
 
 	--------------------  HepMC-01-28-00  ---------------------------------
 

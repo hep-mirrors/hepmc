@@ -34,6 +34,10 @@ pkginclude_HEADERS = \
 	PythiaWrapper6_2_WIN32.h	\
 	PythiaWrapper.h	\
 	WeightContainer.h	\
+	SimpleVector.h	\
+	SimpleVector.icc	\
+	enable_if.h	\
+	is_arithmetic.h	\
 	HepMC_CLHEP20.h	\
 	defs.h
 

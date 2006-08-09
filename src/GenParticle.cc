@@ -14,18 +14,18 @@ namespace HepMC {
     GenParticle::GenParticle( void ) :
 	m_momentum(0), m_pdg_id(0), m_status(0), m_flow(this),
         m_polarization(0), m_production_vertex(0), m_end_vertex(0),
-        m_barcode(0)
+        m_barcode(0), m_generated_mass(0.)
     {
 	s_counter++;
     }
 
-    GenParticle::GenParticle( const HepLorentzVector& momentum, 
+    GenParticle::GenParticle( const FourVector& momentum, 
 			int pdg_id, int status, 
 			const Flow& itsflow,
 			const Polarization& polar ) : 
 	m_momentum(momentum), m_pdg_id(pdg_id), m_status(status), m_flow(this),
 	m_polarization(polar), m_production_vertex(0), m_end_vertex(0),
-	m_barcode(0)
+        m_barcode(0), m_generated_mass(momentum.m())
     {
 	// Establishing *this as the owner of m_flow is done above,
 	// then we set it equal to the other flow pattern (subtle)
@@ -35,7 +35,8 @@ namespace HepMC {
 
     GenParticle::GenParticle( const GenParticle& inparticle ) : 
 	m_pdg_id(0), m_status(0), m_flow(this), 
-	m_production_vertex(0), m_end_vertex(0), m_barcode(0) 
+	m_production_vertex(0), m_end_vertex(0), m_barcode(0), 
+        m_generated_mass(0.) 
     {
 	// Shallow copy: does not copy the vertex pointers
 	// (note - impossible to copy vertex pointers which having the vertex
@@ -63,6 +64,7 @@ namespace HepMC {
 	set_flow(inparticle.m_flow);
 	set_polarization( inparticle.polarization() );
 	suggest_barcode( inparticle.barcode() );
+        set_generated_mass( inparticle.generated_mass() );
 	return *this;
     }
 
@@ -71,6 +73,7 @@ namespace HepMC {
 	//  constructor,.. this operator does not test the vertex pointers.
 	//  Does not compare barcodes.
 	if ( a.momentum() != this->momentum() ) return 0;
+        if ( a.generated_mass() != this->generated_mass() ) return 0;
 	if ( a.pdg_id() != this->pdg_id() ) return 0;
 	if ( a.status() != this->status() ) return 0;
 	if ( a.m_flow != this->m_flow ) return 0;
@@ -204,6 +207,15 @@ namespace HepMC {
 	    ostr << (void*)part.end_vertex();
 	}
 	return ostr;
+    }
+
+
+    double  GenParticle::generated_mass() const {
+        return m_generated_mass;
+    }
+
+    void   GenParticle::set_generated_mass( const double & m ) {
+        m_generated_mass = m;
     }
 
 } // HepMC

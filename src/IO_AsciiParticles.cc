@@ -148,7 +148,7 @@ namespace HepMC {
       *m_outstream << (*part)->momentum().pz() << " "
              << (*part)->momentum().e() << " ";
 
-      xmassi = (*part)->momentum().m();
+      xmassi = (*part)->generatedMass();
       if(fabs(xmassi) < 0.0001) xmassi =0.;
       m_outstream->setf(std::ios::fixed);
       m_outstream->precision(3);

@@ -10,11 +10,13 @@
 
 #include "HepMC/GenEvent.h"
 #include "HepMC/ParticleDataTable.h"
+#include "CLHEP/Vector/LorentzVector.h"
 
 // in this example we use the HepMC namespace, so that we do not have to 
 // precede all HepMC classes with HepMC::
 
 using namespace HepMC;
+using namespace CLHEP;
 
 int main() {
     //

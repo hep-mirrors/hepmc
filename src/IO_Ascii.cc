@@ -388,7 +388,7 @@ namespace HepMC {
 	WeightContainer weights(weights_size);
 	for ( int i1 = 0; i1 < weights_size; ++i1 ) m_file >> weights[i1];
 	m_file.ignore(2,'\n');
-	GenVertex* v = new GenVertex( HepLorentzVector(x,y,z,t),
+	GenVertex* v = new GenVertex( FourVector(x,y,z,t),
 				id, weights);
 	v->suggest_barcode( identifier );
 	//
@@ -431,7 +431,7 @@ namespace HepMC {
 	    flow.set_icode( code_index,code);
 	}
 	m_file.ignore(2,'\n'); // '\n' at end of entry
-	GenParticle* p = new GenParticle( HepLorentzVector(px,py,pz,e), 
+	GenParticle* p = new GenParticle( FourVector(px,py,pz,e), 
 				    id, status, flow, 
 				    Polarization(theta,phi) );
 	p->suggest_barcode( bar_code );

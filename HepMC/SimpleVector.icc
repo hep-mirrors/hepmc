@@ -1,0 +1,134 @@
+//////////////////////////////////////////////////////////////////////////
+// SimpleVector.icc
+//////////////////////////////////////////////////////////////////////////
+
+//////////////////////////////////////////////////////////////////////////
+// garren@fnal.gov, July 2006
+//
+//
+//////////////////////////////////////////////////////////////////////////
+
+#include <cmath>
+
+namespace HepMC {
+
+//////////////////////////////////////////////////////////////////////////
+//  FourVector inline methods
+//////////////////////////////////////////////////////////////////////////
+
+inline FourVector & FourVector::operator=(const FourVector & v) {
+  m_x = v.x();
+  m_y = v.y();
+  m_z = v.z();
+  m_t = v.t();
+  return *this;
+}
+
+inline void FourVector::set(double x, double y, double z, double  t) {
+  m_x = x;
+  m_y = y;
+  m_z = z;
+  m_t = t;
+}
+
+inline double FourVector::m2() const {
+  return m_t*m_t - (m_x*m_x + m_y*m_y + m_z*m_z);
+}
+
+inline double FourVector::m() const {
+  double mm = m2();
+  return mm < 0.0 ? -std::sqrt(-mm) : std::sqrt(mm);
+}
+
+inline double  FourVector::mag() const { 
+return std::sqrt( m_x*m_x + m_y*m_y + m_z*m_z );
+}
+
+inline double FourVector::perp2() const { return m_x*m_x + m_y*m_y; }
+
+inline double FourVector::perp() const { return std::sqrt(perp2()); }
+
+inline double FourVector::theta() const	 {
+  return m_x == 0.0 && m_y == 0.0 && m_z == 0.0 ? 0.0 : std::atan2(perp(),m_z);
+}
+
+inline double FourVector::phi() const {
+  return m_x == 0.0 && m_y == 0.0 ? 0.0 : std::atan2(m_y,m_x);
+}
+
+inline double  FourVector::rho() const { 
+return std::sqrt( m_x*m_x + m_y*m_y + m_z*m_z );
+}
+
+inline bool FourVector::operator == (const FourVector & v) const {
+  return (v.x()==x() && v.y()==y() && v.z()==z() && v.t()==t()) ? true : false;
+}
+
+inline bool FourVector::operator != (const FourVector & v) const {
+  return (v.x()!=x() || v.y()!=y() || v.z()!=z() || v.t()!=t()) ? true : false;
+}
+
+inline double FourVector::pseudoRapidity() const {
+  double m = mag();
+  if ( m==  0   ) return  0.0;   
+  if ( m==  z() ) return  1.0E72;
+  if ( m== -z() ) return -1.0E72;
+  return 0.5*log( (m+z())/(m-z()) );
+}
+
+inline double FourVector::eta()    const { return pseudoRapidity();}
+
+
+//////////////////////////////////////////////////////////////////////////
+//  ThreeVector inline methods
+//////////////////////////////////////////////////////////////////////////
+
+inline double ThreeVector::theta() const	 {
+  return m_x == 0.0 && m_y == 0.0 && m_z == 0.0 ? 0.0 : std::atan2(perp(),m_z);
+}
+
+inline double ThreeVector::phi() const {
+  return m_x == 0.0 && m_y == 0.0 ? 0.0 : std::atan2(m_y,m_x);
+}
+
+inline double  ThreeVector::mag() const { 
+return std::sqrt( m_x*m_x + m_y*m_y + m_z*m_z );
+}
+
+inline double ThreeVector::r()    const { return mag(); }
+
+inline void ThreeVector::setPhi(double ph) { 
+  double xy   = perp();
+  setX(xy*std::cos(ph));
+  setY(xy*std::sin(ph));
+}
+
+inline void ThreeVector::setTheta(double th) { 
+  double ma   = mag();
+  double ph   = phi();
+  setX(ma*std::sin(th)*std::cos(ph));
+  setY(ma*std::sin(th)*std::sin(ph));
+  setZ(ma*std::cos(th));
+}
+
+inline double ThreeVector::perp2() const { return m_x*m_x + m_y*m_y; }
+
+inline double ThreeVector::perp() const { return std::sqrt(perp2()); }
+
+inline ThreeVector & ThreeVector::operator = (const ThreeVector & p) {
+  m_x = p.x();
+  m_y = p.y();
+  m_z = p.z();
+  return *this;
+}
+
+
+inline bool ThreeVector::operator == (const ThreeVector& v) const {
+  return (v.x()==x() && v.y()==y() && v.z()==z()) ? true : false;
+}
+
+inline bool ThreeVector::operator != (const ThreeVector& v) const {
+  return (v.x()!=x() || v.y()!=y() || v.z()!=z()) ? true : false;
+}
+
+} // HepMC

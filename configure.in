@@ -9,7 +9,7 @@
 # ----------------------------------------------------------------------
 
 AC_PREREQ(2.59)
-AC_INIT(HepMC, 1.28.00, https://savannah.cern.ch/projects/hepmc/, HepMC)
+AC_INIT(HepMC, 2.00.00, https://savannah.cern.ch/projects/hepmc/, HepMC)
 AC_CANONICAL_TARGET
 AC_CONFIG_SRCDIR([src/GenEvent.cc])
 AM_INIT_AUTOMAKE(1.9 foreign)
@@ -57,16 +57,17 @@ AC_ARG_ENABLE(gmake,
         [use_gmake="no"])
 
 # ----------------------------------------------------------------------
-# find CLHEP:
+# find CLHEP and/or GENSER:
+# these are used ONLY in the examples
 # ----------------------------------------------------------------------
 
 AC_ARG_WITH(CLHEP,
-   AC_HELP_STRING([--with-CLHEP],[--with-CLHEP=$CLHEP_DIR: CLHEP is required]),
+   AC_HELP_STRING([--with-CLHEP],[--with-CLHEP=$CLHEP_DIR: CLHEP is used in the examples]),
    [CLHEPdir=${withval}],[CLHEPdir=" "])
 AC_SUBST(CLHEPdir)
 
 AC_ARG_WITH(GENSER,
-   AC_HELP_STRING([--with-GENSER],[--with-GENSER=$GENSER_DIR: used by the examples]),
+   AC_HELP_STRING([--with-GENSER],[--with-GENSER=$GENSER_DIR: GENSER is used in the examples]),
    [GENSERdir=${withval}],[GENSERdir=" "])
 AC_SUBST(GENSERdir)
 

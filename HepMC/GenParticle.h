@@ -12,18 +12,9 @@
 //////////////////////////////////////////////////////////////////////////
 //
 // example:
-//      GenParticle* p = new GenParticle( HepLorentzVector(1,1,1,3), 11, 1 );
+//      GenParticle* p = new GenParticle( FourVector(1,1,1,3), 11, 1 );
 // creates a particle with 4-vector (p,E)=1,1,1,3 - with pdg id 11 (electron)
 // and give this particle status =1.
-//
-// The definition of a HepLorentzVector scope resolution operator allows for
-//  the use of 4 vector algebra with GenParticles.
-//  i.e. if two particles are defined:
-//   HepMC::GenParticle p_electron( HepLorentzVector(0,0,5,5), 11, 1 );
-//   HepMC::GenParticle p_positron( HepLorentzVector(0,5,0,5), -11, 1 );
-//  then you can find their cms 4 vector:
-//   HepLorentzVector v_cms = (HepLorentzVector)p_electron 
-//                            + (HepLorentzVector)p_positron;
 //
 // the pointers to end/production vertices can only be set by the
 //  vertices themselves - thus to set the production vertex for a particle,
@@ -37,11 +28,8 @@
 
 #include "HepMC/Flow.h"
 #include "HepMC/Polarization.h"
-#include "CLHEP/Vector/LorentzVector.h"
+#include "HepMC/SimpleVector.h"
 #include <iostream>
-
-// this statement should allow HepMC to with with both CLHEP 1.9 and 1.8
-using namespace CLHEP;
 
 namespace HepMC {
 
@@ -56,12 +44,12 @@ namespace HepMC {
 
     public:
         GenParticle(void);
- 	GenParticle( const HepLorentzVector& momentum, int pdg_id,
+ 	GenParticle( const FourVector& momentum, int pdg_id,
 		     int status = 0, const Flow& itsflow = Flow(),
 		     const Polarization& polar = Polarization(0,0) );
 	GenParticle( const GenParticle& inparticle ); // shallow copy.
 	virtual ~GenParticle();
-	
+
 	GenParticle& operator=( const GenParticle& inparticle ); // shallow.
 	bool         operator==( const GenParticle& ) const;
 	bool         operator!=( const GenParticle& ) const;
@@ -69,13 +57,13 @@ namespace HepMC {
 	// dump this particle's full info to ostr
 	void       print( std::ostream& ostr = std::cout ) const; 
 
-	operator HepLorentzVector() const; // conversion operator
+	operator FourVector() const; // conversion operator
 
 	////////////////////
 	// access methods //
 	////////////////////
 
-	HepLorentzVector     momentum() const;
+	FourVector           momentum() const;
 	int                  pdg_id() const;
 	int                  status() const;
 	Flow                 flow() const;
@@ -84,6 +72,16 @@ namespace HepMC {
 	GenVertex*           production_vertex() const;
 	GenVertex*           end_vertex() const;
 	GenEvent*            parent_event() const;
+
+        double               generated_mass() const;
+        inline double        generatedMass() const { return generated_mass(); }
+	//  generatedMass() is included for backwards compatibility with CLHEP HepMC
+        // because of precision issues, the generated mass is not always the same as the calculated mass
+        //         GenParticle.generated_mass() [generated mass]
+        //         GenParticle.momentum().m()  [calculated mass]
+        // by default, generated_mass() is the mass calculated from the momentum 4 vector
+        // call set_generated_mass(..) to define the actual generated mass
+
 
 	//
 	// The barcode is the particle's reference number, every vertex in the
@@ -95,13 +93,18 @@ namespace HepMC {
 	int                  barcode() const;
 	bool                 suggest_barcode( int the_bar_code );
 
-	void   set_momentum( const HepLorentzVector& vec4 );
+	void   set_momentum( const FourVector& vec4 );
 	void   set_pdg_id( int id );
 	void   set_status( int status = 0 );
 	void   set_flow( const Flow& f );
 	void   set_flow( int code_index, int code = 0 );
-	void   set_polarization( const Polarization& polarization =
-				 Polarization(0,0) );
+	void   set_polarization( const Polarization& pol = Polarization(0,0) );
+        void   set_generated_mass( const double & m );
+        void   setGeneratedMass( const double & m )  
+	                 { return set_generated_mass(m); }
+	//  setGeneratedMass() is included for backwards compatibility with CLHEP HepMC
+        //  If you do not call set_generated_mass(), then 
+        //  generated_mass() will simply return the mass calculated from momentum()
 
     protected: // for internal use only by friend GenVertex class
 
@@ -112,7 +115,7 @@ namespace HepMC {
 	void   set_barcode_( int the_bar_code ); // for use by GenEvent only
 
     private:
-	HepLorentzVector m_momentum;          // 4 vector
+	FourVector       m_momentum;          // momentum vector
 	int              m_pdg_id;            // id according to PDG convention
 	int              m_status;            // As defined for HEPEVT
 	Flow             m_flow;
@@ -120,6 +123,7 @@ namespace HepMC {
 	GenVertex*       m_production_vertex; // null if vacuum or beam
 	GenVertex*       m_end_vertex;        // null if not-decayed
 	int              m_barcode;           // unique identifier in the event
+        double           m_generated_mass;    // mass of this particle when it was generated
 
 	static unsigned int s_counter;
     };  
@@ -128,10 +132,10 @@ namespace HepMC {
     // INLINES  //
     //////////////
 
-    inline GenParticle::operator HepLorentzVector() const 
+    inline GenParticle::operator FourVector() const 
     { return m_momentum; }
 
-    inline HepLorentzVector GenParticle::momentum() const 
+    inline FourVector GenParticle::momentum() const 
     { return m_momentum; }
 
     inline int GenParticle::pdg_id() const { return m_pdg_id; }
@@ -151,7 +155,7 @@ namespace HepMC {
     inline Polarization GenParticle::polarization() const 
     { return m_polarization; }
 
-    inline void GenParticle::set_momentum( const HepLorentzVector& vec4 )
+    inline void GenParticle::set_momentum( const FourVector& vec4 )
     { m_momentum = vec4; }
 
     inline void GenParticle::set_pdg_id( int id ) { m_pdg_id = id; }

@@ -4,9 +4,7 @@ if USE_GMAKE
   MAKE = gmake
 endif
 
-CLHEPdir = @CLHEPdir@
-
-INCLUDES = -I$(top_builddir) -I$(top_srcdir) -I$(CLHEPdir)/include
+INCLUDES = -I$(top_builddir) -I$(top_srcdir) 
 
 libHepMCfio_a_SOURCES = \
 	HEPEVT_Wrapper.cc	\

@@ -5,7 +5,7 @@
 #include <fstream>
 
 #include "HepMC/GenEvent.h"
-#include "CLHEP/Vector/LorentzVector.h"
+#include "HepMC/SimpleVector.h"
 
 int main(int argc,char* argv[]) 
 {
@@ -17,7 +17,7 @@ int main(int argc,char* argv[])
   std::ofstream os( "testPrintBug.out" );
   
   for(int i=0; i<10; i++) {
-    CLHEP::HepLorentzVector vector(1.0,1.0,1.0,1.0);
+    HepMC::FourVector vector(1.0,1.0,1.0,1.0);
     HepMC::GenVertex* vertex = new HepMC::GenVertex(vector,i);
     for(int j=0; j<3; j++) {
       HepMC::GenParticle* particle = new HepMC::GenParticle(vector,1,2);
