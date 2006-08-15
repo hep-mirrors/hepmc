@@ -103,7 +103,7 @@ private:
   
 };
 
-struct ThreeVector {
+class ThreeVector {
 
 public:
 
