@@ -265,7 +265,7 @@ namespace HepMC {
 	void delete_adopted_particles();
 	
     private: // GenVertex data members
-	FourVector                  m_position;      //4-vec of vertex [mm]
+	FourVector              m_position;      //4-vec of vertex [mm]
 	std::set<GenParticle*>  m_particles_in;  //all incoming particles
 	std::set<GenParticle*>  m_particles_out; //all outgoing particles
 	int                  m_id;
