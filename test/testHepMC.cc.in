@@ -48,7 +48,7 @@ int main() {
     //........................................EVENT LOOP
     int icount=0;
     int num_good_events=0;
-    double x=0., y=0., z=0.,;
+    double x=0., y=0., z=0.;
     HepMC::GenEvent* evt = ascii_in.read_next_event();
     while ( evt ) {
 	icount++;
