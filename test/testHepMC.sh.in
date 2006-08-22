@@ -1,6 +1,7 @@
 #! /bin/sh
 # @configure_input@
-# you can compare testHepMC.out to @srcdir@/testHepMC.dat, 
+# you can compare testHepMC.out to @srcdir@/testHepMC.dat
+# and testHepMCExtended.out to @srcdir@/testHepMCExtended.dat,
 # but the particles within a vertex are printed in "random" order
 
 ./testHepMC@EXEEXT@ \
@@ -8,10 +9,7 @@
 
 @DIFF_Q@ testHepMCParticle.out @srcdir@/testHepMCParticle.output
 
-# perform the following comparison by hand
+# perform the following comparisons by hand
 # Particles within a vertex are not written in a defined order
 # @DIFF_Q@ testHepMC.out @srcdir@/testHepMC.dat
-
-# This comparison should just show you a "F" line for the PdfInfo* that
-# is found in  testHepMCExtended.out, but not in testHepMC.out
-# diff testHepMCExtended.out testHepMC.out
+# @DIFF_Q@ testHepMCExtended.out @srcdir@/testHepMCExtended.dat

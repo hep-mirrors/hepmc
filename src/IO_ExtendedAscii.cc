@@ -402,6 +402,7 @@ namespace HepMC {
 	output( p->momentum().py() );
 	output( p->momentum().pz() );
 	output( p->momentum().e() );
+	output( p->generated_mass() );
 	output( p->status() );
 	output( p->polarization().theta() );
 	output( p->polarization().phi() );
@@ -526,9 +527,9 @@ namespace HepMC {
 	m_file.ignore();
 	//
 	// declare variables to be read in to, and read everything except flow
-	double px = 0., py = 0., pz = 0., e = 0., theta = 0., phi = 0.;
+	double px = 0., py = 0., pz = 0., e = 0., m = 0., theta = 0., phi = 0.;
 	int bar_code = 0, id = 0, status = 0, end_vtx_code = 0, flow_size = 0;
-	m_file >> bar_code >> id >> px >> py >> pz >> e >> status 
+	m_file >> bar_code >> id >> px >> py >> pz >> e >> m >> status 
 	       >> theta >> phi >> end_vtx_code >> flow_size;
 	//
 	// read flow patterns if any exist
@@ -542,6 +543,7 @@ namespace HepMC {
 	GenParticle* p = new GenParticle( FourVector(px,py,pz,e), 
 				    id, status, flow, 
 				    Polarization(theta,phi) );
+        p->set_generated_mass( m );
 	p->suggest_barcode( bar_code );
 	//
 	// all particles are connected to their end vertex separately 

@@ -48,6 +48,7 @@ int main() {
     //........................................EVENT LOOP
     int icount=0;
     int num_good_events=0;
+    double x=0., y=0., z=0.,;
     HepMC::GenEvent* evt = ascii_in.read_next_event();
     while ( evt ) {
 	icount++;
@@ -55,10 +56,12 @@ int main() {
 				      << " its # " << evt->event_number() 
 				      << std::endl;
 	if ( is_good_event(evt) ) {
-	    if( icount > 50 ) {
-	        HepMC::PdfInfo* pdf = new HepMC::PdfInfo( 11, 12, 0.54, 0.46, 0.0345, 0.11, 0.34);
-	        evt->set_pdf_info(pdf);
-	    }
+	    // add some arbitrary PDF information
+	    x = 0.1 * icount;
+	    y = 0.13 * icount;
+	    z = 0.012 * icount;
+	    HepMC::PdfInfo* pdf = new HepMC::PdfInfo( 11, 12, x, y, z, 0.11, 0.34);
+	    evt->set_pdf_info(pdf);
 	    ascii_out << evt;
 	    particle_out << evt;
 	    xout << evt;
