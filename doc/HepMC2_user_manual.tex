@@ -160,7 +160,7 @@ GenEvent now contains pointers to a heavy ion class and a PDF information class.
 The pointers are set to zero by default.
 
 The new ascii output class, IO\_ExtendedAscii, will read and write the heavy 
-ion and PDF information classes.
+ion and PDF information classes.  It also reads and writes the generated mass.
 
 Some tests have been added to the distribution (e.g., "make check" now works).
 
@@ -189,6 +189,8 @@ Also, different machine representations and roundoff errors mean that
 a calculated mass is not always consistent.
 If no generated mass is set, then the mass is calculated from the momementum 
 and stored in GenParticle.
+
+Use IO\_ExtendedAscii to read and write the generated mass.
 
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

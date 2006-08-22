@@ -1,7 +1,9 @@
 
+	--------------------  HepMC-02-00-00  ---------------------------------
+
 2006-08-22 Lynn Garren
 
-	* src/IO_ExtendedAscii.c: read and write generated mass as part of 
+	* src/IO_ExtendedAscii.cc: read and write generated mass as part of 
 	  particle line.
 
 2006-08-18 Lynn Garren
