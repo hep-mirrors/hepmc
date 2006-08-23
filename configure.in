@@ -144,6 +144,11 @@ AH_BOTTOM([#endif  // HEPMC_DEFS_H])
 # Check for needed programs:
 # ----------------------------------------------------------------------
 
+# need latex to build documents
+AC_ARG_VAR(LATEX,[set if latex is in the path])
+AC_CHECK_PROG([LATEX],[latex],yes)
+AM_CONDITIONAL(HAVE_LATEX, test x$LATEX = xyes)
+
 # Locate a C++ compiler:
 AC_PROG_CXX(cl g++ g++4 c++ aCC CC cxx cc++ FCC KCC RCC xlC_r xlC gpp)
 
