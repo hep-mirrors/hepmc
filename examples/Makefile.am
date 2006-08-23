@@ -4,6 +4,8 @@ if USE_GMAKE
   MAKE = gmake
 endif
 
+INSTALLDIR = @prefix@/examples/@PACKAGE@
+
 # files to distribute
 EXTRA_DIST = \
     example_BuildEventFromScratch.cc \
@@ -20,7 +22,7 @@ EXTRA_DIST = \
     PDG_ParticleDataTable.txt
 
 install-data-local:
-	$(mkinstalldirs) $(DESTDIR)$(prefix)/examples
-	$(INSTALL_DATA) GNUmakefile.example $(DESTDIR)$(prefix)/examples/GNUmakefile
+	$(mkinstalldirs) $(DESTDIR)$(INSTALLDIR)
+	$(INSTALL_DATA) GNUmakefile.example $(DESTDIR)$(INSTALLDIR)/GNUmakefile
 	for file in $(EXTRA_DIST); do \
-	  $(INSTALL_DATA) $(srcdir)/$$file $(DESTDIR)$(prefix)/examples/$$file; done
+	  $(INSTALL_DATA) $(srcdir)/$$file $(DESTDIR)$(INSTALLDIR)/$$file; done

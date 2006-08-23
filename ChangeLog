@@ -1,4 +1,8 @@
 
+2006-08-23 Lynn Garren
+
+	* example/Makefile.am: install examples in $(prefix)/examples/HepMC
+
 	--------------------  HepMC-02-00-00  ---------------------------------
 
 2006-08-22 Lynn Garren
