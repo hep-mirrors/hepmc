@@ -97,6 +97,12 @@ return std::sqrt( m_x*m_x + m_y*m_y + m_z*m_z );
 
 inline double ThreeVector::r()    const { return mag(); }
 
+inline void ThreeVector::set(double x, double y, double z) {
+  m_x = x;
+  m_y = y;
+  m_z = z;
+}
+
 inline void ThreeVector::setPhi(double ph) { 
   double xy   = perp();
   setX(xy*std::cos(ph));

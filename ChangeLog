@@ -1,4 +1,8 @@
 
+2007-01-16 Lynn Garren
+
+	* HepMC/SimpleVector.icc: implement ThreeVector::set(x,y,z)
+
 2006-08-23 Lynn Garren
 
 	* install examples in $(prefix)/examples/HepMC
