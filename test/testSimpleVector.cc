@@ -35,10 +35,10 @@ int main()
 
   if( v3 == vector3 ) {
   } else {
-     std::cout << "vectors are different"<< std::endl;
+     std::cout << "vectors v3 and vector3 are different" << std::endl;
   }
   if( v3 != v3copy ) {
-     std::cout << "vectors are different " << std::endl;
+     std::cout << "vectors v3 and v3copy are different" << std::endl;
   }
  
   // FourVector
@@ -93,10 +93,10 @@ int main()
   }
   if( v == vector ) {
   } else {
-     std::cout << "vectors are different" << std::endl;
+     std::cout << "vectors v and vector are different" << std::endl;
   }
   if( v != vectorcopy ) {
-     std::cout << "vectors are different" << std::endl;
+     std::cout << "vectors v and vectorcopy are different" << std::endl;
   }
   return 0;
 }
