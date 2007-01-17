@@ -1,4 +1,8 @@
 
+2007-01-17 Lynn Garren
+
+	* test/testSimpleVector.cc: exercise the vector methods
+
 2007-01-16 Lynn Garren
 
 	* HepMC/SimpleVector.icc: implement ThreeVector::set(x,y,z)
