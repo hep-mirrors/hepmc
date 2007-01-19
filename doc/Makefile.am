@@ -7,7 +7,7 @@ endif
 TEX = latex
 doc_srcdir = $(top_srcdir)/doc
 doc_builddir = $(top_builddir)/doc
-doc_installdir = $(prefix)/doc
+doc_installdir = $(prefix)/doc/HepMC
 
 DOC_POSTSCRIPT = HepMC_user_manual.ps
 DOC_PDF        = HepMC2_user_manual.pdf HepMC2_user_manual.ps
