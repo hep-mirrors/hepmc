@@ -150,6 +150,12 @@ example_MyPythia.exe: $(initpydata_OBJ) example_MyPythia.o
 		$(HepMClib) $(HepMCfiolib) \
 	        $(Pythia_LIB) $(LINK_LIBS) -o $@
 
+example_MyPythiaRead.exe: $(initpydata_OBJ) example_MyPythiaRead.o
+	@echo "Building $@ ..."
+	$(CXX) $(FLAGS) example_MyPythiaRead.o \
+		$(HepMClib) $(HepMCfiolib) \
+	        $(Pythia_LIB) $(LINK_LIBS) -o $@
+
 example_MyPythiaOnlyToHepMC.exe: $(initpydata_OBJ) example_MyPythiaOnlyToHepMC.o
 	@echo "Building $@ ..."
 	$(CXX) $(FLAGS) example_MyPythiaOnlyToHepMC.o \

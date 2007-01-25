@@ -12,6 +12,7 @@ EXTRA_DIST = \
     example_EventSelection.cc \
     example_MyHerwig.cc \
     example_MyPythia.cc \
+    example_MyPythiaRead.cc \
     example_MyPythiaOnlyToHepMC.cc \
     example_MyPythiaWithEventSelection.cc \
     example_PythiaParticle.cc	\

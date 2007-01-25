@@ -1,6 +1,8 @@
 
 2007-01-25 Lynn Garren
 
+	* example/example_MyPythiaRead.cc: read in the events you just wrote
+
 	* configure.in, doc/Makefile.am: if latex is found, get the path
 
 	* test/testHepMC.sh.in: make the diff work for MacOSX
