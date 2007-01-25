@@ -4,20 +4,20 @@ if USE_GMAKE
   MAKE = gmake
 endif
 
-TEX = latex
+TEX = @LATEXPATH@
 doc_srcdir = $(top_srcdir)/doc
 doc_builddir = $(top_builddir)/doc
 doc_installdir = $(prefix)/doc/HepMC
 
-DOC_POSTSCRIPT = HepMC_user_manual.ps
-DOC_PDF        = HepMC2_user_manual.pdf HepMC2_user_manual.ps
+HEPMC1_DOC   = HepMC_user_manual.ps
+HEPMC2_DOCS  = HepMC2_user_manual.pdf HepMC2_user_manual.ps
 DOC_INCLUDES = html.sty \
                HepMC2_user_manual.tex
 
 if HAVE_LATEX
-  DOCUMENTS = get-includes $(DOC_POSTSCRIPT) $(DOC_PDF)
+  DOCUMENTS = get-includes $(HEPMC1_DOC) $(HEPMC2_DOCS)
 else
-  DOCUMENTS = get-includes $(DOC_POSTSCRIPT)
+  DOCUMENTS = get-includes $(HEPMC1_DOC)
 endif
 
 SUFFIXES = .pdf .ps .dvi .tex
@@ -44,9 +44,11 @@ install-data-local:
 	$(mkinstalldirs) $(DESTDIR)$(doc_installdir)
 	$(INSTALL_DATA) $(doc_srcdir)/HepMC_user_manual.ps $(DESTDIR)$(doc_installdir)/HepMC_user_manual.ps
 if HAVE_LATEX
-	$(INSTALL_DATA) $(doc_builddir)/HepMC2_user_manual.pdf $(DESTDIR)$(doc_installdir)/HepMC2_user_manual.pdf
-	$(INSTALL_DATA) $(doc_builddir)/HepMC2_user_manual.ps $(DESTDIR)$(doc_installdir)/HepMC2_user_manual.ps
+	list='$(HEPMC2_DOCS)'; for file in $$list; do \
+	if test -f $$file; then  \
+	($(INSTALL_DATA) $(doc_builddir)/$$file $(DESTDIR)$(doc_installdir)/$$file); \
+	fi; done
 endif
 
 # Identify generated file(s) to be removed when 'make clean' is requested:
-CLEANFILES = $(DOC_PDF) $(DOC_INCLUDES) *.aux *.log *.toc *.dvi
+CLEANFILES = $(HEPMC2_DOCS) $(DOC_INCLUDES) *.aux *.log *.toc *.dvi
