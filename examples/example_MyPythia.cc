@@ -60,29 +60,30 @@ int main() {
     // Instantiate an IO strategy for reading from HEPEVT.
     HepMC::IO_HEPEVT hepevtio;
     //
-    // Instantial an IO strategy to write the data to file - it uses the 
-    //  same ParticleDataTable
-    HepMC::IO_Ascii ascii_io("example_MyPythia.dat",std::ios::out);
-    //
-    //........................................EVENT LOOP
-    for ( int i = 1; i <= 100; i++ ) {
-	if ( i%50==1 ) std::cout << "Processing Event Number " 
-				 << i << std::endl;
-	call_pyevnt();      // generate one event with Pythia
-	// pythia pyhepc routine converts common PYJETS in common HEPEVT
-	call_pyhepc( 1 );
-	HepMC::GenEvent* evt = hepevtio.read_next_event();
-	// add some information to the event
-	evt->set_event_number(i);
-	evt->set_signal_process_id(20);
-	// write the event out to the ascii file
-	ascii_io << evt;
-	// we also need to delete the created event from memory
-	delete evt;
-    }
-    //........................................TERMINATION
-    // write out some information from Pythia to the screen
-    call_pystat( 1 );    
+    { // begin scope of ascii_io
+	// Instantiate an IO strategy to write the data to file 
+	HepMC::IO_Ascii ascii_io("example_MyPythia.dat",std::ios::out);
+	//
+	//........................................EVENT LOOP
+	for ( int i = 1; i <= 100; i++ ) {
+	    if ( i%50==1 ) std::cout << "Processing Event Number " 
+				     << i << std::endl;
+	    call_pyevnt();      // generate one event with Pythia
+	    // pythia pyhepc routine converts common PYJETS in common HEPEVT
+	    call_pyhepc( 1 );
+	    HepMC::GenEvent* evt = hepevtio.read_next_event();
+	    // add some information to the event
+	    evt->set_event_number(i);
+	    evt->set_signal_process_id(20);
+	    // write the event out to the ascii file
+	    ascii_io << evt;
+	    // we also need to delete the created event from memory
+	    delete evt;
+	}
+	//........................................TERMINATION
+	// write out some information from Pythia to the screen
+	call_pystat( 1 );    
+    } // end scope of ascii_io
 
     return 0;
 }

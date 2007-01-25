@@ -2,6 +2,7 @@
 2007-01-25 Lynn Garren
 
 	* example/example_MyPythiaRead.cc: read in the events you just wrote
+	* example/*.cc: put all uses of IO_Ascii within an explicit scope
 
 	* configure.in, doc/Makefile.am: if latex is found, get the path
 

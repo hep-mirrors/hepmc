@@ -33,30 +33,33 @@ public:
 int main() { 
     // declare an input strategy to read the data produced with the 
     // example_MyPythia
-    HepMC::IO_Ascii ascii_in("example_MyPythia.dat",std::ios::in);
-    // declare another IO_Ascii for writing out the good events
-    HepMC::IO_Ascii ascii_out("example_EventSelection.dat",std::ios::out);
-    // declare an instance of the event selection predicate
-    IsGoodEvent is_good_event;
-    //........................................EVENT LOOP
-    int icount=0;
-    int num_good_events=0;
-    HepMC::GenEvent* evt = ascii_in.read_next_event();
-    while ( evt ) {
-	icount++;
-	if ( icount%50==1 ) std::cout << "Processing Event Number " << icount
-				      << " its # " << evt->event_number() 
-				      << std::endl;
-	if ( is_good_event(evt) ) {
-	    ascii_out << evt;
-	    ++num_good_events;
+    { // begin scope of ascii_in and ascii_out
+	HepMC::IO_Ascii ascii_in("example_MyPythia.dat",std::ios::in);
+	// declare another IO_Ascii for writing out the good events
+	HepMC::IO_Ascii ascii_out("example_EventSelection.dat",std::ios::out);
+	// declare an instance of the event selection predicate
+	IsGoodEvent is_good_event;
+	//........................................EVENT LOOP
+	int icount=0;
+	int num_good_events=0;
+	HepMC::GenEvent* evt = ascii_in.read_next_event();
+	while ( evt ) {
+	    icount++;
+	    if ( icount%50==1 ) std::cout << "Processing Event Number " << icount
+					  << " its # " << evt->event_number() 
+					  << std::endl;
+	    if ( is_good_event(evt) ) {
+		ascii_out << evt;
+		++num_good_events;
+	    }
+	    delete evt;
+	    ascii_in >> evt;
 	}
-	delete evt;
-	ascii_in >> evt;
-    }
-    //........................................PRINT RESULT
-    std::cout << num_good_events << " out of " << icount 
-	      << " processed events passed the cuts. Finished." << std::endl;
+	//........................................PRINT RESULT
+	std::cout << num_good_events << " out of " << icount 
+		  << " processed events passed the cuts. Finished." << std::endl;
+    } // end scope of ascii_in and ascii_out
+    return 0;
 }
 
 
