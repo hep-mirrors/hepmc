@@ -5,3 +5,5 @@ Makefile.in
 *.log
 *.dvi
 *.toc
+html
+latex
