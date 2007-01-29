@@ -12,10 +12,14 @@
 #include "HepMC/IO_Ascii.h"
 #include "HepMC/GenEvent.h"
 
+//! example class
+
+/// \class  IsGoodEvent
+/// event selection predicate. returns true if the event contains
+/// a photon with pT > 50 GeV
 class IsGoodEvent {
-    // event selection predicate. returns true if the event contains
-    // a photon with pT > 50 GeV
 public:
+    /// check this event for goodness
     bool operator()( const HepMC::GenEvent* evt ) { 
 	for ( HepMC::GenEvent::particle_const_iterator p 
 		  = evt->particles_begin(); p != evt->particles_end(); ++p ){

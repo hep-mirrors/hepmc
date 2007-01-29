@@ -6,6 +6,7 @@
 // garren@fnal.gov, April 2006
 //
 // allow HepMC to work with CLHEP 2.0 without changing HepMC
+// This is a courtesy header that is probably not needed in HepMC 2.x
 //////////////////////////////////////////////////////////////////////////
 
 //using namespace CLHEP;

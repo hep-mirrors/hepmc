@@ -45,8 +45,8 @@ namespace HepMC {
     }
 
     double Polarization::set_theta( double theta ) {
-	// Theta is restricted to be between 0 --> pi
-	// if an out of range value is given, it is translated to this range.
+	/// Theta is restricted to be between 0 --> pi
+	/// if an out of range value is given, it is translated to this range.
 	theta = ( theta>0 ? theta : -theta ); // this is just absolute value.
 	// translate to 0 < theta < 2pi
 	theta = ( theta/(2*HepMC_pi) - int(theta/(2*HepMC_pi)) ) 
@@ -56,8 +56,8 @@ namespace HepMC {
     }
 
     double Polarization::set_phi( double phi ) {
-	// Phi is restricted to be between 0 --> 2pi
-	// if an out of range value is given, it is translated to this range.
+	/// Phi is restricted to be between 0 --> 2pi
+	/// if an out of range value is given, it is translated to this range.
 	//
 	// translate to -2pi < phi < 2pi
 	phi = ( phi/(2*HepMC_pi) - int(phi/(2*HepMC_pi)) ) * 2*HepMC_pi;
@@ -81,6 +81,7 @@ namespace HepMC {
     /////////////
 
     std::ostream& operator<<( std::ostream& ostr, const Polarization& polar ) {
+    /// write theta and phi to the output stream
 	return ostr << "(" << polar.theta() 
 		    << ","  << polar.phi() << ")";
     }

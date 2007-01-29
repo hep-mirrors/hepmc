@@ -26,10 +26,12 @@ struct enable_if<true, T>
 // ----------------------------------------------------------------------
 // disable_if<>
 
+/// internal - used by SimpleVector to decide if a class is arithmetic
 template< bool, class >
 struct disable_if
 { };
 
+/// internal - used by SimpleVector to decide if a class is arithmetic
 template< class T >
 struct disable_if<false, T>
 {

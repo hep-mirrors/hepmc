@@ -45,7 +45,7 @@ namespace HepMC {
     }
 
     void IO_Ascii::write_event( const GenEvent* evt ) {
-	// Writes evt to m_file. It does NOT delete the event after writing.
+	/// Writes evt to m_file. It does NOT delete the event after writing.
 	//
 	// check the state of m_file is good, and that it is in output mode
 	if ( !evt || !m_file ) return;
@@ -475,9 +475,9 @@ namespace HepMC {
     }
 
     bool IO_Ascii::search_for_key_end( std::istream& in, const char* key ) {
-	// reads characters from in until the string of characters matching
-	// key is found (success) or EOF is reached (failure).
-	// It stops immediately thereafter. Returns T/F for success/fail
+	/// reads characters from in until the string of characters matching
+	/// key is found (success) or EOF is reached (failure).
+	/// It stops immediately thereafter. Returns T/F for success/fail
 	// 
 	char c[1];
 	unsigned int index = 0;
@@ -492,7 +492,7 @@ namespace HepMC {
 
     bool IO_Ascii::search_for_key_beginning( std::istream& in,
 					     const char* key ) {
-	// not tested and NOT used anywhere!
+	/// not tested and NOT used anywhere!
 	if ( search_for_key_end( in, key) ) {
 	    int i = strlen(key);
 	    while ( i>=0 ) in.putback(key[i--]); 
@@ -505,10 +505,10 @@ namespace HepMC {
     }
 
     bool IO_Ascii::eat_key( std::iostream& in, const char* key ) {
-	// eats the character string key from istream in - only if the key
-	// is the very next occurence in the stream
-	// if the key is not the next occurence, it eats nothing ... i.e.
-	//  it puts back whatever it would have eaten.
+	/// eats the character string key from istream in - only if the key
+	/// is the very next occurence in the stream
+	/// if the key is not the next occurence, it eats nothing ... i.e.
+	///  it puts back whatever it would have eaten.
 	int key_length = strlen(key);
 	// below is the only way I know of to get a variable length string
 	//  conforming to ansi standard.

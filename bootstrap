@@ -14,4 +14,9 @@ autoheader
 automake --add-missing --copy
 autoconf
 
+# run doxygen if present
+if [ `whereis doxygen | wc -w` == 2 ]; then
+   cd doc; doxygen doxygen.conf
+fi
+
 # ready to make a source code distribution tarball

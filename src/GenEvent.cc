@@ -24,30 +24,30 @@ namespace HepMC {
 	m_signal_process_vertex(signal_vertex), m_weights(weights),
 	m_random_states(random_states), m_heavy_ion(ion), m_pdf_info(pdf)
     {
-	// note: default values for m_event_scale, m_alphaQCD, m_alphaQED
-	//       are as suggested in hep-ph/0109068, "Generic Interface..."
+	/// note: default values for m_event_scale, m_alphaQCD, m_alphaQED
+	///       are as suggested in hep-ph/0109068, "Generic Interface..."
 	s_counter++;
     }
 
     GenEvent::GenEvent( const GenEvent& inevent ) 
     {
-	// deep copy
+	/// deep copy
 	*this = inevent;
 	s_counter++;
     }
 
     GenEvent::~GenEvent() 
     {
-	// Deep destructor.
-	// deletes all vertices/particles in this evt
-	//
+	/// Deep destructor.
+	/// deletes all vertices/particles in this evt
+	///
 	delete_all_vertices();
 	s_counter--;
     }
 
     GenEvent& GenEvent::operator=( const GenEvent& inevent ) 
     {
-	// deep - makes a copy of all vertices!
+	/// deep - makes a copy of all vertices!
 	//
 	// 1. Delete all vertices attached to this
 	delete_all_vertices();
@@ -103,10 +103,10 @@ namespace HepMC {
     }
 
     void GenEvent::print( std::ostream& ostr ) const {
-	// dumps the content of this event to ostr
-	//   to dump to cout use: event.print();
-	//   if you want to write this event to file outfile.txt you could use:
-	//      std::ofstream outfile("outfile.txt"); event.print( outfile );
+	/// dumps the content of this event to ostr
+	///   to dump to cout use: event.print();
+	///   if you want to write this event to file outfile.txt you could use:
+	///      std::ofstream outfile("outfile.txt"); event.print( outfile );
 	ostr << "________________________________________"
 	     << "________________________________________\n";
 	ostr << "GenEvent: #" << event_number() 
@@ -152,8 +152,8 @@ namespace HepMC {
     }
 
     bool GenEvent::add_vertex( GenVertex* vtx ) {
-	// returns true if successful - generally will only return false
-	// if the inserted vertex is already included in the event.
+	/// returns true if successful - generally will only return false
+	/// if the inserted vertex is already included in the event.
 	if ( !vtx ) return 0;
 	// if vtx previously pointed to another GenEvent, remove it from that
 	// GenEvent's list
@@ -175,19 +175,19 @@ namespace HepMC {
     }
 
     bool GenEvent::remove_vertex( GenVertex* vtx ) {
-	// this removes vtx from the event but does NOT delete it.
-	// returns True if an entry vtx existed in the table and was erased
+	/// this removes vtx from the event but does NOT delete it.
+	/// returns True if an entry vtx existed in the table and was erased
 	if ( m_signal_process_vertex == vtx ) m_signal_process_vertex = 0;
 	if ( vtx->parent_event() == this ) vtx->set_parent_event_( 0 );
 	return ( m_vertex_barcodes.count(vtx->barcode()) ? false : true );
     }
     
     void GenEvent::delete_all_vertices() {
-	// deletes all vertices in the vertex container
-	// (i.e. all vertices owned by this event)
-	// The vertices are the "owners" of the particles, so as we delete
-	//   the vertices, the vertex desctructors are automatically
-	//   deleting their particles.
+	/// deletes all vertices in the vertex container
+	/// (i.e. all vertices owned by this event)
+	/// The vertices are the "owners" of the particles, so as we delete
+	///   the vertices, the vertex desctructors are automatically
+	///   deleting their particles.
 	if ( vertices_empty() ) return;
   	// delete each vertex individually (this deletes particles as well)
 	while ( m_vertex_barcodes.begin() != m_vertex_barcodes.end() ) {

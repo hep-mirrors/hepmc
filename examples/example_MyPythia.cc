@@ -7,16 +7,16 @@
 // common block using the IO_HEPEVT strategy and then output to file in
 // ascii format using the IO_Ascii strategy.
 //////////////////////////////////////////////////////////////////////////
-// To Compile: go to the HepMC directory and type:
-// gmake examples/example_MyPythia.exe
-//
-// In this example the precision and number of entries for the HEPEVT 
-// fortran common block are explicitly defined to correspond to those 
-// used in the Pythia version of the HEPEVT common block. 
-//
-// If you get funny output from HEPEVT in your own code, probably you have
-// set these values incorrectly!
-//
+/// To Compile: go to the HepMC directory and type:
+/// gmake examples/example_MyPythia.exe
+///
+/// In this example the precision and number of entries for the HEPEVT 
+/// fortran common block are explicitly defined to correspond to those 
+/// used in the Pythia version of the HEPEVT common block. 
+///
+/// If you get funny output from HEPEVT in your own code, probably you have
+/// set these values incorrectly!
+///
 
 #include <iostream>
 #include "HepMC/PythiaWrapper.h"

@@ -24,22 +24,35 @@
 
 namespace HepMC {
 
+    //! all input/output classes inherit from IO_BaseClass
+
+    ///
+    /// \class  IO_BaseClass
+    /// If you want to write a new IO class, 
+    /// then inherit from this class and re-define read_event()
+    /// and write_event()
+    ///
     class IO_BaseClass {
     public:
         virtual ~IO_BaseClass() {}
 
+	/// write this GenEvent
 	virtual void write_event( const GenEvent* ) =0;
+	/// fill this GenEvent
 	virtual bool fill_next_event( GenEvent* ) =0;
+	/// write this ParticleDataTable
 	virtual void write_particle_data_table( const ParticleDataTable* ) =0;
+	/// fill this ParticleDataTable
 	virtual bool fill_particle_data_table( ParticleDataTable* ) =0;
+	/// write output to ostr
 	virtual void print( std::ostream& ostr = std::cout ) const;
 	//
 	// the read_next_event() and read_particle_data_table() differ from
 	// the fill_***() methods in that they create a new event or pdt
-	// before calling the  correspondingfill_*** method
+	// before calling the  corresponding fill_*** method
 	// (they are not intended to be over-ridden)
-	GenEvent*    read_next_event();
-	ParticleDataTable* read_particle_data_table();
+	GenEvent*    read_next_event();  //!< do not over-ride
+	ParticleDataTable* read_particle_data_table();  //!< do not over-ride
 	//
 	// The overloaded stream operators >>,<< are identical to
 	//   read_next_event and write_event methods respectively.
@@ -52,12 +65,18 @@ namespace HepMC {
 	// (note: I don't see any reason to have separate const and non-const
 	//  versions of operator<<, but the pedantic ansi standard insists 
 	//  on it) 
+	/// the same as read_next_event
 	virtual       GenEvent*& operator>>( GenEvent*& );
+	/// the same as write_event
 	virtual const GenEvent*& operator<<( const GenEvent*& );
+	/// the same as write_event
 	virtual       GenEvent*& operator<<( GenEvent*& );
+	/// the same as read_particle_data_table
 	virtual       ParticleDataTable*& operator>>( ParticleDataTable*& );
+	/// the same as write_particle_data_table
 	virtual const ParticleDataTable*& operator<<( const 
 						      ParticleDataTable*& );
+	/// the same as write_particle_data_table
 	virtual       ParticleDataTable*& operator<<( ParticleDataTable*& );
     };
 
@@ -66,8 +85,8 @@ namespace HepMC {
     //////////////
 
     inline GenEvent* IO_BaseClass::read_next_event() {
-	// creates a new event and fills it by calling 
-	// the sister method read_next_event( GenEvent* )
+	/// creates a new event and fills it by calling 
+	/// the sister method read_next_event( GenEvent* )
 	// 
         // 1. create an empty event container
         GenEvent* evt = new GenEvent();
@@ -82,8 +101,8 @@ namespace HepMC {
     }
 
     inline ParticleDataTable* IO_BaseClass::read_particle_data_table() {
-	// creates a new particle data table and fills it by calling 
-	// the sister method read_particle_data_table( ParticleDataTable* )
+	/// creates a new particle data table and fills it by calling 
+	/// the sister method read_particle_data_table( ParticleDataTable* )
 	//
 	// 1. create an empty pdt
 	ParticleDataTable* pdt = new ParticleDataTable();

@@ -4,15 +4,15 @@
 // Events are read into the HepMC event record from the FORTRAN HEPEVT 
 // common block using the IO_HERWIG strategy.
 //////////////////////////////////////////////////////////////////////////
-// To Compile: go to the HepMC directory and type:
-// gmake examples/example_MyHerwig.exe
-//
-// In this example the precision and number of entries for the HEPEVT 
-// fortran common block are explicitly defined to correspond to those 
-// used in the Herwig version of the HEPEVT common block. 
-// If you get funny output from HEPEVT in your own code, probably you have
-// set these values incorrectly!
-//
+/// To Compile: go to the HepMC directory and type:
+/// gmake examples/example_MyHerwig.exe
+///
+/// In this example the precision and number of entries for the HEPEVT 
+/// fortran common block are explicitly defined to correspond to those 
+/// used in the Herwig version of the HEPEVT common block. 
+/// If you get funny output from HEPEVT in your own code, probably you have
+/// set these values incorrectly!
+///
 
 #include <iostream>
 #include "HepMC/HerwigWrapper.h"

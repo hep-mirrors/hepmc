@@ -12,10 +12,14 @@
 #include <algorithm>
 #include <list>
 
+//! example class
+
+/// \class  IsPhoton
+/// this predicate returns true if the input particle is a photon
+/// in the central region (eta < 2.5) with pT > 10 GeV
 class IsPhoton {
-    // this predicate returns true if the input particle is a photon
-    // in the central region (eta < 2.5) with pT > 10 GeV
 public:
+    /// returns true if the GenParticle is a photon with more than 10 GeV transverse momentum
     bool operator()( const HepMC::GenParticle* p ) { 
 	if ( p->pdg_id() == 22 
 	     && p->momentum().perp() > 10. ) return 1;
@@ -23,18 +27,26 @@ public:
     }
 };
 
+//! example class
+
+/// \class  IsW_Boson
+/// this predicate returns true if the input particle is a W+/W-
 class IsW_Boson {
-    // this predicate returns true if the input particle is a W+/W-
 public:
+    /// returns true if the GenParticle is a W
     bool operator()( const HepMC::GenParticle* p ) { 
 	if ( fabs(p->pdg_id()) == 24 ) return 1;
 	return 0;
     }
 };
 
+//! example class
+
+/// \class  IsFinalState
+/// this predicate returns true if the input has no decay vertex
 class IsFinalState {
-    // this predicate returns true if the input has no decay vertex
 public:
+    /// returns true if the GenParticle does not decay
     bool operator()( const HepMC::GenParticle* p ) { 
 	if ( !p->end_vertex() && p->status()==1 ) return 1;
 	return 0;

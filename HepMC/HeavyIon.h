@@ -33,11 +33,21 @@
 
 namespace HepMC {
 
+
+//! The HeavyIon class stores information about heavy ions
+
+///
+/// \class  HeavyIon
+/// HepMC::HeavyIon provides
+/// additional information storage for Heavy Ion generators in GenEvent.
+/// Creation and use of this information is optional. 
+///
 class HeavyIon {
 
 public:
   // ---  birth/death:
   //
+  /// default constructor
   HeavyIon()
     : m_Ncoll_hard(0), 
       m_Npart_proj(0),
@@ -54,6 +64,7 @@ public:
       m_sigma_inel_NN(0)
     {}
 
+  /// The first 6 values must be provided.
   inline HeavyIon( int nh, int np, int nt, int nc, int ns, int nsp,
                    int nnw, int nwn, int nwnw, 
 		   float im, float pl, float ec, float s );
@@ -62,44 +73,71 @@ public:
     
   // ---  copying:
   //
-  inline HeavyIon( HeavyIon const & orig );
-  inline HeavyIon &  operator = ( HeavyIon const & rhs );
-  inline void swap( HeavyIon & other );
+  inline HeavyIon( HeavyIon const & orig );	//!< copy constructor
+  inline HeavyIon &  operator = ( HeavyIon const & rhs ); //!< make a copy
+  inline void swap( HeavyIon & other );	//!< swap two HeavyIon objects
 
   // ---  equivalence:
   //
-  inline bool    operator==( const HeavyIon& ) const;
-  inline bool    operator!=( const HeavyIon& ) const;
+  inline bool    operator==( const HeavyIon& ) const; //!< check for equality
+  inline bool    operator!=( const HeavyIon& ) const; //!< check for inequality
 
   // ---  accessors:
+    /// Number of hard scatterings
     int   Ncoll_hard()                   const { return m_Ncoll_hard; }
+    /// Number of projectile participants
     int   Npart_proj()                   const { return m_Npart_proj; }
+    /// Number of target participants
     int   Npart_targ()                   const { return m_Npart_targ; }
+    /// Number of NN (nucleon-nucleon) collisions
     int   Ncoll()                        const { return m_Ncoll; }
+    /// Number of spectator neutrons
     int   spectator_neutrons()           const { return m_spectator_neutrons; }
+    /// Number of spectator protons
     int   spectator_protons()            const { return m_spectator_protons; }
+    /// Number of N-Nwounded collisions
     int   N_Nwounded_collisions()        const { return m_N_Nwounded_collisions; }
+    /// Number of Nwounded-N collisons
     int   Nwounded_N_collisions()        const { return m_Nwounded_N_collisions; }
+    /// Number of Nwounded-Nwounded collisions
     int   Nwounded_Nwounded_collisions() const { return m_Nwounded_Nwounded_collisions; }
+    /// Impact Parameter(in fm) of collision
     float impact_parameter()             const { return m_impact_parameter; }
+    /// Azimuthal angle of event plane
     float event_plane_angle()            const { return m_event_plane_angle; }
+    /// eccentricity of participating nucleons in the transverse plane 
+    /// (as in phobos nucl-ex/0510031)
     float eccentricity()                 const { return m_eccentricity;  }
+    /// nucleon-nucleon inelastic (including diffractive) cross-section
     float sigma_inel_NN()                const { return m_sigma_inel_NN; }
 
   // ---  mutators:
+    /// set number of hard scatterings
     void   set_Ncoll_hard(const int &i)              { m_Ncoll_hard=i; }
+    /// set number of projectile participants
     void   set_Npart_proj(const int &i)              { m_Npart_proj=i; }
+    /// set number of target participants
     void   set_Npart_targ(const int &i)              { m_Npart_targ=i; }
+    /// set number of NN (nucleon-nucleon) collisions
     void   set_Ncoll(const int &i)                   { m_Ncoll=i; }
+    /// set number of spectator neutrons
     void   set_spectator_neutrons(const int &i)      { m_spectator_neutrons=i; }
+    /// set number of spectator protons
     void   set_spectator_protons(const int &i)       { m_spectator_protons=i; }
+    /// set number of N-Nwounded collisions
     void   set_N_Nwounded_collisions(const int &i)   { m_N_Nwounded_collisions=i; }
+    /// set number of Nwounded-N collisons
     void   set_Nwounded_N_collisions(const int &i)   { m_Nwounded_N_collisions=i; }
+    /// set number of Nwounded-Nwounded collisions
     void   set_Nwounded_Nwounded_collisions(const int &i) 
                                           { m_Nwounded_Nwounded_collisions=i; }
+    /// set Impact Parameter in fm
     void   set_impact_parameter(const float &f)      { m_impact_parameter=f; }
+    /// set azimuthal angle of event plane
     void   set_event_plane_angle(const float &f)     { m_event_plane_angle=f; }
+    /// set eccentricity of participating nucleons in the transverse plane 
     void   set_eccentricity(const float &f)          { m_eccentricity=f;  }
+    /// set nucleon-nucleon inelastic cross-section
     void   set_sigma_inel_NN(const float &f)         { m_sigma_inel_NN=f; }
 
 private: // data members
@@ -120,6 +158,13 @@ private: // data members
 };
 
 // inline operators
+  /// Required members are
+  /// the number of hard scatterings,
+  /// the number of projectile participants.
+  /// the number of target participants.
+  /// the number of nucleon-nucleon collisions,
+  /// the number of spectator neutrons, and
+  /// the number of spectator protons.
 HeavyIon::HeavyIon( int nh, int np, int nt, int nc, int ns, int nsp,
                    int nnw=0, int nwn=0, int nwnw=0, 
 		   float im=0., float pl=0., float ec=0., float s=0. )
@@ -180,6 +225,7 @@ void HeavyIon::swap( HeavyIon & other )
 
 bool    HeavyIon::operator==( const HeavyIon& a ) const
 {
+    /// equality requires that each member match
     return ( a.Ncoll_hard() == this->Ncoll_hard() 
              && a.Npart_proj() == this->Npart_proj() 
              && a.Npart_targ() == this->Npart_targ() 
@@ -197,6 +243,7 @@ bool    HeavyIon::operator==( const HeavyIon& a ) const
 
 bool    HeavyIon::operator!=( const HeavyIon& a ) const
 {
+    /// any nonmatching member generates inequality
     return !( a == *this );
 }
 

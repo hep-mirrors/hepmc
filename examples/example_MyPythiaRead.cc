@@ -1,6 +1,5 @@
 //////////////////////////////////////////////////////////////////////////
-// garren@fnal.gov
-// January 2007, created 
+// garren@fnal.gov, January 2007
 // This example is an extension of example_MyPythia.cc
 //  
 // generate events with Pythia, write a file, and read the resulting output

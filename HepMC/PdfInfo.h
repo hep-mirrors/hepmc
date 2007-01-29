@@ -20,11 +20,19 @@
 
 namespace HepMC {
 
+//! The PdfInfo class stores PDF information
+
+///
+/// \class  PdfInfo
+/// HepMC::PdfInfo stores additional PDF information for a GenEvent.
+/// Creation and use of this information is optional. 
+///
 class PdfInfo {
 
 public:
   // ---  birth/death:
   //
+  /// default constructor
   PdfInfo()
     : m_id1(0), 
       m_id2(0),
@@ -35,37 +43,52 @@ public:
       m_pdf2(0)
     {}
 
+  /// all values must be provided
   inline PdfInfo( int i1, int i2, double x1, double x2, double q, double p1, double p2 );
 
   ~PdfInfo() {}
     
   // ---  copying:
   //
-  inline PdfInfo( PdfInfo const & orig );
-  inline PdfInfo &  operator = ( PdfInfo const & rhs );
-  inline void swap( PdfInfo & other );
+  inline PdfInfo( PdfInfo const & orig );	//!< copy constructor
+  inline PdfInfo &  operator = ( PdfInfo const & rhs ); //!< make a copy
+  inline void swap( PdfInfo & other );	//!< swap two PdfInfo objects
 
   // ---  equivalence:
   //
-  inline bool    operator==( const PdfInfo& ) const;
-  inline bool    operator!=( const PdfInfo& ) const;
+  inline bool    operator==( const PdfInfo& ) const; //!< check for equality
+  inline bool    operator!=( const PdfInfo& ) const; //!< check for inequality
 
   // ---  accessors:
+    /// flavour code of first parton
     int   id1()                   const { return m_id1; }
+    /// flavour code of second parton 
     int   id2()                   const { return m_id2; }
-    double x1()                   const { return m_x1; }
+    /// fraction of beam momentum carried by first parton ("beam side") 
+    double x1()                   const { return m_x1; } 
+    /// fraction of beam momentum carried by second parton ("target side") 
     double x2()                   const { return m_x2; }
+    ///  Q-scale used in evaluation of PDF's   (in GeV) 
     double scalePDF()             const { return m_scalePDF;  }
+    /// PDF (id1, x1, Q) 
     double pdf1()                 const { return m_pdf1; }
+    /// PDF (id2, x2, Q)   
     double pdf2()                 const { return m_pdf2; }
 
   // ---  mutators:
+    /// set flavour code of first parton
     void   set_id1(const int &i)              { m_id1=i; }
+    /// set flavour code of second parton 
     void   set_id2(const int &i)              { m_id2=i; }
+    /// set fraction of beam momentum carried by first parton ("beam side") 
     void   set_x1(const double &f)            { m_x1=f; }
+    /// set fraction of beam momentum carried by second parton ("target side") 
     void   set_x2(const double &f)            { m_x2=f; }
+    /// set Q-scale used in evaluation of PDF's   (in GeV) 
     void   set_scalePDF(const double &f)      { m_scalePDF=f;  }
+    /// set PDF (id1, x1, Q) 
     void   set_pdf1(const double &f)          { m_pdf1=f; }
+    /// set PDF (id2, x2, Q)   
     void   set_pdf2(const double &f)          { m_pdf2=f; }
 
 private: // data members
@@ -120,6 +143,7 @@ void PdfInfo::swap( PdfInfo & other )
 
 bool    PdfInfo::operator==( const PdfInfo& a ) const
 {
+    /// equality requires that each member match
     return (    a.id1() == this->id1() 
              && a.id2() == this->id2() 
 	     && a.x1() == this->x1() 
@@ -131,6 +155,7 @@ bool    PdfInfo::operator==( const PdfInfo& a ) const
 
 bool    PdfInfo::operator!=( const PdfInfo& a ) const
 {
+    /// any nonmatching member generates inequality
     return !( a == *this );
 }
 

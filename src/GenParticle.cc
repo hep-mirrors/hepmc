@@ -38,10 +38,10 @@ namespace HepMC {
 	m_production_vertex(0), m_end_vertex(0), m_barcode(0), 
         m_generated_mass(0.) 
     {
-	// Shallow copy: does not copy the vertex pointers
-	// (note - impossible to copy vertex pointers which having the vertex
-	//         and particles in/out point-back to one another -- unless you
-	//         copy the entire tree -- which we don't want to do)
+	/// Shallow copy: does not copy the vertex pointers
+	/// (note - impossible to copy vertex pointers which having the vertex
+	///         and particles in/out point-back to one another -- unless you
+	///         copy the entire tree -- which we don't want to do)
 	*this = inparticle; 
 	s_counter++;
     }
@@ -52,10 +52,10 @@ namespace HepMC {
     }
 
     GenParticle& GenParticle::operator=( const GenParticle& inparticle ) {
-	// Shallow: does not copy the vertex pointers
-	// (note - impossible to copy vertex pointers which having the vertex
-	//         and particles in/out point-back to one another -- unless you
-	//         copy the entire tree -- which we don't want to do)
+	/// Shallow: does not copy the vertex pointers
+	/// (note - impossible to copy vertex pointers which having the vertex
+	///         and particles in/out point-back to one another -- unless you
+	///         copy the entire tree -- which we don't want to do)
 	set_momentum( inparticle.momentum() );
 	set_pdg_id( inparticle.pdg_id() );
 	set_status( inparticle.status() );
@@ -69,9 +69,9 @@ namespace HepMC {
     }
 
     bool GenParticle::operator==( const GenParticle& a ) const {
-	// consistent with the definition of the copy constructor as a shallow
-	//  constructor,.. this operator does not test the vertex pointers.
-	//  Does not compare barcodes.
+	/// consistent with the definition of the copy constructor as a shallow
+	///  constructor,.. this operator does not test the vertex pointers.
+	///  Does not compare barcodes.
 	if ( a.momentum() != this->momentum() ) return 0;
         if ( a.generated_mass() != this->generated_mass() ) return 0;
 	if ( a.pdg_id() != this->pdg_id() ) return 0;
@@ -86,8 +86,8 @@ namespace HepMC {
     }
 
     void GenParticle::print( std::ostream& ostr ) const {
-	// Dump this particle's full info to ostr, where by default
-	//  particle.print(); will dump to cout.
+	/// Dump this particle's full info to ostr, where by default
+	///  particle.print(); will dump to cout.
 	ostr << "GenParticle: " 
 	     << barcode() << " ID:" << pdg_id()
 	     << " (P,E)=" << momentum().px() << "," << momentum().py() 
@@ -134,15 +134,15 @@ namespace HepMC {
 
     bool GenParticle::suggest_barcode( int the_bar_code )
     {
-	// allows a barcode to be suggested for this particle.
-	// In general it is better to let the event pick the barcode for
-	// you, which is automatic.
-	// Returns TRUE if the suggested barcode has been accepted (i.e. the
-	//  suggested barcode has not already been used in the event, 
-	//  and so it was used).
-	// Returns FALSE if the suggested barcode was rejected, or if the
-	//  particle is not yet part of an event, such that it is not yet
-	//  possible to know if the suggested barcode will be accepted).
+	/// allows a barcode to be suggested for this particle.
+	/// In general it is better to let the event pick the barcode for
+	/// you, which is automatic.
+	/// Returns TRUE if the suggested barcode has been accepted (i.e. the
+	///  suggested barcode has not already been used in the event, 
+	///  and so it was used).
+	/// Returns FALSE if the suggested barcode was rejected, or if the
+	///  particle is not yet part of an event, such that it is not yet
+	///  possible to know if the suggested barcode will be accepted).
 	if ( the_bar_code <0 ) {
 	    std::cerr << "GenParticle::suggest_barcode WARNING, particle bar "
 		      << "\n codes MUST be positive integers. Negative  "
@@ -167,6 +167,7 @@ namespace HepMC {
     // Friends //
     /////////////
     std::ostream& operator<<( std::ostream& ostr, const GenParticle& part ) {
+	/// Dump this particle's full info to ostr
 	ostr << " ";
 	ostr.width(9);
 	ostr << part.barcode();

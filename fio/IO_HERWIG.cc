@@ -92,8 +92,8 @@ namespace HepMC {
     }
 
     bool IO_HERWIG::fill_next_event( GenEvent* evt ) {
-	// read one event from the Herwig HEPEVT common block and fill GenEvent
-	// return T/F =success/failure
+	/// read one event from the Herwig HEPEVT common block and fill GenEvent
+	/// return T/F =success/failure
 	//
 	// 0. Test that evt pointer is not null and set event number
 	if ( !evt ) {
@@ -198,9 +198,9 @@ namespace HepMC {
 					    std::vector<GenParticle*>& 
 					    hepevt_particle,
 					    GenEvent* evt ) {
-	// 
-	// for particle in HEPEVT with index i, build a production vertex
-	// if appropriate, and add that vertex to the event
+	/// 
+	/// for particle in HEPEVT with index i, build a production vertex
+	/// if appropriate, and add that vertex to the event
 	GenParticle* p = hepevt_particle[i];
 	// a. search to see if a production vertex already exists
 	int mother = HEPEVT_Wrapper::first_parent(i);
@@ -269,9 +269,9 @@ namespace HepMC {
     void IO_HERWIG::build_end_vertex
     ( int i, std::vector<GenParticle*>& hepevt_particle, GenEvent* evt ) 
     {
-	// 
-	// for particle in HEPEVT with index i, build an end vertex
-	// if appropriate, and add that vertex to the event
+	/// 
+	/// for particle in HEPEVT with index i, build an end vertex
+	/// if appropriate, and add that vertex to the event
 	//    Identical steps as for build_production_vertex
 	GenParticle* p = hepevt_particle[i];
 	// a.
@@ -336,7 +336,7 @@ namespace HepMC {
     }
 
     GenParticle* IO_HERWIG::build_particle( int index ) {
-	// Builds a particle object corresponding to index in HEPEVT
+	/// Builds a particle object corresponding to index in HEPEVT
 	// 
 	GenParticle* p 
 	    = new GenParticle( FourVector( HEPEVT_Wrapper::px(index), 
@@ -358,28 +358,28 @@ namespace HepMC {
     }
 
     void IO_HERWIG::repair_hepevt() const {
-	//  This routine takes the HEPEVT common block as used in HERWIG,
-	//  and converts it into the HEPEVT common block in the standard format
-	//
-	//  This means it:
-	//    - removes the color structure, which herwig overloads 
-	//      into the mother/daughter fields
-	//    - zeros extra entries for hard subprocess, etc.
-	//
-	//
-	// Special HERWIG status codes
-	//   101,102   colliding beam particles
-	//   103       beam-beam collision CMS vector
-	//   120       hard subprocess CMS vector
-	//   121,122   hard subprocess colliding partons
-	//   123-129   hard subprocess outgoing particles
-	//   141-149   (ID=94) mirror image of hard subrpocess particles
-	//   100       (ID=0 cone)
-	//
-	// Special HERWIG particle id's
-	//   91 clusters
-	//   94 jets
-	//   0  others with no pdg code
+	///  This routine takes the HEPEVT common block as used in HERWIG,
+	///  and converts it into the HEPEVT common block in the standard format
+	///
+	///  This means it:
+	///    - removes the color structure, which herwig overloads 
+	///      into the mother/daughter fields
+	///    - zeros extra entries for hard subprocess, etc.
+	///
+	///
+	/// Special HERWIG status codes
+	///   101,102   colliding beam particles
+	///   103       beam-beam collision CMS vector
+	///   120       hard subprocess CMS vector
+	///   121,122   hard subprocess colliding partons
+	///   123-129   hard subprocess outgoing particles
+	///   141-149   (ID=94) mirror image of hard subrpocess particles
+	///   100       (ID=0 cone)
+	///
+	/// Special HERWIG particle id's
+	///   91 clusters
+	///   94 jets
+	///   0  others with no pdg code
 
 	// Make sure hepvt isn't empty.
 	if ( HEPEVT_Wrapper::number_entries() <= 0 ) return;
@@ -631,11 +631,11 @@ namespace HepMC {
     }
 
     void IO_HERWIG::remove_gaps_in_hepevt() const {
-	// in this scenario, we do not allow there to be zero-ed
-	// entries in the HEPEVT common block, and so be reshuffle
-	// the common block, removing the zeero-ed entries as we
-	// go and making sure we keep the mother/daughter
-	// relationships appropriate
+	/// in this scenario, we do not allow there to be zero-ed
+	/// entries in the HEPEVT common block, and so be reshuffle
+	/// the common block, removing the zeero-ed entries as we
+	/// go and making sure we keep the mother/daughter
+	/// relationships appropriate
 	std::vector<int> mymap(HEPEVT_Wrapper::number_entries()+1,0);
 	int ilast = 0;
 	for ( int i=1; i <=HEPEVT_Wrapper::number_entries(); i++ ) {
@@ -702,8 +702,8 @@ namespace HepMC {
     }
 
     int IO_HERWIG::translate_herwig_to_pdg_id( int id ) const {
-	// This routine is copied from Lynn Garren's stdhep 5.01.
-	//   see http://www-pat.fnal.gov/stdhep.html
+	/// This routine is copied from Lynn Garren's stdhep 5.01.
+	///   see http:///cepa.fnal.gov/psm/stdhep/
  
 	                                       // example -9922212
 	int hwtran = id;                       //         -9922212

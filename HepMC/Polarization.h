@@ -18,33 +18,52 @@ namespace HepMC {
 
     static const double HepMC_pi = 3.14159265358979323846;  // copy of pi from CLHEP
     
+    //! The Polarization class stores theta and phi for a GenParticle
+
+    ///
+    /// \class  Polarization
+    /// HepMC::Polarization stores a particle's theta and phi in radians.
+    /// Use of this information is optional. 
+    /// By default, the polarization is set to zero.
+    ///
     class Polarization {
 
+        /// print polarization information
 	friend std::ostream& operator<<( std::ostream&, const Polarization& );
 
     public:
+        /// default constructor
 	Polarization( double theta = 0, double phi = 0 );
+	/// construct from another polarization object
 	Polarization( const Polarization& inpolar );
+	/// construct using the polar and azimuthal angles from a ThreeVector
 	Polarization( const ThreeVector& vec3in );
 	virtual       ~Polarization() {}
 
+	/// make a copy
 	Polarization& operator=( const Polarization& inpolar );
+	/// equality requires that theta and phi are equal
 	bool          operator==( const Polarization& ) const;
+	/// inequality results if either theta or phi differ
 	bool          operator!=( const Polarization& ) const;
 
+        /// print theta and phi
 	void          print( std::ostream& ostr = std::cout ) const;
     
 	////////////////////
 	// access methods //
 	////////////////////
-	double        theta() const;    // returns polar angle in radians
-	double        phi() const;      // returns azimuthal angle in radians
-	ThreeVector   normal3d() const; // unit 3 vector for easy manipulation
+	double        theta() const;    //!< returns polar angle in radians
+	double        phi() const;      //!< returns azimuthal angle in radians
+	ThreeVector   normal3d() const; //!< unit 3 vector for easy manipulation
 
+        /// set polar angle in radians 
 	double        set_theta( double theta );
-	double        set_phi( double phi ); 
+        /// set azimuthal angle in radians 
+	double        set_phi( double phi );
+	/// set both polar and azimuthal angles in radians
 	void          set_theta_phi( double theta, double phi );
-	// sets polarization according to direction of 3 vec
+	/// sets polarization according to direction of 3 vec
 	ThreeVector   set_normal3d( const ThreeVector& vec3in ); 
 
     private:

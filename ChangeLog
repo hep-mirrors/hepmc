@@ -1,4 +1,10 @@
 
+2007-01-29 Lynn Garren
+
+	* fix everything so doxygen will create a useful reference manual
+	  nearly every file has been touched, but only the comments changed
+
+
 2007-01-25 Lynn Garren
 
 	* example/example_MyPythiaRead.cc: read in the events you just wrote

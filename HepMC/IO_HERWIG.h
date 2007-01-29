@@ -47,27 +47,55 @@ namespace HepMC {
     class GenParticle;
     class ParticleDataTable;
 
+    //! IO_HERWIG is used to get Herwig information
+
+    ///
+    /// \class  IO_HERWIG
+    /// IO class for reading the HEPEVT common block from 
+    ///  the Herwig monte carlo program.
+    ///
     class IO_HERWIG : public IO_BaseClass {
     public:
 	IO_HERWIG();
 	virtual           ~IO_HERWIG();
+        /// get the next event
 	bool              fill_next_event( GenEvent* );
+        /// write to ostr
 	void              print( std::ostream& ostr = std::cout ) const;
+        /// this information is dubious
 	double            interfaces_to_version_number() const {return 6.400;}
 		
 	// see comments below for these switches.
+	/// default is true
 	bool              print_inconsistency_errors() const;
+	/// decide whether or not to print inconsistency errors
 	void              set_print_inconsistency_errors( bool b = 1 );
 
+        /// ask how to deal with extra non-physical pseudo particles
 	bool              no_gaps_in_barcodes() const 
 	                     { return m_no_gaps_in_barcodes; }
+	/// The HERWIG HEPEVT common block has some EXTRA non-physical ENTRIES 
+	/// (such as CMS frame, HARD subprocess, and CONE).
+	/// These are removed by IO_HERWIG. Thus the HepMC event will APPEAR
+	/// to have fewer particles in it that herwig did.
+	/// There is a switch m_no_gaps_in_barcodes. For
+	///   true  - then the extra particles are removed from HEPEVT, with 
+	///             the result that the HepMC barcodes will be sequential, with 
+	///             no gaps.
+	///   false - the barcodes will correspond directly to the HEPEVT index, but
+	///             there will be gaps ... ie some barcodes will be unassigned.
+	///   this switch requested by I Hinchliffe, October 31, 2002
 	void              set_no_gaps_in_barcodes( bool a ) 
 	                     { m_no_gaps_in_barcodes=a; }
 
     protected: // for internal use only
+        /// default is true
 	bool              trust_both_mothers_and_daughters() const;
+        /// default is false
 	bool              trust_mothers_before_daughters() const;
+        /// define mother daughter trust rules
 	void              set_trust_mothers_before_daughters( bool b = 1 );
+        /// define mother daughter trust rules
 	void              set_trust_both_mothers_and_daughters( bool b = 0 );
 
 	GenParticle* build_particle( int index );
@@ -75,12 +103,17 @@ namespace HepMC {
 	    int i,std::vector<GenParticle*>& hepevt_particle, GenEvent* evt );
 	void         build_end_vertex( 
 	    int i, std::vector<GenParticle*>& hepevt_particle, GenEvent* evt );
+        /// find this particle in the map
 	int          find_in_map( 
 	    const std::map<GenParticle*,int>& m, GenParticle* p) const;
 
+        /// make the HERWIG HEPEVT common block look like the standard
 	void repair_hepevt() const;
+	/// deal with artifacts of repairing HEPEVT
 	void remove_gaps_in_hepevt() const;
+	/// zero out a HEPEVT pseudo particle
 	void zero_hepevt_entry( int i ) const;
+	/// translate particle ID
 	int  translate_herwig_to_pdg_id( int i ) const;
 
     private: // following are not implemented for Herwig

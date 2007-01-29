@@ -55,52 +55,82 @@ namespace HepMC {
 
     class GenParticle;
 
+    //! The flow object
+
+    ///
+    /// \class  Flow
+    /// The particle's flow object
+    /// keeps track of an arbitrary number of flow patterns within a graph 
+    /// (i.e. color flow, charge flow, lepton number flow, ...) 
+    /// Flow patterns are coded with an integer, in the same manner as in Herwig.
     class Flow {
 
+        /// for printing
 	friend std::ostream& operator<<( std::ostream& ostr, const Flow& f );
 	
     public:
+        /// default constructor
 	Flow( GenParticle* particle_owner = 0 );
+	/// copy
 	Flow( const Flow& );
 	virtual         ~Flow();
+	/// make a copy
 	Flow&           operator=( const Flow& );
+	/// equality
 	bool            operator==( const Flow& a ) const; //compares only flow
+	/// inequality
 	bool            operator!=( const Flow& a ) const; //patterns not owner
 
+        /// print Flow information to ostr
 	void            print( std::ostream& ostr = std::cout ) const;
 
-	// returns all connected particles which have "code" in any  of the 
-	//  num_indices beginning with index code_index.
+	/// returns all connected particles which have "code" in any  of the 
+	///  num_indices beginning with index code_index.
 	std::set<GenParticle*> connected_partners( int code, int code_index =1,
 						   int num_indices = 2 ) const;
-	// same as connected_partners, but returns only those particles which
-	//  are connected to <=1 other particles (i.e. the flow line "dangles"
-	//  at these particles)
+	/// same as connected_partners, but returns only those particles which
+	///  are connected to <=1 other particles (i.e. the flow line "dangles"
+	///  at these particles)
 	std::set<GenParticle*> dangling_connected_partners( int code, 
 			       int code_index = 1, int num_indices = 2 ) const;
 
 	////////////////////
 	// access methods //
 	////////////////////
+
+	/// find particle owning this Flow
 	const GenParticle* particle_owner() const;
+	/// flow code
 	int             icode( int code_index = 1 ) const;
+	/// set flow code
 	Flow            set_icode( int code_index, int code );
+	/// set unique flow code
 	Flow            set_unique_icode( int code_index = 1 );
 
 	//////////////////////
 	// container access //
 	//////////////////////
 
+        /// return true if there is no flow container
 	bool            empty() const;
+	/// size of flow pattern container
 	int             size() const;
+	/// clear flow patterns
         void            clear();
+	/// empty flow pattern container
 	bool            erase( int code_index );
 
+        /// iterator for flow pattern container
         typedef std::map<int,int>::iterator       iterator;
+        /// const iterator for flow pattern container
         typedef std::map<int,int>::const_iterator const_iterator;
+	/// beginning of flow pattern container
         iterator            begin();
+	/// end of flow pattern container
         iterator            end();
+	/// beginning of flow pattern container
         const_iterator      begin() const;
+	/// end of flow pattern container
         const_iterator      end() const;
 
     protected: // intended for internal use only
@@ -135,8 +165,8 @@ namespace HepMC {
 	return *this;
     }
     inline Flow Flow::set_unique_icode( int flow_num ) {
-	// use this method if you want to assign a unique flow code, but
-	// do not want the burden of choosing it yourself
+	/// use this method if you want to assign a unique flow code, but
+	/// do not want the burden of choosing it yourself
 	m_icode[flow_num] = size_t(this);
 	return *this;
     }

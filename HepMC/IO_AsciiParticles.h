@@ -43,29 +43,43 @@ namespace HepMC {
     class GenVertex;
     class GenParticle;
 
+    //! event input/output in ascii format for eye and machine reading
+
+    ///
+    /// \class IO_AsciiParticles
+    /// Strategy for reading or writing events/particleData as machine readable
+    ///  ascii to a file. When instantiating, the mode of file to be created 
+    ///  must be specified. 
+    ///
     class IO_AsciiParticles : public IO_BaseClass {
     public:
+        /// constructor requiring a file name and std::ios mode
 	IO_AsciiParticles( const char* filename="IO_AsciiParticles.dat", 
 		  std::ios::openmode mode=std::ios::out );
 	virtual       ~IO_AsciiParticles();
 
+        /// write this event
   	void          write_event( const GenEvent* evt );
+        /// get the next event
 	bool          fill_next_event( GenEvent* evt );
     inline void          write_particle_data_table(const ParticleDataTable*);
     inline bool          fill_particle_data_table( ParticleDataTable* );
-	// insert a comment directly into the output file --- normally you
-	//  only want to do this at the beginning or end of the file. All
-	//  comments are preceded with "HepMC::IO_AsciiParticles-COMMENT\n"
+	/// insert a comment directly into the output file --- normally you
+	///  only want to do this at the beginning or end of the file. All
+	///  comments are preceded with "HepMC::IO_AsciiParticles-COMMENT\n"
   	void          write_comment( const std::string comment );
 
-    void          setPrecision(int iprec);
+        /// set output precision
+        void          setPrecision(int iprec);
 
-	int           rdstate() const;
-	void          clear();
+	int           rdstate() const;  //!< check the state of the IO stream
+	void          clear();  //!< clear the IO stream
 
+        /// write to ostr
 	void          print( std::ostream& ostr = std::cout ) const;
 
     protected: // for internal use only
+	/// write end tag
 	bool          write_end_listing();
     private: // use of copy constructor is not allowed
 	IO_AsciiParticles( const IO_AsciiParticles& ) : IO_BaseClass() {}

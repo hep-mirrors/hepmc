@@ -121,70 +121,92 @@ extern "C" {
 
 namespace HepMC {
 
+    //! Generic Wrapper for the fortran HEPEVT common block
+    
+    /// \class HEPEVT_Wrapper
+    /// This class is intended for static use only - it makes no sense to 
+    /// instantiate it.
+    ///
     class HEPEVT_Wrapper {
     public:
 
 	static void print_hepevt( std::ostream& ostr = std::cout );
 	static void print_hepevt_particle( int index, 
 					   std::ostream& ostr = std::cout );
-        static bool is_double_precision();  // True if common block uses double
+        static bool is_double_precision();  //!< True if common block uses double
 
 	static bool check_hepevt_consistency( std::ostream& ostr = std::cout );
 
+        /// set all entries in HEPEVT to zero
 	static void zero_everything();
 
 	////////////////////
 	// Access Methods //
 	////////////////////
-        static int    event_number();             // event number
-        static int    number_entries();           // num entries in current evt
-        static int    status( int index );        // status code
-        static int    id( int index );            // PDG particle id
-        static int    first_parent( int index );  // index of 1st mother
-        static int    last_parent( int index );   // index of last mother
-	static int    number_parents( int index ); 
-        static int    first_child( int index );   // index of 1st daughter
-        static int    last_child( int index );    // index of last daughter
-	static int    number_children( int index );
-        static double px( int index );            // X momentum       
-        static double py( int index );
-        static double pz( int index );
-        static double e( int index );             // Energy
-        static double m( int index );             // generated mass
-        static double x( int index );             // X Production vertex
-        static double y( int index );
-        static double z( int index );
-        static double t( int index );             // production time
+        static int    event_number();             //!< event number
+        static int    number_entries();           //!< num entries in current evt
+        static int    status( int index );        //!< status code
+        static int    id( int index );            //!< PDG particle id
+        static int    first_parent( int index );  //!< index of 1st mother
+        static int    last_parent( int index );   //!< index of last mother
+	static int    number_parents( int index ); //!< number of parents 
+        static int    first_child( int index );   //!< index of 1st daughter
+        static int    last_child( int index );    //!< index of last daughter
+	static int    number_children( int index ); //!< number of children
+        static double px( int index );            //!< X momentum       
+        static double py( int index );            //!< Y momentum   
+        static double pz( int index );            //!< Z momentum   
+        static double e( int index );             //!< Energy
+        static double m( int index );             //!< generated mass
+        static double x( int index );             //!< X Production vertex
+        static double y( int index );             //!< Y Production vertex
+        static double z( int index );             //!< Z Production vertex
+        static double t( int index );             //!< production time
 
 	////////////////////
 	// Set Methods    //
 	////////////////////
+
+	/// set event number
         static void set_event_number( int evtno );
+	/// set number of entries in HEPEVT
         static void set_number_entries( int noentries );
+	/// set particle status
         static void set_status( int index, int status );
+	/// set particle ID
         static void set_id( int index, int id );
+	/// define parents of a particle
         static void set_parents( int index, int firstparent, int lastparent );
+	/// define children of a particle
         static void set_children( int index, int firstchild, int lastchild );
+	/// set particle momentum
         static void set_momentum( int index, double px, double py,
 				  double pz, double e );
+	/// set particle mass
         static void set_mass( int index, double mass );
+	/// set particle production vertex
         static void set_position( int index, double x, double y, double z, 
 				  double t );
 	//////////////////////
 	// HEPEVT Floorplan //
 	//////////////////////
-	static unsigned int sizeof_int();
-	static unsigned int sizeof_real();
-        static int  max_number_entries();
-	static void set_sizeof_int(unsigned int);
-	static void set_sizeof_real(unsigned int);
-	static void set_max_number_entries(unsigned int);
+	static unsigned int sizeof_int();  //!< size of integer in bytes
+	static unsigned int sizeof_real(); //!< size of real in bytes
+        static int  max_number_entries();  //!< size of common block
+	static void set_sizeof_int(unsigned int);  //!< define size of integer
+	static void set_sizeof_real(unsigned int); //!< define size of real
+	static void set_max_number_entries(unsigned int); //!< define size of common block
 
     protected:
+        /// navigate a byte array
 	static double byte_num_to_double( unsigned int );
+        /// navigate a byte array
 	static int    byte_num_to_int( unsigned int );
+        /// pretend common block is an array of bytes
 	static void   write_byte_num( double, unsigned int );
+        /// pretend common block is an array of bytes
 	static void   write_byte_num( int, unsigned int );
+	/// print output legend
 	static void   print_legend( std::ostream& ostr = std::cout );
 
     private:

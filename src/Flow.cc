@@ -16,7 +16,7 @@ namespace HepMC {
     Flow::Flow( const Flow& inflow ) : 
 	m_particle_owner(inflow.m_particle_owner)
     {
-	// copies both the m_icode AND t;he m_particle_owner
+	/// copies both the m_icode AND the m_particle_owner
 	*this = inflow;
     }
 
@@ -30,14 +30,14 @@ namespace HepMC {
     
     std::set<GenParticle*> Flow::connected_partners( int code, int code_index, 
 						  int num_indices ) const {
-	// Returns all flow partners which have "code" in any  of the 
-	//  num_indices beginning with index code_index.
-	//  m_particle_owner is included in the result.
-	//  Return is by value since the set should never be very big.
-	// EXAMPLE: if you want to find all flow partners that have the same
-	//   code in indices 2,3,4 as particle p has in index 2, you would use:
-	//   set<GenParticle*> result = 
-	//             p->flow().connected_partners(p->flow().icode(2),2,3);
+	/// Returns all flow partners which have "code" in any  of the 
+	///  num_indices beginning with index code_index.
+	///  m_particle_owner is included in the result.
+	///  Return is by value since the set should never be very big.
+	/// EXAMPLE: if you want to find all flow partners that have the same
+	///   code in indices 2,3,4 as particle p has in index 2, you would use:
+	///   set<GenParticle*> result = 
+	///             p->flow().connected_partners(p->flow().icode(2),2,3);
 	//
 	std::set<GenParticle*> output;
 	for ( int i = code_index; i!=code_index+num_indices; ++i ) {
@@ -53,7 +53,7 @@ namespace HepMC {
     void Flow::connected_partners( std::set<GenParticle*>* output, int code, 
 				   int code_index, int num_indices ) const
     {
-	// protected: for recursive use by Flow::connected_partners()
+	/// protected: for recursive use by Flow::connected_partners()
 	//
     	if ( !m_particle_owner ) return; // nothing to do
 	// look for connected partners joined to this m_particle_owner
@@ -119,7 +119,7 @@ namespace HepMC {
 					    int code, int code_index, 
 					    int num_indices ) const 
     {
-	// protected: for recursive use by Flow::dangling_connected_partners
+	/// protected: for recursive use by Flow::dangling_connected_partners
 	//
     	if ( !m_particle_owner ) return; // nothing to do
 	int count_partners = 0;
@@ -178,6 +178,7 @@ namespace HepMC {
     /////////////
 
     std::ostream& operator<<( std::ostream& ostr, const Flow& f ) {
+        /// send Flow informatin to ostr for printing
 	ostr << f.m_icode.size();
 	for ( std::map<int,int>::const_iterator i = f.m_icode.begin();
 	      i != f.m_icode.end(); ++i ) {

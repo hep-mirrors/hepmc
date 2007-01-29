@@ -16,38 +16,66 @@
 
 namespace HepMC {
 
+    //! Container for the Weights associated with an event or vertex.
+
+    ///
+    /// \class  WeightContainer
+    /// Basically just an interface to STL vector.
     class WeightContainer {
 
     public:
+        /// default constructor
 	WeightContainer( unsigned int n = 0, const double& value = 0. );
+        /// construct from a vector of weights
 	WeightContainer( const std::vector<double>& weights );
+        /// copy
 	WeightContainer( const WeightContainer& in );
 	virtual ~WeightContainer();
 
+        /// copy
 	WeightContainer& operator=( const WeightContainer& );
+        /// copy
 	WeightContainer& operator=( const std::vector<double>& in );
 
+        /// print weights
 	void          print( std::ostream& ostr = std::cout ) const;
 
+        /// size of weight container
 	int           size() const;
+	/// return true if weight container is empty
 	bool          empty() const;
+	/// push onto weight container
 	void          push_back( const double& );
+	/// pop from weight container
 	void          pop_back();
+	/// clear the weight container
 	void          clear();
 
+        /// access the weight container
 	double&       operator[]( unsigned int n );  // unchecked access
+        /// access the weight container
 	const double& operator[]( unsigned int n ) const;
 	
-	double&       front();         // returns the first element
+	/// returns the first element
+	double&       front();
+	/// returns the first element
 	const double& front() const;   
-	double&       back();          // returns the last element
+	/// returns the last element
+	double&       back();
+	/// returns the last element
 	const double& back() const;
 
+        /// iterator for the weight container
 	typedef std::vector<double>::iterator iterator;
+        /// const iterator for the weight container
 	typedef std::vector<double>::const_iterator const_iterator;
+	/// begining of the weight container
 	iterator            begin();
+	/// end of the weight container
 	iterator            end();
+	/// begining of the weight container
 	const_iterator      begin() const;
+	/// end of the weight container
 	const_iterator      end() const;
 	
     private:

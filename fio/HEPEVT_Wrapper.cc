@@ -26,7 +26,7 @@ namespace HepMC {
 
     void HEPEVT_Wrapper::print_hepevt( std::ostream& ostr ) 
     {
-	// dumps the content of this HEPEVT event to ostr  (Width is 80)
+	/// dumps the content of this HEPEVT event to ostr  (Width is 80)
 	ostr << "________________________________________"
 	     << "________________________________________" << std::endl;
 	ostr << "***** HEPEVT Common Event#: " 
@@ -67,10 +67,10 @@ namespace HepMC {
 
     void HEPEVT_Wrapper::print_hepevt_particle( int i, std::ostream& ostr ) 
     {
-	// dumps the content HEPEVT particle entry i   (Width is 120)
-	// here i is the C array index (i.e. it starts at 0 ... whereas the
-	// fortran array index starts at 1) So if there's 100 particles, the
-	// last valid index is 100-1=99
+	/// dumps the content HEPEVT particle entry i   (Width is 120)
+	/// here i is the C array index (i.e. it starts at 0 ... whereas the
+	/// fortran array index starts at 1) So if there's 100 particles, the
+	/// last valid index is 100-1=99
 	char outline[81];
 	sprintf( outline,
 		 "%4d %+4d %4d %4d    (%9.3g, %9.3g, %9.3g, %9.3g, %9.3g)"
@@ -87,8 +87,8 @@ namespace HepMC {
 
     bool HEPEVT_Wrapper::check_hepevt_consistency( std::ostream& os )
     {
-	// This method inspects the HEPEVT common block and looks for 
-	// inconsistencies in the mother/daughter pointers
+	/// This method inspects the HEPEVT common block and looks for 
+	/// inconsistencies in the mother/daughter pointers
 	bool isConsistent=true;
         char header[81];
         sprintf( header,

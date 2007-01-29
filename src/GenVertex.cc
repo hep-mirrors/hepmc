@@ -20,17 +20,17 @@ namespace HepMC {
 
     GenVertex::GenVertex( const GenVertex& invertex ) : m_event(0),
 							m_barcode(0) {
-	// Shallow copy: does not copy the FULL list of particle pointers.
-	// Creates a copy of  - invertex
-	//                    - outgoing particles of invertex, but sets the
-	//                      decay vertex of these particles to NULL
-	//                    - all incoming particles which do not have a
-	//                      creation vertex.
-	// (i.e. it creates copies of all particles which it owns)
-	// (note - impossible to copy the FULL list of particle pointers 
-	//         while having the vertex
-	//         and particles in/out point-back to one another -- unless you
-	//         copy the entire tree -- which we don't want to do)
+	/// Shallow copy: does not copy the FULL list of particle pointers.
+	/// Creates a copy of  - invertex
+	///                    - outgoing particles of invertex, but sets the
+	///                      decay vertex of these particles to NULL
+	///                    - all incoming particles which do not have a
+	///                      creation vertex.
+	/// (i.e. it creates copies of all particles which it owns)
+	/// (note - impossible to copy the FULL list of particle pointers 
+	///         while having the vertex
+	///         and particles in/out point-back to one another -- unless you
+	///         copy the entire tree -- which we don't want to do)
 	*this = invertex;
 	s_counter++;
     }
@@ -44,19 +44,19 @@ namespace HepMC {
     }
 
     GenVertex& GenVertex::operator=( const GenVertex& invertex ) {
-	// Shallow: does not copy the FULL list of particle pointers.
-	// Creates a copy of  - invertex
-	//                    - outgoing particles of invertex, but sets the
-	//                      decay vertex of these particles to NULL
-	//                    - all incoming particles which do not have a
-	//                      creation vertex.
-	//                    - it does not alter *this's m_event (!)
-	// (i.e. it creates copies of all particles which it owns)
-	// (note - impossible to copy the FULL list of particle pointers 
-	//         while having the vertex
-	//         and particles in/out point-back to one another -- unless you
-	//         copy the entire tree -- which we don't want to do)
-	//
+	/// Shallow: does not copy the FULL list of particle pointers.
+	/// Creates a copy of  - invertex
+	///                    - outgoing particles of invertex, but sets the
+	///                      decay vertex of these particles to NULL
+	///                    - all incoming particles which do not have a
+	///                      creation vertex.
+	///                    - it does not alter *this's m_event (!)
+	/// (i.e. it creates copies of all particles which it owns)
+	/// (note - impossible to copy the FULL list of particle pointers 
+	///         while having the vertex
+	///         and particles in/out point-back to one another -- unless you
+	///         copy the entire tree -- which we don't want to do)
+	///
 	// first need to delete any particles previously owned by this vertex
 	delete_adopted_particles();
 	//
@@ -82,11 +82,11 @@ namespace HepMC {
     }
     
     bool GenVertex::operator==( const GenVertex& a ) const {
-	// Returns true if the positions and the particles in the lists of a 
-	//  and this are identical. Does not compare barcodes.
-	// Note that it is impossible for two vertices to point to the same 
-	//  particle's address, so we need to do more than just compare the
-	//  particle pointers
+	/// Returns true if the positions and the particles in the lists of a 
+	///  and this are identical. Does not compare barcodes.
+	/// Note that it is impossible for two vertices to point to the same 
+	///  particle's address, so we need to do more than just compare the
+	///  particle pointers
 	//
 	if ( a.position() !=  this->position() ) return 0;
 	// if the size of the inlist differs, return false.
@@ -232,9 +232,9 @@ namespace HepMC {
     }
 
     double GenVertex::check_momentum_conservation() const {
-	// finds the difference between the total momentum out and the total
-	// momentum in vectors, and returns the magnitude of this vector
-	// i.e.         returns | \vec{p_in} - \vec{p_out} |
+	/// finds the difference between the total momentum out and the total
+	/// momentum in vectors, and returns the magnitude of this vector
+	/// i.e.         returns | \vec{p_in} - \vec{p_out} |
 	double sumpx = 0, sumpy = 0, sumpz = 0;
 	for ( particles_in_const_iterator part1 = particles_in_const_begin();
 	      part1 != particles_in_const_end(); part1++ ) {
@@ -275,15 +275,15 @@ namespace HepMC {
     }
 
     GenParticle* GenVertex::remove_particle( GenParticle* particle ) {
-	// this finds *particle in the in and/or out list and removes it from
-	//  these lists ... it DOES NOT DELETE THE PARTICLE or its relations.
-	// you could delete the particle too as follows:
-	//      delete vtx->remove_particle( particle );
-	// or if the particle has an end vertex, you could:
-	//      delete vtx->remove_particle( particle )->end_vertex();
-	// which would delete the particle's end vertex, and thus would
-	// also delete the particle, since the particle would be 
-	// owned by the end vertex.
+	/// this finds *particle in the in and/or out list and removes it from
+	///  these lists ... it DOES NOT DELETE THE PARTICLE or its relations.
+	/// you could delete the particle too as follows:
+	///      delete vtx->remove_particle( particle );
+	/// or if the particle has an end vertex, you could:
+	///      delete vtx->remove_particle( particle )->end_vertex();
+	/// which would delete the particle's end vertex, and thus would
+	/// also delete the particle, since the particle would be 
+	/// owned by the end vertex.
 	if ( !particle ) return 0;
 	if ( particle->end_vertex() == this ) {
 	    particle->set_end_vertex_( 0 );
@@ -297,8 +297,8 @@ namespace HepMC {
     }
 
     void GenVertex::delete_adopted_particles() {
-	// deletes all particles which this vertex owns
-	// to be used by the vertex destructor and operator=
+	/// deletes all particles which this vertex owns
+	/// to be used by the vertex destructor and operator=
 	//
 	if ( m_particles_out.empty() && m_particles_in.empty() ) return;
 	// 1. delete all outgoing particles which don't have decay vertices.
@@ -332,15 +332,15 @@ namespace HepMC {
 
     bool GenVertex::suggest_barcode( int the_bar_code )
     {
-	// allows a barcode to be suggested for this vertex.
-	// In general it is better to let the event pick the barcode for
-	// you, which is automatic.
-	// Returns TRUE if the suggested barcode has been accepted (i.e. the
-	//  suggested barcode has not already been used in the event, 
-	//  and so it was used).
-	// Returns FALSE if the suggested barcode was rejected, or if the
-	//  vertex is not yet part of an event, such that it is not yet
-	//  possible to know if the suggested barcode will be accepted).
+	/// allows a barcode to be suggested for this vertex.
+	/// In general it is better to let the event pick the barcode for
+	/// you, which is automatic.
+	/// Returns TRUE if the suggested barcode has been accepted (i.e. the
+	///  suggested barcode has not already been used in the event, 
+	///  and so it was used).
+	/// Returns FALSE if the suggested barcode was rejected, or if the
+	///  vertex is not yet part of an event, such that it is not yet
+	///  possible to know if the suggested barcode will be accepted).
 	if ( the_bar_code >0 ) {
 	    std::cerr << "GenVertex::suggest_barcode WARNING, vertex bar codes"
 		      << "\n MUST be negative integers. Positive integers "
@@ -397,6 +397,7 @@ namespace HepMC {
     /////////////
 
     std::ostream& operator<<( std::ostream& ostr, const GenVertex& vtx ) {
+        /// send vertex information to ostr for printing
 	if ( vtx.barcode()!=0 ) ostr << "BarCode " << vtx.barcode();
 	else ostr << "Address " << &vtx;
 	ostr << " (X,cT)=";
@@ -705,10 +706,10 @@ namespace HepMC {
     void GenVertex::vertex_iterator::copy_with_own_set( 
 	const vertex_iterator& v_iter, 
 	std::set<const GenVertex*>& visited_vertices ) {
-	// intended for internal use only. (use with care!)
-	// this is the same as the operator= method, but it allows the
-	// user to specify which set container m_visited_vertices points to.
-	// in all cases, this vertex will NOT own its set.
+	/// intended for internal use only. (use with care!)
+	/// this is the same as the operator= method, but it allows the
+	/// user to specify which set container m_visited_vertices points to.
+	/// in all cases, this vertex will NOT own its set.
 	//
 	// destruct data member pointers
 	if ( m_recursive_iterator ) delete m_recursive_iterator;
@@ -845,9 +846,9 @@ namespace HepMC {
     }
 
     GenParticle* GenVertex::particle_iterator::advance_to_first_() {
-	// if the current edge is not a suitable return value ( because
-	// it is a parent of the vertex root that itself belongs to a 
-	// different vertex ) it advances to the first suitable return value 
+	/// if the current edge is not a suitable return value ( because
+	/// it is a parent of the vertex root that itself belongs to a 
+	/// different vertex ) it advances to the first suitable return value 
 	if ( !*m_edge ) return *(++*this);
 	// if the range is relatives, we need to uniquely assign each particle
 	// to a single vertex so as to guarantee particles are returned

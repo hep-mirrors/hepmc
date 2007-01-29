@@ -18,10 +18,15 @@
 #include "HepMC/IO_HEPEVT.h"
 #include "HepMC/GenEvent.h"
 
-class IsGoodEvent {
-    // event selection predicate. returns true if the event contains
-    // a photon with pT > 25 GeV
+
+//! example class
+
+/// \class  IsGoodEventMyPythia
+/// event selection predicate. returns true if the event contains
+/// a photon with pT > 25 GeV
+class IsGoodEventMyPythia {
 public:
+    /// returns true if event is "good"
     bool operator()( const HepMC::GenEvent* evt ) { 
 	for ( HepMC::GenEvent::particle_const_iterator p 
 		  = evt->particles_begin(); p != evt->particles_end(); ++p ){
@@ -71,7 +76,7 @@ int main() {
     // Instantiate an IO strategy for reading from HEPEVT.
     HepMC::IO_HEPEVT hepevtio;
     // declare an instance of the event selection predicate
-    IsGoodEvent is_good_event;
+    IsGoodEventMyPythia is_good_event;
     //........................................EVENT LOOP
     int icount=0;
     int num_good_events=0;

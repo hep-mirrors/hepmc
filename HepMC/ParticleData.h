@@ -52,14 +52,20 @@
 
 namespace HepMC {
 
-    // hbar * c --> calculated with units of [mm*GeV]
+    /// hbar * c --> calculated with units of [mm*GeV]
     static const double HepMC_hbarc   = (6.6260755e-34 * (1.e-6/1.60217733e-19) / (2*3.14159265358979323846))
                                         * (2.99792458e+8 * 1000.) * 1.e+3;
 
     // if you want to instantiate the particle lifetime from its width,
     // use this static method inside the constructor:
-    double clifetime_from_width( double width );
+    double clifetime_from_width( double width );  //!< set lifetime from width
 
+    //! an example ParticleData class
+    
+    ///
+    /// \class ParticleData
+    /// Particle Data common to all particles of a given PDG id
+    ///
     class ParticleData {
   
 	friend std::ostream&  operator<<( std::ostream&, const ParticleData& );
@@ -71,39 +77,48 @@ namespace HepMC {
 		      double cLifetime = -1, double spin = 0 );
 	virtual ~ParticleData();
 
-	bool    operator==( const ParticleData& ) const;
-	bool    operator!=( const ParticleData& ) const;
+	bool    operator==( const ParticleData& ) const; //!< equality
+	bool    operator!=( const ParticleData& ) const; //!< inequality
 
+        /// write particle data information to ostr
 	void    print( std::ostream& ostr = std::cout ) const;
 
-	bool    is_lepton() const;        // true if charged lepton /neutrino
-	bool    is_charged_lepton() const;// true if a charged lepton
-	bool    is_em() const;            // true if an electron or photon
-	bool    is_neutrino() const;      // true if a neutrino
-	bool    is_hadron() const;        // true if a hadron
-	bool    is_boson() const;         // true if a gauge or higgs boson
+	bool    is_lepton() const;        //!< true if charged lepton /neutrino
+	bool    is_charged_lepton() const;//!< true if a charged lepton
+	bool    is_em() const;            //!< true if an electron or photon
+	bool    is_neutrino() const;      //!< true if a neutrino
+	bool    is_hadron() const;        //!< true if a hadron
+	bool    is_boson() const;         //!< true if a gauge or higgs boson
 
 	////////////////////
 	// access methods //
 	////////////////////
+	
+	/// description of the particle according to PDG, i.e. "Delta(1900) S_31"
 	std::string  name() const;
+	/// PDG ID number
 	int          pdg_id() const;
+	/// charge
 	double       charge() const;
+	/// nominal mass
 	double       mass() const;
-	double       width() const; // width as calculated from clifetime
+	/// width as calculated from clifetime
+	double       width() const; 
+	/// lifetime in mm
 	double       clifetime() const;
+	/// J spin
 	double       spin() const;
 
-	void         set_charge( double );
-	void         set_mass( double );
-	void         set_width( double );
-	void         set_clifetime( double );
-	void         set_spin( double );
+	void         set_charge( double ); //!< set charge
+	void         set_mass( double ); //!< set nominal mass
+	void         set_width( double ); //!< set width
+	void         set_clifetime( double ); //!< set lifetime in mm
+	void         set_spin( double ); //!< set J spin
 
     protected:
-	static unsigned int counter(); // num ParticleData objects in memory
+	static unsigned int counter(); //!< num ParticleData objects in memory
     
-	// omits susy/excited/technicolor digit from returned ID
+	/// omits susy/excited/technicolor digit from returned ID
 	int    model_independent_pdg_id_() const;
 
     private:
@@ -123,28 +138,28 @@ namespace HepMC {
     ///////////////////////////
 
     inline bool ParticleData::is_lepton() const {
-	// true if a charged lepton or neutrino --> | 11,13,15,12,14,16,17,18 |
+	/// true if a charged lepton or neutrino --> | 11,13,15,12,14,16,17,18 |
 	return ( abs(pdg_id()) >=11 &&  abs(pdg_id()) <= 18 );
     }
     inline bool ParticleData::is_charged_lepton() const {
-	// true if a charged lepton --> | 11,13,15 |
+	/// true if a charged lepton --> | 11,13,15 |
 	return ( is_lepton() && abs(pdg_id())%2==1 );
     }
     inline bool ParticleData::is_neutrino() const {
-	// true if a neutrino --> | 12,14,16 |
+	/// true if a neutrino --> | 12,14,16 |
 	return ( is_lepton() && abs(pdg_id())%2==0 );
     }
     inline bool ParticleData::is_em() const {
-	// true if an electron or photon --> | 11, 22 |
+	/// true if an electron or photon --> | 11, 22 |
 	return ( abs(pdg_id()) == 11 || abs(pdg_id()) == 22 );
     }
     inline bool ParticleData::is_hadron() const {
-	// true if a hadron --> q,g,meson,baryon
+	/// true if a hadron --> q,g,meson,baryon
 	return ( abs(pdg_id()) <= 9 || abs(pdg_id()) == 21 
 		 || abs(pdg_id()) >100 );
     }
     inline bool ParticleData::is_boson() const {
-	// true if a gauge or higgs boson --> | 9, 21-39 | 
+	/// true if a gauge or higgs boson --> | 9, 21-39 | 
 	return ( ( abs(pdg_id()) >20 && abs(pdg_id()) <=40 )
 		 || abs(pdg_id()) == 9 );
     }

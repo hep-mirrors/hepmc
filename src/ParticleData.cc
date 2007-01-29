@@ -13,14 +13,14 @@ namespace HepMC {
 				double mass, double clifetime, double spin ) :
 	m_name(name), m_pdg_id(id), m_mass(mass), m_clifetime(clifetime)
     {
-	// Units ID: defined by PDG group (particles are +ve, antipart are -ve)
-	//              also consistent with the Pythia definitions
-	//       charge: fraction of proton charge
-	//       mass
-	//       cLifetime: c*time
-	// Default mass=0 and cLifetime is -1 which means stable (width= 0.)
-	// These defaults exist because many very basic MC generators
-	//   may produce only massless stable particles in the event record.
+	/// Units ID: defined by PDG group (particles are +ve, antipart are -ve)
+	///              also consistent with the Pythia definitions
+	///       charge: fraction of proton charge
+	///       mass
+	///       cLifetime: c*time
+	/// Default mass=0 and cLifetime is -1 which means stable (width= 0.)
+	/// These defaults exist because many very basic MC generators
+	///   may produce only massless stable particles in the event record.
 	//
 	set_charge(charge);
 	set_spin(spin);
@@ -31,10 +31,10 @@ namespace HepMC {
 				double mass, double clifetime, double spin ):
 	m_name(name), m_pdg_id(id), m_mass(mass), m_clifetime(clifetime)
     {
-	// note, this constructor is redundant to the one above, 
-	// i.e. one could use: 
-	// new HepMC::ParticleData(string("electron"),11,-1,0.000511,-1,.5);
-	// but we keep it because it is convenient.
+	/// note, this constructor is redundant to the one above, 
+	/// i.e. one could use: 
+	/// new HepMC::ParticleData(string("electron"),11,-1,0.000511,-1,.5);
+	/// but we keep it because it is convenient.
 	//
 	set_charge(charge);
 	set_spin(spin);	
@@ -59,10 +59,10 @@ namespace HepMC {
     ////////////////////
 
     int ParticleData::model_independent_pdg_id_() const { 
-	// returns the particle id with the seventh
-	// digit removed for susy/excited/technicolor particles.
-	// Thus en excited electron (40000011) would be returned as 11
-	// Useful only internally for sorting particles!
+	/// returns the particle id with the seventh
+	/// digit removed for susy/excited/technicolor particles.
+	/// Thus en excited electron (40000011) would be returned as 11
+	/// Useful only internally for sorting particles!
 	int id = m_pdg_id;
 	if ( id/1000000 >=1 && id/1000000 <= 4 ) id %= 1000000;
 	return id;
@@ -91,6 +91,7 @@ namespace HepMC {
     /////////////
 
     std::ostream& operator<<( std::ostream& ostr, const ParticleData& pdata ) {
+        /// write to ostr
 	char outline[80];
 	sprintf( outline,"%+9d%21s%+6.2f%19.11e%19.11e%5.1f",
 		 pdata.pdg_id(),
@@ -107,8 +108,8 @@ namespace HepMC {
     //////////////////////
 
     double clifetime_from_width( double width ) {
-	// if you want to instantiate the particle lifetime from its width,
-	// use this static method inside the constructor:
+	/// if you want to instantiate the particle lifetime from its width,
+	/// use this static method inside the constructor:
 	// i.e. new ParticleData(
 	if ( width > 0 ) return HepMC_hbarc/width;
 	if ( width == 0. ) return -1.;

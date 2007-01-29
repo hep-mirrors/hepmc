@@ -36,83 +36,112 @@ namespace HepMC {
     class GenVertex;
     class GenEvent; 
 
+
+    //! The GenParticle class contains information about generated particles
+
+    ///
+    /// \class GenParticle 
+    /// HepMC::GenParticle 
+    /// contains momentum, generated mass, particle ID, decay status, 
+    /// flow, polarization, pointers to production and decay vertices
+    /// and a unique barcode identfier.
+    ///
     class GenParticle {
 
 	friend class GenVertex; // so vertex can set decay/production vertexes
 	friend class GenEvent;  // so event can set the barCodes
+	/// print particle
 	friend std::ostream& operator<<( std::ostream&, const GenParticle& );
 
     public:
+        /// default constructor
         GenParticle(void);
+        /// constructor requires momentum and particle ID
  	GenParticle( const FourVector& momentum, int pdg_id,
 		     int status = 0, const Flow& itsflow = Flow(),
 		     const Polarization& polar = Polarization(0,0) );
-	GenParticle( const GenParticle& inparticle ); // shallow copy.
+	GenParticle( const GenParticle& inparticle ); //!< shallow copy.
 	virtual ~GenParticle();
 
-	GenParticle& operator=( const GenParticle& inparticle ); // shallow.
+	GenParticle& operator=( const GenParticle& inparticle ); //!< shallow.
+        /// check for equality
 	bool         operator==( const GenParticle& ) const;
+        /// check for inequality
 	bool         operator!=( const GenParticle& ) const;
 
-	// dump this particle's full info to ostr
+	/// dump this particle's full info to ostr
 	void       print( std::ostream& ostr = std::cout ) const; 
 
-	operator FourVector() const; // conversion operator
+	operator FourVector() const; //!< conversion operator
 
 	////////////////////
 	// access methods //
 	////////////////////
 
+	/// standard 4 momentum
 	FourVector           momentum() const;
+	/// particle ID
 	int                  pdg_id() const;
+	/// HEPEVT decay status
 	int                  status() const;
+	/// particle flow
 	Flow                 flow() const;
+	/// particle flow index
 	int                  flow( int code_index ) const;
+        /// polarization information
 	Polarization         polarization() const;
+	/// pointer to the production vertex
 	GenVertex*           production_vertex() const;
+	/// pointer to the decay vertex
 	GenVertex*           end_vertex() const;
+	/// pointer to the event that owns this particle
 	GenEvent*            parent_event() const;
 
-        double               generated_mass() const;
+        /// Because of precision issues, the generated mass is not always the 
+	/// same as the mass calculated from the momentum 4 vector.
+        /// If the generated mass has been set, then generated_mass() 
+	/// returns that value.
+        /// If the generated mass has not been set, then generated_mass() 
+	/// returns the mass calculated from the momentum 4 vector.
+        double               generated_mass() const; //!< mass as generated
+
+	/// generatedMass() is included for backwards compatibility with CLHEP HepMC
         inline double        generatedMass() const { return generated_mass(); }
-	//  generatedMass() is included for backwards compatibility with CLHEP HepMC
-        // because of precision issues, the generated mass is not always the same as the calculated mass
-        //         GenParticle.generated_mass() [generated mass]
-        //         GenParticle.momentum().m()  [calculated mass]
-        // by default, generated_mass() is the mass calculated from the momentum 4 vector
-        // call set_generated_mass(..) to define the actual generated mass
 
 
-	//
-	// The barcode is the particle's reference number, every vertex in the
-	//  event has a unique barcode. Particle barcodes are positive numbers,
-	//  vertex barcodes are negative numbers.
-	// In general there is no reason to "suggest_barcode", if a particle is
-	//  added to the event without a suggested barcode, the event will
-	//  assign one for it.
-	int                  barcode() const;
+	///
+	/// The barcode is the particle's reference number, every vertex in the
+	///  event has a unique barcode. Particle barcodes are positive numbers,
+	///  vertex barcodes are negative numbers.
+	int                  barcode() const; //!< particle barcode
+
+	/// In general there is no reason to "suggest_barcode"
 	bool                 suggest_barcode( int the_bar_code );
 
-	void   set_momentum( const FourVector& vec4 );
-	void   set_pdg_id( int id );
-	void   set_status( int status = 0 );
-	void   set_flow( const Flow& f );
-	void   set_flow( int code_index, int code = 0 );
+	void   set_momentum( const FourVector& vec4 ); //!< set standard 4 momentum
+	void   set_pdg_id( int id ); //!< set particle ID
+	void   set_status( int status = 0 ); //!< set decay status
+	void   set_flow( const Flow& f ); //!< set particle flow
+	void   set_flow( int code_index, int code = 0 ); //!< set particle flow index
+	/// set polarization
 	void   set_polarization( const Polarization& pol = Polarization(0,0) );
-        void   set_generated_mass( const double & m );
+        ///  If you do not call set_generated_mass(), then 
+        ///  generated_mass() will simply return the mass calculated from momentum()
+        void   set_generated_mass( const double & m ); //!< define the actual generated mass
+
+	///  setGeneratedMass() is included for backwards compatibility with CLHEP HepMC
         void   setGeneratedMass( const double & m )  
 	                 { return set_generated_mass(m); }
-	//  setGeneratedMass() is included for backwards compatibility with CLHEP HepMC
-        //  If you do not call set_generated_mass(), then 
-        //  generated_mass() will simply return the mass calculated from momentum()
 
     protected: // for internal use only by friend GenVertex class
 
-	static unsigned int counter(); // temporary for debugging
+	static unsigned int counter(); //!< temporary for debugging
 
+        /// set production vertex
 	void   set_production_vertex_( GenVertex* productionvertex = 0);
+        /// set decay vertex
 	void   set_end_vertex_( GenVertex* decayvertex = 0 );
-	void   set_barcode_( int the_bar_code ); // for use by GenEvent only
+	void   set_barcode_( int the_bar_code ); //!< for use by GenEvent only
 
     private:
 	FourVector       m_momentum;          // momentum vector

@@ -31,13 +31,22 @@
 
 namespace HepMC {
 
+    /// type of iteration
     enum IteratorRange { parents, children, family, 
 			 ancestors, descendants, relatives };
     class GenParticle;
     class GenEvent;
 
+    //! GenVertex contains information about decay vertices.
+
+    ///
+    /// \class GenVertex 
+    /// HepMC::GenVertex contains the position in space and time of a decay.
+    /// It also contains lists of incoming and outgoing particles.  
+    ///
     class GenVertex {
 
+        /// print vertex information
 	friend std::ostream& operator<<( std::ostream&, const GenVertex& );
 	friend class GenEvent;
 
@@ -53,80 +62,95 @@ namespace HepMC {
 #endif // NEED_SOLARIS_FRIEND_FEATURE
 
     public:
+        /// default constructor
 	GenVertex( const FourVector& position =FourVector(0,0,0,0),
 		   int id = 0, 
 		   const WeightContainer& weights = std::vector<double>() );
-	GenVertex( const GenVertex& invertex );            // shallow copy
+	GenVertex( const GenVertex& invertex );            //!< shallow copy
 	virtual    ~GenVertex();
 
-	GenVertex& operator= ( const GenVertex& invertex ); // shallow
-	bool       operator==( const GenVertex& a ) const;
-	bool       operator!=( const GenVertex& a ) const;
-	void       print( std::ostream& ostr = std::cout ) const;
+	GenVertex& operator= ( const GenVertex& invertex ); //!< shallow
+	bool       operator==( const GenVertex& a ) const; //!< equality
+	bool       operator!=( const GenVertex& a ) const; //!< inequality
+	void       print( std::ostream& ostr = std::cout ) const; //!< print vertex information
 
-	double     check_momentum_conservation() const;//|Sum (mom_in-mom_out)|
+	double     check_momentum_conservation() const;//!< |Sum (mom_in-mom_out)|
 
+	/// add incoming particle
 	void       add_particle_in( GenParticle* inparticle );
+	/// add outgoing particle
 	void       add_particle_out( GenParticle* outparticle );
-	// remove_particle finds *particle in the in and/or out list and
-	//  removes it from these lists ... it DOES NOT DELETE THE PARTICLE 
-	//  or its relations. You could delete the particle too as follows:
-	//      delete vtx->remove_particle( particle );
-	GenParticle* remove_particle( GenParticle* particle );
+	/// remove_particle finds *particle in the in and/or out list and
+	///  removes it from these lists ... it DOES NOT DELETE THE PARTICLE 
+	///  or its relations. You could delete the particle too as follows:
+	///      delete vtx->remove_particle( particle );
+	GenParticle* remove_particle( GenParticle* particle ); //!< remove a particle
 
-	operator    FourVector() const; // conversion operator
-	operator   ThreeVector() const; // conversion operator
+	operator    FourVector() const; //!< conversion operator
+	operator   ThreeVector() const; //!< conversion operator
 
 	////////////////////
 	// access methods //
 	////////////////////
 
+	/// pointer to the event that owns this vertex
 	GenEvent*               parent_event() const;
+	/// vertex position
 	ThreeVector             point3d() const;
+	/// vertex position and time
 	FourVector              position() const;
+	/// set vertex position and time
 	void                    set_position( const FourVector& position = FourVector(0,0,0,0) );
-	// we don't define what you use the id for -- but we imagine,
-	// for example it might code the meaning of the weights()
-	int                     id() const;
-	void                    set_id( int id );
+	/// we don't define what you use the id for -- but we imagine,
+	/// for example it might code the meaning of the weights()
+	int                     id() const;  //!< vertex ID
+	void                    set_id( int id );  //!< set vertex ID
 
-	//
-	// The barcode is the vertex's reference number, every vertex in the
-	//  event has a unique barcode. Vertex barcodes are negative numbers,
-	//  particle barcodes are positive numbers.
-	// In general there is no reason to "suggest_barcode", if a vertex is
-	//  added to the event without a suggested barcode, the event will
-	//  assign one for it.
-	int                     barcode() const;
+	///
+	/// The barcode is the vertex's reference number, every vertex in the
+	///  event has a unique barcode. Vertex barcodes are negative numbers,
+	///  particle barcodes are positive numbers.
+	int                     barcode() const; //!< unique identifier
+
+	/// In general there is no reason to "suggest_barcode"
 	bool                    suggest_barcode( int the_bar_code );
 	
-	// direct access to the weights container is allowed. 
+	/// direct access to the weights container is allowed. 
 	WeightContainer&        weights();
+	/// const direct access to the weights container
 	const WeightContainer&  weights() const;
 
 	////////////////////
 	// Iterators      // users should use prefer to use particle_iterator
 	////////////////////    
 
+	/// const iterator for incoming particles
 	typedef std::set<GenParticle*>::const_iterator 
 	particles_in_const_iterator;
+	/// const iterator for outgoing particles
 	typedef std::set<GenParticle*>::const_iterator 
 	particles_out_const_iterator;
+	/// begin iteration of incoming particles
 	particles_in_const_iterator         particles_in_const_begin() const;
+	/// end iteration of incoming particles
 	particles_in_const_iterator         particles_in_const_end() const;
+	/// begin iteration of outgoing particles
 	particles_out_const_iterator        particles_out_const_begin() const;
+	/// end iteration of outgoing particles
 	particles_out_const_iterator        particles_out_const_end() const;
+	/// number of incoming particles
 	int                                 particles_in_size() const;
+	/// number of outgoing particles
 	int                                 particles_out_size() const;
 
     protected:
-	static unsigned int     counter(); // temporary for debugging
+	static unsigned int     counter(); //!< temporary for debugging
 
-	// only the GenEvent (friend) is allowed to set the parent_event,
-	//  and barcode. It is done automatically anytime you add a 
-	//  vertex to an event
-	void                    set_parent_event_( GenEvent* evt );
-	void                    set_barcode_( int the_bar_code );
+	/// only the GenEvent (friend) is allowed to set the parent_event,
+	///  and barcode. It is done automatically anytime you add a 
+	///  vertex to an event
+	void                    set_parent_event_( GenEvent* evt ); //!< set parent event
+	void                    set_barcode_( int the_bar_code ); //!< set identifier
 
 	/////////////////////////////
 	// edge_iterator           // (protected - for internal use only)
@@ -134,26 +158,41 @@ namespace HepMC {
 	// If the user wants the functionality of the edge_iterator, he should
 	// use particle_iterator with IteratorRange = family, parents, children
 	//
+
+	//!  edge iterator
+
+	/// \class  edge_iterator
+	/// iterate over the family of edges connected to m_vertex begins 
+	/// with parents (incoming particles) then children (outgoing)
+	/// This is not a recursive iterator ... it is a building block
+	/// for the public iterators and is intended for internal use only.
+	/// The acceptable Iterator Ranges are: family, parents, children
 	class edge_iterator :
 	  public std::iterator<std::forward_iterator_tag,GenParticle*,ptrdiff_t>{
-	    // iterate over the family of edges connected to m_vertex begins 
-	    // with parents (incoming particles) then children (outgoing)
-	    // This is not a recursive iterator ... it is a building block
-	    // for the public iterators and is intended for internal use only.
-	    // The acceptable Iterator Ranges are: family, parents, children
 	public:
 	    edge_iterator();
+	    /// used to set limits on the iteration
 	    edge_iterator( const GenVertex& vtx, IteratorRange range =family );
+	    /// copy
 	    edge_iterator( const edge_iterator& p );
 	    virtual        ~edge_iterator();
+	    /// make a copy
 	    edge_iterator& operator=( const edge_iterator& p );
+	    /// return a pointer to a particle
 	    GenParticle*      operator*(void) const;
+	    /// Pre-fix increment 
 	    edge_iterator& operator++(void); // Pre-fix increment 
+	    /// Post-fix increment
 	    edge_iterator  operator++(int);   // Post-fix increment
+	    /// equality
 	    bool           operator==( const edge_iterator& a ) const;
+	    /// inequality
 	    bool           operator!=( const edge_iterator& a ) const;
-	    bool           is_parent() const; // true if parent of root vtx
-	    bool           is_child() const;  // true if child of root vtx
+	    /// true if parent of root vtx
+	    bool           is_parent() const;
+	    /// true if child of root vtx
+	    bool           is_child() const;
+	    /// root vertex of this iteration
 	    const GenVertex*  vertex_root() const;
 	private:
 	    const GenVertex*  m_vertex;
@@ -163,52 +202,73 @@ namespace HepMC {
 	    bool           m_is_past_end;
 	};
 	friend class edge_iterator;
+	/// size
 	int              edges_size( IteratorRange range = family ) const;
+	/// begin range
 	edge_iterator    edges_begin( IteratorRange range = family) const;
+	/// end range
 	edge_iterator    edges_end( IteratorRange /* dummy_range */ ) const;
 
     public:
 	///////////////////////////////
 	// vertex_iterator           //
 	///////////////////////////////
+
+	//!  vertex iterator
+
+	/// \class  vertex_iterator
+	/// Iterates over all vertices connected via a graph to this vertex.
+	/// this is made friend to that it can access protected edge
+	/// iterator the range can be IteratorRange= ( parents, children, 
+	/// family, ancestors, descendants, relatives )
+	/// example for range=descendants the iterator 
+	/// will return all vertices
+	/// which are children (connected by an outgoing particle edge),
+	/// grandchildren, great-grandchildren, etc. of this vertex
+	/// In all cases the iterator always returns this vertex
+	/// (returned last).
+	/// The algorithm is accomplished by converting the graph to a tree
+	/// (by "chopping" the edges connecting to an already visited
+	/// vertex) and returning the vertices in POST ORDER traversal.
+	///
 	class vertex_iterator :
 	  public std::iterator<std::forward_iterator_tag,GenVertex*,ptrdiff_t>{
-	    // Iterates over all vertices connected via a graph to this vertex.
-	    // this is made friend to that it can access protected edge
-	    // iterator the range can be IteratorRange= ( parents, children, 
-	    // family, ancestors, descendants, relatives )
-	    // example for range=descendants the iterator 
-	    // will return all vertices
-	    // which are children (connected by an outgoing particle edge),
-	    // grandchildren, great-grandchildren, etc. of this vertex
-	    // In all cases the iterator always returns this vertex
-	    // (returned last).
-	    // The algorithm is accomplished by converting the graph to a tree
-	    // (by "chopping" the edges connecting to an already visited
-	    // vertex) and returning the vertices in POST ORDER traversal.
-	    //
 	public:
 	    vertex_iterator();
+	    /// used to set limits on the iteration
 	    vertex_iterator( GenVertex& vtx_root, IteratorRange range );
-	    // next constructor is intended for internal use only
+	    /// next constructor is intended for internal use only
 	    vertex_iterator( GenVertex& vtx_root, IteratorRange range,
 			     std::set<const GenVertex*>& visited_vertices );
+            /// copy
 	    vertex_iterator( const vertex_iterator& v_iter );
 	    virtual             ~vertex_iterator();
+	    /// make a copy
 	    vertex_iterator&    operator=( const vertex_iterator& );
+	    /// return a pointer to a vertex
 	    GenVertex*          operator*(void) const;
+	    /// Pre-fix increment 
 	    vertex_iterator&    operator++(void);  //Pre-fix increment 
+	    /// Post-fix increment
 	    vertex_iterator     operator++(int);   //Post-fix increment
+	    /// equality
 	    bool                operator==( const vertex_iterator& ) const;
+	    /// inequality
 	    bool                operator!=( const vertex_iterator& ) const;
+	    /// vertex that this iterator begins from
 	    GenVertex*          vertex_root() const;
+	    /// iterator range
 	    IteratorRange       range() const;
+	    /// intended for internal use only.
 	    void                copy_with_own_set( const vertex_iterator& 
 						   v_iter,
 						   std::set<const GenVertex*>& 
 						   visited_vertices );
+
 	protected:                  // intended for internal use only
-	    GenVertex* follow_edge_(); // non-null if recursive iter. created
+	    /// non-null if recursive iter. created
+	    GenVertex* follow_edge_(); 
+	    /// copy recursive iterator
 	    void    copy_recursive_iterator_( const vertex_iterator* 
 					      recursive_v_iter );
 	private:
@@ -221,47 +281,64 @@ namespace HepMC {
 	    vertex_iterator* m_recursive_iterator;
 	};	
 	friend class vertex_iterator;
+	/// begin vertex range
 	vertex_iterator     vertices_begin( IteratorRange range = relatives );
+	/// end vertex range
 	vertex_iterator     vertices_end( IteratorRange /* dummy_range */ );
  
     public:
 	///////////////////////////////
 	// particle_iterator         //
 	///////////////////////////////
-	class particle_iterator :
+
+	//!  particle iterator
+
+	/// \class  particle_iterator
+	/// Iterates over all particles connected via a graph.
+	/// by iterating through all vertices in the m_range. For each
+	/// vertex it returns orphaned parent particles 
+	/// (i.e. parents without production vertices) 
+	/// then children ... in this way each particle is associated
+	/// to exactly one vertex and so it is returned exactly once.
+	/// Is made friend so that it can access protected edge iterator
+ 	class particle_iterator :
 	  public std::iterator<std::forward_iterator_tag,GenParticle*,ptrdiff_t>{
-	    // Iterates over all particles connected via a graph.
-	    // by iterating through all vertices in the m_range. For each
-	    // vertex it returns orphaned parent particles 
-	    // (i.e. parents without production vertices) 
-	    // then children ... in this way each particle is associated
-	    // to exactly one vertex and so it is returned exactly once.
-	    // Is made friend so that it can access protected edge iterator
 	public:
 	    particle_iterator();
+	    /// used to set limits on the iteration
 	    particle_iterator( GenVertex& vertex_root, IteratorRange range );
+	    /// copy
 	    particle_iterator( const particle_iterator& );
 	    virtual             ~particle_iterator();
+	    /// make a copy
 	    particle_iterator&  operator=( const particle_iterator& );
+	    /// return a pointer to a particle
 	    GenParticle*        operator*(void) const;
-	    particle_iterator&  operator++(void);  //Pre-fix increment 
-	    particle_iterator   operator++(int);   //Post-fix increment
+	    /// Pre-fix increment 
+	    particle_iterator&  operator++(void); 
+	    /// Post-fix increment
+	    particle_iterator   operator++(int); 
+	    /// equality
 	    bool                operator==( const particle_iterator& ) const;
+	    /// inequality
 	    bool                operator!=( const particle_iterator& ) const;
 	protected:
-	    GenParticle*        advance_to_first_();
+	    GenParticle*        advance_to_first_(); //!< "first" particle
 	private:
 	    vertex_iterator     m_vertex_iterator;
 	    edge_iterator       m_edge;     // points to the return
 	};
 	friend class particle_iterator;
+	/// begin particle range
 	particle_iterator       particles_begin( IteratorRange range 
 						 = relatives );
+	/// end particle range
 	particle_iterator       particles_end( IteratorRange 
 					       /* dummy_range */ );
 
 	////////////////////////////////////////////////
-    protected: // for internal use only
+    protected: 
+        /// for internal use only
 	void delete_adopted_particles();
 	
     private: // GenVertex data members

@@ -28,19 +28,19 @@ namespace HepMC {
     }
 
     bool IO_HEPEVT::fill_next_event( GenEvent* evt ) {
-	// read one event from the HEPEVT common block and fill GenEvent
-	// return T/F =success/failure
-	//
-	// For HEPEVT commons built with the luhepc routine of Pythia 5.7
-	//  the children pointers are not always correct (i.e. there is 
-	//  oftentimes an internal inconsistency between the parents and 
-	//  children pointers). The parent pointers always seem to be correct.
-	// Thus the switch trust_mothers_before_daughters=1 is appropriate for
-	//  pythia. NOTE: you should also set the switch MSTP(128) = 2 in 
-	//                pythia (not the default!), so that pythia doesn't
-	//                store two copies of resonances in the event record.
-	// The situation is opposite for the HEPEVT which comes from Isajet
-	// via stdhep, so then use the switch trust_mothers_before_daughters=0
+	/// read one event from the HEPEVT common block and fill GenEvent
+	/// return T/F =success/failure
+	///
+	/// For HEPEVT commons built with the luhepc routine of Pythia 5.7
+	///  the children pointers are not always correct (i.e. there is 
+	///  oftentimes an internal inconsistency between the parents and 
+	///  children pointers). The parent pointers always seem to be correct.
+	/// Thus the switch trust_mothers_before_daughters=1 is appropriate for
+	///  pythia. NOTE: you should also set the switch MSTP(128) = 2 in 
+	///                pythia (not the default!), so that pythia doesn't
+	///                store two copies of resonances in the event record.
+	/// The situation is opposite for the HEPEVT which comes from Isajet
+	/// via stdhep, so then use the switch trust_mothers_before_daughters=0
 	//
 	// 1. test that evt pointer is not null and set event number
 	if ( !evt ) {
@@ -101,11 +101,11 @@ namespace HepMC {
     }
 
     void IO_HEPEVT::write_event( const GenEvent* evt ) {
-	// This writes an event out to the HEPEVT common block. The daughters
-	// field is NOT filled, because it is possible to contruct graphs
-	// for which the mothers and daughters cannot both be make sequential.
-	// This is consistent with how pythia fills HEPEVT (daughters are not
-	// necessarily filled properly) and how IO_HEPEVT reads HEPEVT.
+	/// This writes an event out to the HEPEVT common block. The daughters
+	/// field is NOT filled, because it is possible to contruct graphs
+	/// for which the mothers and daughters cannot both be make sequential.
+	/// This is consistent with how pythia fills HEPEVT (daughters are not
+	/// necessarily filled properly) and how IO_HEPEVT reads HEPEVT.
 	//
 	if ( !evt ) return;
 	//
@@ -182,9 +182,9 @@ namespace HepMC {
 					    std::vector<GenParticle*>& 
 					    hepevt_particle,
 					    GenEvent* evt ) {
-	// 
-	// for particle in HEPEVT with index i, build a production vertex
-	// if appropriate, and add that vertex to the event
+	/// 
+	/// for particle in HEPEVT with index i, build a production vertex
+	/// if appropriate, and add that vertex to the event
 	GenParticle* p = hepevt_particle[i];
 	// a. search to see if a production vertex already exists
 	int mother = HEPEVT_Wrapper::first_parent(i);
@@ -246,9 +246,9 @@ namespace HepMC {
     void IO_HEPEVT::build_end_vertex
     ( int i, std::vector<GenParticle*>& hepevt_particle, GenEvent* evt ) 
     {
-	// 
-	// for particle in HEPEVT with index i, build an end vertex
-	// if appropriate, and add that vertex to the event
+	/// 
+	/// for particle in HEPEVT with index i, build an end vertex
+	/// if appropriate, and add that vertex to the event
 	//    Identical steps as for build_production_vertex
 	GenParticle* p = hepevt_particle[i];
 	// a.
@@ -313,7 +313,7 @@ namespace HepMC {
     }
 
     GenParticle* IO_HEPEVT::build_particle( int index ) {
-	// Builds a particle object corresponding to index in HEPEVT
+	/// Builds a particle object corresponding to index in HEPEVT
 	// 
 	GenParticle* p 
 	    = new GenParticle( FourVector( HEPEVT_Wrapper::px(index), 

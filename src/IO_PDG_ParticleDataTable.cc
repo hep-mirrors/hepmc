@@ -164,7 +164,7 @@ namespace HepMC {
 
     void IO_PDG_ParticleDataTable::add_quarks_to_table( 
 	ParticleDataTable& pdt ) {
-	// since quarks aren't included in PDG table, this method adds them
+	/// since quarks aren't included in PDG table, this method adds them
 	// in
 	std::vector<std::string> name(6);
 	name[0] = "d";
@@ -202,10 +202,10 @@ namespace HepMC {
 
     bool IO_PDG_ParticleDataTable::search_for_key_end( std::istream& in, 
 						       const char* key ) {
-	// (this method borrowed from IO_Ascii class)
-        // reads characters from in until the string of characters matching
-        // key is found (success) or EOF is reached (failure).
-        // It stops immediately thereafter. Returns T/F for success/fail
+	/// (this method borrowed from IO_Ascii class)
+        /// reads characters from in until the string of characters matching
+        /// key is found (success) or EOF is reached (failure).
+        /// It stops immediately thereafter. Returns T/F for success/fail
         // 
         char c[1];
         unsigned int index = 0;
