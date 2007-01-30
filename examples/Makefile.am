@@ -19,6 +19,7 @@ EXTRA_DIST = \
     example_ReadPDGtable.cc \
     example_UsingIterators.cc \
     initpydata.f \
+    VectorConversion.h \
     example_UsingIterators.txt \
     PDG_ParticleDataTable.txt
 

@@ -8,12 +8,17 @@
 // gmake examples/example_BuildEventFromScratch.exe
 //
 
+#include <iostream>
+
+#include "VectorConversion.h"
 #include "HepMC/GenEvent.h"
 #include "HepMC/ParticleDataTable.h"
 #include "CLHEP/Vector/LorentzVector.h"
 
 // in this example we use the HepMC namespace, so that we do not have to 
 // precede all HepMC classes with HepMC::
+
+// This example also shows how to use the CLHEP Lorentz vector with HepMC2
 
 using namespace HepMC;
 using namespace CLHEP;
@@ -59,6 +64,9 @@ int main() {
     //
 
     // First create the event container, with Signal Process 20, event number 1
+    //
+    // Note that the HepLorentzVectors will be automatically converted to 
+    // HepMC::FourVector within GenParticle and GenVertex
     GenEvent* evt = new GenEvent( 20, 1 );
     //
     // create vertex 1 and vertex 2, together with their inparticles
@@ -92,7 +100,7 @@ int main() {
     v3->add_particle_out( p5 );
     //
     // create v4
-    GenVertex* v4 = new GenVertex();
+    GenVertex* v4 = new GenVertex(HepLorentzVector(0.12,-0.3,0.05,0.004));
     evt->add_vertex( v4 );
     v4->add_particle_in( p5 );
     v4->add_particle_out( 
@@ -106,6 +114,20 @@ int main() {
     evt->set_signal_process_vertex( v3 );
     // the event is complete, we now print it out to the screen
     evt->print();
+    
+    // example conversion back to Lorentz vector
+    // add all outgoing momenta
+    std::cout << std::endl;
+    std::cout << " Add output momenta " << std::endl;
+    HepLorentzVector sum;
+    for ( GenEvent::particle_const_iterator p = evt->particles_begin(); 
+	      p != evt->particles_end(); ++p ){
+	if( (*p)->status() == 1 ) {
+	    sum += SVtoLV( (*p)->momentum() );
+	    (*p)->print();
+	}
+    }
+    std::cout << "Vector Sum: " << sum << std::endl;
 
     // now clean-up by deleteing all objects from memory
     //

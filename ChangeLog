@@ -1,4 +1,11 @@
 
+2007-01-30 Lynn Garren
+
+	* examples/example_BuildEventFromScratch.cc: add example of 
+	  conversion from SimpleVector to HepLorentzVector
+	* examples/VectorConversion.h: VectorConversion.h is meant as a 
+	  template for user code converting to the vector of your choice.
+
 2007-01-29 Lynn Garren
 
 	* fix everything so doxygen will create a useful reference manual
@@ -7,8 +14,8 @@
 
 2007-01-25 Lynn Garren
 
-	* example/example_MyPythiaRead.cc: read in the events you just wrote
-	* example/*.cc: put all uses of IO_Ascii within an explicit scope
+	* examples/example_MyPythiaRead.cc: read in the events you just wrote
+	* examples/*.cc: put all uses of IO_Ascii within an explicit scope
 
 	* configure.in, doc/Makefile.am: if latex is found, get the path
 

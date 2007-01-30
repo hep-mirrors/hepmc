@@ -47,6 +47,7 @@ endif
 		  example_EventSelection.exe	\
 		  example_MyHerwig.exe	\
 		  example_MyPythia.exe	\
+		  example_MyPythiaRead.exe	\
 		  example_MyPythiaOnlyToHepMC.exe	\
 		  example_MyPythiaWithEventSelection.exe	\
 		  example_PythiaParticle.exe	\
