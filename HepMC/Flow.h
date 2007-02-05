@@ -134,10 +134,12 @@ namespace HepMC {
         const_iterator      end() const;
 
     protected: // intended for internal use only
+        /// for internal use only
 	void            connected_partners( std::set<GenParticle*>* output, 
 					    int code,
 					    int code_index,
 					    int num_indices ) const;
+        /// for internal use only
 	void            dangling_connected_partners( std::set<GenParticle*>* 
 						     output, 
 						     std::set<GenParticle*>*

@@ -130,11 +130,14 @@ namespace HepMC {
     class HEPEVT_Wrapper {
     public:
 
+        /// write information from HEPEVT common block
 	static void print_hepevt( std::ostream& ostr = std::cout );
+	/// write particle information to ostr
 	static void print_hepevt_particle( int index, 
 					   std::ostream& ostr = std::cout );
         static bool is_double_precision();  //!< True if common block uses double
 
+        /// check for problems with HEPEVT common block
 	static bool check_hepevt_consistency( std::ostream& ostr = std::cout );
 
         /// set all entries in HEPEVT to zero

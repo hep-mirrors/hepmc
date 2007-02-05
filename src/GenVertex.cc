@@ -396,8 +396,8 @@ namespace HepMC {
     // Friends //
     /////////////
 
+    /// send vertex information to ostr for printing
     std::ostream& operator<<( std::ostream& ostr, const GenVertex& vtx ) {
-        /// send vertex information to ostr for printing
 	if ( vtx.barcode()!=0 ) ostr << "BarCode " << vtx.barcode();
 	else ostr << "Address " << &vtx;
 	ostr << " (X,cT)=";

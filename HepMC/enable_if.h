@@ -12,14 +12,16 @@ namespace detail {
 // ----------------------------------------------------------------------
 // enable_if<>
 
+/// internal - used to decide if a class is arithmetic
 template< bool, class >
 struct enable_if
 { };
 
+/// internal - use if class T is arithmetic
 template< class T >
 struct enable_if<true, T>
 {
-  typedef  T  type;
+  typedef  T  type;	//!< check type of class T
 };
 
 
@@ -35,7 +37,7 @@ struct disable_if
 template< class T >
 struct disable_if<false, T>
 {
-  typedef  T  type;
+  typedef  T  type;	//!< check type of class T
 };
 
 

@@ -90,8 +90,8 @@ namespace HepMC {
     // Friends //
     /////////////
 
+    /// write to ostr
     std::ostream& operator<<( std::ostream& ostr, const ParticleData& pdata ) {
-        /// write to ostr
 	char outline[80];
 	sprintf( outline,"%+9d%21s%+6.2f%19.11e%19.11e%5.1f",
 		 pdata.pdg_id(),

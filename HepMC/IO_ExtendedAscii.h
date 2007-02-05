@@ -112,8 +112,10 @@ namespace HepMC {
 	/// look for line type (key)
 	bool          search_for_key_end( std::istream& in, 
 					  const char* key);
+	/// look for line type (key)
 	bool          search_for_key_beginning( std::istream& in, 
 						const char* key );
+	/// string manipulation accounting
 	bool          eat_key( std::iostream& in, const char* key );
 	/// find this vertex in the map of vertices
 	int           find_in_map( const std::map<GenVertex*,int>& m, 

@@ -80,8 +80,8 @@ namespace HepMC {
     // Friends //
     /////////////
 
-    std::ostream& operator<<( std::ostream& ostr, const Polarization& polar ) {
     /// write theta and phi to the output stream
+    std::ostream& operator<<( std::ostream& ostr, const Polarization& polar ) {
 	return ostr << "(" << polar.theta() 
 		    << ","  << polar.phi() << ")";
     }

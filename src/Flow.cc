@@ -177,8 +177,8 @@ namespace HepMC {
     // Friends //
     /////////////
 
-    std::ostream& operator<<( std::ostream& ostr, const Flow& f ) {
         /// send Flow informatin to ostr for printing
+    std::ostream& operator<<( std::ostream& ostr, const Flow& f ) {
 	ostr << f.m_icode.size();
 	for ( std::map<int,int>::const_iterator i = f.m_icode.begin();
 	      i != f.m_icode.end(); ++i ) {

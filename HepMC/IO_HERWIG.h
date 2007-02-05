@@ -98,9 +98,12 @@ namespace HepMC {
         /// define mother daughter trust rules
 	void              set_trust_both_mothers_and_daughters( bool b = 0 );
 
+        /// make a particle
 	GenParticle* build_particle( int index );
+	/// make a production vertex
 	void         build_production_vertex( 
 	    int i,std::vector<GenParticle*>& hepevt_particle, GenEvent* evt );
+	/// make a decay vertex
 	void         build_end_vertex( 
 	    int i, std::vector<GenParticle*>& hepevt_particle, GenEvent* evt );
         /// find this particle in the map

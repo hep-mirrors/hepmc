@@ -71,8 +71,10 @@ namespace HepMC {
 	friend std::ostream&  operator<<( std::ostream&, const ParticleData& );
 
     public:
+        /// constructor requiring name, ID, and charge
 	ParticleData( std::string name, int id, double charge, double mass = 0,
 		      double cLifetime = -1, double spin = 0 );
+        /// constructor requiring name, ID, and charge
 	ParticleData( const char* name, int id, double charge, double mass = 0,
 		      double cLifetime = -1, double spin = 0 );
 	virtual ~ParticleData();

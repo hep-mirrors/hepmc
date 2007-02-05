@@ -1,6 +1,10 @@
 
 2007-01-30 Lynn Garren
 
+	* doc/doxygen.conf: use doxygen 1.5.1
+
+2007-01-30 Lynn Garren
+
 	* examples/example_BuildEventFromScratch.cc: add example of 
 	  conversion from SimpleVector to HepLorentzVector
 	* examples/VectorConversion.h: VectorConversion.h is meant as a 

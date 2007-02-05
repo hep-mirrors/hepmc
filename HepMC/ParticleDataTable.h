@@ -46,9 +46,12 @@ namespace HepMC {
 	/// shallow: does not copy the entries, only makes new pointers 
 	ParticleDataTable& operator=( const ParticleDataTable& );
 
+        /// make corresponding anti-particles for all particles in table
 	void    make_antiparticles_from_particles();
+	/// merge two tables
 	int     merge_table( const ParticleDataTable& );
 
+        /// write the table to ostr
 	void    print( std::ostream& ostr = std::cout ) const;
 
 	void    delete_all(); //!<delete all ParticleData instances in this table

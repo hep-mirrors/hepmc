@@ -166,8 +166,9 @@ namespace HepMC {
     /////////////
     // Friends //
     /////////////
+
+    /// Dump this particle's full info to ostr
     std::ostream& operator<<( std::ostream& ostr, const GenParticle& part ) {
-	/// Dump this particle's full info to ostr
 	ostr << " ";
 	ostr.width(9);
 	ostr << part.barcode();

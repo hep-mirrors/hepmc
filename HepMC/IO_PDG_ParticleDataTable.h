@@ -54,6 +54,7 @@ namespace HepMC {
 	virtual ~IO_PDG_ParticleDataTable();
 	/// read the input and fill the table
 	bool    fill_particle_data_table( ParticleDataTable* );
+	/// add u, d, s, c, b, and t
 	void    add_quarks_to_table( ParticleDataTable& );
 	/// write to ostr
 	void    print( std::ostream& ostr = std::cout ) const;
@@ -61,6 +62,7 @@ namespace HepMC {
         /// check the IO state
 	int     rdstate() const { return (int)m_file.rdstate(); }
     protected: // for internal use only
+        /// for internal use
 	bool search_for_key_end( std::istream& in, const char* key );
 	/// read a line
 	void read_entry( ParticleDataTable* );
