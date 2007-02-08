@@ -15,7 +15,7 @@ automake --add-missing --copy
 autoconf
 
 # run doxygen if present
-if [ `whereis doxygen | wc -w` == 2 ]; then
+if [ `whereis doxygen | wc -w` > 1 ]; then
    cd doc; doxygen doxygen.conf
 fi
 
