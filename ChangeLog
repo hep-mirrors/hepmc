@@ -1,5 +1,9 @@
   --------------------------  HepMC-2.00.02  --------------------------
 
+2007-02-12 Lynn Garren
+
+	* test/testHepMC.sh.in: works on Windows (Cygwin), MacOSX, and Linux
+
 2007-02-07 Lynn Garren
 
 	* doc/doxygen-template: provide an html template

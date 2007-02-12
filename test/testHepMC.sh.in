@@ -7,14 +7,19 @@
 ./testHepMC@EXEEXT@ \
  | @DIFF_Q@ - @srcdir@/testHepMC.output > /dev/null
 
-# MacOSX fix
 OS=`uname`
-if [ $OS == "Darwin" ]; then 
- sed 's/e-00/e+00/g'  @srcdir@/testHepMCParticle.output | \
-       @DIFF_Q@ - testHepMCParticle.out
-else
- @DIFF_Q@ testHepMCParticle.out @srcdir@/testHepMCParticle.output
-fi
+case "$OS" in
+CYGWIN*)
+  #don't compare these on Windows (hopelessly different default output)
+  ;;
+Darwin*)
+  # MacOSX fix
+  sed 's/e-00/e+00/g'  @srcdir@/testHepMCParticle.output | \
+	@DIFF_Q@ - testHepMCParticle.out
+  ;;
+*)
+  @DIFF_Q@ testHepMCParticle.out @srcdir@/testHepMCParticle.output
+esac
 
 # perform the following comparisons by hand
 # Particles within a vertex are not written in a defined order
