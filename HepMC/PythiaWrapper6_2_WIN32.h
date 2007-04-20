@@ -151,15 +151,15 @@ extern "C" {
     void __stdcall PYDATA(void);
 }
 
-void call_pyhepc( int mode ){ PYHEPC( &mode ); }
-void call_pyinit( const char* frame, const char* beam, const char* target,
+inline void call_pyhepc( int mode ){ PYHEPC( &mode ); }
+inline void call_pyinit( const char* frame, const char* beam, const char* target,
 		  double win ) 
 { PYINIT( frame,strlen(frame),beam,strlen(beam),target,strlen(target),&win); }
-void call_pylist( int mode ){ PYLIST( &mode ); }
-void call_pystat( int mode ){ PYSTAT( &mode ); }
-void call_pyevnt(){ PYEVNT(); }
-void call_upinit(){ UPINIT(); }
-void call_upevnt(){ UPEVNT(); }
+inline void call_pylist( int mode ){ PYLIST( &mode ); }
+inline void call_pystat( int mode ){ PYSTAT( &mode ); }
+inline void call_pyevnt(){ PYEVNT(); }
+inline void call_upinit(){ UPINIT(); }
+inline void call_upevnt(){ UPEVNT(); }
 
 
 

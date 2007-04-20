@@ -151,13 +151,13 @@ extern "C" {
 
 // define methods to hide the subtle syntax necessary to call fortran from C++
 
-void call_pyhepc( int mode ){ PYHEPC( &mode ); }
-void call_pyinit( const char* frame, const char* beam, const char* target,
+inline void call_pyhepc( int mode ){ PYHEPC( &mode ); }
+inline void call_pyinit( const char* frame, const char* beam, const char* target,
 		  double win ) 
 { PYINIT( frame,strlen(frame),beam,strlen(beam),target,strlen(target),&win); }
-void call_pylist( int mode ){ PYLIST( &mode ); }
-void call_pystat( int mode ){ PYSTAT( &mode ); }
-void call_pyevnt(){ PYEVNT(); }
+inline void call_pylist( int mode ){ PYLIST( &mode ); }
+inline void call_pystat( int mode ){ PYSTAT( &mode ); }
+inline void call_pyevnt(){ PYEVNT(); }
 
 
 #endif  // PYTHIA_WRAPPER_H

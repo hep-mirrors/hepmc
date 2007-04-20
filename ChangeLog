@@ -1,3 +1,10 @@
+2007-04-20  Lynn Garren
+
+        * HepMC/include/PythiaWrapper*.h:
+          inline the method definitions to avoid conflicts
+	* examples/initPythia.cc: put pythia intialization in a separate
+	  file so we can test PythiaWrapper
+
   --------------------------  HepMC-2.00.02  --------------------------
 
 2007-02-12 Lynn Garren

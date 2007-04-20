@@ -121,13 +121,13 @@ const int pyjets_maxn =4000;
     }
 
 // define methods to hide the subtle syntax necessary to call fortran from C++
-void call_pyhepc( int mode ){ pyhepc( &mode ); }
-void call_pyinit( const char* frame, const char* beam, const char* target,
+inline void call_pyhepc( int mode ){ pyhepc( &mode ); }
+inline void call_pyinit( const char* frame, const char* beam, const char* target,
 		  double win ) 
 { pyinit( frame,beam,target,&win,strlen(frame),strlen(beam),strlen(target) ); }
-void call_pylist( int mode ){ pylist( &mode ); }
-void call_pystat( int mode ){ pystat( &mode ); }
-void call_pyevnt(){ pyevnt(); }
+inline void call_pylist( int mode ){ pylist( &mode ); }
+inline void call_pystat( int mode ){ pystat( &mode ); }
+inline void call_pyevnt(){ pyevnt(); }
 
 
 //--------------------------------------------------------------------------
