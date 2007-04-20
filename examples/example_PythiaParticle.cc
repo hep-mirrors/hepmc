@@ -24,6 +24,7 @@
 #include "HepMC/IO_HEPEVT.h"
 #include "HepMC/IO_AsciiParticles.h"
 #include "HepMC/GenEvent.h"
+#include "PythiaHelper.h"
     
 int main() { 
     //
@@ -36,25 +37,7 @@ int main() {
     HepMC::HEPEVT_Wrapper::set_sizeof_real(8);
     //
     //........................................PYTHIA INITIALIZATIONS
-    // (Some platforms may require the initialization of pythia PYDATA block 
-    //  data as external - if you get pythia initialization errors try 
-    //  commenting in/out the below call to initpydata() )
-    // initpydata();
-    //
-    // Select W+gamma process (process number 20) 
-    // (here we have to be careful of C/F77 differences: arrays in C 
-    //  start at 0, F77 at 1, so we need to subtract 1 from the process #)
-    pysubs.msel=0;
-    pysubs.msub[20-1] = 1;
-    // set random number seed (mandatory!)
-    pydatr.mrpy[0]=55122 ;
-    // Tell Pythia not to write multiple copies of particles in event record.
-    pypars.mstp[128-1] = 2;
-    // Example of setting a Pythia parameter: set the top mass 
-    pydat2.pmas[1-1][6-1]= 175;  
-    //
-    // Call pythia initialization
-    call_pyinit( "CMS", "p", "p", 14000. );
+    initPythia();
 
     //........................................HepMC INITIALIZATIONS
     //

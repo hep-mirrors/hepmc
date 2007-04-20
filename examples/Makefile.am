@@ -18,6 +18,8 @@ EXTRA_DIST = \
     example_PythiaParticle.cc	\
     example_ReadPDGtable.cc \
     example_UsingIterators.cc \
+    initPythia.cc \
+    PythiaHelper.h \
     initpydata.f \
     VectorConversion.h \
     example_UsingIterators.txt \

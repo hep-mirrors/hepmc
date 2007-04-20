@@ -14,7 +14,7 @@
   HepMCfiolib          = $(HepMCdir)/lib/libHepMCfio.a
   GENSERdir            = @GENSERdir@
   CLHEPdir             = @CLHEPdir@
-  Pythia_LIB	= -L$(GENSERdir)/lib -lpythia6_403 -lpythia6_403_dumm -lpythia6_403_pdfdumm $(initpydata_OBJ) 
+  Pythia_LIB	= -L$(GENSERdir)/lib -lpythia6_403 -lpythia6_403_dumm -lpythia6_403_pdfdumm
   Herwig_LIB	= -L$(GENSERdir)/lib -lherwig6_510 -lherwig6_510_dumm -lherwig6_510_pdfdumm
 
 ################################################################################ Compiler options
@@ -31,6 +31,7 @@ else
 endif
   CLHEP_LIB     = -L$(CLHEPdir)/lib -lCLHEP
   initpydata_OBJ= initpydata.o
+  pythia_OBJ    = initPythia.o initpydata.o
   LINK_LIBS     = @AM_LDFLAGS@
   SRCS	        = example_BuildEventFromScratch.cc	\
 		  example_EventSelection.cc	\
@@ -41,8 +42,9 @@ endif
 		  example_PythiaParticle.cc	\
 		  example_ReadPDGtable.cc	\
 		  example_UsingIterators.cc	\
+		  initPythia.cc		\
 		  initpydata.f
-  HDRS          = $(HepMCdir)/include/HepMC/*.h
+  HDRS          = $(HepMCdir)/include/HepMC/*.h *.h
   EXAMPLES	= example_BuildEventFromScratch.exe	\
 		  example_EventSelection.exe	\
 		  example_MyHerwig.exe	\
@@ -145,33 +147,33 @@ example_MyHerwig.exe: example_MyHerwig.o
 		$(HepMClib) $(HepMCfiolib) \
 	        $(Herwig_LIB) $(LINK_LIBS) -o $@
 
-example_MyPythia.exe: $(initpydata_OBJ) example_MyPythia.o
+example_MyPythia.exe: $(initpydata_OBJ) $(pythia_OBJ) example_MyPythia.o
 	@echo "Building $@ ..."
-	$(CXX) $(FLAGS) example_MyPythia.o \
+	$(CXX) $(FLAGS) $(pythia_OBJ) example_MyPythia.o \
 		$(HepMClib) $(HepMCfiolib) \
 	        $(Pythia_LIB) $(LINK_LIBS) -o $@
 
-example_MyPythiaRead.exe: $(initpydata_OBJ) example_MyPythiaRead.o
+example_MyPythiaRead.exe: $(initpydata_OBJ) $(pythia_OBJ) example_MyPythiaRead.o
 	@echo "Building $@ ..."
-	$(CXX) $(FLAGS) example_MyPythiaRead.o \
+	$(CXX) $(FLAGS) $(pythia_OBJ) example_MyPythiaRead.o \
 		$(HepMClib) $(HepMCfiolib) \
 	        $(Pythia_LIB) $(LINK_LIBS) -o $@
 
-example_MyPythiaOnlyToHepMC.exe: $(initpydata_OBJ) example_MyPythiaOnlyToHepMC.o
+example_MyPythiaOnlyToHepMC.exe: $(initpydata_OBJ) $(pythia_OBJ) example_MyPythiaOnlyToHepMC.o
 	@echo "Building $@ ..."
-	$(CXX) $(FLAGS) example_MyPythiaOnlyToHepMC.o \
+	$(CXX) $(FLAGS) $(pythia_OBJ) example_MyPythiaOnlyToHepMC.o \
 		$(HepMClib) $(HepMCfiolib) \
 	        $(Pythia_LIB) $(LINK_LIBS) -o $@
 
-example_MyPythiaWithEventSelection.exe: $(initpydata_OBJ) example_MyPythiaWithEventSelection.o
+example_MyPythiaWithEventSelection.exe: $(initpydata_OBJ) $(pythia_OBJ) example_MyPythiaWithEventSelection.o
 	@echo "Building $@ ..."
-	$(CXX) $(FLAGS) example_MyPythiaWithEventSelection.o \
+	$(CXX) $(FLAGS) $(pythia_OBJ) example_MyPythiaWithEventSelection.o \
 		$(HepMClib) $(HepMCfiolib) \
 	        $(Pythia_LIB) $(LINK_LIBS) -o $@
 
-example_PythiaParticle.exe: $(initpydata_OBJ) example_PythiaParticle.o
+example_PythiaParticle.exe: $(initpydata_OBJ) $(pythia_OBJ) example_PythiaParticle.o
 	@echo "Building $@ ..."
-	$(CXX) $(FLAGS) example_PythiaParticle.o \
+	$(CXX) $(FLAGS) $(pythia_OBJ) example_PythiaParticle.o \
 		$(HepMClib) $(HepMCfiolib) \
 	        $(Pythia_LIB) \
 		$(LINK_LIBS) -o $@
