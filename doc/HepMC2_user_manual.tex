@@ -450,9 +450,38 @@ Several IO strategies are supplied:
     generators. Other strategies which interface directly to the
     specific event record of a generator could be easily implemented
     in this style. An example of using IO\_HEPEVT to transfer events
-    from Pythia into HepMC is given in \verb!example_MyPythia.cxx!.
+    from Pythia into HepMC is given in \verb!example\_MyPythia.cxx!.
 \end{itemize}
 
+
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+
+\section{Examples}
+\label{examples}
+Examples are in the examples directory of the package 
+and are installed in the installation directory under examples/HepMC.
+
+\begin{itemize}\setlength{\itemsep}{0pt}
+  \item{\bf Using the HepMC vertex and particle iterators:}
+       {example\_UsingIterators.cc} 
+  \item{\bf Using HepMC with Pythia:}
+      {example\_MyPythia.cc,
+      example\_MyPythiaOnlyToHepMC.cc,
+      example\_MyPythiaRead.cc,
+      example\_MyPythiaWithEventSelection.cc, and
+      example\_PythiaParticle.cc
+      }
+  \item{\bf Using HepMC with Herwig:}
+     {example\_MyHerwig.cc}
+  \item{\bf Event selection:}
+     {example\_MyPythiaWithEventSelection.cc}
+  \item{\bf Write an event file and then read it:}
+     {example\_MyPythiaRead.cc}
+  \item{\bf Build an event from scratch:}
+     {example\_BuildEventFromScratch.cc}
+\end{itemize}
 
 
 %
