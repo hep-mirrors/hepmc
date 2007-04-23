@@ -14,9 +14,8 @@ autoheader
 automake --add-missing --copy
 autoconf
 
-# run doxygen if present
-if [ `whereis doxygen | wc -w` -gt 1 ]; then
-   cd doc; doxygen doxygen.conf
-fi
+# To avoid confusing people with failures in the documentation build, 
+# build documents during the bootstrap process.
+cd doc; ./buildDoc.sh
 
 # ready to make a source code distribution tarball

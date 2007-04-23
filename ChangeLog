@@ -1,3 +1,10 @@
+2007-04-23  Lynn Garren
+
+	* bootstrap, configure.in, doc/Makefile.am:
+	  To avoid problems with different versions of latex, just build
+	  the documents during the bootstrap step.  
+	* doc/buildDoc.sh: builds the documents if doxygen and latex are present
+
 2007-04-20  Lynn Garren
 
         * HepMC/include/PythiaWrapper*.h:
