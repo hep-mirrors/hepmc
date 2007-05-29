@@ -553,8 +553,8 @@ namespace HepMC {
     /////////////////////
     
     GenVertex::vertex_iterator::vertex_iterator() 
-	: m_vertex(0), m_visited_vertices(0), m_it_owns_set(0), 
-	  m_recursive_iterator(0) 
+	: m_vertex(0), m_range(), m_visited_vertices(0), m_it_owns_set(0), 
+	  m_recursive_iterator(0)
     {}
 
     GenVertex::vertex_iterator::vertex_iterator( GenVertex& vtx_root,
