@@ -11,9 +11,10 @@ if [ `whereis doxygen | wc -w` -gt 1 ]; then
       cd latex
       latex refman.tex
       latex refman.tex
-      dvips -P pdf -o HepMC2_reference_manual.ps refman
-      ps2pdf HepMC2_reference_manual.ps
-      mv HepMC2_reference_manual.* ../.
+      dvips refman
+      dvipdf refman
+      mv refman.ps ../HepMC2_reference_manual.ps
+      mv refman.pdf ../HepMC2_reference_manual.pdf
    fi
    cd ..
 fi
@@ -21,6 +22,6 @@ fi
 if [ `whereis latex | wc -w` -gt 1 ]; then
    latex HepMC2_user_manual.tex 
    latex HepMC2_user_manual.tex
-   dvips -P pdf -o HepMC2_user_manual.ps HepMC2_user_manual
-   ps2pdf HepMC2_user_manual.ps
+   dvips HepMC2_user_manual
+   dvipdf HepMC2_user_manual
 fi

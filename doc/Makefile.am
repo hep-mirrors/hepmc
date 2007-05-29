@@ -7,7 +7,6 @@ if USE_GMAKE
 endif
 
 doc_srcdir = $(top_srcdir)/doc
-doc_builddir = $(top_builddir)/doc
 doc_installdir = $(prefix)/doc/HepMC
 
 HEPMC1_DOC   = HepMC_user_manual.ps
@@ -16,18 +15,7 @@ HEPMC2_REF   = HepMC2_reference_manual.pdf HepMC2_reference_manual.ps
 
 DOCUMENTS = $(HEPMC1_DOC) $(HEPMC2_DOCS) $(HEPMC2_REF)
 
-SUFFIXES = .pdf .ps .dvi .tex
-
-# latex twice to get references
-#.tex.dvi:        $<
-#	$(TEX) ${*F}.tex
-#	$(TEX) ${*F}.tex
-
-.ps.pdf: $<
-	ps2pdf $<
-
-.dvi.ps:
-	dvips -P pdf -o $@ $(@:.ps=.dvi)
+EXTRA_DIST = $(DOCUMENTS)
 
 all: $(DOCUMENTS)
 
