@@ -30,4 +30,7 @@ int main(int argc,char* argv[])
     p_event->add_vertex(vertex);
   }
   p_event->print(os);
+  // cleanup
+  delete p_event;
+  return 0;
 }

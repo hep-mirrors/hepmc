@@ -6,6 +6,7 @@
 // Apply an event selection to the events in testHepMC.input
 // Events containing a photon of pT > 25 GeV pass the selection and are
 // written to "testHepMC.out"
+// Add arbitrary PDF information to the good events
 // Also write events using IO_AsciiParticles and IO_ExtendedAscii
 //////////////////////////////////////////////////////////////////////////
 //
@@ -15,37 +16,8 @@
 #include "HepMC/IO_ExtendedAscii.h"
 #include "HepMC/GenEvent.h"
 
-bool findW( HepMC::GenEvent* evt, std::ofstream& os);
-
-/// \class  IsGoodEvent
-/// event selection predicate. returns true if the event contains
-/// a photon with pT > 50 GeV
-class IsGoodEvent {
-public:
-    bool operator()( const HepMC::GenEvent* evt ) { 
-	for ( HepMC::GenEvent::particle_const_iterator p 
-		  = evt->particles_begin(); p != evt->particles_end(); ++p ){
-	    if ( (*p)->pdg_id() == 22 && (*p)->momentum().perp() > 25. ) {
-		//std::cout << "Event " << evt->event_number()
-		//     << " is a good event." << std::endl;
-		//(*p)->print();
-		return 1;
-	    }
-	}
-	return 0;
-    }
-};
-
-/// \class  IsW_Boson
-/// this predicate returns true if the input particle is a W+/W-
-class IsW_Boson {
-public:
-    /// returns true if the GenParticle is a W
-    bool operator()( const HepMC::GenParticle* p ) { 
-	if ( fabs(p->pdg_id()) == 24 ) return 1;
-	return 0;
-    }
-};
+// define methods and classes used by this test
+#include "IsGoodEvent.h"
 
 int main() { 
     // declare an input strategy to read the data produced with the 
@@ -71,23 +43,18 @@ int main() {
 	if ( icount%50==1 ) std::cout << "Processing Event Number " << icount
 				      << " its # " << evt->event_number() 
 				      << std::endl;
-	if ( icount==100 ) std::cout << "Processing Event Number " << icount
-				      << " its # " << evt->event_number() 
-				      << std::endl;
 	if ( is_good_event(evt) ) {
 	    // add some arbitrary PDF information
 	    x = 0.1 * icount;
 	    y = 0.13 * icount;
 	    z = 0.012 * icount;
 	    HepMC::PdfInfo* pdf = new HepMC::PdfInfo( 11, 12, x, y, z, 0.11, 0.34);
+            // give ownership of pdf to GenEvent
 	    evt->set_pdf_info(pdf);
 	    ascii_out << evt;
 	    particle_out << evt;
 	    xout << evt;
 	    ++num_good_events;
-	    // test iterators
-            findW( evt, os );
-	    delete pdf;
 	}
 	
 	// clean up and get next event
@@ -98,65 +65,3 @@ int main() {
     std::cout << num_good_events << " out of " << icount 
 	      << " processed events passed the cuts. Finished." << std::endl;
 }
-
-
-
-bool findW( HepMC::GenEvent* evt, std::ofstream& os )
-{
-    int num_W=0;
-	// use GenEvent::particle_iterator to find all W's in the event,
-	// then 
-	// (1) for each W user the GenVertex::particle_iterator with a range of
-	//     parents to return and print the immediate mothers of these W's.
-	// (2) for each W user the GenVertex::particle_iterator with a range of
-	//     descendants to return and print all descendants of these W's.
-	IsW_Boson isw;
-	for ( HepMC::GenEvent::particle_iterator p = evt->particles_begin();
-	      p != evt->particles_end(); ++p ) {
-	    if ( isw(*p) ) {
-	        ++num_W;
-		os << "A W boson has been found in event: " << evt->event_number() << std::endl;
-		//std::cout << "A W boson has been found in event: " << evt->event_number() << std::endl;
-		(*p)->print( os );
-		// return all parents
-		// we do this by pointing to the production vertex of the W 
-		// particle and asking for all particle parents of that vertex
-		os << "\t Its parents are: " << std::endl;
-		if ( (*p)->production_vertex() ) {
-		    for ( HepMC::GenVertex::particle_iterator mother 
-			      = (*p)->production_vertex()->
-			      particles_begin(HepMC::parents);
-			  mother != (*p)->production_vertex()->
-			      particles_end(HepMC::parents); 
-			  ++mother ) {
-			os << "\t";
-			(*mother)->print( os );
-		    }
-		}
-		// return all descendants
-		// we do this by pointing to the end vertex of the W 
-		// particle and asking for all particle descendants of that vertex
-		os << "\t\t Its descendants are: " << std::endl;
-		if ( (*p)->end_vertex() ) {
-		    for ( HepMC::GenVertex::particle_iterator des 
-			      =(*p)->end_vertex()->
-			      particles_begin(HepMC::descendants);
-			  des != (*p)->end_vertex()->
-			      particles_end(HepMC::descendants);
-			  ++des ) {
-			os << "\t\t";
-			(*des)->print( os );
-		    }
-		}
-	    }
-	}
-	return true;
-}
-
-
-
-
-
-
-
-

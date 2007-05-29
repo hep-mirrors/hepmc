@@ -1,0 +1,15 @@
+#! /bin/sh
+# @configure_input@
+# you can compare testHepMCIteration.out to @srcdir@/testHepMCIteration.dat
+# and testHepMCIterationExtended.out to @srcdir@/testHepMCIterationExtended.dat,
+# but the particles within a vertex are printed in "random" order
+
+./testHepMCIteration@EXEEXT@ \
+ | @DIFF_Q@ - @srcdir@/testHepMCIteration.output > /dev/null
+
+@DIFF_Q@ testHepMCIteration.dat @srcdir@/testHepMCIteration.dat
+
+
+# perform the following comparisons by hand
+# Particles within a vertex are not written in a defined order
+# @DIFF_Q@ testHepMCIterationExtended.out @srcdir@/testHepMCIterationExtended.output
