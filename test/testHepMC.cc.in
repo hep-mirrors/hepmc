@@ -87,6 +87,7 @@ int main() {
 	    ++num_good_events;
 	    // test iterators
             findW( evt, os );
+	    delete pdf;
 	}
 	
 	// clean up and get next event

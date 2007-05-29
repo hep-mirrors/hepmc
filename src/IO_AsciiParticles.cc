@@ -42,7 +42,10 @@ namespace HepMC {
   }
 
   IO_AsciiParticles::~IO_AsciiParticles() {
-    if(m_file) m_file->close();
+    if(m_file) {
+       m_file->close();
+       delete m_file;
+    }
   }
 
   void IO_AsciiParticles::print( std::ostream& ostr ) const { 

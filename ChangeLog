@@ -2,6 +2,7 @@
 2007-05-29  Lynn Garren
 
 	* src/GenVertex.cc: initialize range in default constructor
+	* src/IO_Ascii*.cc: make sure every object is properly deleted
 	* test/testHepMC.cc: add particle iterator to test
 
   --------------------------  HepMC-2.00.03  --------------------------

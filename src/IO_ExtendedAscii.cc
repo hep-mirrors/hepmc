@@ -631,7 +631,7 @@ namespace HepMC {
 	    ++i;
 	}
 	if ( i == key_length ) {
-	    delete c;
+	    delete [] c;
 	    return 1;
 	}
 	//
