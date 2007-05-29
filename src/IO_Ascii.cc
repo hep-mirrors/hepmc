@@ -521,12 +521,13 @@ namespace HepMC {
 	    ++i;
 	}
 	if ( i == key_length ) {
-	    delete c;
+	    delete [] c;
 	    return 1;
 	}
 	//
 	// if we get here, then we have eaten the wrong this and we must put it
 	// back
+	//---------> non standard code --- probably does not work
 	while ( i>=0 ) in.putback(c[i--]); 
 	delete c;
 	return 0;
