@@ -1,4 +1,9 @@
 
+2007-05-29  Lynn Garren
+
+	* src/GenVertex.cc: initialize range in default constructor
+	* test/testHepMC.cc: add particle iterator to test
+
   --------------------------  HepMC-2.00.03  --------------------------
 
 2007-04-23  Lynn Garren

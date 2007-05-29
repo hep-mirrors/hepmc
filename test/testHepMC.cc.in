@@ -15,9 +15,12 @@
 #include "HepMC/IO_ExtendedAscii.h"
 #include "HepMC/GenEvent.h"
 
+bool findW( HepMC::GenEvent* evt, std::ofstream& os);
+
+/// \class  IsGoodEvent
+/// event selection predicate. returns true if the event contains
+/// a photon with pT > 50 GeV
 class IsGoodEvent {
-    // event selection predicate. returns true if the event contains
-    // a photon with pT > 50 GeV
 public:
     bool operator()( const HepMC::GenEvent* evt ) { 
 	for ( HepMC::GenEvent::particle_const_iterator p 
@@ -29,6 +32,17 @@ public:
 		return 1;
 	    }
 	}
+	return 0;
+    }
+};
+
+/// \class  IsW_Boson
+/// this predicate returns true if the input particle is a W+/W-
+class IsW_Boson {
+public:
+    /// returns true if the GenParticle is a W
+    bool operator()( const HepMC::GenParticle* p ) { 
+	if ( fabs(p->pdg_id()) == 24 ) return 1;
 	return 0;
     }
 };
@@ -45,6 +59,8 @@ int main() {
     HepMC::IO_ExtendedAscii xout("testHepMCExtended.out",std::ios::out);
     // declare an instance of the event selection predicate
     IsGoodEvent is_good_event;
+    // define an output stream
+    std::ofstream os( "testIterator.out" );
     //........................................EVENT LOOP
     int icount=0;
     int num_good_events=0;
@@ -53,6 +69,9 @@ int main() {
     while ( evt ) {
 	icount++;
 	if ( icount%50==1 ) std::cout << "Processing Event Number " << icount
+				      << " its # " << evt->event_number() 
+				      << std::endl;
+	if ( icount==100 ) std::cout << "Processing Event Number " << icount
 				      << " its # " << evt->event_number() 
 				      << std::endl;
 	if ( is_good_event(evt) ) {
@@ -66,7 +85,11 @@ int main() {
 	    particle_out << evt;
 	    xout << evt;
 	    ++num_good_events;
+	    // test iterators
+            findW( evt, os );
 	}
+	
+	// clean up and get next event
 	delete evt;
 	ascii_in >> evt;
     }
@@ -76,6 +99,58 @@ int main() {
 }
 
 
+
+bool findW( HepMC::GenEvent* evt, std::ofstream& os )
+{
+    int num_W=0;
+	// use GenEvent::particle_iterator to find all W's in the event,
+	// then 
+	// (1) for each W user the GenVertex::particle_iterator with a range of
+	//     parents to return and print the immediate mothers of these W's.
+	// (2) for each W user the GenVertex::particle_iterator with a range of
+	//     descendants to return and print all descendants of these W's.
+	IsW_Boson isw;
+	for ( HepMC::GenEvent::particle_iterator p = evt->particles_begin();
+	      p != evt->particles_end(); ++p ) {
+	    if ( isw(*p) ) {
+	        ++num_W;
+		os << "A W boson has been found in event: " << evt->event_number() << std::endl;
+		//std::cout << "A W boson has been found in event: " << evt->event_number() << std::endl;
+		(*p)->print( os );
+		// return all parents
+		// we do this by pointing to the production vertex of the W 
+		// particle and asking for all particle parents of that vertex
+		os << "\t Its parents are: " << std::endl;
+		if ( (*p)->production_vertex() ) {
+		    for ( HepMC::GenVertex::particle_iterator mother 
+			      = (*p)->production_vertex()->
+			      particles_begin(HepMC::parents);
+			  mother != (*p)->production_vertex()->
+			      particles_end(HepMC::parents); 
+			  ++mother ) {
+			os << "\t";
+			(*mother)->print( os );
+		    }
+		}
+		// return all descendants
+		// we do this by pointing to the end vertex of the W 
+		// particle and asking for all particle descendants of that vertex
+		os << "\t\t Its descendants are: " << std::endl;
+		if ( (*p)->end_vertex() ) {
+		    for ( HepMC::GenVertex::particle_iterator des 
+			      =(*p)->end_vertex()->
+			      particles_begin(HepMC::descendants);
+			  des != (*p)->end_vertex()->
+			      particles_end(HepMC::descendants);
+			  ++des ) {
+			os << "\t\t";
+			(*des)->print( os );
+		    }
+		}
+	    }
+	}
+	return true;
+}
 
 
 
