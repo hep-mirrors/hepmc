@@ -13,7 +13,9 @@ int main()
   HepMC::ThreeVector vx(1.34);
   
   HepMC::ThreeVector v3copy( v3 );
-  
+   
+  int numbad = 0;
+ 
   double x = v3.x();
   double y = v3.y();
   double z = v3.z();
@@ -58,16 +60,20 @@ int main()
    z = vectorcopy.z();
   double t = vectorcopy.t();
   
-  double masssq = v.m2();
-  double mass = v.m();
    p2 = v.perp2();
    pt = v.perp();
    l = v.mag();
    th = v.theta();
    ph = v.phi();
    r = v.rho();
-  double pr = v.pseudoRapidity();
-  double eta = v.eta();
+  double masssq1 = v.m2();
+  double mass1 = v.m();
+  double pr1 = v.pseudoRapidity();
+  double eta1 = v.eta();
+  double masssq2 = vector.m2();
+  double mass2 = vector.m();
+  double pr2 = vector.pseudoRapidity();
+  double eta2 = vector.eta();
 
   vt.set(1., 2., 3., 5.5);
   vt.setX(1.1);
@@ -81,22 +87,44 @@ int main()
 
   if( px != x ) { 
      std::cout << "different X values: " << px << " " << x << std::endl;
+     ++numbad;
   }
   if( py != y ) { 
      std::cout << "different Y values: " << py << " " << y << std::endl;
+     ++numbad;
   }
   if( pz != z ) { 
      std::cout << "different Z values: " << pz << " " << z << std::endl;
+     ++numbad;
   }
   if( e != t ) { 
      std::cout << "different E values: " << e << " " << t << std::endl;
+     ++numbad;
+  }
+  if( masssq1 != masssq2 ) { 
+     std::cout << "different mass sq values: " << masssq1 << " " << masssq2 << std::endl;
+     ++numbad;
+  }
+  if( mass1 != mass2 ) { 
+     std::cout << "different mass values: " << mass1 << " " << mass2 << std::endl;
+     ++numbad;
+  }
+  if( pr1 != pr2 ) { 
+     std::cout << "different pr values: " << pr1 << " " << pr2 << std::endl;
+     ++numbad;
+  }
+  if( eta1 != eta2 ) { 
+     std::cout << "different eta values: " << eta1 << " " << eta2 << std::endl;
+     ++numbad;
   }
   if( v == vector ) {
   } else {
      std::cout << "vectors v and vector are different" << std::endl;
+     ++numbad;
   }
   if( v != vectorcopy ) {
      std::cout << "vectors v and vectorcopy are different" << std::endl;
+     ++numbad;
   }
-  return 0;
+  return numbad;
 }
