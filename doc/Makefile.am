@@ -17,7 +17,8 @@ DOCUMENTS = $(HEPMC1_DOC) $(HEPMC2_DOCS) $(HEPMC2_REF)
 
 EXTRA_DIST = $(DOCUMENTS)
 
-all: $(DOCUMENTS)
+#all: $(DOCUMENTS)
+
 
 install-data-local:
 	$(mkinstalldirs) $(DESTDIR)$(doc_installdir)
