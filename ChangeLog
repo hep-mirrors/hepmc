@@ -1,4 +1,10 @@
 
+2007-06-01  Lynn Garren
+
+	* HepMC/GenEvent.h, src/GenEvent.cc: change interface such that 
+	  GenEvent makes its own copy of HeavyIon and PdfInfo
+
+
 2007-05-29  Lynn Garren
 
 	* src/GenVertex.cc: initialize range in default constructor

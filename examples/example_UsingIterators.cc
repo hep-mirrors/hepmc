@@ -159,7 +159,8 @@ int main() {
 		}
 	    }
 	}
-
+	// cleanup
+        delete evt;
 	// in analogy to the above, similar use can be made of the
 	// HepMC::GenVertex::vertex_iterator, which also accepts a range.
     } // end scope of ascii_in

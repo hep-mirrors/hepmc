@@ -172,8 +172,8 @@ namespace HepMC {
 	evt->weights() = weights;
 	evt->set_random_states( random_states );
 	// get HeavyIon and PdfInfo
-	evt->set_heavy_ion( read_heavy_ion() );
-	evt->set_pdf_info( read_pdf_info() );
+	evt->set_heavy_ion( *read_heavy_ion() );
+	evt->set_pdf_info( *read_pdf_info() );
 	//
 	// the end vertices of the particles are not connected until
 	//  after the event is read --- we store the values in a map until then

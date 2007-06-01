@@ -140,12 +140,16 @@ namespace HepMC {
 	friend class GenParticle;
 	friend class GenVertex;  
     public:
-        /// default constructor
+        /// default constructor creates null pointers to HeavyIon and PdfInfo
 	GenEvent( int signal_process_id = 0, int event_number = 0,
 		  GenVertex* signal_vertex = 0,
 		  const WeightContainer& weights = std::vector<double>(),
-		  const std::vector<long int>& randomstates
-		  = std::vector<long int>(), HeavyIon* ion = 0, PdfInfo* pdf = 0 );
+		  const std::vector<long int>& randomstates = std::vector<long int>() );
+        /// explicit constructor that takes HeavyIon and PdfInfo
+	GenEvent( int signal_process_id, int event_number,
+		  GenVertex* signal_vertex, const WeightContainer& weights,
+		  const std::vector<long int>& randomstates,
+		  const HeavyIon& ion, const PdfInfo& pdf );
 	GenEvent( const GenEvent& inevent );          //!< deep copy
 	GenEvent& operator=( const GenEvent& inevent ); //!< make a deep copy
 	virtual ~GenEvent(); //!<deletes all vertices/particles in this evt
@@ -178,9 +182,11 @@ namespace HepMC {
 	const WeightContainer&  weights() const; //!< direct access to WeightContainer
 
 	/// access the HeavyIon container if it exists
-	HeavyIon*            heavy_ion() const;
+	HeavyIon* const          heavy_ion() const;
+	HeavyIon*                heavy_ion();
 	/// access the PdfInfo container if it exists
-	PdfInfo*             pdf_info() const;
+	PdfInfo* const           pdf_info() const;
+	PdfInfo*                 pdf_info();
 
 	/// vector of integers containing information about the random state
 	std::vector<long int> random_states() const;
@@ -197,9 +203,9 @@ namespace HepMC {
 	void set_random_states( const std::vector<long int>& randomstates );
 
 	/// provide a pointer to the HeavyIon container
-	void set_heavy_ion( HeavyIon* ion );
+	void set_heavy_ion( const HeavyIon& ion );
 	/// provide a pointer to the PdfInfo container
-	void set_pdf_info( PdfInfo* p );
+	void set_pdf_info( const PdfInfo& p );
 
         /// how many particle barcodes exist?
 	int     particles_size() const;
@@ -510,10 +516,16 @@ namespace HepMC {
     inline const WeightContainer& GenEvent::weights() const 
     { return m_weights; }
 
-    inline HeavyIon* GenEvent::heavy_ion() const 
+    inline HeavyIon* const GenEvent::heavy_ion() const 
     { return m_heavy_ion; }
 
-    inline PdfInfo* GenEvent::pdf_info() const 
+    inline HeavyIon*  GenEvent::heavy_ion()  
+    { return m_heavy_ion; }
+
+    inline PdfInfo* const GenEvent::pdf_info() const 
+    { return m_pdf_info; }
+
+    inline PdfInfo*  GenEvent::pdf_info()  
     { return m_pdf_info; }
 
     ///  Vector of integers which specify the random number 
@@ -542,11 +554,11 @@ namespace HepMC {
 	if ( m_signal_process_vertex ) add_vertex( m_signal_process_vertex );
     }
 
-    inline void GenEvent::set_heavy_ion( HeavyIon* ion )
-    { m_heavy_ion = ion; }
+    inline void GenEvent::set_heavy_ion( const HeavyIon& ion )
+    { m_heavy_ion = new HeavyIon(ion); }
 
-    inline void GenEvent::set_pdf_info( PdfInfo* p )
-    { m_pdf_info = p; }
+    inline void GenEvent::set_pdf_info( const PdfInfo& p )
+    { m_pdf_info = new PdfInfo(p); }
 
     inline void GenEvent::set_random_states( const std::vector<long int>&
 					     randomstates )

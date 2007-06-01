@@ -14,16 +14,40 @@
 
 namespace HepMC {
 
-    GenEvent::GenEvent( int signal_process_id, int event_number,
-				    GenVertex* signal_vertex,
-				    const WeightContainer& weights,
-				    const std::vector<long int>& 
-				    random_states, HeavyIon* ion, PdfInfo* pdf ) :
+    GenEvent::GenEvent( int signal_process_id, 
+                        int event_number,
+			GenVertex* signal_vertex,
+			const WeightContainer& weights,
+			const std::vector<long int>& random_states ) :
 	m_signal_process_id(signal_process_id), m_event_number(event_number),
 	m_event_scale(-1), m_alphaQCD(-1), m_alphaQED(-1),
 	m_signal_process_vertex(signal_vertex), m_weights(weights),
-	m_random_states(random_states), m_heavy_ion(ion), m_pdf_info(pdf)
+	m_random_states(random_states), 
+	m_heavy_ion(0), 
+	m_pdf_info(0)
     {
+        /// This constructor only allows null pointers to HeavyIon and PdfInfo
+	///
+	/// note: default values for m_event_scale, m_alphaQCD, m_alphaQED
+	///       are as suggested in hep-ph/0109068, "Generic Interface..."
+	s_counter++;
+    }
+
+    GenEvent::GenEvent( int signal_process_id, int event_number,
+			GenVertex* signal_vertex,
+			const WeightContainer& weights,
+			const std::vector<long int>& random_states,
+			const HeavyIon& ion, 
+			const PdfInfo& pdf ) :
+	m_signal_process_id(signal_process_id), m_event_number(event_number),
+	m_event_scale(-1), m_alphaQCD(-1), m_alphaQED(-1),
+	m_signal_process_vertex(signal_vertex), m_weights(weights),
+	m_random_states(random_states), 
+	m_heavy_ion( new HeavyIon(ion) ), 
+	m_pdf_info( new PdfInfo(pdf) )
+    {
+        /// GenEvent makes its own copy of HeavyIon and PdfInfo
+	///
 	/// note: default values for m_event_scale, m_alphaQCD, m_alphaQED
 	///       are as suggested in hep-ph/0109068, "Generic Interface..."
 	s_counter++;
@@ -42,6 +66,8 @@ namespace HepMC {
 	/// deletes all vertices/particles in this evt
 	///
 	delete_all_vertices();
+	delete m_heavy_ion;
+	delete m_pdf_info;
 	s_counter--;
     }
 
@@ -96,9 +122,11 @@ namespace HepMC {
 	set_alphaQCD( inevent.alphaQCD() );
 	set_alphaQED( inevent.alphaQED() );
 	set_random_states( inevent.random_states() );
-	set_heavy_ion( inevent.heavy_ion() );
-	set_pdf_info( inevent.pdf_info() );
 	weights() = inevent.weights();
+	//
+	// 5. copy these only if they are not null
+	if( inevent.heavy_ion() ) set_heavy_ion( *inevent.heavy_ion() ); 
+	if( inevent.pdf_info() ) set_pdf_info( *inevent.pdf_info() );
 	return *this;
     }
 

@@ -48,8 +48,8 @@ int main() {
 	    x = 0.1 * icount;
 	    y = 0.13 * icount;
 	    z = 0.012 * icount;
-	    HepMC::PdfInfo* pdf = new HepMC::PdfInfo( 11, 12, x, y, z, 0.11, 0.34);
-            // give ownership of pdf to GenEvent
+	    HepMC::PdfInfo pdf( 11, 12, x, y, z, 0.11, 0.34);
+            // GenEvent makes its own copy of pdf
 	    evt->set_pdf_info(pdf);
 	    ascii_out << evt;
 	    particle_out << evt;
