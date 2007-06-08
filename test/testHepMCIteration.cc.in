@@ -35,6 +35,7 @@ int main() {
     int icount=0;
     int num_good_events=0;
     HepMC::GenEvent* evt = ascii_in.read_next_event();
+    HepMC::GenEvent* evcopy;
     while ( evt ) {
 	icount++;
 	if ( icount%50==1 ) std::cout << "Processing Event Number " << icount
@@ -44,13 +45,15 @@ int main() {
 	if ( icount==100 ) std::cout << "Processing Event Number " << icount
 				      << " its # " << evt->event_number() 
 				      << std::endl;
-	if ( is_good_event(evt) ) {
-	    os << "Event " << evt->event_number() << " is good " << std::endl;
+        evcopy = evt;
+	if ( is_good_event(evcopy) ) {
+	    os << "Event " << evcopy->event_number() << " is good " << std::endl;
 	    ++num_good_events;
 	    // test iterators
-	    simpleIter( evt, os );
-            findW( evt, os );
+	    simpleIter( evcopy, os );
+            findW( evcopy, os );
 	}
+	evcopy->clear();
 	
 	// clean up and get next event
 	delete evt;

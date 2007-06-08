@@ -1,6 +1,8 @@
 
 2007-06-08  Lynn Garren
 
+	* HepMC/GenEvent.h, src/GenEvent.cc: add clear() method
+
 	* HepMC/GenParticleComparison.h:
 	  define a GenParticle comparator
 	* HepMC/GenParticle.h, src/GenParticle.cc:

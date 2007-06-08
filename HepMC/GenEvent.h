@@ -216,8 +216,13 @@ namespace HepMC {
         /// return true if there are no vertex barcodes
 	bool    vertices_empty() const;
 
+	////////////////////
+	// change methods //
+	////////////////////
+
 	bool    add_vertex( GenVertex* vtx );    //!< adds to evt and adopts
-	bool    remove_vertex( GenVertex* vtx ); //!< erases vtx from evt, 
+	bool    remove_vertex( GenVertex* vtx ); //!< erases vtx from evt
+	void    clear();                         //!< empties the entire event
 
     public:
 	///////////////////////////////

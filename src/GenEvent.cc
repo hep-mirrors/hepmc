@@ -209,6 +209,37 @@ namespace HepMC {
 	if ( vtx->parent_event() == this ) vtx->set_parent_event_( 0 );
 	return ( m_vertex_barcodes.count(vtx->barcode()) ? false : true );
     }
+
+    void GenEvent::clear() 
+    {
+	/// remove all information from the event
+	/// deletes all vertices/particles in this evt
+	///
+	delete_all_vertices();
+	delete m_heavy_ion;
+	delete m_pdf_info;
+	m_signal_process_id = 0;
+	m_event_number = 0;
+	m_event_scale = -1;
+	m_alphaQCD = -1;
+	m_alphaQED = -1;
+	m_weights = std::vector<double>();
+	m_random_states = std::vector<long int>();
+        // error check just to be safe
+	if ( m_vertex_barcodes.size() != 0 
+	     || m_particle_barcodes.size() != 0 ) {
+	    std::cerr << "GenEvent::clear() strange result ... \n"
+		      << "either the particle and/or the vertex map isn't empty" << std::endl;
+            std::cerr << "Number vtx,particle the event after deleting = "
+                      << m_vertex_barcodes.size() << "  " 
+		      << m_particle_barcodes.size() << std::endl;
+            std::cerr << "Total Number vtx,particle in memory "
+                      << "after method called = "
+                      << GenVertex::counter() << "\t"
+		      << GenParticle::counter() << std::endl;
+        }
+	return;
+    }
     
     void GenEvent::delete_all_vertices() {
 	/// deletes all vertices in the vertex container
