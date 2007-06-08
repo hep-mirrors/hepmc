@@ -5,6 +5,7 @@
 
 #include "HepMC/Flow.h"
 #include "HepMC/GenParticle.h"
+#include "HepMC/GenParticleComparison.h"
 #include "HepMC/GenVertex.h"
 
 namespace HepMC {
@@ -28,7 +29,7 @@ namespace HepMC {
 	ostr << "Flow(" << m_particle_owner << "): " << *this << std::endl;
     }
     
-    std::set<GenParticle*> Flow::connected_partners( int code, int code_index, 
+    std::set<GenParticle*,GenParticleComparison> Flow::connected_partners( int code, int code_index, 
 						  int num_indices ) const {
 	/// Returns all flow partners which have "code" in any  of the 
 	///  num_indices beginning with index code_index.
@@ -39,7 +40,7 @@ namespace HepMC {
 	///   set<GenParticle*> result = 
 	///             p->flow().connected_partners(p->flow().icode(2),2,3);
 	//
-	std::set<GenParticle*> output;
+	std::set<GenParticle*,GenParticleComparison> output;
 	for ( int i = code_index; i!=code_index+num_indices; ++i ) {
 	    if ( icode(i)==code ) {
 		output.insert(m_particle_owner);
@@ -50,7 +51,7 @@ namespace HepMC {
 	return output;
     }
 
-    void Flow::connected_partners( std::set<GenParticle*>* output, int code, 
+    void Flow::connected_partners( std::set<GenParticle*,GenParticleComparison>* output, int code, 
 				   int code_index, int num_indices ) const
     {
 	/// protected: for recursive use by Flow::connected_partners()
@@ -98,10 +99,10 @@ namespace HepMC {
 	}
     }
 
-    std::set<GenParticle*> Flow::dangling_connected_partners( int code, 
+    std::set<GenParticle*,GenParticleComparison> Flow::dangling_connected_partners( int code, 
 				     int code_index, int num_indices ) const {
-	std::set<GenParticle*> output;
-	std::set<GenParticle*> visited_particles;
+	std::set<GenParticle*,GenParticleComparison> output;
+	std::set<GenParticle*,GenParticleComparison> visited_particles;
 	for ( int i = code_index; i!=code_index+num_indices; ++i ) {
 	    if ( icode(i)==code ) {
 		visited_particles.insert(m_particle_owner);
@@ -113,8 +114,8 @@ namespace HepMC {
 	return output;
     }
 
-    void Flow::dangling_connected_partners( std::set<GenParticle*>* output, 
-					    std::set<GenParticle*>* 
+    void Flow::dangling_connected_partners( std::set<GenParticle*,GenParticleComparison>* output, 
+					    std::set<GenParticle*,GenParticleComparison>* 
 					    visited_particles,
 					    int code, int code_index, 
 					    int num_indices ) const 

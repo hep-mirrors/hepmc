@@ -31,8 +31,6 @@ int main() {
     HepMC::IO_ExtendedAscii xout("testHepMCExtended.out",std::ios::out);
     // declare an instance of the event selection predicate
     IsGoodEvent is_good_event;
-    // define an output stream
-    std::ofstream os( "testIterator.out" );
     //........................................EVENT LOOP
     int icount=0;
     int num_good_events=0;

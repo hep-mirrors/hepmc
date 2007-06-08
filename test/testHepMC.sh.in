@@ -23,5 +23,5 @@ esac
 
 # perform the following comparisons by hand
 # Particles within a vertex are not written in a defined order
-# @DIFF_Q@ testHepMC.out @srcdir@/testHepMC.dat
-# @DIFF_Q@ testHepMCExtended.out @srcdir@/testHepMCExtended.dat
+@DIFF_Q@ testHepMC.out @srcdir@/testHepMC.dat
+@DIFF_Q@ testHepMCExtended.out @srcdir@/testHepMCExtended.dat

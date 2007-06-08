@@ -14,16 +14,11 @@ CYGWIN*)
   ;;
 Darwin*)
   # MacOSX fix
-  ##sed 's/(-0,0)/(0,0)/g'  testHepMCIteration.dat  | \
-  ##	@DIFF_Q@ - @srcdir@/testHepMCIteration.dat
+  sed 's/(-0,0)/(0,0)/g'  testHepMCIteration.dat  | \
+  	@DIFF_Q@ - @srcdir@/testHepMCIteration.dat
   # dealing with different ordering - can't compare
   ;;
 *)
-  @DIFF_Q@ testHepMCIteration.dat @srcdir@/testHepMCIteration.dat
+  sed 's/(-0,0)/(0,0)/g'  testHepMCIteration.dat  | \
+  	@DIFF_Q@ - @srcdir@/testHepMCIteration.dat
 esac
-
-
-# perform the following comparisons by hand
-# Particles within a vertex are not written in a defined order
-# @DIFF_Q@ testHepMCIterationExtended.out @srcdir@/testHepMCIterationExtended.output
-

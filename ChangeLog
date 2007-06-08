@@ -1,3 +1,14 @@
+
+2007-06-08  Lynn Garren
+
+	* HepMC/GenParticleComparison.h:
+	  define a GenParticle comparator
+	* HepMC/GenParticle.h, src/GenParticle.cc:
+	  set a serial number to be used by GenParticleComparison
+	* HepMC/Flow.h, HepMC/GenVertex.h, src/Flow.cc, src/GenVertex.cc:
+	  use std::set<GenParticle*,GenParticleComparison>
+	* test: automatic comparison of output files is now possible
+
   --------------------------  HepMC-2.00.04  --------------------------
 
 2007-06-01  Lynn Garren

@@ -11,6 +11,7 @@ pkginclude_HEADERS = \
 	Flow.h		\
 	GenEvent.h	\
 	GenParticle.h	\
+	GenParticleComparison.h	\
 	GenVertex.h	\
 	HeavyIon.h	\
 	HEPEVT_Wrapper.h	\

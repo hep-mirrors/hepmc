@@ -304,7 +304,7 @@ namespace HepMC {
 	// 1. delete all outgoing particles which don't have decay vertices.
 	//    those that do become the responsibility of the decay vertex
 	//    and have their productionvertex pointer set to NULL
-	for ( std::set<GenParticle*>::iterator part1 = m_particles_out.begin();
+	for ( std::set<GenParticle*,GenParticleComparison>::iterator part1 = m_particles_out.begin();
 	      part1 != m_particles_out.end(); ) {
 	    if ( !(*part1)->end_vertex() ) {
 		delete *(part1++);
@@ -318,7 +318,7 @@ namespace HepMC {
 	// 2. delete all incoming particles which don't have production
 	//    vertices. those that do become the responsibility of the 
 	//    production vertex and have their decayvertex pointer set to NULL
-	for ( std::set<GenParticle*>::iterator part2 = m_particles_in.begin();
+	for ( std::set<GenParticle*,GenParticleComparison>::iterator part2 = m_particles_in.begin();
 	      part2 != m_particles_in.end(); ) {
 	    if ( !(*part2)->production_vertex() ) { 
 		delete *(part2++);

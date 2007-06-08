@@ -14,7 +14,8 @@ namespace HepMC {
     GenParticle::GenParticle( void ) :
 	m_momentum(0), m_pdg_id(0), m_status(0), m_flow(this),
         m_polarization(0), m_production_vertex(0), m_end_vertex(0),
-        m_barcode(0), m_generated_mass(0.)
+        m_barcode(0), m_generated_mass(0.),
+	m_serialnumber(++s_serialize)
     {
 	s_counter++;
     }
@@ -25,7 +26,8 @@ namespace HepMC {
 			const Polarization& polar ) : 
 	m_momentum(momentum), m_pdg_id(pdg_id), m_status(status), m_flow(this),
 	m_polarization(polar), m_production_vertex(0), m_end_vertex(0),
-        m_barcode(0), m_generated_mass(momentum.m())
+        m_barcode(0), m_generated_mass(momentum.m()),
+	m_serialnumber(++s_serialize)
     {
 	// Establishing *this as the owner of m_flow is done above,
 	// then we set it equal to the other flow pattern (subtle)
@@ -162,6 +164,9 @@ namespace HepMC {
     /////////////
     unsigned int GenParticle::counter() { return s_counter; }
     unsigned int GenParticle::s_counter = 0; 
+
+    unsigned int GenParticle::serialnumber() const { return m_serialnumber; }
+    unsigned int GenParticle::s_serialize = 0U; 
 
     /////////////
     // Friends //

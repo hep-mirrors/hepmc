@@ -106,7 +106,7 @@ namespace HepMC {
         double               generated_mass() const; //!< mass as generated
 
 	/// generatedMass() is included for backwards compatibility with CLHEP HepMC
-        inline double        generatedMass() const { return generated_mass(); }
+        double               generatedMass() const { return generated_mass(); }
 
 
 	///
@@ -114,6 +114,8 @@ namespace HepMC {
 	///  event has a unique barcode. Particle barcodes are positive numbers,
 	///  vertex barcodes are negative numbers.
 	int                  barcode() const; //!< particle barcode
+
+	unsigned int         serialnumber() const; //!< used by GenParticleComparison
 
 	/// In general there is no reason to "suggest_barcode"
 	bool                 suggest_barcode( int the_bar_code );
@@ -153,8 +155,10 @@ namespace HepMC {
 	GenVertex*       m_end_vertex;        // null if not-decayed
 	int              m_barcode;           // unique identifier in the event
         double           m_generated_mass;    // mass of this particle when it was generated
+	unsigned int     m_serialnumber;      // unique ID for set comparator
 
 	static unsigned int s_counter;
+	static unsigned int s_serialize;
     };  
 
     //////////////

@@ -54,6 +54,7 @@
 namespace HepMC {
 
     class GenParticle;
+    class GenParticleComparison;
 
     //! The flow object
 
@@ -86,12 +87,12 @@ namespace HepMC {
 
 	/// returns all connected particles which have "code" in any  of the 
 	///  num_indices beginning with index code_index.
-	std::set<GenParticle*> connected_partners( int code, int code_index =1,
+	std::set<GenParticle*,GenParticleComparison> connected_partners( int code, int code_index =1,
 						   int num_indices = 2 ) const;
 	/// same as connected_partners, but returns only those particles which
 	///  are connected to <=1 other particles (i.e. the flow line "dangles"
 	///  at these particles)
-	std::set<GenParticle*> dangling_connected_partners( int code, 
+	std::set<GenParticle*,GenParticleComparison> dangling_connected_partners( int code, 
 			       int code_index = 1, int num_indices = 2 ) const;
 
 	////////////////////
@@ -135,14 +136,14 @@ namespace HepMC {
 
     protected: // intended for internal use only
         /// for internal use only
-	void            connected_partners( std::set<GenParticle*>* output, 
+	void            connected_partners( std::set<GenParticle*,GenParticleComparison>* output, 
 					    int code,
 					    int code_index,
 					    int num_indices ) const;
         /// for internal use only
-	void            dangling_connected_partners( std::set<GenParticle*>* 
+	void            dangling_connected_partners( std::set<GenParticle*,GenParticleComparison>* 
 						     output, 
-						     std::set<GenParticle*>*
+						     std::set<GenParticle*,GenParticleComparison>*
 						     visited_particles, 
 						     int code, int code_index, 
 						     int num_indices ) const; 
