@@ -11,17 +11,18 @@ OS=`uname`
 case "$OS" in
 CYGWIN*)
   #don't compare these on Windows (hopelessly different default output)
+  sed 's/e+00/e+0/g' testHepMC.out   | \
+	@DIFF_Q@ - @srcdir@/testHepMC.dat
   ;;
 Darwin*)
   # MacOSX fix
   sed 's/e-00/e+00/g'  @srcdir@/testHepMCParticle.output | \
 	@DIFF_Q@ - testHepMCParticle.out
+  @DIFF_Q@ testHepMC.out @srcdir@/testHepMC.dat
+  @DIFF_Q@ testHepMCExtended.out @srcdir@/testHepMCExtended.dat
   ;;
 *)
   @DIFF_Q@ testHepMCParticle.out @srcdir@/testHepMCParticle.output
+  @DIFF_Q@ testHepMC.out @srcdir@/testHepMC.dat
+  @DIFF_Q@ testHepMCExtended.out @srcdir@/testHepMCExtended.dat
 esac
-
-# perform the following comparisons by hand
-# Particles within a vertex are not written in a defined order
-@DIFF_Q@ testHepMC.out @srcdir@/testHepMC.dat
-@DIFF_Q@ testHepMCExtended.out @srcdir@/testHepMCExtended.dat
