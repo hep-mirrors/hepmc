@@ -35,7 +35,7 @@ class IsW_Boson {
 public:
     /// returns true if the GenParticle is a W
     bool operator()( const HepMC::GenParticle* p ) { 
-	if ( fabs(p->pdg_id()) == 24 ) return 1;
+	if ( abs(p->pdg_id()) == 24 ) return 1;
 	return 0;
     }
 };
