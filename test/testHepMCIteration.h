@@ -15,7 +15,7 @@ bool IsPhoton( const HepMC::GenParticle* p ) {
 
 /// returns true if the GenParticle is a W+/W-
 bool IsWBoson( const HepMC::GenParticle* p ) { 
-    if ( fabs(p->pdg_id()) == 24 ) return true;
+    if ( abs(p->pdg_id()) == 24 ) return true;
     return false;
 }
 
