@@ -58,6 +58,8 @@ int main() {
 	    // add some information to the event
 	    evt->set_event_number(i);
 	    evt->set_signal_process_id(20);
+	    // set number of multi parton interactions
+	    evt->set_mpi( pypars.msti[31-1] );
 	    // write the event out to the ascii file
 	    ascii_io << evt;
 	    // we also need to delete the created event from memory

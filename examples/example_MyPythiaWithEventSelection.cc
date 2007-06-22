@@ -71,6 +71,8 @@ int main() {
 	// pythia pyhepc routine convert common PYJETS in common HEPEVT
 	call_pyhepc( 1 );
 	HepMC::GenEvent* evt = hepevtio.read_next_event();
+	// set number of multi parton interactions
+	evt->set_mpi( pypars.msti[31-1] );
 	// do event selection
 	if ( is_good_event(evt) ) ++num_good_events;
 	// we also need to delete the created event from memory

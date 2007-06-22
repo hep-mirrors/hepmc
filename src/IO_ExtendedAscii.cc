@@ -69,6 +69,7 @@ namespace HepMC {
 	std::vector<long int> random_states = evt->random_states();
 	m_file << 'E';
 	output( evt->event_number() );
+	output( evt->mpi() );
 	output( evt->event_scale() );
 	output( evt->alphaQCD() );
 	output( evt->alphaQED() );
@@ -152,9 +153,10 @@ namespace HepMC {
 	m_file.ignore();
 	// read values into temp variables, then create a new GenEvent
 	int event_number = 0, signal_process_id = 0, signal_process_vertex = 0,
-	    num_vertices = 0, random_states_size = 0, weights_size = 0;
+	    num_vertices = 0, random_states_size = 0, weights_size = 0,
+	    nmpi = 0;
 	double eventScale = 0, alpha_qcd = 0, alpha_qed = 0;
-	m_file >> event_number >> eventScale >> alpha_qcd >> alpha_qed
+	m_file >> event_number >> nmpi >> eventScale >> alpha_qcd >> alpha_qed
 	       >> signal_process_id >> signal_process_vertex
 	       >> num_vertices >> random_states_size;
 	std::vector<long int> random_states(random_states_size);
@@ -169,6 +171,7 @@ namespace HepMC {
 	// fill signal_process_id, event_number, weights, random_states
 	evt->set_signal_process_id( signal_process_id );
 	evt->set_event_number( event_number );
+	evt->set_mpi( nmpi );
 	evt->weights() = weights;
 	evt->set_random_states( random_states );
 	// get HeavyIon and PdfInfo

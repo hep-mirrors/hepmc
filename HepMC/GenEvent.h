@@ -71,6 +71,8 @@ namespace HepMC {
 //                       a database. It is included anyway (tradition?) since
 //                       we expect it may be useful for debugging. It can
 //                       be reset later by a database.
+// mpi()                 The number of multi parton interactions in the event.
+//                       This is NOT beam pileup.  Set to -1 by default.
 // signal_process_vertex() pointer to the vertex containing the signal process
 // weights()             Vector of doubles which specify th weight of the evnt,
 //                       the first entry will be the "event weight" used for
@@ -167,6 +169,7 @@ namespace HepMC {
 
 	int signal_process_id() const; //!<  unique signal process id
 	int event_number() const; //!<  event number
+	int mpi() const;          //!<  number of multi parton interactions
 	double event_scale() const; //!< energy scale, see hep-ph/0109068
 	double alphaQCD() const; //!<  QCD coupling, see hep-ph/0109068
 	double alphaQED() const; //!<  QED coupling, see hep-ph/0109068
@@ -193,6 +196,7 @@ namespace HepMC {
 
 	void set_signal_process_id( int id ); //!< set unique signal process id
 	void set_event_number( int eventno ); //!< set event number
+	void set_mpi( int  ); //!< set number of multi parton interactions
 	void set_event_scale( double scale ); //!< set energy scale
 	void set_alphaQCD( double a ); //!< set QCD coupling
 	void set_alphaQED( double a ); //!< set QED coupling
@@ -475,6 +479,7 @@ namespace HepMC {
     private: // data members
 	int                   m_signal_process_id;
 	int                   m_event_number;  
+	int                   m_mpi;        // number of multi paricle interactions
 	double                m_event_scale;// energy scale, see hep-ph/0109068
 	double                m_alphaQCD;   // QCD coupling, see hep-ph/0109068
 	double                m_alphaQED;   // QED coupling, see hep-ph/0109068
@@ -504,6 +509,10 @@ namespace HepMC {
     { return m_signal_process_id; }
 
     inline int GenEvent::event_number() const { return m_event_number; }
+
+    /// Returns the number of multi parton interactions in the event.
+    /// This number is -1 if it is not set.
+    inline int GenEvent::mpi() const { return m_mpi; }
 
     inline double GenEvent::event_scale() const { return m_event_scale; }
 
@@ -546,6 +555,10 @@ namespace HepMC {
 
     inline void GenEvent::set_event_number( int eventno )
     { m_event_number = eventno; }
+
+    /// Use this to set the number of multi parton interactions in each event.
+    inline void GenEvent::set_mpi( int nmpi )
+    { m_mpi = nmpi; }
 
 
     inline void GenEvent::set_event_scale( double sc ) { m_event_scale = sc; }

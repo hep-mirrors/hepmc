@@ -4,6 +4,7 @@
 	* HepMC/GenEvent.h: add methods to set and access the number of 
 	  multi particle interactions in the event.  
 	  The default value of this number is -1.
+	* src/IO_ExtendedAscii.cc: read and write MPI information
 
 2007-06-19  Lynn Garren
 

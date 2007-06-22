@@ -20,6 +20,7 @@ namespace HepMC {
 			const WeightContainer& weights,
 			const std::vector<long int>& random_states ) :
 	m_signal_process_id(signal_process_id), m_event_number(event_number),
+	m_mpi(-1),
 	m_event_scale(-1), m_alphaQCD(-1), m_alphaQED(-1),
 	m_signal_process_vertex(signal_vertex), m_weights(weights),
 	m_random_states(random_states), 
@@ -40,6 +41,7 @@ namespace HepMC {
 			const HeavyIon& ion, 
 			const PdfInfo& pdf ) :
 	m_signal_process_id(signal_process_id), m_event_number(event_number),
+	m_mpi(-1),
 	m_event_scale(-1), m_alphaQCD(-1), m_alphaQED(-1),
 	m_signal_process_vertex(signal_vertex), m_weights(weights),
 	m_random_states(random_states), 

@@ -46,6 +46,8 @@ int main() {
 	// pythia pyhepc routine convert common PYJETS in common HEPEVT
 	call_pyhepc( 1 );
 	HepMC::GenEvent* evt = hepevtio.read_next_event();
+	// set number of multi parton interactions
+	evt->set_mpi( pypars.msti[31-1] );
 	//
 	//.......................USER WOULD PROCESS EVENT HERE
 	//
