@@ -1,4 +1,10 @@
 
+2007-06-21  Lynn Garren
+
+	* HepMC/GenEvent.h: add methods to set and access the number of 
+	  multi particle interactions in the event.  
+	  The default value of this number is -1.
+
 2007-06-19  Lynn Garren
 
 	* HepMC/GenParticle.h: use uint64_t for the serial number counter
