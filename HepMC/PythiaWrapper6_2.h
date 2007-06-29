@@ -29,13 +29,6 @@ extern "C" {
 }
 #define initpydata initpydata_
 
-extern "C" {
-extern struct {
-    int iprocess;
-} process_;
-}
-#define process process_   // This common is for ATLfast.
-
 //--------------------------------------------------------------------------
 // PYTHIA Common Block Declarations
 

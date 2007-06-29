@@ -93,10 +93,6 @@ struct PYINT5_DEF{
 	double xsec[3][501];
     };
 
-struct PROCESS_DEF{
-	int iprocess;
-    };// This common is for ATLfast.
-
 
 extern "C" PYSUBS_DEF PYSUBS;
 extern "C" PYJETS_DEF PYJETS;
@@ -108,7 +104,6 @@ extern "C" PYDAT3_DEF PYDAT3;
 extern "C" PYINT1_DEF PYINT1;
 extern "C" PYINT2_DEF PYINT2;
 extern "C" PYINT5_DEF PYINT5;
-extern "C" PROCESS_DEF PROCESS;
 
 
 #define pysubs PYSUBS
@@ -121,7 +116,6 @@ extern "C" PROCESS_DEF PROCESS;
 #define pyint1 PYINT1
 #define pyint2 PYINT2
 #define pyint5 PYINT5
-#define process PROCESS
 
 
 

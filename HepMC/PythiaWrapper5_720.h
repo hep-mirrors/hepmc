@@ -98,11 +98,6 @@ const int pyjets_maxn =4000;
     } pyint5_;
 #define pyint5 pyint5_
 
-    extern struct {
-	int iprocess;
-    } process_;
-#define process process_
-
 //--------------------------------------------------------------------------
 // PYTHIA routines declaration
 

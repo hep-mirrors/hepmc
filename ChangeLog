@@ -1,4 +1,8 @@
 
+2007-06-29  Lynn Garren
+
+	* HepMC/PythiaWrapper*: remove old process struct
+
 2007-06-21  Lynn Garren
 
 	* HepMC/GenEvent.h: add methods to set and access the number of 
