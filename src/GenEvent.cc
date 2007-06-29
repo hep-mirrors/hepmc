@@ -22,7 +22,9 @@ namespace HepMC {
 	m_signal_process_id(signal_process_id), m_event_number(event_number),
 	m_mpi(-1),
 	m_event_scale(-1), m_alphaQCD(-1), m_alphaQED(-1),
-	m_signal_process_vertex(signal_vertex), m_weights(weights),
+	m_signal_process_vertex(signal_vertex), 
+	m_beam_particle_1(0),m_beam_particle_2(0),
+	m_weights(weights),
 	m_random_states(random_states), 
 	m_heavy_ion(0), 
 	m_pdf_info(0)
@@ -43,7 +45,9 @@ namespace HepMC {
 	m_signal_process_id(signal_process_id), m_event_number(event_number),
 	m_mpi(-1),
 	m_event_scale(-1), m_alphaQCD(-1), m_alphaQED(-1),
-	m_signal_process_vertex(signal_vertex), m_weights(weights),
+	m_signal_process_vertex(signal_vertex), 
+	m_beam_particle_1(0),m_beam_particle_2(0),
+	m_weights(weights),
 	m_random_states(random_states), 
 	m_heavy_ion( new HeavyIon(ion) ), 
 	m_pdf_info( new PdfInfo(pdf) )
@@ -125,6 +129,7 @@ namespace HepMC {
 	set_alphaQED( inevent.alphaQED() );
 	set_random_states( inevent.random_states() );
 	weights() = inevent.weights();
+	set_beam_particles( inevent.beam_particles() );
 	//
 	// 5. copy these only if they are not null
 	if( inevent.heavy_ion() ) set_heavy_ion( *inevent.heavy_ion() ); 
@@ -151,6 +156,12 @@ namespace HepMC {
 	     << GenParticle::counter() << " particles.\n"; 
 	ostr << " Entries this event: " << vertices_size() << " vertices, "
 	     << particles_size() << " particles.\n"; 
+	if( m_beam_particle_1 && m_beam_particle_2 ) {
+	  ostr << " Beam Particle barcodes: " << beam_particles().first->barcode() << " "
+	       << beam_particles().second->barcode() << " \n";
+	} else {
+	  ostr << " Beam Particles are not defined.\n";
+	}
 	// Random State
 	ostr << " RndmState(" << m_random_states.size() << ")=";
 	for ( std::vector<long int>::const_iterator rs 
@@ -221,6 +232,8 @@ namespace HepMC {
 	delete m_heavy_ion;
 	delete m_pdf_info;
 	m_signal_process_id = 0;
+        m_beam_particle_1 = 0;
+	m_beam_particle_2 = 0;
 	m_event_number = 0;
 	m_event_scale = -1;
 	m_alphaQCD = -1;
@@ -409,6 +422,38 @@ namespace HepMC {
 	m_vertex_barcodes[suggested_barcode] = v;
 	v->set_barcode_( suggested_barcode );
 	return insert_success;
+    }
+
+    /// test to see if we have two valid beam particles
+    bool  GenEvent::valid_beam_particles() const {
+        bool have1 = false;
+        bool have2 = false;
+	// first check that both are defined
+        if(m_beam_particle_1 && m_beam_particle_2) {
+	    // now look for a match with the particle "list"
+            for ( particle_const_iterator p = particles_begin();
+        	  p != particles_end(); p++ ) {
+		if( m_beam_particle_1 == *p ) have1 = true;
+		if( m_beam_particle_2 == *p ) have2 = true;
+	    }
+	}
+	if( have1 && have2 ) return true;
+	return false;
+    }
+    
+    /// construct the beam particle information using pointers to GenParticle
+    /// returns false if either GenParticle* is null
+    bool  GenEvent::set_beam_particles(GenParticle* bp1, GenParticle* bp2) {
+	m_beam_particle_1 = bp1;
+	m_beam_particle_2 = bp2;
+	if( m_beam_particle_1 && m_beam_particle_2 ) return true;
+	return false;
+    }
+
+    /// construct the beam particle information using a std::pair of pointers to GenParticle
+    /// returns false if either GenParticle* is null
+    bool  GenEvent::set_beam_particles(std::pair<GenParticle*, GenParticle*> const & bp) {
+	return set_beam_particles(bp.first,bp.second);
     }
 
     /////////////

@@ -38,7 +38,7 @@ namespace HepMC {
     // where is_photon() is a predicate like:
     //     class is_photon {
     //       public:
-    //         bool operator() ( const GenParticle* p ) {
+    //         bool operator() ( GenParticle const * p ) {
     //             if ( p && p->pdg_id() == 22 ) return 1;
     //             return 0;
     //         }
@@ -73,6 +73,7 @@ namespace HepMC {
 //                       be reset later by a database.
 // mpi()                 The number of multi parton interactions in the event.
 //                       This is NOT beam pileup.  Set to -1 by default.
+// beam_particles()      A pair of pointers to the incoming beam particles.
 // signal_process_vertex() pointer to the vertex containing the signal process
 // weights()             Vector of doubles which specify th weight of the evnt,
 //                       the first entry will be the "event weight" used for
@@ -175,6 +176,10 @@ namespace HepMC {
 	double alphaQED() const; //!<  QED coupling, see hep-ph/0109068
         /// pointer to the vertex containing the signal process
 	GenVertex* signal_process_vertex() const;
+	/// test to see if we have two valid beam particles
+	bool valid_beam_particles() const;
+	/// pair of pointers to the two incoming beam particles
+	std::pair<GenParticle*,GenParticle*> beam_particles() const;
 
 	/// direct access to the weights container is allowed. 
 	/// Thus you can use myevt.weights()[2];
@@ -203,6 +208,10 @@ namespace HepMC {
 
         /// set pointer to the vertex containing the signal process
 	void set_signal_process_vertex( GenVertex* );
+	/// set incoming beam particles
+	bool set_beam_particles(GenParticle*, GenParticle*);
+        /// use a pair of GenParticle*'s to set incoming beam particles
+	bool set_beam_particles(std::pair<GenParticle*,GenParticle*> const &);
 	/// provide random state information
 	void set_random_states( const std::vector<long int>& randomstates );
 
@@ -220,9 +229,9 @@ namespace HepMC {
         /// return true if there are no vertex barcodes
 	bool    vertices_empty() const;
 
-	////////////////////
-	// change methods //
-	////////////////////
+	/////////////////////
+	// mutator methods //
+	/////////////////////
 
 	bool    add_vertex( GenVertex* vtx );    //!< adds to evt and adopts
 	bool    remove_vertex( GenVertex* vtx ); //!< erases vtx from evt
@@ -484,6 +493,8 @@ namespace HepMC {
 	double                m_alphaQCD;   // QCD coupling, see hep-ph/0109068
 	double                m_alphaQED;   // QED coupling, see hep-ph/0109068
 	GenVertex*            m_signal_process_vertex;
+	GenParticle*          m_beam_particle_1;
+	GenParticle*          m_beam_particle_2;
 	WeightContainer       m_weights; // weights for this event first weight
 	                                 // is used by default for hit and miss
 	std::vector<long int> m_random_states; // container of rndm num 
@@ -639,6 +650,11 @@ namespace HepMC {
     }
     inline bool GenEvent::vertices_empty() const {
 	return (bool)m_vertex_barcodes.empty();
+    }
+    
+    // beam particles
+    inline std::pair<GenParticle *,GenParticle *> GenEvent::beam_particles() const {
+        return std::pair<GenParticle *,GenParticle *> (m_beam_particle_1, m_beam_particle_2);
     }
 
 } // HepMC

@@ -121,6 +121,10 @@ namespace HepMC {
 	}
 	std::set<GenVertex*> new_vertices;
 	//
+	// Here we assume that the first two particles in the list 
+	// are the incoming beam particles.
+	evt->set_beam_particles( hepevt_particle[1], hepevt_particle[2] );
+	//
 	// 3. We need to take special care with the hard process
 	// vertex.  The problem we are trying to avoid is when the
 	// partons entering the hard process also have daughters from

@@ -63,6 +63,10 @@ namespace HepMC {
 	}
 	std::set<GenVertex*> new_vertices;
 	//
+	// Here we assume that the first two particles in the list 
+	// are the incoming beam particles.
+	evt->set_beam_particles( hepevt_particle[1], hepevt_particle[2] );
+	//
 	// 3.+4. loop over HEPEVT particles AGAIN, this time creating vertices
 	for ( int i = 1; i <= HEPEVT_Wrapper::number_entries(); ++i ) {
 	    // We go through and build EITHER the production or decay 

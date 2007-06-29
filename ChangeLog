@@ -1,6 +1,14 @@
 
 2007-06-29  Lynn Garren
 
+	* HepMC/GenEvent.h, src/GenEvent.cc: define beam process methods
+	   bool valid_beam_particles() const;
+	   std::pair<GenParticle*,GenParticle*> beam_particles() const;
+	   bool set_beam_particles(GenParticle*, GenParticle*);
+	   bool set_beam_particles(std::pair<GenParticle*,GenParticle*> const &);
+
+	* fio/IO_HEPEVT.cc, fio/IO_HERWIG.cc: set incoming beam particles
+
 	* HepMC/PythiaWrapper*: remove old process struct
 
 2007-06-21  Lynn Garren

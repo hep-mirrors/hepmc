@@ -2,6 +2,7 @@ ________________________________________________________________________________
 GenEvent: #0 ID=0 SignalProcessGenVertex Barcode: 0
  Current Memory Usage: 1 events, 10 vertices, 60 particles.
  Entries this event: 10 vertices, 60 particles.
+ Beam Particles are not defined.
  RndmState(0)=
  Wgts(0)=
  EventScale -1 [energy] 	 alphaQCD=-1	 alphaQED=-1
