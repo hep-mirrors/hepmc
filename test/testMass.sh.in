@@ -16,7 +16,6 @@ Darwin*)
   # MacOSX fix
   @DIFF_Q@ testHepMCExtended.dat @srcdir@/testHepMCExtended.dat
   @DIFF_Q@ testMass.dat testHepMCExtended.dat
-  @DIFF_Q@ testMass.out @srcdir@/testMass.output
   ;;
 *)
   @DIFF_Q@ testHepMCExtended.dat @srcdir@/testHepMCExtended.dat
