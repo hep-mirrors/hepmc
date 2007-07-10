@@ -1,4 +1,9 @@
 
+2007-07-09  Lynn Garren
+
+	* src/IO_ExtendedAscii.cc: fix a problem with reading optional info
+	* test/testMass.*: compare generated and calculated masses
+
 2007-06-29  Lynn Garren
 
 	* HepMC/GenEvent.h, src/GenEvent.cc: define beam process methods

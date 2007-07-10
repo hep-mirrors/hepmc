@@ -1,0 +1,25 @@
+#! /bin/sh
+# @configure_input@
+
+./testMass@EXEEXT@ > testMass.out
+
+OS=`uname`
+case "$OS" in
+CYGWIN*)
+  sed 's/e+00/e+0/g'  testHepMCExtended.dat  | \
+	@DIFF_Q@ - @srcdir@/testHepMCExtended.dat
+  sed 's/e+00/e+0/g' testMass.dat   | \
+	@DIFF_Q@ - @srcdir@/testHepMCExtended.dat
+  @DIFF_Q@ testMass.out @srcdir@/testMass.output
+  ;;
+Darwin*)
+  # MacOSX fix
+  @DIFF_Q@ testHepMCExtended.dat @srcdir@/testHepMCExtended.dat
+  @DIFF_Q@ testMass.dat testHepMCExtended.dat
+  @DIFF_Q@ testMass.out @srcdir@/testMass.output
+  ;;
+*)
+  @DIFF_Q@ testHepMCExtended.dat @srcdir@/testHepMCExtended.dat
+  @DIFF_Q@ testMass.dat testHepMCExtended.dat
+  @DIFF_Q@ testMass.out @srcdir@/testMass.output
+esac

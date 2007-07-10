@@ -27,14 +27,11 @@ int main() {
     HepMC::IO_Ascii ascii_out("testHepMC.out",std::ios::out);
     // declare an IO_AsciiParticle for output
     HepMC::IO_AsciiParticles particle_out("testHepMCParticle.out",std::ios::out);
-    // declare an IO_ExtendedAscii for output
-    HepMC::IO_ExtendedAscii xout("testHepMCExtended.out",std::ios::out);
     // declare an instance of the event selection predicate
     IsGoodEvent is_good_event;
     //........................................EVENT LOOP
     int icount=0;
     int num_good_events=0;
-    double x=0., y=0., z=0.;
     HepMC::GenEvent* evt = ascii_in.read_next_event();
     while ( evt ) {
 	icount++;
@@ -42,16 +39,8 @@ int main() {
 				      << " its # " << evt->event_number() 
 				      << std::endl;
 	if ( is_good_event(evt) ) {
-	    // add some arbitrary PDF information
-	    x = 0.1 * icount;
-	    y = 0.13 * icount;
-	    z = 0.012 * icount;
-	    HepMC::PdfInfo pdf( 11, 12, x, y, z, 0.11, 0.34);
-            // GenEvent makes its own copy of pdf
-	    evt->set_pdf_info(pdf);
 	    ascii_out << evt;
 	    particle_out << evt;
-	    xout << evt;
 	    ++num_good_events;
 	}
 	

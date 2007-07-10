@@ -19,10 +19,8 @@ Darwin*)
   sed 's/e-00/e+00/g'  @srcdir@/testHepMCParticle.output | \
 	@DIFF_Q@ - testHepMCParticle.out
   @DIFF_Q@ testHepMC.out @srcdir@/testHepMC.dat
-  @DIFF_Q@ testHepMCExtended.out @srcdir@/testHepMCExtended.dat
   ;;
 *)
   @DIFF_Q@ testHepMCParticle.out @srcdir@/testHepMCParticle.output
   @DIFF_Q@ testHepMC.out @srcdir@/testHepMC.dat
-  @DIFF_Q@ testHepMCExtended.out @srcdir@/testHepMCExtended.dat
 esac

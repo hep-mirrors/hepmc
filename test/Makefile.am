@@ -23,18 +23,21 @@ endif
 endif
 
 # Identify executables needed during testing:
-check_PROGRAMS = testHepMC testHepMCIteration testPrintBug testSimpleVector
+check_PROGRAMS = testHepMC testHepMCIteration testMass \
+                 testPrintBug testSimpleVector
 
-check_SCRIPTS = testHepMC.sh testHepMCIteration.sh testPrintBug.sh
+check_SCRIPTS = testHepMC.sh testHepMCIteration.sh testPrintBug.sh testMass.sh
 
 # Identify test(s) to run when 'make check' is requested:
-TESTS = testHepMC.sh testHepMCIteration.sh testPrintBug.sh testSimpleVector
+TESTS = testHepMC.sh testHepMCIteration.sh testMass.sh \
+        testPrintBug.sh testSimpleVector
 
 # Identify the test(s) for which failure is the intended outcome:
 XFAIL_TESTS = 
 
 # Identify the dependencies on a per-test basis:
 testHepMC_SOURCES          = testHepMC.cc
+testMass_SOURCES           = testMass.cc
 testHepMCIteration_SOURCES = testHepMCIteration.cc
 testPrintBug_SOURCES       = testPrintBug.cc
 testSimpleVector_SOURCES   = testSimpleVector.cc
@@ -46,4 +49,4 @@ EXTRA_DIST = testHepMC.input testHepMC.output testHepMCParticle.output \
 
 # Identify generated file(s) to be removed when 'make clean' is requested:
 CLEANFILES = testHepMC.out testHepMCParticle.out testHepMCExtended.out \
-             testPrintBug.out testHepMCIterationExtended.out
+             testPrintBug.out testHepMCIterationExtended.out testMass.out
