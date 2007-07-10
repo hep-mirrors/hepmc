@@ -165,8 +165,8 @@ namespace HepMC {
     unsigned int GenParticle::counter() { return s_counter; }
     unsigned int GenParticle::s_counter = 0U; 
 
-    uint64_t GenParticle::serialnumber() const { return m_serialnumber; }
-    uint64_t GenParticle::s_serialize = 0U; 
+    hepmc_uint64_t GenParticle::serialnumber() const { return m_serialnumber; }
+    hepmc_uint64_t GenParticle::s_serialize = 0U; 
 
     /////////////
     // Friends //

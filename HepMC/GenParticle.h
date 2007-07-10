@@ -30,7 +30,12 @@
 #include "HepMC/Polarization.h"
 #include "HepMC/SimpleVector.h"
 #include <iostream>
+#ifdef _WIN32
+#define hepmc_uint64_t  'unsigned long long' 
+#else
 #include <stdint.h>	// for uint64_t
+#define hepmc_uint64_t   uint64_t
+#endif
 
 namespace HepMC {
 
@@ -116,7 +121,7 @@ namespace HepMC {
 	///  vertex barcodes are negative numbers.
 	int                  barcode() const; //!< particle barcode
 
-	uint64_t    serialnumber() const; //!< used by GenParticleComparison
+	hepmc_uint64_t    serialnumber() const; //!< used by GenParticleComparison
 
 	/// In general there is no reason to "suggest_barcode"
 	bool                 suggest_barcode( int the_bar_code );
@@ -156,10 +161,10 @@ namespace HepMC {
 	GenVertex*       m_end_vertex;        // null if not-decayed
 	int              m_barcode;           // unique identifier in the event
         double           m_generated_mass;    // mass of this particle when it was generated
-	uint64_t         m_serialnumber;      // unique ID for set comparator
+	hepmc_uint64_t   m_serialnumber;      // unique ID for set comparator
 
-	static unsigned int s_counter;
-	static uint64_t     s_serialize;
+	static unsigned int       s_counter;
+	static hepmc_uint64_t     s_serialize;
     };  
 
     //////////////
