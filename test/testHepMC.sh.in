@@ -12,6 +12,7 @@ case "$OS" in
 CYGWIN*)
   #don't compare these on Windows (hopelessly different default output)
   sed 's/e+00/e+0/g' testHepMC.out   | \
+       sed 's/e-00/e-0/g' -   | \
 	@DIFF_Q@ - @srcdir@/testHepMC.dat
   ;;
 Darwin*)

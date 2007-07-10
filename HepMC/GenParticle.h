@@ -31,7 +31,7 @@
 #include "HepMC/SimpleVector.h"
 #include <iostream>
 #ifdef _WIN32
-#define hepmc_uint64_t  'unsigned long long' 
+#define hepmc_uint64_t  __int64
 #else
 #include <stdint.h>	// for uint64_t
 #define hepmc_uint64_t   uint64_t
