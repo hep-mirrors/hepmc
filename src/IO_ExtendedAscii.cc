@@ -197,6 +197,8 @@ namespace HepMC {
 	}
 	//
 	// last connect particles to their end vertices
+	GenParticle* beam1(0);
+	GenParticle* beam2(0);
 	for ( std::map<GenParticle*,int>::iterator pmap 
 		  = particle_to_end_vertex.begin(); 
 	      pmap != particle_to_end_vertex.end(); ++pmap ) {
@@ -206,7 +208,12 @@ namespace HepMC {
 		std::cerr << "IO_ExtendedAscii::fill_next_event ERROR particle points"
 			  << "\n to null end vertex. " <<std::endl;
 	    }
+	    // also look for the beam particles
+	    GenParticle* p =  pmap->first;
+	    if( p->barcode() == bp1 ) beam1 = p;
+	    if( p->barcode() == bp2 ) beam2 = p;
 	}
+	evt->set_beam_particles(beam1,beam2);
 	return 1;
     }
 
