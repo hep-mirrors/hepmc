@@ -87,6 +87,8 @@ namespace HepMC {
     protected: // for internal use only
 	/// write vertex information
 	void          write_vertex( GenVertex* );
+	/// write beam particle information
+	void          write_beam_particles( std::pair<GenParticle *,GenParticle *> );
 	/// write heavy ion information
 	void          write_heavy_ion( HeavyIon* );
 	/// write PDF information

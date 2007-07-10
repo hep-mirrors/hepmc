@@ -77,6 +77,7 @@ namespace HepMC {
 	output(   ( evt->signal_process_vertex() ?
 		    evt->signal_process_vertex()->barcode() : 0 )   );
 	output( evt->vertices_size() ); // total number of vertices.
+	write_beam_particles( evt->beam_particles() );
 	output( (int)random_states.size() );
 	for ( std::vector<long int>::iterator rs = random_states.begin(); 
 	      rs != random_states.end(); ++rs ) {
@@ -154,11 +155,11 @@ namespace HepMC {
 	// read values into temp variables, then create a new GenEvent
 	int event_number = 0, signal_process_id = 0, signal_process_vertex = 0,
 	    num_vertices = 0, random_states_size = 0, weights_size = 0,
-	    nmpi = 0;
+	    nmpi = 0, bp1 = 0, bp2 = 0;
 	double eventScale = 0, alpha_qcd = 0, alpha_qed = 0;
 	m_file >> event_number >> nmpi >> eventScale >> alpha_qcd >> alpha_qed
 	       >> signal_process_id >> signal_process_vertex
-	       >> num_vertices >> random_states_size;
+	       >> num_vertices >> bp1 >> bp2 >> random_states_size;
 	std::vector<long int> random_states(random_states_size);
 	for ( int i = 0; i < random_states_size; ++i ) {
 	    m_file >> random_states[i];
@@ -335,6 +336,23 @@ namespace HepMC {
 		  = v->particles_out_const_begin();
 	      p3 != v->particles_out_const_end(); ++p3 ) {
 	    write_particle( *p3 );
+	}
+    }
+
+    void IO_ExtendedAscii::write_beam_particles( 
+        std::pair<GenParticle *,GenParticle *> pr ) {
+        GenParticle* p = pr.first;
+	//m_file << 'B';
+	if(!p) {
+	   output( 0 );
+	} else {
+	   output( p->barcode() );
+	}
+        p = pr.second;
+	if(!p) {
+	   output( 0 );
+	} else {
+	   output( p->barcode() );
 	}
     }
 
