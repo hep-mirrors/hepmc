@@ -175,8 +175,10 @@ namespace HepMC {
 	evt->weights() = weights;
 	evt->set_random_states( random_states );
 	// get HeavyIon and PdfInfo
-	evt->set_heavy_ion( *read_heavy_ion() );
-	evt->set_pdf_info( *read_pdf_info() );
+	HeavyIon* ion = read_heavy_ion();
+	if(ion) evt->set_heavy_ion( *ion );
+	PdfInfo* pdf = read_pdf_info();
+	if(pdf) evt->set_pdf_info( *pdf );
 	//
 	// the end vertices of the particles are not connected until
 	//  after the event is read --- we store the values in a map until then
@@ -344,12 +346,26 @@ namespace HepMC {
 	    m_file.clear(std::ios::badbit); 
 	    return;
 	}
+	m_file << 'H';
 	// HeavyIon* is set to 0 by default
 	if ( !ion  ) {
+	    output( 0 );
+	    output( 0 );
+	    output( 0 );
+	    output( 0 );
+	    output( 0 );
+	    output( 0 );
+	    output( 0 );
+	    output( 0 );
+	    output( 0 );
+	    output( 0. );
+	    output( 0. );
+	    output( 0. );
+	    output( 0. );
+	    output('\n');
 	    return;
 	}
 	//
-	m_file << 'H';
 	output( ion->Ncoll_hard() );
 	output( ion->Npart_proj() );
 	output( ion->Npart_targ() );
@@ -374,12 +390,20 @@ namespace HepMC {
 	    m_file.clear(std::ios::badbit); 
 	    return;
 	}
+	m_file << 'F';
 	// PdfInfo* is set to 0 by default
 	if ( !pdf ) {
+	    output( 0 );
+	    output( 0 );
+	    output( 0. );
+	    output( 0. );
+	    output( 0. );
+	    output( 0. );
+	    output( 0. );
+	    output('\n');
 	    return;
 	}
 	//
-	m_file << 'F';
 	output( pdf->id1() );
 	output( pdf->id2() );
 	output( pdf->x1() );
@@ -488,6 +512,7 @@ namespace HepMC {
 	m_file >> nh >> np >> nt >> nc >> neut >> prot
 	       >> nw >> nwn >> nwnw >> impact >> plane >> xcen >> inel;
 	m_file.ignore(2,'\n');
+	if( nh == 0 ) return 0;
 	HeavyIon* ion = new HeavyIon(nh, np, nt, nc, neut, prot,
 	                             nw, nwn, nwnw, 
 				     impact, plane, xcen, inel );
@@ -500,7 +525,7 @@ namespace HepMC {
 	// assumes mode has already been checked
 	//
 	// test to be sure the next entry is of type "F" then ignore it
-	if ( !m_file || m_file.peek()!='F' ) {
+	if ( !m_file || m_file.peek() !='F') {
 	    std::cerr << "IO_ExtendedAscii::read_pdf_info setting badbit." << std::endl;
 	    m_file.clear(std::ios::badbit); 
 	    return 0;
@@ -511,6 +536,8 @@ namespace HepMC {
 	double  x1 = 0., x2 = 0., scale = 0., pdf1 = 0., pdf2 = 0.; 
 	m_file >> id1 >> id2 >> x1 >> x2 >> scale >> pdf1 >> pdf2;
 	m_file.ignore(2,'\n');
+	//std::cout << "read " << id1 << std::endl;
+	if( id1 == 0 ) return 0;
 	PdfInfo* pdf = new PdfInfo( id1, id2, x1, x2, scale, pdf1, pdf2);
 	//
 	return pdf;
