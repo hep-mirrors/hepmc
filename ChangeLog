@@ -1,4 +1,9 @@
 
+2007-07-10  Lynn Garren
+
+	* HepMC/Version.h: add the ability to print the HepMC version number
+	* src/IO_ExtendedAscii.cc: write HepMC version number
+
 2007-07-09  Lynn Garren
 
 	* src/IO_ExtendedAscii.cc: read/write beam particle information

@@ -40,6 +40,7 @@ pkginclude_HEADERS = \
 	enable_if.h	\
 	is_arithmetic.h	\
 	HepMC_CLHEP20.h	\
+	Version.h	\
 	defs.h
 
 # Identify generated file(s) to be removed when 'make clean' is requested:

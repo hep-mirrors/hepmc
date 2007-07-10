@@ -13,6 +13,7 @@
 
 #include "HepMC/IO_ExtendedAscii.h"
 #include "HepMC/GenEvent.h"
+#include "HepMC/Version.h"
 
 // define methods and classes used by this test
 #include "IsGoodEvent.h"
@@ -29,6 +30,8 @@ int main() {
 	HepMC::IO_ExtendedAscii ascii_out("testHepMCExtended.dat",std::ios::out);
 	// declare an instance of the event selection predicate
 	IsGoodEvent is_good_event;
+    // send version to standard output
+    HepMC::version();
 	//........................................EVENT LOOP
 	int icount=0;
 	int num_good_events=0;
