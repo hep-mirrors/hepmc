@@ -97,22 +97,13 @@ void massInfo( const HepMC::GenEvent* e )
        gm = (*p)->generated_mass();
        m = (*p)->momentum().m();
        d = fabs(m-gm);
-       if( gm > 0. ) {
-	    if( d > 1.0e-8 ) {
-		 std::cout << "Particle " << (*p)->barcode() 
-	        	   << " " << (*p)->pdg_id()
-        		   << " generated mass " << gm
-        		   << " mass from momentum " << m 
-			   << " difference " << d << std::endl;
-	    } 
-       } else {
-	    if( d > 1.0e-5 ) {
-		 std::cout << "Particle " << (*p)->barcode() 
-	        	   << " " << (*p)->pdg_id()
-        		   << " generated mass " << gm
-        		   << " mass from momentum " << m 
-			   << " difference " << d << std::endl;
-	    } 
+       if( d > 1.0e-5 ) {
+	    std::cout << "Event " << e->event_number()
+	              << " Particle " << (*p)->barcode() 
+	              << " " << (*p)->pdg_id()
+        	      << " generated mass " << gm
+        	      << " mass from momentum " << m 
+		      << " difference " << d << std::endl;
        } 
    }   
 }

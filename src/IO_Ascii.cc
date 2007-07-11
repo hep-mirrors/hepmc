@@ -8,6 +8,7 @@
 #include "HepMC/IO_Ascii.h"
 #include "HepMC/GenEvent.h"
 #include "HepMC/ParticleDataTable.h"
+#include "HepMC/Version.h"
 
 namespace HepMC {
 
@@ -58,6 +59,7 @@ namespace HepMC {
 	// write event listing key before first event only.
 	if ( !m_finished_first_event_io ) {
 	    m_finished_first_event_io = 1;
+	    m_file << "\n" << "HepMC::Version " << versionName();
 	    m_file << "\n" << "HepMC::IO_Ascii-START_EVENT_LISTING\n";
 	}
 	//

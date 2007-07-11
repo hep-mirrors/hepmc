@@ -11,6 +11,7 @@
 #include "HepMC/IO_AsciiParticles.h"
 #include "HepMC/GenEvent.h"
 #include "HepMC/ParticleDataTable.h"
+#include "HepMC/Version.h"
 
 namespace HepMC {
 
@@ -72,8 +73,10 @@ namespace HepMC {
 	// write event listing key before first event only.
 	if ( !m_finished_first_event_io ) {
 	    m_finished_first_event_io = 1;
+        *m_outstream << "HepMC::Version " << versionName() << std::endl;
         *m_outstream << "0 Run  HepMC::IO_AsciiParticles eye-readable events output"
                      << std::endl;
+        *m_outstream << "#      HepMC::Version " << versionName() << std::endl;
         *m_outstream <<
     "  #  stat pdg  moth1   px        py         pz     energy    mass      eta"
                      << std::endl;
