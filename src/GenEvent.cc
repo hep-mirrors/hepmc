@@ -33,7 +33,7 @@ namespace HepMC {
 	///
 	/// note: default values for m_event_scale, m_alphaQCD, m_alphaQED
 	///       are as suggested in hep-ph/0109068, "Generic Interface..."
-	s_counter++;
+	++s_counter;
     }
 
     GenEvent::GenEvent( int signal_process_id, int event_number,
@@ -56,14 +56,14 @@ namespace HepMC {
 	///
 	/// note: default values for m_event_scale, m_alphaQCD, m_alphaQED
 	///       are as suggested in hep-ph/0109068, "Generic Interface..."
-	s_counter++;
+	++s_counter;
     }
 
     GenEvent::GenEvent( const GenEvent& inevent ) 
     {
 	/// deep copy
 	*this = inevent;
-	s_counter++;
+	++s_counter;
     }
 
     GenEvent::~GenEvent() 
@@ -74,7 +74,7 @@ namespace HepMC {
 	delete_all_vertices();
 	delete m_heavy_ion;
 	delete m_pdf_info;
-	s_counter--;
+	--s_counter;
     }
 
     GenEvent& GenEvent::operator=( const GenEvent& inevent ) 
