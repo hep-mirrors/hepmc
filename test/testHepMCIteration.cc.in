@@ -11,9 +11,8 @@
 
 #include <list>
 
-#include "HepMC/IO_Ascii.h"
+#include "HepMC/IO_GenEvent.h"
 #include "HepMC/IO_AsciiParticles.h"
-#include "HepMC/IO_ExtendedAscii.h"
 #include "HepMC/GenEvent.h"
 
 // define methods and classes used by this test
@@ -26,7 +25,7 @@ bool simpleIter( HepMC::GenEvent* evt, std::ofstream& os );
 int main() { 
     // declare an input strategy to read the data produced with the 
     // example_MyPythia
-    HepMC::IO_Ascii ascii_in("@srcdir@/testHepMC.input",std::ios::in);
+    HepMC::IO_GenEvent ascii_in("@srcdir@/testIOGenEvent.input",std::ios::in);
     // declare an instance of the event selection predicate
     IsGoodEvent is_good_event;
     // define an output stream

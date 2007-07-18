@@ -6,17 +6,17 @@
 OS=`uname`
 case "$OS" in
 CYGWIN*)
-  sed 's/e+0/e+/g'  testHepMCExtended.dat  | \
+  sed 's/e+0/e+/g'  testMass1.dat  | \
      sed 's/e-0/e-/g'  -  | \
-	@DIFF_Q@ - @srcdir@/testHepMCExtended.dat
-  @DIFF_Q@ testMass.dat testHepMCExtended.dat
+	@DIFF_Q@ - @srcdir@/testMass1.dat
+  @DIFF_Q@ testMass2.dat testMass1.dat
   ;;
 Darwin*)
   # MacOSX fix
-  @DIFF_Q@ testHepMCExtended.dat @srcdir@/testHepMCExtended.dat
-  @DIFF_Q@ testMass.dat testHepMCExtended.dat
+  @DIFF_Q@ testMass1.dat @srcdir@/testMass1.dat
+  @DIFF_Q@ testMass2.dat testMass1.dat
   ;;
 *)
-  @DIFF_Q@ testHepMCExtended.dat @srcdir@/testHepMCExtended.dat
-  @DIFF_Q@ testMass.dat testHepMCExtended.dat
+  @DIFF_Q@ testMass1.dat @srcdir@/testMass1.dat
+  @DIFF_Q@ testMass2.dat testMass1.dat
 esac

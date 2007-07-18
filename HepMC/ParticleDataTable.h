@@ -105,10 +105,18 @@ namespace HepMC {
     ///////////////////////////
 
     inline ParticleDataTable::ParticleDataTable( std::string description ) 
-	: m_description(description) {}
+	: m_description(description) {
+	std::cout << "-------------------------------------------------------" << std::endl;
+	std::cout << "Use of HepMC/ParticleDataTable is deprecated" << std::endl;
+	std::cout << "-------------------------------------------------------" << std::endl;
+    }
 
     inline ParticleDataTable::ParticleDataTable( const char description ) {
 	m_description = description; 
+
+        std::cout << "-------------------------------------------------------" << std::endl;
+        std::cout << "Use of HepMC/ParticleDataTable is deprecated" << std::endl;
+        std::cout << "-------------------------------------------------------" << std::endl;
     }
 
     inline ParticleDataTable::ParticleDataTable( const ParticleDataTable& pdt){

@@ -4,8 +4,7 @@
 # and testHepMCIterationExtended.out to @srcdir@/testHepMCIterationExtended.dat,
 # but the particles within a vertex are printed in "random" order
 
-./testHepMCIteration@EXEEXT@ \
- | @DIFF_Q@ - @srcdir@/testHepMCIteration.output > /dev/null
+./testHepMCIteration@EXEEXT@
 
 OS=`uname`
 case "$OS" in

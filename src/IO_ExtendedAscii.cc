@@ -18,12 +18,16 @@ namespace HepMC {
     IO_ExtendedAscii::IO_ExtendedAscii( const char* filename, std::ios::openmode mode ) 
 	: m_mode(mode), m_file(filename, mode), m_finished_first_event_io(0) 
     {
+        std::cout << "-------------------------------------------------------" << std::endl;
+        std::cout << "Use of HepMC/IO_ExtendedAscii is deprecated" << std::endl;
+        std::cout << "-------------------------------------------------------" << std::endl;
 	if ( (m_mode&std::ios::out && m_mode&std::ios::in) ||
 	     (m_mode&std::ios::app && m_mode&std::ios::in) ) {
 	    std::cerr << "IO_ExtendedAscii::IO_ExtendedAscii Error, open of file requested "
 		      << "of input AND output type. Not allowed. Closing file."
 		      << std::endl;
 	    m_file.close();
+	    return;
 	}
 	// precision 16 (# digits following decimal point) is the minimum that
 	//  will capture the full information stored in a double
@@ -563,7 +567,6 @@ namespace HepMC {
 	double  x1 = 0., x2 = 0., scale = 0., pdf1 = 0., pdf2 = 0.; 
 	m_file >> id1 >> id2 >> x1 >> x2 >> scale >> pdf1 >> pdf2;
 	m_file.ignore(2,'\n');
-	//std::cout << "read " << id1 << std::endl;
 	if( id1 == 0 ) return 0;
 	PdfInfo* pdf = new PdfInfo( id1, id2, x1, x2, scale, pdf1, pdf2);
 	//

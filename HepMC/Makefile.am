@@ -21,6 +21,7 @@ pkginclude_HEADERS = \
 	IO_AsciiParticles.h	\
 	IO_ExtendedAscii.h	\
 	IO_BaseClass.h	\
+	IO_GenEvent.h	\
 	IO_HEPEVT.h	\
 	IO_HERWIG.h	\
 	IO_PDG_ParticleDataTable.h	\

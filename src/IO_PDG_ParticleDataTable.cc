@@ -15,7 +15,12 @@
 namespace HepMC {
 
     IO_PDG_ParticleDataTable::IO_PDG_ParticleDataTable( const char* filename ) 
-        : m_filename(filename), m_file(filename) {}
+        : m_filename(filename), m_file(filename) {
+        std::cout << "-------------------------------------------------------" << std::endl;
+        std::cout << "Use of HepMC/IO_PDG_ParticleDataTable is deprecated" << std::endl;
+        std::cout << "Use of HepMC/ParticleDataTable is deprecated" << std::endl;
+        std::cout << "-------------------------------------------------------" << std::endl;
+    }
     
     IO_PDG_ParticleDataTable::~IO_PDG_ParticleDataTable() {
 	m_file.close();

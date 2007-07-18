@@ -1,4 +1,16 @@
 
+2007-07-18  Lynn Garren
+
+	* HepMC/IO_GenEvent.h: new IO class that will use streams
+	  deprecate IO_Ascii and IO_ExtendedAscii
+	  examples use IO_GenEvent
+
+  --------------------------  HepMC-2.01.04  --------------------------
+
+2007-07-18  Lynn Garren
+
+	* various bug fixes and protections
+
   --------------------------  HepMC-2.01.03  --------------------------
 
 2007-07-11  Lynn Garren

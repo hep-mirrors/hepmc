@@ -2,18 +2,17 @@
 // testHepMC.cc.in
 //
 // garren@fnal.gov, March 2006
-// Use Matt's example_EventSelection to check HepMC.
+// based on example_EventSelection
 // Apply an event selection to the events in testHepMC.input
 // Events containing a photon of pT > 25 GeV pass the selection and are
 // written to "testHepMC.out"
 // Add arbitrary PDF information to the good events
-// Also write events using IO_AsciiParticles and IO_ExtendedAscii
+// Also write events using IO_AsciiParticles 
 //////////////////////////////////////////////////////////////////////////
 //
 
-#include "HepMC/IO_Ascii.h"
+#include "HepMC/IO_GenEvent.h"
 #include "HepMC/IO_AsciiParticles.h"
-#include "HepMC/IO_ExtendedAscii.h"
 #include "HepMC/GenEvent.h"
 
 // define methods and classes used by this test
@@ -22,9 +21,9 @@
 int main() { 
     // declare an input strategy to read the data produced with the 
     // example_MyPythia
-    HepMC::IO_Ascii ascii_in("@srcdir@/testHepMC.input",std::ios::in);
-    // declare another IO_Ascii for writing out the good events
-    HepMC::IO_Ascii ascii_out("testHepMC.out",std::ios::out);
+    HepMC::IO_GenEvent ascii_in("@srcdir@/testIOGenEvent.input",std::ios::in);
+    // declare another IO_GenEvent for writing out the good events
+    HepMC::IO_GenEvent ascii_out("testHepMC.out",std::ios::out);
     // declare an IO_AsciiParticle for output
     HepMC::IO_AsciiParticles particle_out("testHepMCParticle.out",std::ios::out);
     // declare an instance of the event selection predicate

@@ -2,16 +2,14 @@
 // testMass.cc.in
 //
 // garren@fnal.gov, March 2006
-// Use Matt's example_EventSelection to check HepMC.
-// Apply an event selection to the events in testMass.input
-// Events containing a photon of pT > 25 GeV pass the selection and are
-// written to "testMass.dat"
-// Add arbitrary PDF information to the good events
-// Also write events using IO_AsciiParticles and IO_ExtendedAscii
+// Read events written by example_MyPythia.cc
+// Select events containing a photon of pT > 25 GeV 
+// Add arbitrary PDF information to one of the good events
+// Write the selected events and read them back in
 //////////////////////////////////////////////////////////////////////////
 //
 
-#include "HepMC/IO_ExtendedAscii.h"
+#include "HepMC/IO_GenEvent.h"
 #include "HepMC/GenEvent.h"
 #include "HepMC/Version.h"
 
@@ -25,9 +23,9 @@ int main() {
     {
 	// declare an input strategy to read the data produced with the 
 	// example_MyPythia
-	HepMC::IO_ExtendedAscii ascii_in("@srcdir@/testHepMCExtended.input",std::ios::in);
-	// declare another IO_ExtendedAscii for output
-	HepMC::IO_ExtendedAscii ascii_out("testHepMCExtended.dat",std::ios::out);
+        HepMC::IO_GenEvent ascii_in("@srcdir@/testIOGenEvent.input",std::ios::in);
+	// declare another IO_GenEvent for output
+	HepMC::IO_GenEvent ascii_out("testMass1.dat",std::ios::out);
 	// declare an instance of the event selection predicate
 	IsGoodEvent is_good_event;
     // send version to standard output
@@ -66,9 +64,9 @@ int main() {
     // now read the file we just created
     {
 	// declare an input strategy 
-	HepMC::IO_ExtendedAscii xin("testHepMCExtended.dat",std::ios::in);
-	// declare another IO_ExtendedAscii for output
-	HepMC::IO_ExtendedAscii xout("testMass.dat",std::ios::out);
+	HepMC::IO_GenEvent xin("testMass1.dat",std::ios::in);
+	// declare another IO_GenEvent for output
+	HepMC::IO_GenEvent xout("testMass2.dat",std::ios::out);
 	//........................................EVENT LOOP
 	int ixin=0;
 	HepMC::GenEvent* evt = xin.read_next_event();
