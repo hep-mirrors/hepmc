@@ -7,8 +7,8 @@ OS=`uname`
 case "$OS" in
 CYGWIN*)
   #don't compare these on Windows (hopelessly different default output)
-  sed 's/e+00/e+0/g' testAscii.dat   | \
-     sed 's/e-00/e-0/g' -   | \
+  sed 's/e+0/e+/g' testAscii.dat   | \
+     sed 's/e-0/e-/g' -   | \
 	@DIFF_Q@ - @srcdir@/testAscii.dat
   sed 's/e+0/e+/g'  testHepMCExtended.dat  | \
      sed 's/e-0/e-/g'  -  | \
