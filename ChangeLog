@@ -1,7 +1,7 @@
 
 2007-07-18  Lynn Garren
 
-	* src/Gen*.cc: protect against self assignment
+	* various bug fixes and protections
 
   --------------------------  HepMC-2.01.03  --------------------------
 

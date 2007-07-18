@@ -24,6 +24,7 @@ namespace HepMC {
 		      << "of input AND output type. Not allowed. Closing file."
 		      << std::endl;
 	    m_file.close();
+	    return;
 	}
 	// precision 16 (# digits following decimal point) is the minimum that
 	//  will capture the full information stored in a double

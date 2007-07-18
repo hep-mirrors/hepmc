@@ -123,6 +123,8 @@ namespace HepMC {
         //
         // 3. create a NEW copy of all particles from inevent
         //    taking care to attach them to the appropriate 
+	GenParticle* beam1(0);
+	GenParticle* beam2(0);
         for ( GenEvent::particle_const_iterator p = inevent.particles_begin();
               p != inevent.particles_end(); p++ ) 
         {
@@ -136,7 +138,10 @@ namespace HepMC {
                 map_in_to_new[ oldparticle->production_vertex() ]->
                                          add_particle_out(newparticle);
             }
+	    if ( oldparticle == inevent.beam_particles().first ) beam1 = newparticle;
+	    if ( oldparticle == inevent.beam_particles().second ) beam2 = newparticle;
         }
+	set_beam_particles( beam1, beam2 );
 	//
 	// 4. now that vtx/particles are copied, do everything else
 	set_signal_process_id( inevent.signal_process_id() );
@@ -147,8 +152,6 @@ namespace HepMC {
 	set_mpi( inevent.mpi() );
 	set_random_states( inevent.random_states() );
 	weights() = inevent.weights();
-	// lookup new pointers
-	set_beam_particles( inevent.beam_particles() );
 	//
 	// 5. copy these only if they are not null
 	m_heavy_ion = inevent.heavy_ion() ? new HeavyIon(*inevent.heavy_ion()) : 0;

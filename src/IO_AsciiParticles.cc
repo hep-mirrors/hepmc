@@ -31,6 +31,8 @@ namespace HepMC {
                   << "of input AND output type. Not allowed. Closing file."
                   << std::endl;
         m_file->close();
+        delete m_file;
+	return;
       }
     }
     // precision 16 (# digits following decimal point) is the minimum that
