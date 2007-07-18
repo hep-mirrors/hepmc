@@ -9,7 +9,7 @@
 // gmake examples/example_EventSelection.exe
 //
 
-#include "HepMC/IO_Ascii.h"
+#include "HepMC/IO_GenEvent.h"
 #include "HepMC/GenEvent.h"
 
 //! example class
@@ -38,9 +38,9 @@ int main() {
     // declare an input strategy to read the data produced with the 
     // example_MyPythia
     { // begin scope of ascii_in and ascii_out
-	HepMC::IO_Ascii ascii_in("example_MyPythia.dat",std::ios::in);
-	// declare another IO_Ascii for writing out the good events
-	HepMC::IO_Ascii ascii_out("example_EventSelection.dat",std::ios::out);
+	HepMC::IO_GenEvent ascii_in("example_MyPythia.dat",std::ios::in);
+	// declare another IO_GenEvent for writing out the good events
+	HepMC::IO_GenEvent ascii_out("example_EventSelection.dat",std::ios::out);
 	// declare an instance of the event selection predicate
 	IsGoodEvent is_good_event;
 	//........................................EVENT LOOP

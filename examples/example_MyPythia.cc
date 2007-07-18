@@ -5,7 +5,7 @@
 // using HepMC/PythiaWrapper.h 
 // Events are read into the HepMC event record from the FORTRAN HEPEVT 
 // common block using the IO_HEPEVT strategy and then output to file in
-// ascii format using the IO_Ascii strategy.
+// ascii format using the IO_GenEvent strategy.
 //////////////////////////////////////////////////////////////////////////
 /// To Compile: go to the HepMC directory and type:
 /// gmake examples/example_MyPythia.exe
@@ -21,8 +21,7 @@
 #include <iostream>
 #include "HepMC/PythiaWrapper.h"
 #include "HepMC/IO_HEPEVT.h"
-#include "HepMC/IO_Ascii.h"
-#include "HepMC/IO_ExtendedAscii.h"
+#include "HepMC/IO_GenEvent.h"
 #include "HepMC/GenEvent.h"
 #include "PythiaHelper.h"
 
@@ -46,9 +45,7 @@ int main() {
     //
     { // begin scope of ascii_io
 	// Instantiate an IO strategy to write the data to file 
-	HepMC::IO_Ascii ascii_io("example_MyPythia.dat",std::ios::out);
-	// declare an IO_ExtendedAscii for output
-	HepMC::IO_ExtendedAscii xout("example_MyPythia.exdat",std::ios::out);
+	HepMC::IO_GenEvent ascii_io("example_MyPythia.dat",std::ios::out);
 	//
 	//........................................EVENT LOOP
 	for ( int i = 1; i <= 100; i++ ) {
@@ -65,7 +62,6 @@ int main() {
 	    evt->set_mpi( pypars.msti[31-1] );
 	    // write the event out to the ascii files
 	    ascii_io << evt;
-	    xout << evt;
 	    // we also need to delete the created event from memory
 	    delete evt;
 	}

@@ -16,7 +16,7 @@
 namespace HepMC {
 
     IO_GenEvent::IO_GenEvent( const char* filename, std::ios::openmode mode ) 
-	: m_mode(mode), m_file(filename, mode), m_finished_first_event_io(0) 
+    : m_mode(mode), m_file(filename, mode), m_finished_first_event_io(0) 
     {
 	if ( (m_mode&std::ios::out && m_mode&std::ios::in) ||
 	     (m_mode&std::ios::app && m_mode&std::ios::in) ) {
@@ -32,29 +32,64 @@ namespace HepMC {
 	// we use decimal to store integers, because it is smaller than hex!
 	m_file.setf(std::ios::dec,std::ios::basefield);
 	m_file.setf(std::ios::scientific,std::ios::floatfield);
+	// now we set the streams
+	m_iostr = &m_file;
+	if ( m_mode&std::ios::in ) {
+	    m_istr = &m_file;
+	    m_ostr = NULL;
+	}
+	if ( m_mode&std::ios::out ) {
+	    m_ostr = &m_file;
+	    m_istr = NULL;
+	}
+	m_have_file = true;
+    }
+
+    IO_GenEvent::IO_GenEvent( std::istream * istr ) 
+    : m_istr(istr), 
+      m_iostr(istr),
+      m_finished_first_event_io(0) 
+    {
+	m_ostr = NULL;
+	m_have_file = false;
+    }
+
+    IO_GenEvent::IO_GenEvent( std::ostream * ostr )
+    : m_ostr(ostr), 
+      m_iostr(ostr),
+      m_finished_first_event_io(0) 
+    {
+	m_istr = NULL;
+	m_have_file = false;
+	// precision 16 (# digits following decimal point) is the minimum that
+	//  will capture the full information stored in a double
+	m_ostr->precision(16);
+	// we use decimal to store integers, because it is smaller than hex!
+	m_ostr->setf(std::ios::dec,std::ios::basefield);
+	m_ostr->setf(std::ios::scientific,std::ios::floatfield);
     }
 
     IO_GenEvent::~IO_GenEvent() {
 	write_end_listing();
-	m_file.close();
+	if(m_have_file) m_file.close();
     }
 
     void IO_GenEvent::print( std::ostream& ostr ) const { 
-	ostr << "IO_GenEvent: unformated ascii file IO for machine reading.\n" 
-	     << "\tFile openmode: " << m_mode 
-	     << " file state: " << m_file.rdstate()
-	     << " bad:" << (m_file.rdstate()&std::ios::badbit)
-	     << " eof:" << (m_file.rdstate()&std::ios::eofbit)
-	     << " fail:" << (m_file.rdstate()&std::ios::failbit)
-	     << " good:" << (m_file.rdstate()&std::ios::goodbit) << std::endl;
+	ostr << "IO_GenEvent: unformated ascii file IO for machine reading.\n"; 
+	if(m_have_file)    ostr  << "\tFile openmode: " << m_mode ;
+	ostr << " stream state: " << m_ostr->rdstate()
+	     << " bad:" << (m_ostr->rdstate()&std::ios::badbit)
+	     << " eof:" << (m_ostr->rdstate()&std::ios::eofbit)
+	     << " fail:" << (m_ostr->rdstate()&std::ios::failbit)
+	     << " good:" << (m_ostr->rdstate()&std::ios::goodbit) << std::endl;
     }
 
     void IO_GenEvent::write_event( const GenEvent* evt ) {
 	/// Writes evt to m_file. It does NOT delete the event after writing.
 	//
-	// check the state of m_file is good, and that it is in output mode
-	if ( !evt || !m_file ) return;
-	if ( !m_mode&std::ios::out ) {
+	// make sure the state is good, and that it is in output mode
+	if ( !evt  ) return;
+	if ( m_ostr == NULL ) {
 	    std::cerr << "HepMC::IO_GenEvent::write_event "
 		      << " attempt to write to input file." << std::endl;
 	    return;
@@ -63,14 +98,14 @@ namespace HepMC {
 	// write event listing key before first event only.
 	if ( !m_finished_first_event_io ) {
 	    m_finished_first_event_io = 1;
-	    m_file << "\n" << "HepMC::Version " << versionName();
-	    m_file << "\n" << "HepMC::IO_GenEvent-START_EVENT_LISTING\n";
+	    *m_ostr << "\n" << "HepMC::Version " << versionName();
+	    *m_ostr << "\n" << "HepMC::IO_GenEvent-START_EVENT_LISTING\n";
 	}
 	//
 	// output the event data including the number of primary vertices
 	//  and the total number of vertices
 	std::vector<long int> random_states = evt->random_states();
-	m_file << 'E';
+	*m_ostr << 'E';
 	output( evt->event_number() );
 	output( evt->mpi() );
 	output( evt->event_scale() );
@@ -110,67 +145,67 @@ namespace HepMC {
 	    std::cerr 
 		<< "IO_GenEvent::fill_next_event error - passed null event." 
 		<< std::endl;
-	    return 0;
+	    return false;
 	}
-	// check the state of m_file is good, and that it is in input mode
-	if ( !m_file ) return 0;
-	if ( !(m_mode&std::ios::in) ) {
+	// make sure the stream is good, and that it is in input mode
+	if ( !(*m_istr) ) return false;
+	if ( !m_istr ) {
 	    std::cerr << "HepMC::IO_GenEvent::fill_next_event "
 		      << " attempt to read from output file." << std::endl;
-	    return 0;
+	    return false;
 	}
 	//
 	// search for event listing key before first event only.
 	//
 	// skip through the file just after first occurence of the start_key
 	if ( !m_finished_first_event_io ) {
-	    m_file.seekg( 0 ); // go to position zero in the file.
+	    //m_file.seekg( 0 ); // go to position zero in the file.
 	    if (!search_for_key_end( m_file,
 				     "HepMC::IO_GenEvent-START_EVENT_LISTING\n")){
 		std::cerr << "IO_GenEvent::fill_next_event start key not found "
 			  << "setting badbit." << std::endl;
 		m_file.clear(std::ios::badbit); 
-		return 0;
+		return false;
 	    }
 	    m_finished_first_event_io = 1;
 	}
 	//
 	// test to be sure the next entry is of type "E" then ignore it
-	if ( !m_file || m_file.peek()!='E' ) { 
+	if ( !(*m_istr) || m_istr->peek()!='E' ) { 
 	    // if the E is not the next entry, then check to see if it is
 	    // the end event listing key - if yes, search for another start key
-	    if ( eat_key(m_file, "HepMC::IO_GenEvent-END_EVENT_LISTING\n") ) {
-		bool search_result = search_for_key_end(m_file,
+	    if ( eat_key(*m_istr, "HepMC::IO_GenEvent-END_EVENT_LISTING\n") ) {
+		bool search_result = search_for_key_end(*m_istr,
 				      "HepMC::IO_GenEvent-START_EVENT_LISTING\n");
 		if ( !search_result ) {
 		    // this is the only case where we set an EOF state
-		    m_file.clear(std::ios::eofbit);
-		    return 0;
+		    m_istr->clear(std::ios::eofbit);
+		    return false;
 		}
 	    } else {
 		std::cerr << "IO_GenEvent::fill_next_event end key not found "
 			  << "setting badbit." << std::endl;
-		m_file.clear(std::ios::badbit); 
-		return 0;
+		m_istr->clear(std::ios::badbit); 
+		return false;
 	    }
 	} 
-	m_file.ignore();
+	m_istr->ignore();
 	// read values into temp variables, then create a new GenEvent
 	int event_number = 0, signal_process_id = 0, signal_process_vertex = 0,
 	    num_vertices = 0, random_states_size = 0, weights_size = 0,
 	    nmpi = 0, bp1 = 0, bp2 = 0;
 	double eventScale = 0, alpha_qcd = 0, alpha_qed = 0;
-	m_file >> event_number >> nmpi >> eventScale >> alpha_qcd >> alpha_qed
+	*m_istr >> event_number >> nmpi >> eventScale >> alpha_qcd >> alpha_qed
 	       >> signal_process_id >> signal_process_vertex
 	       >> num_vertices >> bp1 >> bp2 >> random_states_size;
 	std::vector<long int> random_states(random_states_size);
 	for ( int i = 0; i < random_states_size; ++i ) {
-	    m_file >> random_states[i];
+	    *m_istr >> random_states[i];
 	}
-	m_file >> weights_size;
+	*m_istr >> weights_size;
 	WeightContainer weights(weights_size);
-	for ( int ii = 0; ii < weights_size; ++ii ) m_file >> weights[ii];
-	m_file.ignore(2,'\n');
+	for ( int ii = 0; ii < weights_size; ++ii ) *m_istr >> weights[ii];
+	m_istr->ignore(2,'\n');
 	// 
 	// fill signal_process_id, event_number, weights, random_states
 	evt->set_signal_process_id( signal_process_id );
@@ -217,13 +252,13 @@ namespace HepMC {
 	    if( p->barcode() == bp2 ) beam2 = p;
 	}
 	evt->set_beam_particles(beam1,beam2);
-	return 1;
+	return true;
     }
 
     void IO_GenEvent::write_comment( const std::string comment ) {
-	// check the state of m_file is good, and that it is in output mode
-	if ( !m_file ) return;
-	if ( !m_mode&std::ios::out ) {
+	// make sure the stream is good, and that it is in output mode
+	if ( !(*m_ostr) ) return;
+	if ( m_ostr == NULL ) {
 	    std::cerr << "HepMC::IO_GenEvent::write_comment "
 		      << " attempt to write to input file." << std::endl;
 	    return;
@@ -231,15 +266,15 @@ namespace HepMC {
 	// write end of event listing key if events have already been written
 	write_end_listing();
 	// insert the comment key before the comment
-	m_file << "\n" << "HepMC::IO_GenEvent-COMMENT\n";
-	m_file << comment << std::endl;
+	*m_ostr << "\n" << "HepMC::IO_GenEvent-COMMENT\n";
+	*m_ostr << comment << std::endl;
     }
 
     void IO_GenEvent::write_particle_data_table( const ParticleDataTable* pdt) {
 	//
-	// check the state of m_file is good, and that it is in output mode
-	if ( !m_file ) return;
-	if ( !m_mode&std::ios::out ) {
+	// make sure the stream is good, and that it is in output mode
+	if ( !(*m_ostr) ) return;
+	if ( m_ostr == NULL ) {
 	    std::cerr << "HepMC::IO_GenEvent::write_particle_data_table "
 		      << " attempt to write to input file." << std::endl;
 	    return;
@@ -247,12 +282,12 @@ namespace HepMC {
 	// write end of event listing key if events have already been written
 	write_end_listing();
 	//
-	m_file << "\n" << "HepMC::IO_GenEvent-START_PARTICLE_DATA\n";
+	*m_ostr << "\n" << "HepMC::IO_GenEvent-START_PARTICLE_DATA\n";
         for ( ParticleDataTable::const_iterator pd = pdt->begin(); 
 	      pd != pdt->end(); pd++ ) {
 	    write_particle_data( pd->second );
         }
-	m_file << "HepMC::IO_GenEvent-END_PARTICLE_DATA\n" << std::flush;
+	*m_ostr << "HepMC::IO_GenEvent-END_PARTICLE_DATA\n" << std::flush;
     }
 
     bool IO_GenEvent::fill_particle_data_table( ParticleDataTable* pdt ) {
@@ -262,28 +297,28 @@ namespace HepMC {
 	    std::cerr 
 		<< "IO_GenEvent::fill_particle_data_table - passed null table." 
 		<< std::endl;
-	    return 0;
+	    return false;
 	}
 	//
 	// check the state of m_file is good, and that it is in input mode
-	if ( !m_file ) return 0;
-	if ( !m_mode&std::ios::in ) {
+	if ( !(*m_istr) ) return false;
+	if ( m_istr == NULL ) {
 	    std::cerr << "HepMC::IO_GenEvent::fill_particle_data_table "
 		      << " attempt to read from output file." << std::endl;
-	    return 0;
+	    return false;
 	}
 	// position to beginning of file
-	int initial_file_position = m_file.tellg();
-	std::ios::iostate initial_state = m_file.rdstate();
-	m_file.seekg( 0 );
+	int initial_file_position = m_istr->tellg();
+	std::ios::iostate initial_state = m_istr->rdstate();
+	m_istr->seekg( 0 );
 	// skip through the file just after first occurence of the start_key
 	if (!search_for_key_end( m_file,
 				 "HepMC::IO_GenEvent-START_PARTICLE_DATA\n")) {
-	    m_file.seekg( initial_file_position );
+	    m_istr->seekg( initial_file_position );
 	    std::cerr << "IO_GenEvent::fill_particle_data_table start key not  "
 		      << "found setting badbit." << std::endl;
-	    m_file.clear(std::ios::badbit); 
-	    return 0;
+	    m_istr->clear(std::ios::badbit); 
+	    return false;
 	}
 	//
 	pdt->set_description("Read with IO_GenEvent");
@@ -295,20 +330,20 @@ namespace HepMC {
 	if ( !eat_key(m_file,"HepMC::IO_GenEvent-END_PARTICLE_DATA\n") ){
 	    std::cerr << "IO_GenEvent::fill_particle_data_table end key not  "
 		      << "found setting badbit." << std::endl;
-	    m_file.clear(std::ios::badbit);
+	    m_istr->clear(std::ios::badbit);
 	}
 	// put the file back into its original state and position
-	m_file.clear( initial_state );
-	m_file.seekg( initial_file_position );
-	return 1;
+	m_istr->clear( initial_state );
+	m_istr->seekg( initial_file_position );
+	return true;
     }
 
     void IO_GenEvent::write_vertex( GenVertex* v ) {
 	// assumes mode has already been checked
-	if ( !v || !m_file ) {
-	    std::cerr << "IO_GenEvent::write_vertex !v||!m_file, "
+	if ( !v || !(*m_ostr) ) {
+	    std::cerr << "IO_GenEvent::write_vertex !v||!(*m_ostr), "
 		      << "v="<< v << " setting badbit" << std::endl;
-	    m_file.clear(std::ios::badbit); 
+	    m_ostr->clear(std::ios::badbit); 
 	    return;
 	}
 	// First collect info we need
@@ -320,7 +355,7 @@ namespace HepMC {
 	    if ( !(*p1)->production_vertex() ) ++num_orphans_in;
 	}
 	//
-	m_file << 'V';
+	*m_ostr << 'V';
 	output( v->barcode() ); // v's unique identifier
 	output( v->id() );
 	output( v->position().x() );
@@ -368,13 +403,13 @@ namespace HepMC {
 
     void IO_GenEvent::write_heavy_ion( HeavyIon* ion ) {
 	// assumes mode has already been checked
-	if ( !m_file ) {
-	    std::cerr << "IO_GenEvent::write_heavy_ion !m_file, "
+	if ( !(*m_ostr) ) {
+	    std::cerr << "IO_GenEvent::write_heavy_ion !(*m_ostr), "
 		      << " setting badbit" << std::endl;
-	    m_file.clear(std::ios::badbit); 
+	    m_ostr->clear(std::ios::badbit); 
 	    return;
 	}
-	m_file << 'H';
+	*m_ostr << 'H';
 	// HeavyIon* is set to 0 by default
 	if ( !ion  ) {
 	    output( 0 );
@@ -412,13 +447,13 @@ namespace HepMC {
 
     void IO_GenEvent::write_pdf_info( PdfInfo* pdf ) {
 	// assumes mode has already been checked
-	if ( !m_file ) {
-	    std::cerr << "IO_GenEvent::write_pdf_info !m_file, "
+	if ( !(*m_ostr) ) {
+	    std::cerr << "IO_GenEvent::write_pdf_info !(*m_ostr), "
 		      << " setting badbit" << std::endl;
-	    m_file.clear(std::ios::badbit); 
+	    m_ostr->clear(std::ios::badbit); 
 	    return;
 	}
-	m_file << 'F';
+	*m_ostr << 'F';
 	// PdfInfo* is set to 0 by default
 	if ( !pdf ) {
 	    output( 0 );
@@ -444,13 +479,13 @@ namespace HepMC {
 
     void IO_GenEvent::write_particle( GenParticle* p ) {
 	// assumes mode has already been checked
-	if ( !p || !m_file ) {
-	    std::cerr << "IO_GenEvent::write_particle !p||!m_file, "
+	if ( !p || !(*m_ostr) ) {
+	    std::cerr << "IO_GenEvent::write_particle !p||!(*m_ostr), "
 		      << "v="<< p << " setting badbit" << std::endl;
-	    m_file.clear(std::ios::badbit); 
+	    m_ostr->clear(std::ios::badbit); 
 	    return;
 	}
-	m_file << 'P';
+	*m_ostr << 'P';
 	output( p->barcode() );
 	output( p->pdg_id() );
 	output( p->momentum().px() );
@@ -464,25 +499,25 @@ namespace HepMC {
 	// since end_vertex is oftentimes null, this CREATES a null vertex
 	// in the map
 	output(   ( p->end_vertex() ? p->end_vertex()->barcode() : 0 )  );
-	m_file << ' ' << p->flow() << "\n";
+	*m_ostr << ' ' << p->flow() << "\n";
     }
 
     void IO_GenEvent::write_particle_data( const ParticleData* pdata ) {
 	// assumes mode has already been checked
-	if ( !pdata || !m_file ) {
-	    std::cerr << "IO_GenEvent::write_particle_data !pdata||!m_file, "
+	if ( !pdata || !(*m_ostr) ) {
+	    std::cerr << "IO_GenEvent::write_particle_data !pdata||!(*m_ostr), "
 		      << "pdata="<< pdata << " setting badbit" << std::endl;
-	    m_file.clear(std::ios::badbit); 
+	    m_ostr->clear(std::ios::badbit); 
 	    return;
 	}
-	m_file << 'D';
+	*m_ostr << 'D';
 	output( pdata->pdg_id() );
 	output( pdata->charge() );
 	output( pdata->mass() );
 	output( pdata->clifetime() );
 	output( (int)(pdata->spin()*2.+.1) );
 	// writes the first 21 characters starting with 0
-	m_file << " " << pdata->name().substr(0,21) << "\n";
+	*m_ostr << " " << pdata->name().substr(0,21) << "\n";
     }
 
     GenVertex* IO_GenEvent::read_vertex
@@ -491,21 +526,21 @@ namespace HepMC {
 	// assumes mode has already been checked
 	//
 	// test to be sure the next entry is of type "V" then ignore it
-	if ( !m_file || m_file.peek()!='V' ) {
+	if ( !(*m_istr) || m_istr->peek()!='V' ) {
 	    std::cerr << "IO_GenEvent::read_vertex setting badbit." << std::endl;
-	    m_file.clear(std::ios::badbit); 
-	    return 0;
+	    m_istr->clear(std::ios::badbit); 
+	    return false;
 	} 
-	m_file.ignore();
+	m_istr->ignore();
 	// read values into temp variables, then create a new GenVertex object
 	int identifier =0, id =0, num_orphans_in =0, 
             num_particles_out = 0, weights_size = 0;
 	double x = 0., y = 0., z = 0., t = 0.; 
-	m_file >> identifier >> id >> x >> y >> z >> t
+	*m_istr >> identifier >> id >> x >> y >> z >> t
 	       >> num_orphans_in >> num_particles_out >> weights_size;
 	WeightContainer weights(weights_size);
-	for ( int i1 = 0; i1 < weights_size; ++i1 ) m_file >> weights[i1];
-	m_file.ignore(2,'\n');
+	for ( int i1 = 0; i1 < weights_size; ++i1 ) *m_istr >> weights[i1];
+	m_istr->ignore(2,'\n');
 	GenVertex* v = new GenVertex( FourVector(x,y,z,t),
 				id, weights);
 	v->suggest_barcode( identifier );
@@ -527,20 +562,20 @@ namespace HepMC {
 	// assumes mode has already been checked
 	//
 	// test to be sure the next entry is of type "H" then ignore it
-	if ( !m_file || m_file.peek()!='H' ) {
+	if ( !(*m_istr) || m_istr->peek()!='H' ) {
 	    std::cerr << "IO_GenEvent::read_heavy_ion setting badbit." << std::endl;
-	    m_file.clear(std::ios::badbit); 
-	    return 0;
+	    m_istr->clear(std::ios::badbit); 
+	    return false;
 	} 
-	m_file.ignore();
+	m_istr->ignore();
 	// read values into temp variables, then create a new HeavyIon object
 	int nh =0, np =0, nt =0, nc =0, 
             neut = 0, prot = 0, nw =0, nwn =0, nwnw =0;
 	float impact = 0., plane = 0., xcen = 0., inel = 0.; 
-	m_file >> nh >> np >> nt >> nc >> neut >> prot
+	*m_istr >> nh >> np >> nt >> nc >> neut >> prot
 	       >> nw >> nwn >> nwnw >> impact >> plane >> xcen >> inel;
-	m_file.ignore(2,'\n');
-	if( nh == 0 ) return 0;
+	m_istr->ignore(2,'\n');
+	if( nh == 0 ) return false;
 	HeavyIon* ion = new HeavyIon(nh, np, nt, nc, neut, prot,
 	                             nw, nwn, nwnw, 
 				     impact, plane, xcen, inel );
@@ -553,18 +588,18 @@ namespace HepMC {
 	// assumes mode has already been checked
 	//
 	// test to be sure the next entry is of type "F" then ignore it
-	if ( !m_file || m_file.peek() !='F') {
+	if ( !(*m_istr) || m_istr->peek() !='F') {
 	    std::cerr << "IO_GenEvent::read_pdf_info setting badbit." << std::endl;
-	    m_file.clear(std::ios::badbit); 
-	    return 0;
+	    m_istr->clear(std::ios::badbit); 
+	    return false;
 	} 
-	m_file.ignore();
+	m_istr->ignore();
 	// read values into temp variables, then create a new PdfInfo object
 	int id1 =0, id2 =0;
 	double  x1 = 0., x2 = 0., scale = 0., pdf1 = 0., pdf2 = 0.; 
-	m_file >> id1 >> id2 >> x1 >> x2 >> scale >> pdf1 >> pdf2;
-	m_file.ignore(2,'\n');
-	if( id1 == 0 ) return 0;
+	*m_istr >> id1 >> id2 >> x1 >> x2 >> scale >> pdf1 >> pdf2;
+	m_istr->ignore(2,'\n');
+	if( id1 == 0 ) return false;
 	PdfInfo* pdf = new PdfInfo( id1, id2, x1, x2, scale, pdf1, pdf2);
 	//
 	return pdf;
@@ -575,28 +610,28 @@ namespace HepMC {
 	// assumes mode has already been checked
 	//
 	// test to be sure the next entry is of type "P" then ignore it
-	if ( !m_file || m_file.peek()!='P' ) { 
+	if ( !(*m_istr) || m_istr->peek()!='P' ) { 
 	    std::cerr << "IO_GenEvent::read_particle setting badbit." 
 		      << std::endl;
-	    m_file.clear(std::ios::badbit); 
-	    return 0;
+	    m_istr->clear(std::ios::badbit); 
+	    return false;
 	} 
-	m_file.ignore();
+	m_istr->ignore();
 	//
 	// declare variables to be read in to, and read everything except flow
 	double px = 0., py = 0., pz = 0., e = 0., m = 0., theta = 0., phi = 0.;
 	int bar_code = 0, id = 0, status = 0, end_vtx_code = 0, flow_size = 0;
-	m_file >> bar_code >> id >> px >> py >> pz >> e >> m >> status 
+	*m_istr >> bar_code >> id >> px >> py >> pz >> e >> m >> status 
 	       >> theta >> phi >> end_vtx_code >> flow_size;
 	//
 	// read flow patterns if any exist
 	Flow flow;
 	int code_index, code;
 	for ( int i = 1; i <= flow_size; ++i ) {
-	    m_file >> code_index >> code;
+	    *m_istr >> code_index >> code;
 	    flow.set_icode( code_index,code);
 	}
-	m_file.ignore(2,'\n'); // '\n' at end of entry
+	m_istr->ignore(2,'\n'); // '\n' at end of entry
 	GenParticle* p = new GenParticle( FourVector(px,py,pz,e), 
 				    id, status, flow, 
 				    Polarization(theta,phi) );
@@ -614,17 +649,17 @@ namespace HepMC {
 	// assumes mode has already been checked
 	//
 	// test to be sure the next entry is of type "D" then ignore it
-	if ( !m_file || m_file.peek()!='D' ) return 0;
-	m_file.ignore();
+	if ( !(*m_istr) || m_istr->peek()!='D' ) return false;
+	m_istr->ignore();
 	//
 	// read values into temp variables then create new ParticleData object
 	char its_name[22];
 	int its_id = 0, its_spin = 0;  
 	double its_charge = 0, its_mass = 0, its_clifetime = 0;
-	m_file >> its_id >> its_charge >> its_mass 
+	*m_istr >> its_id >> its_charge >> its_mass 
 	       >> its_clifetime >> its_spin;
-	m_file.ignore(1); // eat the " "
-	m_file.getline( its_name, 22, '\n' );
+	m_istr->ignore(1); // eat the " "
+	m_istr->getline( its_name, 22, '\n' );
 	ParticleData* pdata = new ParticleData( its_name, its_id, its_charge, 
 						its_mass, its_clifetime, 
 						double(its_spin)/2.);
@@ -633,12 +668,12 @@ namespace HepMC {
     }
 
     bool IO_GenEvent::write_end_listing() {
-    	if ( m_finished_first_event_io && m_mode&std::ios::out ) {
-	    m_file << "HepMC::IO_GenEvent-END_EVENT_LISTING\n" << std::flush;
+    	if ( m_finished_first_event_io && (m_ostr != NULL) ) {
+	    *m_ostr << "HepMC::IO_GenEvent-END_EVENT_LISTING\n" << std::flush;
 	    m_finished_first_event_io = 0;
-	    return 1;
+	    return true;
 	}
-	return 0;
+	return false;
     }
 
     bool IO_GenEvent::search_for_key_end( std::istream& in, const char* key ) {
@@ -652,9 +687,9 @@ namespace HepMC {
 	    if ( c[0] == key[index] ) { 
 		++index;
 	    } else { index = 0; }
-	    if ( index == strlen(key) ) return 1;
+	    if ( index == strlen(key) ) return true;
 	}
-	return 0;
+	return false;
     }
 
     bool IO_GenEvent::search_for_key_beginning( std::istream& in,
@@ -663,15 +698,15 @@ namespace HepMC {
 	if ( search_for_key_end( in, key) ) {
 	    int i = strlen(key);
 	    while ( i>=0 ) in.putback(key[i--]); 
-            return 1; 
+            return true; 
 	} else {
 	    in.putback(EOF);
 	    in.clear();
-            return 0;
+            return false;
 	}
     }
 
-    bool IO_GenEvent::eat_key( std::iostream& in, const char* key ) {
+    bool IO_GenEvent::eat_key( std::istream& in, const char* key ) {
 	/// eats the character string key from istream in - only if the key
 	/// is the very next occurence in the stream
 	/// if the key is not the next occurence, it eats nothing ... i.e.
@@ -689,20 +724,20 @@ namespace HepMC {
 	}
 	if ( i == key_length ) {
 	    delete [] c;
-	    return 1;
+	    return true;
 	}
 	//
 	// if we get here, then we have eaten the wrong this and we must put it
 	// back
 	while ( i>=0 ) in.putback(c[i--]); 
 	delete c;
-	return 0;
+	return false;
     }
 
     int IO_GenEvent::find_in_map( const std::map<GenVertex*,int>& m, 
 			       GenVertex* v ) const {
 	std::map<GenVertex*,int>::const_iterator iter = m.find(v);
-	if ( iter == m.end() ) return 0;
+	if ( iter == m.end() ) return false;
 	return iter->second;
     }
 	

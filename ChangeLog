@@ -1,7 +1,7 @@
 
 2007-07-18  Lynn Garren
 
-	* HepMC/IO_GenEvent.h: new IO class that will use streams
+	* HepMC/IO_GenEvent.h: new IO class uses streams or files
 	  deprecate IO_Ascii and IO_ExtendedAscii
 	  examples use IO_GenEvent
 

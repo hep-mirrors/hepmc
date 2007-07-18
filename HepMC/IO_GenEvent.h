@@ -65,6 +65,10 @@ namespace HepMC {
         /// constructor requiring a file name and std::ios mode
 	IO_GenEvent( const char* filename="IO_GenEvent.dat", 
 		  std::ios::openmode mode=std::ios::out );
+        /// constructor requiring an input stream
+	IO_GenEvent( std::istream * );
+        /// constructor requiring an output stream
+	IO_GenEvent( std::ostream * );
 	virtual       ~IO_GenEvent();
 
         /// write this event
@@ -118,7 +122,7 @@ namespace HepMC {
 	bool          search_for_key_beginning( std::istream& in, 
 						const char* key );
 	/// string manipulation accounting
-	bool          eat_key( std::iostream& in, const char* key );
+	bool          eat_key( std::istream& in, const char* key );
 	/// find this vertex in the map of vertices
 	int           find_in_map( const std::map<GenVertex*,int>& m, 
 				   GenVertex* v) const;
@@ -133,7 +137,11 @@ namespace HepMC {
     private: // data members
 	std::ios::openmode  m_mode;
 	std::fstream        m_file;
+	std::ostream *      m_ostr;
+	std::istream *      m_istr;
+	std::ios *          m_iostr;
 	bool                m_finished_first_event_io;
+	bool                m_have_file;
     };
 
     //////////////
@@ -142,23 +150,23 @@ namespace HepMC {
 
     inline void IO_GenEvent::output( const double& d ) {
 	if ( d == 0. ) {
-	    m_file << ' ' << (int)0;
+	    *m_ostr << ' ' << (int)0;
 	} else {
-	    m_file << ' ' << d;
+	    *m_ostr << ' ' << d;
 	}
     }
     inline void IO_GenEvent::output( const float& d ) {
 	if ( d == 0. ) {
-	    m_file << ' ' << (int)0;
+	    *m_ostr << ' ' << (int)0;
 	} else {
-	    m_file << ' ' << d;
+	    *m_ostr << ' ' << d;
 	}
     }
-    inline void IO_GenEvent::output( const int& i ) { m_file << ' ' << i; }
-    inline void IO_GenEvent::output( const long int& i ) { m_file << ' ' << i; }
-    inline void IO_GenEvent::output( const char& c ) { m_file << c; }
-    inline int  IO_GenEvent::rdstate() const { return (int)m_file.rdstate(); }
-    inline void IO_GenEvent::clear() { m_file.clear(); }
+    inline void IO_GenEvent::output( const int& i ) { *m_ostr << ' ' << i; }
+    inline void IO_GenEvent::output( const long int& i ) { *m_ostr << ' ' << i; }
+    inline void IO_GenEvent::output( const char& c ) { *m_ostr << c; }
+    inline int  IO_GenEvent::rdstate() const { return (int)m_ostr->rdstate(); }
+    inline void IO_GenEvent::clear() { m_ostr->clear(); }
 
 } // HepMC
 
