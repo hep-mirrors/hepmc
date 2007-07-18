@@ -57,6 +57,10 @@ namespace HepMC {
 	///         and particles in/out point-back to one another -- unless you
 	///         copy the entire tree -- which we don't want to do)
 	///
+	// Protect against self assignment
+	// This works, but is not best practices
+	// Best practices involves a rewrite to use the copy constructor and swap
+	if( this == &invertex ) return * this;
 	// first need to delete any particles previously owned by this vertex
 	delete_adopted_particles();
 	//

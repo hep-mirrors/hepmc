@@ -58,15 +58,20 @@ namespace HepMC {
 	/// (note - impossible to copy vertex pointers which having the vertex
 	///         and particles in/out point-back to one another -- unless you
 	///         copy the entire tree -- which we don't want to do)
-	set_momentum( inparticle.momentum() );
-	set_pdg_id( inparticle.pdg_id() );
-	set_status( inparticle.status() );
-	set_production_vertex_( 0 );
-	set_end_vertex_( 0 );
-	set_flow(inparticle.m_flow);
-	set_polarization( inparticle.polarization() );
-	suggest_barcode( inparticle.barcode() );
-        set_generated_mass( inparticle.generated_mass() );
+	// Protect against self assignment
+	// This works, but is not best practices
+	// Best practices involves a rewrite to use the copy constructor and swap
+	if( this != &inparticle ) {
+	    set_momentum( inparticle.momentum() );
+	    set_pdg_id( inparticle.pdg_id() );
+	    set_status( inparticle.status() );
+	    set_production_vertex_( 0 );
+	    set_end_vertex_( 0 );
+	    set_flow(inparticle.m_flow);
+	    set_polarization( inparticle.polarization() );
+	    suggest_barcode( inparticle.barcode() );
+            set_generated_mass( inparticle.generated_mass() );
+	}
 	return *this;
     }
 

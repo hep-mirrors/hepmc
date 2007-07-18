@@ -93,6 +93,11 @@ namespace HepMC {
     {
 	/// deep - makes a copy of all vertices!
 	//
+	// 0. Protect against self assignment
+	// This works, but is not best practices
+	// Best practices involves a rewrite to use the copy constructor and swap
+	if( this == &inevent ) return * this;
+	//
 	// 1. Delete all vertices attached to this
 	delete_all_vertices();
 	//    
@@ -139,13 +144,15 @@ namespace HepMC {
 	set_event_scale( inevent.event_scale() );
 	set_alphaQCD( inevent.alphaQCD() );
 	set_alphaQED( inevent.alphaQED() );
+	set_mpi( inevent.mpi() );
 	set_random_states( inevent.random_states() );
 	weights() = inevent.weights();
+	// lookup new pointers
 	set_beam_particles( inevent.beam_particles() );
 	//
 	// 5. copy these only if they are not null
-	if( inevent.heavy_ion() ) set_heavy_ion( *inevent.heavy_ion() ); 
-	if( inevent.pdf_info() ) set_pdf_info( *inevent.pdf_info() );
+	m_heavy_ion = inevent.heavy_ion() ? new HeavyIon(*inevent.heavy_ion()) : 0;
+	m_pdf_info = inevent.pdf_info() ? new PdfInfo(*inevent.pdf_info()) : 0 ;
 	return *this;
     }
 
