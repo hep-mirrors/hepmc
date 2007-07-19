@@ -16,7 +16,13 @@
 namespace HepMC {
 
     IO_GenEvent::IO_GenEvent( const char* filename, std::ios::openmode mode ) 
-    : m_mode(mode), m_file(filename, mode), m_finished_first_event_io(0) 
+    : m_mode(mode), 
+      m_file(filename, mode), 
+      m_ostr(0),
+      m_istr(0),
+      m_iostr(0),
+      m_finished_first_event_io(false),
+      m_have_file(false)
     {
 	if ( (m_mode&std::ios::out && m_mode&std::ios::in) ||
 	     (m_mode&std::ios::app && m_mode&std::ios::in) ) {
@@ -46,21 +52,20 @@ namespace HepMC {
     }
 
     IO_GenEvent::IO_GenEvent( std::istream & istr ) 
-    : m_istr(&istr), 
+    : m_ostr(0),
+      m_istr(&istr),
       m_iostr(&istr),
-      m_finished_first_event_io(0) 
-    {
-	m_ostr = NULL;
-	m_have_file = false;
-    }
+      m_finished_first_event_io(false),
+      m_have_file(false)
+    { }
 
     IO_GenEvent::IO_GenEvent( std::ostream & ostr )
-    : m_ostr(&ostr), 
+    : m_ostr(&ostr),
+      m_istr(0),
       m_iostr(&ostr),
-      m_finished_first_event_io(0) 
+      m_finished_first_event_io(false),
+      m_have_file(false)
     {
-	m_istr = NULL;
-	m_have_file = false;
 	// precision 16 (# digits following decimal point) is the minimum that
 	//  will capture the full information stored in a double
 	m_ostr->precision(16);
@@ -85,7 +90,7 @@ namespace HepMC {
     }
 
     void IO_GenEvent::write_event( const GenEvent* evt ) {
-	/// Writes evt to m_file. It does NOT delete the event after writing.
+	/// Writes evt to output stream. It does NOT delete the event after writing.
 	//
 	// make sure the state is good, and that it is in output mode
 	if ( !evt  ) return;
@@ -160,11 +165,11 @@ namespace HepMC {
 	// skip through the file just after first occurence of the start_key
 	if ( !m_finished_first_event_io ) {
 	    //m_file.seekg( 0 ); // go to position zero in the file.
-	    if (!search_for_key_end( m_file,
+	    if (!search_for_key_end( *m_istr,
 				     "HepMC::IO_GenEvent-START_EVENT_LISTING\n")){
 		std::cerr << "IO_GenEvent::fill_next_event start key not found "
 			  << "setting badbit." << std::endl;
-		m_file.clear(std::ios::badbit); 
+		m_istr->clear(std::ios::badbit); 
 		return false;
 	    }
 	    m_finished_first_event_io = 1;
@@ -300,7 +305,7 @@ namespace HepMC {
 	    return false;
 	}
 	//
-	// check the state of m_file is good, and that it is in input mode
+	// check the state of m_istr is good
 	if ( !(*m_istr) ) return false;
 	if ( m_istr == NULL ) {
 	    std::cerr << "HepMC::IO_GenEvent::fill_particle_data_table "
@@ -312,7 +317,7 @@ namespace HepMC {
 	std::ios::iostate initial_state = m_istr->rdstate();
 	m_istr->seekg( 0 );
 	// skip through the file just after first occurence of the start_key
-	if (!search_for_key_end( m_file,
+	if (!search_for_key_end( *m_istr,
 				 "HepMC::IO_GenEvent-START_PARTICLE_DATA\n")) {
 	    m_istr->seekg( initial_file_position );
 	    std::cerr << "IO_GenEvent::fill_particle_data_table start key not  "
@@ -327,7 +332,7 @@ namespace HepMC {
 	while ( read_particle_data( pdt ) );
 	//
 	// eat end_key
-	if ( !eat_key(m_file,"HepMC::IO_GenEvent-END_PARTICLE_DATA\n") ){
+	if ( !eat_key(*m_istr,"HepMC::IO_GenEvent-END_PARTICLE_DATA\n") ){
 	    std::cerr << "IO_GenEvent::fill_particle_data_table end key not  "
 		      << "found setting badbit." << std::endl;
 	    m_istr->clear(std::ios::badbit);

@@ -3,10 +3,11 @@
 #define HEPMC_IO_GENEVENT_H
 
 //////////////////////////////////////////////////////////////////////////
-// garren@fnal.gov, July 2006
+// garren@fnal.gov, July 2007
+// with input from Gavin Salam, salam@lpthe.jussieu.fr
 //
 // event input/output in ascii format for machine reading
-// extended format contains HeavyIon and PdfInfo classes
+// This class persists all information found in a GenEvent
 //////////////////////////////////////////////////////////////////////////
 //
 // Strategy for reading or writing events as machine readable
