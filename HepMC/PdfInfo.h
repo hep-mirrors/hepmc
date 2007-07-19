@@ -44,20 +44,20 @@ public:
     {}
 
   /// all values must be provided
-  inline PdfInfo( int i1, int i2, double x1, double x2, double q, double p1, double p2 );
+  PdfInfo( int i1, int i2, double x1, double x2, double q, double p1, double p2 );
 
   ~PdfInfo() {}
     
   // ---  copying:
   //
-  inline PdfInfo( PdfInfo const & orig );	//!< copy constructor
-  inline PdfInfo &  operator = ( PdfInfo const & rhs ); //!< make a copy
-  inline void swap( PdfInfo & other );	//!< swap two PdfInfo objects
+  PdfInfo( PdfInfo const & orig );	//!< copy constructor
+  PdfInfo &  operator = ( PdfInfo const & rhs ); //!< make a copy
+  void swap( PdfInfo & other );	//!< swap two PdfInfo objects
 
   // ---  equivalence:
   //
-  inline bool    operator==( const PdfInfo& ) const; //!< check for equality
-  inline bool    operator!=( const PdfInfo& ) const; //!< check for inequality
+  bool    operator==( const PdfInfo& ) const; //!< check for equality
+  bool    operator!=( const PdfInfo& ) const; //!< check for inequality
 
   // ---  accessors:
     /// flavour code of first parton
@@ -103,7 +103,7 @@ private: // data members
 };
 
 // inline operators
-PdfInfo::PdfInfo( int i1, int i2, double x1, double x2, double q, double p1, double p2 )
+inline PdfInfo::PdfInfo( int i1, int i2, double x1, double x2, double q, double p1, double p2 )
     : m_id1(i1), 
       m_id2(i2),
       m_x1(x1),
@@ -113,7 +113,7 @@ PdfInfo::PdfInfo( int i1, int i2, double x1, double x2, double q, double p1, dou
       m_pdf2(p2)
    {}
 
-PdfInfo::PdfInfo( PdfInfo const & orig )
+inline PdfInfo::PdfInfo( PdfInfo const & orig )
     : m_id1(orig.m_id1), 
       m_id2(orig.m_id2),
       m_x1(orig.m_x1),
@@ -123,14 +123,14 @@ PdfInfo::PdfInfo( PdfInfo const & orig )
       m_pdf2(orig.m_pdf2)
    {}
 
-PdfInfo &  PdfInfo::operator = ( PdfInfo const & rhs ) 
+inline PdfInfo &  PdfInfo::operator = ( PdfInfo const & rhs ) 
 {
   PdfInfo temp( rhs );
   swap( temp );
   return *this;
 }
 
-void PdfInfo::swap( PdfInfo & other ) 
+inline void PdfInfo::swap( PdfInfo & other ) 
 {
   std::swap(m_id1, other.m_id1); 
   std::swap(m_id2, other.m_id2);
@@ -141,7 +141,7 @@ void PdfInfo::swap( PdfInfo & other )
   std::swap(m_pdf2, other.m_pdf2);
 }
 
-bool    PdfInfo::operator==( const PdfInfo& a ) const
+inline bool    PdfInfo::operator==( const PdfInfo& a ) const
 {
     /// equality requires that each member match
     return (    a.id1() == this->id1() 
@@ -153,7 +153,7 @@ bool    PdfInfo::operator==( const PdfInfo& a ) const
 	     && a.pdf2() == this->pdf2() );
 }
 
-bool    PdfInfo::operator!=( const PdfInfo& a ) const
+inline bool    PdfInfo::operator!=( const PdfInfo& a ) const
 {
     /// any nonmatching member generates inequality
     return !( a == *this );
