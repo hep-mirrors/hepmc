@@ -45,18 +45,18 @@ namespace HepMC {
 	m_have_file = true;
     }
 
-    IO_GenEvent::IO_GenEvent( std::istream * istr ) 
-    : m_istr(istr), 
-      m_iostr(istr),
+    IO_GenEvent::IO_GenEvent( std::istream & istr ) 
+    : m_istr(&istr), 
+      m_iostr(&istr),
       m_finished_first_event_io(0) 
     {
 	m_ostr = NULL;
 	m_have_file = false;
     }
 
-    IO_GenEvent::IO_GenEvent( std::ostream * ostr )
-    : m_ostr(ostr), 
-      m_iostr(ostr),
+    IO_GenEvent::IO_GenEvent( std::ostream & ostr )
+    : m_ostr(&ostr), 
+      m_iostr(&ostr),
       m_finished_first_event_io(0) 
     {
 	m_istr = NULL;

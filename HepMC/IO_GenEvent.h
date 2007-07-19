@@ -66,9 +66,9 @@ namespace HepMC {
 	IO_GenEvent( const char* filename="IO_GenEvent.dat", 
 		  std::ios::openmode mode=std::ios::out );
         /// constructor requiring an input stream
-	IO_GenEvent( std::istream * );
+	IO_GenEvent( std::istream & );
         /// constructor requiring an output stream
-	IO_GenEvent( std::ostream * );
+	IO_GenEvent( std::ostream & );
 	virtual       ~IO_GenEvent();
 
         /// write this event

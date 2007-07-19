@@ -65,22 +65,22 @@ public:
     {}
 
   /// The first 6 values must be provided.
-  inline HeavyIon( int nh, int np, int nt, int nc, int ns, int nsp,
-                   int nnw, int nwn, int nwnw, 
-		   float im, float pl, float ec, float s );
+  HeavyIon( int nh, int np, int nt, int nc, int ns, int nsp,
+                   int nnw=0, int nwn=0, int nwnw=0, 
+		   float im=0., float pl=0., float ec=0., float s=0. );
 
   ~HeavyIon() {}
     
   // ---  copying:
   //
-  inline HeavyIon( HeavyIon const & orig );	//!< copy constructor
-  inline HeavyIon &  operator = ( HeavyIon const & rhs ); //!< make a copy
-  inline void swap( HeavyIon & other );	//!< swap two HeavyIon objects
+  HeavyIon( HeavyIon const & orig );	//!< copy constructor
+  HeavyIon &  operator = ( HeavyIon const & rhs ); //!< make a copy
+  void swap( HeavyIon & other );	//!< swap two HeavyIon objects
 
   // ---  equivalence:
   //
-  inline bool    operator==( const HeavyIon& ) const; //!< check for equality
-  inline bool    operator!=( const HeavyIon& ) const; //!< check for inequality
+  bool    operator==( const HeavyIon& ) const; //!< check for equality
+  bool    operator!=( const HeavyIon& ) const; //!< check for inequality
 
   // ---  accessors:
     /// Number of hard scatterings
@@ -165,9 +165,9 @@ private: // data members
   /// the number of nucleon-nucleon collisions,
   /// the number of spectator neutrons, and
   /// the number of spectator protons.
-HeavyIon::HeavyIon( int nh, int np, int nt, int nc, int ns, int nsp,
-                   int nnw=0, int nwn=0, int nwnw=0, 
-		   float im=0., float pl=0., float ec=0., float s=0. )
+inline HeavyIon::HeavyIon( int nh, int np, int nt, int nc, int ns, int nsp,
+                   int nnw, int nwn, int nwnw, 
+		   float im, float pl, float ec, float s )
     : m_Ncoll_hard(nh), 
       m_Npart_proj(np),
       m_Npart_targ(nt),
@@ -183,7 +183,7 @@ HeavyIon::HeavyIon( int nh, int np, int nt, int nc, int ns, int nsp,
       m_sigma_inel_NN(s)
    {}
 
-HeavyIon::HeavyIon( HeavyIon const & orig )
+inline HeavyIon::HeavyIon( HeavyIon const & orig )
     : m_Ncoll_hard(orig.m_Ncoll_hard), 
       m_Npart_proj(orig.m_Npart_proj),
       m_Npart_targ(orig.m_Npart_targ),
@@ -199,14 +199,14 @@ HeavyIon::HeavyIon( HeavyIon const & orig )
       m_sigma_inel_NN(orig.m_sigma_inel_NN)
    {}
 
-HeavyIon &  HeavyIon::operator = ( HeavyIon const & rhs ) 
+inline HeavyIon &  HeavyIon::operator = ( HeavyIon const & rhs ) 
 {
   HeavyIon temp( rhs );
   swap( temp );
   return *this;
 }
 
-void HeavyIon::swap( HeavyIon & other ) 
+inline void HeavyIon::swap( HeavyIon & other ) 
 {
   std::swap(m_Ncoll_hard, other.m_Ncoll_hard); 
   std::swap(m_Npart_proj, other.m_Npart_proj);
@@ -223,7 +223,7 @@ void HeavyIon::swap( HeavyIon & other )
   std::swap(m_sigma_inel_NN, other.m_sigma_inel_NN);
 }
 
-bool    HeavyIon::operator==( const HeavyIon& a ) const
+inline bool    HeavyIon::operator==( const HeavyIon& a ) const
 {
     /// equality requires that each member match
     return ( a.Ncoll_hard() == this->Ncoll_hard() 
@@ -241,7 +241,7 @@ bool    HeavyIon::operator==( const HeavyIon& a ) const
 	     && a.sigma_inel_NN() == this->sigma_inel_NN() );
 }
 
-bool    HeavyIon::operator!=( const HeavyIon& a ) const
+inline bool    HeavyIon::operator!=( const HeavyIon& a ) const
 {
     /// any nonmatching member generates inequality
     return !( a == *this );

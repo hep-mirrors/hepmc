@@ -5,7 +5,7 @@
 // Read events written by example_MyPythia.cc
 // Select events containing a photon of pT > 25 GeV 
 // Add arbitrary PDF information to one of the good events
-// Write the selected events and read them back in
+// Write the selected events and read them back in using an istream
 //////////////////////////////////////////////////////////////////////////
 //
 
@@ -64,7 +64,13 @@ int main() {
     // now read the file we just created
     {
 	// declare an input strategy 
-	HepMC::IO_GenEvent xin("testMass1.dat",std::ios::in);
+	const char infile[] = "testMass1.dat";
+	std::ifstream istr( infile );
+	if( !istr ) {
+	  std::cerr << "testMass: cannot open " << infile << std::endl;
+	  exit(-1);
+	}
+	HepMC::IO_GenEvent xin(istr);
 	// declare another IO_GenEvent for output
 	HepMC::IO_GenEvent xout("testMass2.dat",std::ios::out);
 	//........................................EVENT LOOP
