@@ -1,3 +1,12 @@
+  --------------------------  HepMC-2.02.00  --------------------------
+
+2007-07-19  Lynn Garren
+
+	* IO_GenEvent: uses input and output streams
+	  IO_GenEvent can be constructed with a file, an input stream, or
+	  an output stream.
+	* IO_Ascii and IO_ExtendedAscii are deprecated.
+
   --------------------------  HepMC-2.01.05  --------------------------
 
 2007-07-19  Lynn Garren
