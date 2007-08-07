@@ -32,6 +32,8 @@ namespace HepMC {
 	WeightContainer( const WeightContainer& in );
 	virtual ~WeightContainer();
 
+        /// swap
+        void swap( WeightContainer & other);
         /// copy
 	WeightContainer& operator=( const WeightContainer& );
         /// copy
@@ -101,15 +103,23 @@ namespace HepMC {
 
     inline WeightContainer::~WeightContainer() {}
 
+    inline void WeightContainer::swap( WeightContainer & other)
+    { m_weights.swap( other.m_weights ); }
+
     inline WeightContainer& WeightContainer::operator=
-    ( const WeightContainer& in ) {
-	m_weights = in.m_weights;
+    ( const WeightContainer& in ) 
+    {
+        /// best practices implementation
+	WeightContainer tmp( in );
+	swap( tmp );
 	return *this;
     }
 
     inline WeightContainer& WeightContainer::operator=
     ( const std::vector<double>& in ) {
-	m_weights = in;
+        /// best practices implementation
+	WeightContainer tmp( in );
+	swap( tmp );
 	return *this;
     }
 
