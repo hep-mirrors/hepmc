@@ -69,6 +69,7 @@ namespace HepMC {
 	GenParticle( const GenParticle& inparticle ); //!< shallow copy.
 	virtual ~GenParticle();
 
+        void swap( GenParticle & other); //!< swap
 	GenParticle& operator=( const GenParticle& inparticle ); //!< shallow.
         /// check for equality
 	bool         operator==( const GenParticle& ) const;
