@@ -72,50 +72,42 @@ namespace HepMC {
     }
 
     GenEvent::GenEvent( const GenEvent& inevent ) 
+      : m_signal_process_id    ( /* inevent.m_signal_process_id */ ),
+	m_event_number         ( /* inevent.m_event_number */ ),
+	m_mpi                  ( /* inevent.m_mpi */ ),
+	m_event_scale          ( /* inevent.m_event_scale */ ),
+	m_alphaQCD             ( /* inevent.m_alphaQCD */ ),
+	m_alphaQED             ( /* inevent.m_alphaQED */ ),
+	m_signal_process_vertex( /* inevent.m_signal_process_vertex */ ),
+	m_beam_particle_1      ( /* inevent.m_beam_particle_1 */ ),
+	m_beam_particle_2      ( /* inevent.m_beam_particle_2 */ ),
+	m_weights              ( /* inevent.m_weights */ ),
+	m_random_states        ( /* inevent.m_random_states */ ),
+	m_vertex_barcodes      ( /* inevent.m_vertex_barcodes */ ),
+	m_particle_barcodes    ( /* inevent.m_particle_barcodes */ ),
+	m_heavy_ion            ( inevent.heavy_ion() ? new HeavyIon(*inevent.heavy_ion()) : 0 ),
+	m_pdf_info             ( inevent.pdf_info() ? new PdfInfo(*inevent.pdf_info()) : 0 )
     {
 	/// deep copy
-	*this = inevent;
 	++s_counter;
-    }
-
-    GenEvent::~GenEvent() 
-    {
-	/// Deep destructor.
-	/// deletes all vertices/particles in this evt
-	///
-	delete_all_vertices();
-	delete m_heavy_ion;
-	delete m_pdf_info;
-	--s_counter;
-    }
-
-    GenEvent& GenEvent::operator=( const GenEvent& inevent ) 
-    {
 	/// deep - makes a copy of all vertices!
 	//
-	// 0. Protect against self assignment
-	// This works, but is not best practices
-	// Best practices involves a rewrite to use the copy constructor and swap
-	if( this == &inevent ) return * this;
-	//
-	// 1. Delete all vertices attached to this
-	delete_all_vertices();
-	//    
-	// 2. create a NEW copy of all vertices from inevent
+
+	// 1. create a NEW copy of all vertices from inevent
 	//    taking care to map new vertices onto the vertices being copied
 	//    and add these new vertices to this event.
 	//    We do not use GenVertex::operator= because that would copy
 	//    the attached particles as well.
 	std::map<const GenVertex*,GenVertex*> map_in_to_new;
 	for ( GenEvent::vertex_const_iterator v = inevent.vertices_begin();
-	      v != inevent.vertices_end(); v++ ) {
+	      v != inevent.vertices_end(); ++v ) {
 	    GenVertex* newvertex = new GenVertex(
 	        (*v)->position(), (*v)->id(), (*v)->weights() );
             newvertex->suggest_barcode( (*v)->barcode() );
 	    map_in_to_new[*v] = newvertex;
 	    add_vertex( newvertex );
 	}
-	// 2.b copy the signal process vertex info.
+	// 2. copy the signal process vertex info.
 	if ( inevent.signal_process_vertex() ) {
 	    set_signal_process_vertex( 
 		map_in_to_new[inevent.signal_process_vertex()] );
@@ -126,7 +118,7 @@ namespace HepMC {
 	GenParticle* beam1(0);
 	GenParticle* beam2(0);
         for ( GenEvent::particle_const_iterator p = inevent.particles_begin();
-              p != inevent.particles_end(); p++ ) 
+              p != inevent.particles_end(); ++p ) 
         {
 	    GenParticle* oldparticle = *p;
 	    GenParticle* newparticle = new GenParticle(*oldparticle);
@@ -154,8 +146,47 @@ namespace HepMC {
 	weights() = inevent.weights();
 	//
 	// 5. copy these only if they are not null
-	m_heavy_ion = inevent.heavy_ion() ? new HeavyIon(*inevent.heavy_ion()) : 0;
-	m_pdf_info = inevent.pdf_info() ? new PdfInfo(*inevent.pdf_info()) : 0 ;
+	//m_heavy_ion = inevent.heavy_ion() ? new HeavyIon(*inevent.heavy_ion()) : 0;
+	//m_pdf_info = inevent.pdf_info() ? new PdfInfo(*inevent.pdf_info()) : 0 ;
+    }
+
+    void GenEvent::swap( GenEvent & other )
+    {
+        // if a container has a swap method, use that for improved performance
+	std::swap(m_signal_process_id    , other.m_signal_process_id    );
+	std::swap(m_event_number         , other.m_event_number         );
+	std::swap(m_mpi                  , other.m_mpi                  );
+	std::swap(m_event_scale          , other.m_event_scale          );
+	std::swap(m_alphaQCD             , other.m_alphaQCD             );
+	std::swap(m_alphaQED             , other.m_alphaQED             );
+	std::swap(m_signal_process_vertex, other.m_signal_process_vertex);
+	std::swap(m_beam_particle_1      , other.m_beam_particle_1      );
+	std::swap(m_beam_particle_2      , other.m_beam_particle_2      );
+	std::swap(m_weights              , other.m_weights              );
+	//std::swap(m_random_states        , other.m_random_states        );
+	m_random_states.swap(  other.m_random_states  );
+	std::swap(m_vertex_barcodes      , other.m_vertex_barcodes      );
+	std::swap(m_particle_barcodes    , other.m_particle_barcodes    );
+	std::swap(m_heavy_ion            , other.m_heavy_ion            );
+	std::swap(m_pdf_info             , other.m_pdf_info             );
+    }
+
+    GenEvent::~GenEvent() 
+    {
+	/// Deep destructor.
+	/// deletes all vertices/particles in this evt
+	///
+	delete_all_vertices();
+	delete m_heavy_ion;
+	delete m_pdf_info;
+	--s_counter;
+    }
+
+    GenEvent& GenEvent::operator=( const GenEvent& inevent ) 
+    {
+        /// best practices implementation
+	GenEvent tmp( inevent );
+	swap( tmp );
 	return *this;
     }
 
@@ -188,12 +219,12 @@ namespace HepMC {
 	ostr << " RndmState(" << m_random_states.size() << ")=";
 	for ( std::vector<long int>::const_iterator rs 
 		  = m_random_states.begin();
-	      rs != m_random_states.end(); rs++ ) { ostr << *rs << " "; }
+	      rs != m_random_states.end(); ++rs ) { ostr << *rs << " "; }
 	ostr << "\n";
 	// Weights
 	ostr << " Wgts(" << weights().size() << ")=";
 	for ( WeightContainer::const_iterator wgt = weights().begin();
-	      wgt != weights().end(); wgt++ ) { ostr << *wgt << " "; }
+	      wgt != weights().end(); ++wgt ) { ostr << *wgt << " "; }
 	ostr << "\n";
 	ostr << " EventScale " << event_scale() 
 	     << " [energy] \t alphaQCD=" << alphaQCD() 
@@ -217,7 +248,7 @@ namespace HepMC {
     bool GenEvent::add_vertex( GenVertex* vtx ) {
 	/// returns true if successful - generally will only return false
 	/// if the inserted vertex is already included in the event.
-	if ( !vtx ) return 0;
+	if ( !vtx ) return false;
 	// if vtx previously pointed to another GenEvent, remove it from that
 	// GenEvent's list
 	if ( vtx->parent_event() && vtx->parent_event() != this ) {
@@ -284,9 +315,9 @@ namespace HepMC {
 	/// The vertices are the "owners" of the particles, so as we delete
 	///   the vertices, the vertex desctructors are automatically
 	///   deleting their particles.
-	if ( vertices_empty() ) return;
+
   	// delete each vertex individually (this deletes particles as well)
-	while ( m_vertex_barcodes.begin() != m_vertex_barcodes.end() ) {
+	while ( !vertices_empty() ) {
 	    GenVertex* vtx = ( m_vertex_barcodes.begin() )->second;
             m_vertex_barcodes.erase( m_vertex_barcodes.begin() );
             delete vtx;
@@ -454,7 +485,7 @@ namespace HepMC {
         if(m_beam_particle_1 && m_beam_particle_2) {
 	    // now look for a match with the particle "list"
             for ( particle_const_iterator p = particles_begin();
-        	  p != particles_end(); p++ ) {
+        	  p != particles_end(); ++p ) {
 		if( m_beam_particle_1 == *p ) have1 = true;
 		if( m_beam_particle_2 == *p ) have2 = true;
 	    }
