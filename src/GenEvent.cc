@@ -144,10 +144,6 @@ namespace HepMC {
 	set_mpi( inevent.mpi() );
 	set_random_states( inevent.random_states() );
 	weights() = inevent.weights();
-	//
-	// 5. copy these only if they are not null
-	//m_heavy_ion = inevent.heavy_ion() ? new HeavyIon(*inevent.heavy_ion()) : 0;
-	//m_pdf_info = inevent.pdf_info() ? new PdfInfo(*inevent.pdf_info()) : 0 ;
     }
 
     void GenEvent::swap( GenEvent & other )
@@ -162,11 +158,10 @@ namespace HepMC {
 	std::swap(m_signal_process_vertex, other.m_signal_process_vertex);
 	std::swap(m_beam_particle_1      , other.m_beam_particle_1      );
 	std::swap(m_beam_particle_2      , other.m_beam_particle_2      );
-	std::swap(m_weights              , other.m_weights              );
-	//std::swap(m_random_states        , other.m_random_states        );
-	m_random_states.swap(  other.m_random_states  );
-	std::swap(m_vertex_barcodes      , other.m_vertex_barcodes      );
-	std::swap(m_particle_barcodes    , other.m_particle_barcodes    );
+	m_weights.swap(           other.m_weights  );
+	m_random_states.swap(     other.m_random_states  );
+	m_vertex_barcodes.swap(   other.m_vertex_barcodes );
+	m_particle_barcodes.swap( other.m_particle_barcodes );
 	std::swap(m_heavy_ion            , other.m_heavy_ion            );
 	std::swap(m_pdf_info             , other.m_pdf_info             );
     }

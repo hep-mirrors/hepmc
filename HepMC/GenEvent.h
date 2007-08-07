@@ -156,8 +156,8 @@ namespace HepMC {
 	GenEvent( const GenEvent& inevent );          //!< deep copy
 	GenEvent& operator=( const GenEvent& inevent ); //!< make a deep copy
 	virtual ~GenEvent(); //!<deletes all vertices/particles in this evt
-   
-        void swap( GenEvent & other );
+
+        void swap( GenEvent & other );  //!< swap
     
 	void print( std::ostream& ostr = std::cout ) const; //!< dumps to ostr
 

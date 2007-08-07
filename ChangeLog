@@ -1,3 +1,18 @@
+
+2007-08-07  Lynn Garren
+
+	* HepMC/GenEvent.h, GenVertex.h,GenParticle.h : add swap method
+	* src/GenEvent.cc, GenVertex.cc, GenParticle.cc: 
+	  use best practices for assignment and copy constructor
+
+	* HepMC/SimpleVector.h: add swap method
+	* HepMC/Flow.h: add swap method
+	* HepMC/WeightContainer.h: add swap method
+
+	* HepMC/Polarization.h: add swap method
+	  add private valid_theta and valid_phi methods for use by constructors
+	  src/Polarization.cc: use best practices for assignment and copy constructor
+
   --------------------------  HepMC-2.01.05  --------------------------
 
 2007-07-19  Lynn Garren
