@@ -70,6 +70,7 @@ namespace HepMC {
 	GenVertex( const GenVertex& invertex );            //!< shallow copy
 	virtual    ~GenVertex();
 
+        void swap( GenVertex & other); //!< swap
 	GenVertex& operator= ( const GenVertex& invertex ); //!< shallow
 	bool       operator==( const GenVertex& a ) const; //!< equality
 	bool       operator!=( const GenVertex& a ) const; //!< inequality
