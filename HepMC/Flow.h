@@ -75,6 +75,8 @@ namespace HepMC {
 	/// copy
 	Flow( const Flow& );
 	virtual         ~Flow();
+        /// swap
+        void swap( Flow & other);
 	/// make a copy
 	Flow&           operator=( const Flow& );
 	/// equality
@@ -198,9 +200,9 @@ namespace HepMC {
 	return !( *this == a );
     }
     inline Flow& Flow::operator=( const Flow& inflow ) {
-	// copies only the m_icode ... not the particle_owner
-	// this is intuitive behaviour so you can do
-	// oneparticle->flow() = otherparticle->flow()
+	/// copies only the m_icode ... not the particle_owner
+	/// this is intuitive behaviour so you can do
+	/// oneparticle->flow() = otherparticle->flow()
 	//
 	m_icode = inflow.m_icode;
 	return *this;

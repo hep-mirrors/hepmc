@@ -15,14 +15,20 @@ namespace HepMC {
     {}
 
     Flow::Flow( const Flow& inflow ) : 
-	m_particle_owner(inflow.m_particle_owner)
+	m_particle_owner(inflow.m_particle_owner),
+	m_icode(inflow.m_icode)
     {
 	/// copies both the m_icode AND the m_particle_owner
-	*this = inflow;
     }
 
     Flow::~Flow() {
 	m_icode.clear();
+    }
+
+    void Flow::swap( Flow & other)
+    {
+	std::swap( m_particle_owner, other.m_particle_owner );
+	m_icode.swap( other.m_icode );
     }
 
     void Flow::print( std::ostream& ostr ) const {

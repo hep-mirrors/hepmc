@@ -65,6 +65,8 @@ public:
   inline FourVector(const FourVector & v)
   : m_x(v.x()), m_y(v.y()), m_z(v.z()), m_t(v.t()) {}
 
+  void swap( FourVector & other );  //!< swap
+
   inline double px() const { return m_x; }  //!< return px
   inline double py() const { return m_y; }  //!< return py
   inline double pz() const { return m_z; }  //!< return pz
@@ -148,6 +150,8 @@ public:
   /// copy constructor
   inline ThreeVector(const ThreeVector & v)
   : m_x(v.x()), m_y(v.y()), m_z(v.z()) {}
+
+  void swap( ThreeVector & other );  //!< swap
 
   inline double x() const { return m_x; }  //!< return x
   inline double y() const { return m_y; }  //!< return y
