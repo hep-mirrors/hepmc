@@ -8,23 +8,31 @@
 
 namespace HepMC {
 
-    Polarization::Polarization( double theta, double phi ){
-	set_theta( theta );
-	set_phi( phi );
-    }
+    Polarization::Polarization( double theta, double phi )
+    : m_theta( valid_theta(theta) ),
+      m_phi  ( valid_phi(phi) )
+    { }
 
-    Polarization::Polarization( const Polarization& inpolar ) {
-	*this = inpolar;
-    }
+    Polarization::Polarization( const Polarization& inpolar )
+    : m_theta( valid_theta( inpolar.theta() ) ),
+      m_phi  ( valid_phi(   inpolar.phi()   ) )
+    { }
 
-    Polarization::Polarization( const ThreeVector& vec3in ) {
-	set_theta( vec3in.theta() );
-	set_phi( vec3in.phi() );
+    Polarization::Polarization( const ThreeVector& vec3in ) 
+    : m_theta( valid_theta( vec3in.theta() ) ),
+      m_phi  ( valid_phi(   vec3in.phi()   ) )
+    { }
+
+    void Polarization::swap( Polarization & other)
+    {
+ 	std::swap( m_theta, other.m_theta );
+ 	std::swap( m_phi,   other.m_phi   );
     }
 
     Polarization& Polarization::operator=( const Polarization& inpolar ) {
-	set_theta( inpolar.theta() );
-	set_phi( inpolar.phi() );
+        /// best practices implementation
+	Polarization tmp( inpolar );
+	swap( tmp ); 
 	return *this;
     }
 
@@ -47,22 +55,13 @@ namespace HepMC {
     double Polarization::set_theta( double theta ) {
 	/// Theta is restricted to be between 0 --> pi
 	/// if an out of range value is given, it is translated to this range.
-	theta = ( theta>0 ? theta : -theta ); // this is just absolute value.
-	// translate to 0 < theta < 2pi
-	theta = ( theta/(2*HepMC_pi) - int(theta/(2*HepMC_pi)) ) 
-		* 2*HepMC_pi;
-	if ( theta > HepMC_pi ) theta = 2*HepMC_pi - theta;
-	return m_theta = theta;
+	return m_theta = valid_theta( theta );
     }
 
     double Polarization::set_phi( double phi ) {
 	/// Phi is restricted to be between 0 --> 2pi
 	/// if an out of range value is given, it is translated to this range.
-	//
-	// translate to -2pi < phi < 2pi
-	phi = ( phi/(2*HepMC_pi) - int(phi/(2*HepMC_pi)) ) * 2*HepMC_pi;
-	if ( phi < 0 ) phi = 2*HepMC_pi + phi; // translates to 0 < phi < 2pi
-	return m_phi = phi;
+	return m_phi = valid_phi( phi );
     }
 
     void Polarization::set_theta_phi( double theta, double phi ) {
@@ -74,6 +73,30 @@ namespace HepMC {
 	set_theta( vec3in.theta() );
 	set_phi( vec3in.phi() );
 	return vec3in;
+    }
+
+    /////////////////////
+    // private methods //
+    /////////////////////
+
+    double Polarization::valid_theta( double theta ) {
+        // this is just absolute value.
+	theta = ( theta>0 ? theta : -theta );
+	// translate to 0 < theta < 2pi
+	theta = ( theta/(2*HepMC_pi) - int(theta/(2*HepMC_pi)) ) 
+		* 2*HepMC_pi;
+        // now translate to 0 < theta < pi
+	if ( theta > HepMC_pi ) theta = 2*HepMC_pi - theta;
+	return theta;
+    }
+
+    double Polarization::valid_phi( double phi ) {
+	//
+	// translate to -2pi < phi < 2pi
+	phi = ( phi/(2*HepMC_pi) - int(phi/(2*HepMC_pi)) ) * 2*HepMC_pi;
+	// translates to 0 < phi < 2pi
+	if ( phi < 0 ) phi = 2*HepMC_pi + phi;
+	return phi;
     }
 
     /////////////

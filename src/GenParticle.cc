@@ -36,15 +36,24 @@ namespace HepMC {
     }
 
     GenParticle::GenParticle( const GenParticle& inparticle ) : 
-	m_pdg_id(0), m_status(0), m_flow(this), 
-	m_production_vertex(0), m_end_vertex(0), m_barcode(0), 
-        m_generated_mass(0.) 
+        m_momentum( inparticle.momentum() ),
+	m_pdg_id( inparticle.pdg_id() ), 
+	m_status( inparticle.status() ), 
+	m_flow(this),
+	m_polarization( inparticle.polarization() ),
+	m_production_vertex(0), 
+	m_end_vertex(0), 
+	m_barcode(0), 
+        m_generated_mass( inparticle.generated_mass() ),
+	m_serialnumber( inparticle.serialnumber() )
     {
 	/// Shallow copy: does not copy the vertex pointers
 	/// (note - impossible to copy vertex pointers which having the vertex
 	///         and particles in/out point-back to one another -- unless you
 	///         copy the entire tree -- which we don't want to do)
-	*this = inparticle; 
+	set_production_vertex_( 0 );
+	set_end_vertex_( 0 );
+	suggest_barcode( inparticle.barcode() );
 	s_counter++;
     }
 
@@ -53,25 +62,30 @@ namespace HepMC {
 	s_counter--;
     }
 
+    void GenParticle::swap( GenParticle & other)
+    {
+        // if a container has a swap method, use that for improved performance
+        m_momentum.swap( other.m_momentum );
+	std::swap( m_pdg_id, other.m_pdg_id );
+	std::swap( m_status, other.m_status );
+	m_flow.swap( other.m_flow );
+	m_polarization.swap( other.m_polarization );
+	std::swap( m_production_vertex, other.m_production_vertex );
+	std::swap( m_end_vertex, other.m_end_vertex );
+	std::swap( m_barcode, other.m_barcode );
+	std::swap( m_generated_mass, other.m_generated_mass );
+	std::swap( m_serialnumber, other.m_serialnumber );
+    }
+
     GenParticle& GenParticle::operator=( const GenParticle& inparticle ) {
 	/// Shallow: does not copy the vertex pointers
 	/// (note - impossible to copy vertex pointers which having the vertex
 	///         and particles in/out point-back to one another -- unless you
 	///         copy the entire tree -- which we don't want to do)
-	// Protect against self assignment
-	// This works, but is not best practices
-	// Best practices involves a rewrite to use the copy constructor and swap
-	if( this != &inparticle ) {
-	    set_momentum( inparticle.momentum() );
-	    set_pdg_id( inparticle.pdg_id() );
-	    set_status( inparticle.status() );
-	    set_production_vertex_( 0 );
-	    set_end_vertex_( 0 );
-	    set_flow(inparticle.m_flow);
-	    set_polarization( inparticle.polarization() );
-	    suggest_barcode( inparticle.barcode() );
-            set_generated_mass( inparticle.generated_mass() );
-	}
+
+        // best practices implementation
+	GenParticle tmp( inparticle );
+	swap( tmp );
 	return *this;
     }
 

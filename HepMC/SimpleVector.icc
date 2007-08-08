@@ -9,12 +9,20 @@
 //////////////////////////////////////////////////////////////////////////
 
 #include <cmath>
+#include <algorithm>	// for swap
 
 namespace HepMC {
 
 //////////////////////////////////////////////////////////////////////////
 //  FourVector inline methods
 //////////////////////////////////////////////////////////////////////////
+
+inline void FourVector::swap( FourVector & other ) {
+    std::swap( m_x, other.m_x );
+    std::swap( m_y, other.m_y );
+    std::swap( m_z, other.m_z );
+    std::swap( m_t, other.m_t );
+}
 
 inline FourVector & FourVector::operator=(const FourVector & v) {
   m_x = v.x();
@@ -82,6 +90,12 @@ inline double FourVector::eta()    const { return pseudoRapidity();}
 //////////////////////////////////////////////////////////////////////////
 //  ThreeVector inline methods
 //////////////////////////////////////////////////////////////////////////
+
+inline void ThreeVector::swap( ThreeVector & other ) {
+    std::swap( m_x, other.m_x );
+    std::swap( m_y, other.m_y );
+    std::swap( m_z, other.m_z );
+}
 
 inline double ThreeVector::theta() const	 {
   return m_x == 0.0 && m_y == 0.0 && m_z == 0.0 ? 0.0 : std::atan2(perp(),m_z);

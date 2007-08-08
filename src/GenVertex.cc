@@ -18,8 +18,15 @@ namespace HepMC {
 	s_counter++;
     }
 
-    GenVertex::GenVertex( const GenVertex& invertex ) : m_event(0),
-							m_barcode(0) {
+    GenVertex::GenVertex( const GenVertex& invertex ) 
+    : m_position( invertex.position() ),
+      m_particles_in(),
+      m_particles_out(),
+      m_id( invertex.id() ),
+      m_weights( invertex.weights() ),
+      m_event(0),
+      m_barcode(0) 
+    {
 	/// Shallow copy: does not copy the FULL list of particle pointers.
 	/// Creates a copy of  - invertex
 	///                    - outgoing particles of invertex, but sets the
@@ -31,7 +38,23 @@ namespace HepMC {
 	///         while having the vertex
 	///         and particles in/out point-back to one another -- unless you
 	///         copy the entire tree -- which we don't want to do)
-	*this = invertex;
+	//
+	for ( particles_in_const_iterator 
+		  part1 = invertex.particles_in_const_begin();
+	      part1 != invertex.particles_in_const_end(); ++part1 ) {
+	    if ( !(*part1)->production_vertex() ) { 
+		GenParticle* pin = new GenParticle(**part1);
+		add_particle_in(pin);
+	    }
+	}
+	for ( particles_out_const_iterator
+		  part2 = invertex.particles_out_const_begin();
+	      part2 != invertex.particles_out_const_end(); part2++ ) {
+	    GenParticle* pin = new GenParticle(**part2);
+	    add_particle_out(pin);
+	}
+	suggest_barcode( invertex.barcode() );
+	//
 	s_counter++;
     }
     
@@ -41,6 +64,17 @@ namespace HepMC {
 	if ( parent_event() ) parent_event()->remove_barcode(this);
 	delete_adopted_particles();
 	s_counter--;
+    }
+
+    void GenVertex::swap( GenVertex & other)
+    {
+        m_position.swap( other.m_position );
+	m_particles_in.swap( other.m_particles_in );
+	m_particles_out.swap( other.m_particles_out );
+	std::swap( m_id, other.m_id );
+	m_weights.swap( other.m_weights );
+	std::swap( m_event, other.m_event );
+	std::swap( m_barcode, other.m_barcode );
     }
 
     GenVertex& GenVertex::operator=( const GenVertex& invertex ) {
@@ -57,31 +91,10 @@ namespace HepMC {
 	///         and particles in/out point-back to one another -- unless you
 	///         copy the entire tree -- which we don't want to do)
 	///
-	// Protect against self assignment
-	// This works, but is not best practices
-	// Best practices involves a rewrite to use the copy constructor and swap
-	if( this == &invertex ) return * this;
-	// first need to delete any particles previously owned by this vertex
-	delete_adopted_particles();
-	//
-	for ( particles_in_const_iterator 
-		  part1 = invertex.particles_in_const_begin();
-	      part1 != invertex.particles_in_const_end(); part1++ ) {
-	    if ( !(*part1)->production_vertex() ) { 
-		GenParticle* pin = new GenParticle(**part1);
-		add_particle_in(pin);
-	    }
-	}
-	for ( particles_out_const_iterator
-		  part2 = invertex.particles_out_const_begin();
-	      part2 != invertex.particles_out_const_end(); part2++ ) {
-	    GenParticle* pin = new GenParticle(**part2);
-	    add_particle_out(pin);
-	}
-	set_position( invertex.position() );
-	set_id( invertex.id() );
-	weights() = invertex.weights();
-	suggest_barcode( invertex.barcode() );
+
+        // best practices implementation
+	GenVertex tmp( invertex );
+	swap( tmp );
 	return *this;
     }
     

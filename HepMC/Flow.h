@@ -75,6 +75,8 @@ namespace HepMC {
 	/// copy
 	Flow( const Flow& );
 	virtual         ~Flow();
+        /// swap
+        void swap( Flow & other);
 	/// make a copy
 	Flow&           operator=( const Flow& );
 	/// equality
@@ -189,18 +191,18 @@ namespace HepMC {
     ///////////////////////////
 
     inline bool Flow::operator==( const Flow& a ) const {
-	// equivalent flows have the same flow codes for all flow_numbers 
-	// (i.e. their m_icode maps are identical), but they need not have the
-	// same m_particle owner
+	/// equivalent flows have the same flow codes for all flow_numbers 
+	/// (i.e. their m_icode maps are identical), but they need not have the
+	/// same m_particle owner
 	return (m_icode == a.m_icode);
     }
     inline bool Flow::operator!=( const Flow& a ) const {
 	return !( *this == a );
     }
     inline Flow& Flow::operator=( const Flow& inflow ) {
-	// copies only the m_icode ... not the particle_owner
-	// this is intuitive behaviour so you can do
-	// oneparticle->flow() = otherparticle->flow()
+	/// copies only the m_icode ... not the particle_owner
+	/// this is intuitive behaviour so you can do
+	/// oneparticle->flow() = otherparticle->flow()
 	//
 	m_icode = inflow.m_icode;
 	return *this;

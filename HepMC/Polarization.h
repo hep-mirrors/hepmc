@@ -40,6 +40,8 @@ namespace HepMC {
 	Polarization( const ThreeVector& vec3in );
 	virtual       ~Polarization() {}
 
+        /// swap
+        void swap( Polarization & other);
 	/// make a copy
 	Polarization& operator=( const Polarization& inpolar );
 	/// equality requires that theta and phi are equal
@@ -65,6 +67,12 @@ namespace HepMC {
 	void          set_theta_phi( double theta, double phi );
 	/// sets polarization according to direction of 3 vec
 	ThreeVector   set_normal3d( const ThreeVector& vec3in ); 
+
+    private:
+    	/// private method to return a polar angle in the correct range
+	double valid_theta( double theta );
+    	/// private method to return an azimuthal angle in the correct range
+	double valid_phi( double phi );
 
     private:
 	double m_theta; //polar angle of polarization in radians 0< theta <pi
