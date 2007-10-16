@@ -1,3 +1,8 @@
+
+2007-10-16  Lynn Garren
+
+	* configure.in: build dynamic libraries for MacOSX - thanks to James Monk
+
   --------------------------  HepMC-2.02.00  --------------------------
 
 2007-07-19  Lynn Garren
