@@ -201,11 +201,22 @@ g++)
       AR="ar"; ARFLAGS="cru"
       ;;
    *-*-darwin*) 
+      AC_CHECK_TOOL(SWVERS, sw_vers)
+      MACOSX_DEPLOYMENT_TARGET=`$SWVERS -productVersion | cut -f 1,2 -d.`
+      MACOSX_VERSION=`echo $MACOSX_DEPLOYMENT_TARGET | cut -f 2 -d.`
+      AC_MSG_NOTICE([MACOSX_DEPLOYMENT_TARGET = $MACOSX_DEPLOYMENT_TARGET])
+      AC_MSG_NOTICE([MACOSX_VERSION = $MACOSX_VERSION])
       AM_CXXFLAGS="-O -ansi -pedantic -Wall -D_GNU_SOURCE"
-      MY_SHFLAGS="-fPIC -DPIC"; MY_SHLINK="-dynamiclib -single_module"; SHEXT=dylib
+      MY_SHFLAGS="-fPIC -DPIC"; MY_SHLINK="-dynamiclib -undefined dynamic_lookup -single_module"; SHEXT=dylib
       MY_SHNAME="-Wl,-install_name,"; MY_LD="-Wl,--rpath -Wl,"
       AR="ar"; ARFLAGS="cru"
-      build_shared="no"
+      if test "$MACOSX_VERSION" > "2"; then
+         AC_MSG_NOTICE([Mac OS X >= 3... building shared libraries for OS X])
+         build_shared="yes"
+      else  
+         AC_MSG_WARN([Mac OS X < 3... not building shared libraries])
+         build_shared="no"
+      fi
       ;;
    *) 
       AM_CXXFLAGS="-O -ansi -pedantic -Wall"
