@@ -1,25 +1,33 @@
 #! /bin/sh
 # @configure_input@
 
-./testDeprecated@EXEEXT@ 
+./testDeprecated@EXEEXT@ >& testDeprecated.cout
 
 OS=`uname`
 case "$OS" in
 CYGWIN*)
-  #don't compare these on Windows (hopelessly different default output)
-  sed 's/e+0/e+/g' testAscii.dat   | \
+  cmd1=`sed 's/e+0/e+/g' testAscii.dat   | \
      sed 's/e-0/e-/g' -   | \
-	@DIFF_Q@ - @srcdir@/testAscii.dat
-  sed 's/e+0/e+/g'  testHepMCExtended.dat  | \
+	@DIFF_Q@ - @srcdir@/testAscii.dat`
+  cmd2=`sed 's/e+0/e+/g'  testHepMCExtended.dat  | \
      sed 's/e-0/e-/g'  -  | \
-	@DIFF_Q@ - @srcdir@/testHepMCExtended.dat
-  ;;
-Darwin*)
-  # MacOSX fix
-  @DIFF_Q@ testAscii.dat @srcdir@/testAscii.dat
-  @DIFF_Q@ testHepMCExtended.dat @srcdir@/testHepMCExtended.dat
+	@DIFF_Q@ - @srcdir@/testHepMCExtended.dat`
   ;;
 *)
-  @DIFF_Q@ testAscii.dat @srcdir@/testAscii.dat
-  @DIFF_Q@ testHepMCExtended.dat @srcdir@/testHepMCExtended.dat
+  cmd1=`@DIFF_Q@ testAscii.dat @srcdir@/testAscii.dat`
+  cmd2=`@DIFF_Q@ testHepMCExtended.dat @srcdir@/testHepMCExtended.dat`
 esac
+
+if [ -n "$cmd1" ]
+then
+  echo $cmd1
+  exit 1;
+fi
+
+if [ -n "$cmd2" ]
+then
+  echo $cmd2
+  exit 1;
+fi
+
+exit 0;

@@ -1,23 +1,38 @@
 #! /bin/sh
 # @configure_input@
 
-./testHepMC@EXEEXT@ 
+./testHepMC@EXEEXT@ >& testHepMC.cout
 
 OS=`uname`
 case "$OS" in
 CYGWIN*)
   #don't compare these on Windows (hopelessly different default output)
-  sed 's/e+0/e+/g' testHepMC.out   | \
+  cmd1=`sed 's/e+0/e+/g' testHepMC.out   | \
        sed 's/e-0/e-/g' -   | \
-	@DIFF_Q@ - @srcdir@/testHepMC.dat
+	@DIFF_Q@ - @srcdir@/testHepMC.dat`
+  cmd2=1
   ;;
 Darwin*)
   # MacOSX fix
-  sed 's/e-00/e+00/g'  @srcdir@/testHepMCParticle.output | \
-	@DIFF_Q@ - testHepMCParticle.out
-  @DIFF_Q@ testHepMC.out @srcdir@/testHepMC.dat
+  cmd2=`sed 's/e-00/e+00/g'  @srcdir@/testHepMCParticle.output | \
+	@DIFF_Q@ - testHepMCParticle.out`
+  cmd1=`@DIFF_Q@ testHepMC.out @srcdir@/testHepMC.dat`
   ;;
 *)
-  @DIFF_Q@ testHepMCParticle.out @srcdir@/testHepMCParticle.output
-  @DIFF_Q@ testHepMC.out @srcdir@/testHepMC.dat
+  cmd2=`@DIFF_Q@ testHepMCParticle.out @srcdir@/testHepMCParticle.output`
+  cmd1=`@DIFF_Q@ testHepMC.out @srcdir@/testHepMC.dat`
 esac
+
+if [ -n "$cmd1" ]
+then
+  echo $cmd1
+  exit 1;
+fi
+
+if [ -n "$cmd2" ]
+then
+  echo $cmd2
+  exit 1;
+fi
+
+exit 0;
