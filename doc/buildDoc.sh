@@ -9,11 +9,9 @@ if [ `whereis doxygen | wc -w` -gt 1 ]; then
    doxygen doxygen.conf
    if [ `whereis latex | wc -w` -gt 1 ]; then
       cd latex
-      latex refman.tex
-      latex refman.tex
-      dvips refman
-      dvipdf refman
-      mv refman.ps ../HepMC2_reference_manual.ps
+      make all
+      make pdf
+      mv refman.ps  ../HepMC2_reference_manual.ps
       mv refman.pdf ../HepMC2_reference_manual.pdf
    fi
    cd ..

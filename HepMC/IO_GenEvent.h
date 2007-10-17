@@ -9,35 +9,6 @@
 // event input/output in ascii format for machine reading
 // This class persists all information found in a GenEvent
 //////////////////////////////////////////////////////////////////////////
-//
-// Strategy for reading or writing events as machine readable
-//  ascii to a file. When instantiating, the mode of file to be created 
-//  must be specified. Options are:
-//      std::ios::in     open file for input 
-//      std::ios::out    open file for output
-//      std::ios::trunc  erase old file when opening (i.e. ios::out|ios::trunc
-//                    removes oldfile, and creates a new one for output )
-//      std::ios::app    append output to end of file
-//  for the purposes of this class, simultaneous input and output mode 
-//  ( std::ios::in | std::ios::out ) is not allowed.
-// 
-// Event listings are preceded by the key:
-//  "HepMC::IO_GenEvent-START_EVENT_LISTING\n"
-//  and terminated by the key:
-//  "HepMC::IO_GenEvent-END_EVENT_LISTING\n"
-// GenParticle Data tables are preceded by the key:
-//  "HepMC::IO_GenEvent-START_PARTICLE_DATA\n"
-//  and terminated by the key:
-//  "HepMC::IO_GenEvent-END_PARTICLE_DATA\n"
-// Comments are allowed. They need not be preceded by anything, though if
-//  a comment is written using write_comment( const string ) then it will be
-//  preceded by "HepMC::IO_GenEvent-COMMENT\n"
-// Each event, vertex, particle, particle data, heavy ion, or pdf info line
-//  is preceded by   "E ","V ","P ","D ","H ","F "    respectively.
-// ExtendedAscii ignores particle data blocks
-// Comments may appear anywhere in the file -- so long as they do not contain
-//  any of the start/stop keys.
-//
 
 #include <fstream>
 #include <string>
@@ -60,6 +31,34 @@ namespace HepMC {
     /// \class  IO_GenEvent
     /// event input/output in ascii format for machine reading
     /// extended format contains HeavyIon and PdfInfo classes
+    ///
+    /// Strategy for reading or writing events using iostreams
+    /// When instantiating with a file name, the mode of file to be created 
+    ///  must be specified. Options are:
+    ///      std::ios::in     open file for input 
+    ///      std::ios::out    open file for output
+    ///      std::ios::trunc  erase old file when opening (i.e. ios::out|ios::trunc
+    ///                    removes oldfile, and creates a new one for output )
+    ///      std::ios::app    append output to end of file
+    ///  for the purposes of this class, simultaneous input and output mode 
+    ///  ( std::ios::in | std::ios::out ) is not allowed.
+    /// 
+    /// Event listings are preceded by the key:
+    ///  "HepMC::IO_GenEvent-START_EVENT_LISTING\n"
+    ///  and terminated by the key:
+    ///  "HepMC::IO_GenEvent-END_EVENT_LISTING\n"
+    /// GenParticle Data tables are preceded by the key:
+    ///  "HepMC::IO_GenEvent-START_PARTICLE_DATA\n"
+    ///  and terminated by the key:
+    ///  "HepMC::IO_GenEvent-END_PARTICLE_DATA\n"
+    /// Comments are allowed. They need not be preceded by anything, though if
+    ///  a comment is written using write_comment( const string ) then it will be
+    ///  preceded by "HepMC::IO_GenEvent-COMMENT\n"
+    /// Each event, vertex, particle, particle data, heavy ion, or pdf info line
+    ///  is preceded by   "E ","V ","P ","D ","H ","F "    respectively.
+    /// ExtendedAscii ignores particle data blocks
+    /// Comments may appear anywhere in the file -- so long as they do not contain
+    ///  any of the start/stop keys.
     ///
     class IO_GenEvent : public IO_BaseClass {
     public:
