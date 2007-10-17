@@ -201,7 +201,7 @@ g++)
       AR="ar"; ARFLAGS="cru"
       ;;
    *-*-darwin*) 
-      AC_CHECK_TOOL(SWVERS, sw_vers)
+      AC_PATH_PROG(SWVERS, sw_vers)
       MACOSX_DEPLOYMENT_TARGET=`$SWVERS -productVersion | cut -f 1,2 -d.`
       MACOSX_MAJOR_VERSION=`echo $MACOSX_DEPLOYMENT_TARGET | cut -f 1 -d.`
       MACOSX_VERSION=`echo $MACOSX_DEPLOYMENT_TARGET | cut -f 2 -d.`
