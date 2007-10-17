@@ -83,7 +83,7 @@
 \htmladdnormallink{http://savannah.cern.ch/projects/hepmc/}
 {http://savannah.cern.ch/projects/hepmc/}
 
-\vspace{1cm}
+\vspace{0.5cm}
 
 {\Large User Manual Version 2.0} \\
 August 18, 2006
@@ -151,10 +151,19 @@ Changes to HepMC must be approved by the LCG simulation project.
 
 \subsection{Changes since HepMC 1.26}
 
+See the HepMC ChangeLog for a complete listing.
+
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+
+\subsection{Changes as of HepMC 1.28.00}
+
 The HepMC\_CLHEP20.h header defines several typedefs needed when 
 compiling with CLHEP 2.0.xx.yy.
 
 The IO\_AsciiParticles class provides output in the pythia style.
+This output is intended for ease of reading event output, not for persistency.
 
 GenEvent now contains pointers to a heavy ion class and a PDF information class.
 The pointers are set to zero by default.
@@ -190,7 +199,54 @@ a calculated mass is not always consistent.
 If no generated mass is set, then the mass is calculated from the momementum 
 and stored in GenParticle.
 
-Use IO\_ExtendedAscii to read and write the generated mass.
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+
+\subsection{Changes as of HepMC 2.02.00}
+
+IO\_GenEvent replaces both IO\_Ascii and IO\_ExtendedAscii.
+IO\_Ascii, IO\_ExtendedAscii, and IO\_AsciiParticles are deprecated.
+IO\_GenEvent uses iostreams, but also has a constructor taking a file
+name and mode type for backwards compatibility. 
+Output is still in ascii format.
+IO\_GenEvent persists all information in a GenEvent object.
+
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+
+\section{Building HepMC}
+
+Source code, binary and source code tarballs, bug tracking, etc. is
+all available from the HepMC web pages~\cite{LCGHepMC} at  
+\htmladdnormallink
+{https://savannah.cern.ch/projects/hepmc/}
+{https://savannah.cern.ch/projects/hepmc/}.
+
+Get a source code tarball from the download page:
+\htmladdnormallink
+{http://lcgapp.cern.ch/project/simu/HepMC/download/}
+{http://lcgapp.cern.ch/project/simu/HepMC/download/}.
+
+\vspace{0.5cm}
+\begin{myitemize}
+ {The following recipe is a guideline and should be modified according to taste.}
+  \myitem{download source code tarball}{}
+  \myitem{mkdir cleanDIR}{Make a new directory to work in.}
+  \myitem{cd cleanDIR}{}
+  \myitem{tar -xzf HepMCtarball}{Unwind the tarball you downloaded.}
+  \myitem{mkdir build install}{Define directories for building and installation.}
+  \myitem{cd build}{This is your real working directory.}
+  \myitem{../../HepMC-release/configure --prefix=../install}
+    {--prefix tells the tools where to install the library and headers.
+     The default install location is /usr/local.}
+  \myitem{make}{Compile HepMC.}
+  \myitem{make check}{Run the tests.  This is optional but strongly recommended.}
+  \myitem{make install}{Install everything in your specified directory. }
+\end{myitemize}
+
+Binary downloads are available for some releases.
 
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -411,22 +467,16 @@ syntax for input and output strategies of events and particle data tables.
 
 Several IO strategies are supplied:
 \begin{itemize}\setlength{\itemsep}{0pt}
-  \item {\bf IO\_Ascii} reads and writes events to files 
-    in machine readable ascii, thereby providing a
-    form of persistency for the event record. 
-    This class does not process HeavyIon or PdfInfo.
-    Events may be contained within the same file together with
-    an unlimited number of comments. The majority of examples listed in
-    Section~\ref{examples} make use of this class.
-  \item {\bf IO\_AsciiParticles} writes events to files in machine 
-    readable ascii using a format similar to that used by pythia. 
-  \item {\bf IO\_ExtendedAscii} reads and writes events to files 
-    in machine readable ascii, thereby providing a
-    form of persistency for the event record. 
-    This class differs from IO\_Ascii only in that it also reads and writes
-    HeavyIon and PdfInfo.
+  \item {\bf IO\_GenEvent} uses iostreams for input and output
+    thereby providing a form of persistency for the event record. 
+    This class handles all information found in a GenEvent object.
+    This class replaces both IO\_Ascii and IO\_ExtendedAscii.
     Events may be contained within the same file together with
     an unlimited number of comments. 
+    The examples (Section~\ref{examples}) make use of this class.
+  \item {\bf IO\_Ascii} is deprecated.
+  \item {\bf IO\_AsciiParticles}  is deprecated.
+  \item {\bf IO\_ExtendedAscii} is deprecated.
   \item {\bf IO\_HEPEVT} reads and writes events to/from the Fortran HEPEVT
     common block. It relies on a helper class HEPEVT\_Wrapper which
     is the interface to the common block
@@ -462,6 +512,8 @@ Several IO strategies are supplied:
 \label{examples}
 Examples are in the examples directory of the package 
 and are installed in the installation directory under examples/HepMC.
+Tests, found in the test directory of the package, also provide useful examples.
+The tests are not installed.
 
 \begin{itemize}\setlength{\itemsep}{0pt}
   \item{\bf Using the HepMC vertex and particle iterators:}
@@ -494,6 +546,13 @@ and are installed in the installation directory under examples/HepMC.
   High Energy Physics'', Computer Physics Communications (to be
   published) \htmladdnormallink{[ATL-SOFT-2000-001]}
   {http://weblib.cern.ch/}.  
+
+\bibitem{LCGHepMC}
+  ``a C++ Event Record for Monte Carlo Generators,'' (HepMC).
+  Available from 
+  \htmladdnormallink
+  {https://savannah.cern.ch/projects/hepmc/}
+  {https://savannah.cern.ch/projects/hepmc/}.
 
 \bibitem{stdhep5.05}
   L.~Garren, ``StdHep 5.05 Monte Carlo Standardization at FNAL,''
