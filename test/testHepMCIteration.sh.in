@@ -11,14 +11,23 @@ OS=`uname`
 case "$OS" in
 CYGWIN*)
   #don't compare these on Windows (hopelessly different default output)
+  cmd1=
   ;;
 Darwin*)
   # MacOSX fix
-  sed 's/(-0,0)/(0,0)/g'  testHepMCIteration.dat  | \
-  	@DIFF_Q@ - @srcdir@/testHepMCIteration.dat
+  cmd1=`sed 's/(-0,0)/(0,0)/g'  testHepMCIteration.dat  | \
+  	@DIFF_Q@ - @srcdir@/testHepMCIteration.dat`
   # dealing with different ordering - can't compare
   ;;
 *)
-  sed 's/(-0,0)/(0,0)/g'  testHepMCIteration.dat  | \
-  	@DIFF_Q@ - @srcdir@/testHepMCIteration.dat
+  cmd1=`sed 's/(-0,0)/(0,0)/g'  testHepMCIteration.dat  | \
+  	@DIFF_Q@ - @srcdir@/testHepMCIteration.dat`
 esac
+
+if [ -n "$cmd1" ]
+then
+  echo $cmd1
+  exit 1;
+fi
+
+exit 0;

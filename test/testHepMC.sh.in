@@ -1,27 +1,43 @@
 #! /bin/sh
 # @configure_input@
-# you can compare testHepMC.out to @srcdir@/testHepMC.dat
-# and testHepMCExtended.out to @srcdir@/testHepMCExtended.dat,
-# but the particles within a vertex are printed in "random" order
 
-./testHepMC@EXEEXT@ \
- | @DIFF_Q@ - @srcdir@/testHepMC.output > /dev/null
+./testHepMC@EXEEXT@ >& testHepMC.cout
 
 OS=`uname`
 case "$OS" in
 CYGWIN*)
   #don't compare these on Windows (hopelessly different default output)
-  sed 's/e+00/e+0/g' testHepMC.out   | \
-       sed 's/e-00/e-0/g' -   | \
-	@DIFF_Q@ - @srcdir@/testHepMC.dat
+  cmd1=`sed 's/e+0/e+/g' testHepMC.out   | \
+       sed 's/e-0/e-/g' -   | \
+	@DIFF_Q@ - @srcdir@/testHepMC.dat`
+  cmd2=
   ;;
 Darwin*)
   # MacOSX fix
-  sed 's/e-00/e+00/g'  @srcdir@/testHepMCParticle.output | \
-	@DIFF_Q@ - testHepMCParticle.out
-  @DIFF_Q@ testHepMC.out @srcdir@/testHepMC.dat
+  cmd2=`sed 's/e-00/e+00/g'  @srcdir@/testHepMCParticle.output | \
+	@DIFF_Q@ - testHepMCParticle.out`
+  cmd1=`@DIFF_Q@ testHepMC.out @srcdir@/testHepMC.dat`
   ;;
 *)
-  @DIFF_Q@ testHepMCParticle.out @srcdir@/testHepMCParticle.output
-  @DIFF_Q@ testHepMC.out @srcdir@/testHepMC.dat
+  cmd2=`@DIFF_Q@ testHepMCParticle.out @srcdir@/testHepMCParticle.output`
+  cmd1=`@DIFF_Q@ testHepMC.out @srcdir@/testHepMC.dat`
 esac
+
+if [ `@DIFF_Q@ testHepMC.cout @srcdir@/testHepMC.output > /dev/null` ]; then
+  echo "testHepMC.cout differs"
+  exit 1;
+fi
+
+if [ -n "$cmd1" ]
+then
+  echo $cmd1
+  exit 1;
+fi
+
+if [ -n "$cmd2" ]
+then
+  echo $cmd2
+  exit 1;
+fi
+
+exit 0;
