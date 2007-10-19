@@ -1,3 +1,10 @@
+
+2007-10-19  Lynn Garren
+
+	* Use fully qualified names (e.g., HepMC::GenParticle) inside class
+	  templates (e.g., std::map<>) wherever they are used within a 
+	  header so that root cint can make the dictionary.
+
   --------------------------  HepMC-2.01.06  --------------------------
 
 2007-08-07  Lynn Garren

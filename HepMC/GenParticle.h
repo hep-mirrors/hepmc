@@ -79,7 +79,7 @@ namespace HepMC {
 	/// dump this particle's full info to ostr
 	void       print( std::ostream& ostr = std::cout ) const; 
 
-	operator FourVector() const; //!< conversion operator
+	operator HepMC::FourVector() const; //!< conversion operator
 
 	////////////////////
 	// access methods //
@@ -172,7 +172,7 @@ namespace HepMC {
     // INLINES  //
     //////////////
 
-    inline GenParticle::operator FourVector() const 
+    inline GenParticle::operator HepMC::FourVector() const 
     { return m_momentum; }
 
     inline FourVector GenParticle::momentum() const 
