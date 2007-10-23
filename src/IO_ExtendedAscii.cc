@@ -186,7 +186,7 @@ namespace HepMC {
 	//
 	// the end vertices of the particles are not connected until
 	//  after the event is read --- we store the values in a map until then
-       	std::map<GenParticle*,int> particle_to_end_vertex;
+       	TempParticleMap particle_to_end_vertex;
 	//
 	// read in the vertices
 	for ( int iii = 1; iii <= num_vertices; ++iii ) {
@@ -202,17 +202,18 @@ namespace HepMC {
 	// last connect particles to their end vertices
 	GenParticle* beam1(0);
 	GenParticle* beam2(0);
-	for ( std::map<GenParticle*,int>::iterator pmap 
-		  = particle_to_end_vertex.begin(); 
-	      pmap != particle_to_end_vertex.end(); ++pmap ) {
-	    GenVertex* itsDecayVtx = evt->barcode_to_vertex(pmap->second);
-	    if ( itsDecayVtx ) itsDecayVtx->add_particle_in( pmap->first );
+	for ( std::map<int,GenParticle*>::iterator pmap 
+		  = particle_to_end_vertex.order_begin(); 
+	      pmap != particle_to_end_vertex.order_end(); ++pmap ) {
+	    GenParticle* p =  pmap->second;
+	    int vtx = particle_to_end_vertex.end_vertex( p );
+	    GenVertex* itsDecayVtx = evt->barcode_to_vertex(vtx);
+	    if ( itsDecayVtx ) itsDecayVtx->add_particle_in( p );
 	    else {
 		std::cerr << "IO_ExtendedAscii::fill_next_event ERROR particle points"
 			  << "\n to null end vertex. " <<std::endl;
 	    }
 	    // also look for the beam particles
-	    GenParticle* p =  pmap->first;
 	    if( p->barcode() == bp1 ) beam1 = p;
 	    if( p->barcode() == bp2 ) beam2 = p;
 	}
@@ -486,7 +487,7 @@ namespace HepMC {
     }
 
     GenVertex* IO_ExtendedAscii::read_vertex
-    ( std::map<GenParticle*,int>& particle_to_end_vertex )
+    ( TempParticleMap& particle_to_end_vertex )
     {
 	// assumes mode has already been checked
 	//
@@ -572,7 +573,7 @@ namespace HepMC {
     }
 
     GenParticle* IO_ExtendedAscii::read_particle(
-	std::map<GenParticle*,int>& particle_to_end_vertex ){
+	TempParticleMap& particle_to_end_vertex ){
 	// assumes mode has already been checked
 	//
 	// test to be sure the next entry is of type "P" then ignore it
@@ -607,7 +608,9 @@ namespace HepMC {
 	// all particles are connected to their end vertex separately 
 	// after all particles and vertices have been created - so we keep
 	// a map of all particles that have end vertices
-	if ( end_vtx_code != 0 ) particle_to_end_vertex[p] = end_vtx_code;
+	if ( end_vtx_code != 0 ) {
+	    particle_to_end_vertex.addEndParticle(p,end_vtx_code);
+	}
 	return p;
     }
 
