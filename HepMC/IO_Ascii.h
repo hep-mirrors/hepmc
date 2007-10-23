@@ -91,10 +91,10 @@ namespace HepMC {
 	/// write ParticleDataTable information
 	void          write_particle_data( const ParticleData* d );
 	/// read vertex information
-	GenVertex*    read_vertex( std::map<GenParticle*,int>& 
+	GenVertex*    read_vertex( std::map<HepMC::GenParticle*,int>& 
 				   particle_to_end_vertex );
 	/// read GenParticle information
-	GenParticle*  read_particle( std::map<GenParticle*,int>& 
+	GenParticle*  read_particle( std::map<HepMC::GenParticle*,int>& 
 				     particle_to_end_vertex );
 	/// read ParticleDataTable information
 	ParticleData* read_particle_data( ParticleDataTable* );

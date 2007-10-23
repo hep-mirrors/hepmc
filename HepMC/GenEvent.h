@@ -502,7 +502,7 @@ namespace HepMC {
 	std::vector<long> m_random_states; // container of rndm num 
 	                                       // generator states
 
-	std::map< int,GenVertex*,std::greater<int> >   m_vertex_barcodes;
+	std::map< int,HepMC::GenVertex*,std::greater<int> >   m_vertex_barcodes;
 	std::map< int,HepMC::GenParticle*,std::less<int> >    m_particle_barcodes;
 	HeavyIon*        m_heavy_ion; 	      // undefined by default
 	PdfInfo*         m_pdf_info; 	      // undefined by default
@@ -636,7 +636,7 @@ namespace HepMC {
     /// comes under the ownership of an event (i.e. it is contained in an event).
     inline GenVertex* GenEvent::barcode_to_vertex( int barCode ) const
     {
-	std::map<int,GenVertex*,std::greater<int> >::const_iterator i 
+	std::map<int,HepMC::GenVertex*,std::greater<int> >::const_iterator i 
 	    = m_vertex_barcodes.find(barCode);
 	return ( i != m_vertex_barcodes.end() ) ? (*i).second : 0;
     }
@@ -655,8 +655,8 @@ namespace HepMC {
     }
     
     // beam particles
-    inline std::pair<GenParticle *,GenParticle *> GenEvent::beam_particles() const {
-        return std::pair<GenParticle *,GenParticle *> (m_beam_particle_1, m_beam_particle_2);
+    inline std::pair<HepMC::GenParticle *,HepMC::GenParticle *> GenEvent::beam_particles() const {
+        return std::pair<HepMC::GenParticle *,HepMC::GenParticle *> (m_beam_particle_1, m_beam_particle_2);
     }
 
 } // HepMC

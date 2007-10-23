@@ -72,9 +72,9 @@ namespace HepMC {
 	/// removes from table - does not delete
 	bool                erase( int id );       
 	/// iterator for ParticleData map
-	typedef std::map<int,ParticleData*>::iterator iterator;
+	typedef std::map<int,HepMC::ParticleData*>::iterator iterator;
 	/// const iterator for ParticleData map
-	typedef std::map<int,ParticleData*>::const_iterator const_iterator;
+	typedef std::map<int,HepMC::ParticleData*>::const_iterator const_iterator;
 	/// begin iteration
 	iterator            begin();
 	/// end iteration
@@ -97,7 +97,7 @@ namespace HepMC {
 
     private:
 	std::string                 m_description;
-	std::map<int,ParticleData*> m_data_table;
+	std::map<int,HepMC::ParticleData*> m_data_table;
     };
 
     ///////////////////////////
