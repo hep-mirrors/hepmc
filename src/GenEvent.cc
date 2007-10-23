@@ -11,6 +11,7 @@
 //////////////////////////////////////////////////////////////////////////
 
 #include "HepMC/GenEvent.h"
+#include "HepMC/Version.h"
 
 namespace HepMC {
 
@@ -238,6 +239,12 @@ namespace HepMC {
 	}
 	ostr << "________________________________________"
 	     << "________________________________________" << std::endl;
+    }
+
+    void GenEvent::print_version( std::ostream& ostr ) const {
+        ostr << "---------------------------------------------" << std::endl;
+        writeVersion( ostr );
+        ostr << "---------------------------------------------" << std::endl;
     }
 
     bool GenEvent::add_vertex( GenVertex* vtx ) {

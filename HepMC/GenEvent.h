@@ -160,6 +160,7 @@ namespace HepMC {
         void swap( GenEvent & other );  //!< swap
     
 	void print( std::ostream& ostr = std::cout ) const; //!< dumps to ostr
+	void print_version( std::ostream& ostr = std::cout ) const; //!< dumps release version to ostr
 
         /// assign a barcode to a particle
 	GenParticle* barcode_to_particle( int barCode ) const;
@@ -305,7 +306,7 @@ namespace HepMC {
 	/// HepMC::GenEvent::vertex_iterator
 	/// is used to iterate over all vertices in the event.
 	class vertex_iterator :
-	  public std::iterator<std::forward_iterator_tag,GenVertex*,ptrdiff_t>{
+	  public std::iterator<std::forward_iterator_tag,HepMC::GenVertex*,ptrdiff_t>{
 	    // Iterates over all vertices in this event
 	public:
 	    /// constructor requiring vertex information
@@ -636,7 +637,7 @@ namespace HepMC {
     /// comes under the ownership of an event (i.e. it is contained in an event).
     inline GenVertex* GenEvent::barcode_to_vertex( int barCode ) const
     {
-	std::map<int,HepMC::GenVertex*,std::greater<int> >::const_iterator i 
+	std::map<int,GenVertex*,std::greater<int> >::const_iterator i 
 	    = m_vertex_barcodes.find(barCode);
 	return ( i != m_vertex_barcodes.end() ) ? (*i).second : 0;
     }
@@ -656,7 +657,7 @@ namespace HepMC {
     
     // beam particles
     inline std::pair<HepMC::GenParticle *,HepMC::GenParticle *> GenEvent::beam_particles() const {
-        return std::pair<HepMC::GenParticle *,HepMC::GenParticle *> (m_beam_particle_1, m_beam_particle_2);
+        return std::pair<GenParticle *,GenParticle *> (m_beam_particle_1, m_beam_particle_2);
     }
 
 } // HepMC

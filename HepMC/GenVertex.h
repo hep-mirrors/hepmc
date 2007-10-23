@@ -23,7 +23,6 @@
 
 #include "HepMC/WeightContainer.h"
 #include "HepMC/SimpleVector.h"
-#include "HepMC/GenParticleComparison.h"
 #include <iostream>
 #include <iterator>
 #include <vector>
@@ -127,10 +126,10 @@ namespace HepMC {
 	////////////////////    
 
 	/// const iterator for incoming particles
-	typedef std::set<HepMC::GenParticle*,HepMC::GenParticleComparison>::const_iterator 
+	typedef std::vector<HepMC::GenParticle*>::const_iterator 
 	particles_in_const_iterator;
 	/// const iterator for outgoing particles
-	typedef std::set<HepMC::GenParticle*,HepMC::GenParticleComparison>::const_iterator 
+	typedef std::vector<HepMC::GenParticle*>::const_iterator 
 	particles_out_const_iterator;
 	/// begin iteration of incoming particles
 	particles_in_const_iterator         particles_in_const_begin() const;
@@ -199,7 +198,7 @@ namespace HepMC {
 	private:
 	    const GenVertex*  m_vertex;
 	    IteratorRange  m_range;
-	    std::set<HepMC::GenParticle*,HepMC::GenParticleComparison>::const_iterator m_set_iter;
+	    std::vector<HepMC::GenParticle*>::const_iterator m_set_iter;
 	    bool           m_is_inparticle_iter;
 	    bool           m_is_past_end;
 	};
@@ -342,11 +341,15 @@ namespace HepMC {
     protected: 
         /// for internal use only
 	void delete_adopted_particles();
+	/// for internal use only - remove particle from incoming list
+	void remove_particle_in( GenParticle* );
+	/// for internal use only - remove particle from outgoing list
+	void remove_particle_out( GenParticle* );
 	
     private: // GenVertex data members
 	FourVector              m_position;      //4-vec of vertex [mm]
-	std::set<HepMC::GenParticle*,HepMC::GenParticleComparison>  m_particles_in;  //all incoming particles
-	std::set<HepMC::GenParticle*,HepMC::GenParticleComparison>  m_particles_out; //all outgoing particles
+	std::vector<HepMC::GenParticle*>  m_particles_in;  //all incoming particles
+	std::vector<HepMC::GenParticle*>  m_particles_out; //all outgoing particles
 	int                  m_id;
 	WeightContainer      m_weights;       // weights for this vtx
 	GenEvent*            m_event;

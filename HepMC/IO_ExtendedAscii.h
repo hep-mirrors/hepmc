@@ -43,6 +43,7 @@
 #include <map>
 #include <vector>
 #include "HepMC/IO_BaseClass.h"
+#include "HepMC/TempParticleMap.h"
 
 namespace HepMC {
 
@@ -98,11 +99,9 @@ namespace HepMC {
 	/// write particle data information
 	void          write_particle_data( const ParticleData* d );
 	/// read vertex information
-	GenVertex*    read_vertex( std::map<HepMC::GenParticle*,int>& 
-				   particle_to_end_vertex );
+	GenVertex*    read_vertex( TempParticleMap& particle_to_end_vertex );
 	/// read GenParticle information
-	GenParticle*  read_particle( std::map<HepMC::GenParticle*,int>& 
-				     particle_to_end_vertex );
+	GenParticle*  read_particle( TempParticleMap& particle_to_end_vertex );
 	/// read particle data table information
 	ParticleData* read_particle_data( ParticleDataTable* );
 	/// read heavy ion information

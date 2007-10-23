@@ -11,7 +11,6 @@ pkginclude_HEADERS = \
 	Flow.h		\
 	GenEvent.h	\
 	GenParticle.h	\
-	GenParticleComparison.h	\
 	GenVertex.h	\
 	HeavyIon.h	\
 	HEPEVT_Wrapper.h	\
@@ -35,11 +34,13 @@ pkginclude_HEADERS = \
 	PythiaWrapper6_2_WIN32.h	\
 	PythiaWrapper.h	\
 	WeightContainer.h	\
+	SearchVector.h	\
 	SimpleVector.h	\
 	SimpleVector.icc	\
 	enable_if.h	\
 	is_arithmetic.h	\
 	HepMC_CLHEP20.h	\
+	TempParticleMap.h	\
 	Version.h	\
 	defs.h
 

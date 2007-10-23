@@ -96,7 +96,7 @@ namespace HepMC {
 	void        set_description( const char );
 
     private:
-	std::string                 m_description;
+	std::string                        m_description;
 	std::map<int,HepMC::ParticleData*> m_data_table;
     };
 
