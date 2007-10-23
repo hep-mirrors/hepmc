@@ -1,10 +1,28 @@
+
+2007-10-23  Lynn Garren
+
+	* GenVertex: Store particles in vectors instead of sets.
+	  Root IO does not properly restore the state of the particle 
+	  serial number counter, so the previous solution to retaining
+	  consistent particle ordering within a vertex had to be revisited.
+
+	* IO_Ascii, IO_ExtendedAscii: Replace the temparary particle map
+	  with the more sophisticated TempParticleMap.
+
+	* HepMC/SearchVector.h: Utilities to facilitate working with the
+	  vector of particles.
+
+	* HepMC/TempParticleMap.h: Temporary particle container that 
+	  allows us to maintain particle ordering when reading an event 
+	  with IO_Ascii and IO_ExtendedAscii.
+
   --------------------------  HepMC-2.01.07  --------------------------
 
 2007-10-19  Lynn Garren
 
 	* Use fully qualified names (e.g., HepMC::GenParticle) inside class
 	  templates (e.g., std::map<>) wherever they are used within a 
-	  header so that root cint can make the dictionary.
+	  header so that rootcint can make the dictionary.
 
   --------------------------  HepMC-2.01.06  --------------------------
 
