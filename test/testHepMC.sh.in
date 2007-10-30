@@ -23,6 +23,11 @@ Darwin*)
   cmd1=`@DIFF_Q@ testHepMC.out @srcdir@/testHepMC.dat`
 esac
 
+if [ `@DIFF_Q@ testHepMC.cout @srcdir@/testHepMC.output > /dev/null` ]; then
+  echo "testHepMC.cout differs"
+  exit 1;
+fi
+
 if [ -n "$cmd1" ]
 then
   echo $cmd1
