@@ -23,7 +23,6 @@
 
 #include "HepMC/WeightContainer.h"
 #include "HepMC/SimpleVector.h"
-#include "HepMC/GenParticleComparison.h"
 #include <iostream>
 #include <iterator>
 #include <vector>
@@ -88,8 +87,8 @@ namespace HepMC {
 	///      delete vtx->remove_particle( particle );
 	GenParticle* remove_particle( GenParticle* particle ); //!< remove a particle
 
-	operator    FourVector() const; //!< conversion operator
-	operator   ThreeVector() const; //!< conversion operator
+	operator    HepMC::FourVector() const; //!< conversion operator
+	operator   HepMC::ThreeVector() const; //!< conversion operator
 
 	////////////////////
 	// access methods //
@@ -127,10 +126,10 @@ namespace HepMC {
 	////////////////////    
 
 	/// const iterator for incoming particles
-	typedef std::set<GenParticle*,GenParticleComparison>::const_iterator 
+	typedef std::vector<HepMC::GenParticle*>::const_iterator 
 	particles_in_const_iterator;
 	/// const iterator for outgoing particles
-	typedef std::set<GenParticle*,GenParticleComparison>::const_iterator 
+	typedef std::vector<HepMC::GenParticle*>::const_iterator 
 	particles_out_const_iterator;
 	/// begin iteration of incoming particles
 	particles_in_const_iterator         particles_in_const_begin() const;
@@ -170,7 +169,7 @@ namespace HepMC {
 	/// for the public iterators and is intended for internal use only.
 	/// The acceptable Iterator Ranges are: family, parents, children
 	class edge_iterator :
-	  public std::iterator<std::forward_iterator_tag,GenParticle*,ptrdiff_t>{
+	  public std::iterator<std::forward_iterator_tag,HepMC::GenParticle*,ptrdiff_t>{
 	public:
 	    edge_iterator();
 	    /// used to set limits on the iteration
@@ -199,7 +198,7 @@ namespace HepMC {
 	private:
 	    const GenVertex*  m_vertex;
 	    IteratorRange  m_range;
-	    std::set<GenParticle*,GenParticleComparison>::const_iterator m_set_iter;
+	    std::vector<HepMC::GenParticle*>::const_iterator m_set_iter;
 	    bool           m_is_inparticle_iter;
 	    bool           m_is_past_end;
 	};
@@ -234,14 +233,14 @@ namespace HepMC {
 	/// vertex) and returning the vertices in POST ORDER traversal.
 	///
 	class vertex_iterator :
-	  public std::iterator<std::forward_iterator_tag,GenVertex*,ptrdiff_t>{
+	  public std::iterator<std::forward_iterator_tag,HepMC::GenVertex*,ptrdiff_t>{
 	public:
 	    vertex_iterator();
 	    /// used to set limits on the iteration
 	    vertex_iterator( GenVertex& vtx_root, IteratorRange range );
 	    /// next constructor is intended for internal use only
 	    vertex_iterator( GenVertex& vtx_root, IteratorRange range,
-			     std::set<const GenVertex*>& visited_vertices );
+			     std::set<const HepMC::GenVertex*>& visited_vertices );
             /// copy
 	    vertex_iterator( const vertex_iterator& v_iter );
 	    virtual             ~vertex_iterator();
@@ -264,7 +263,7 @@ namespace HepMC {
 	    /// intended for internal use only.
 	    void                copy_with_own_set( const vertex_iterator& 
 						   v_iter,
-						   std::set<const GenVertex*>& 
+						   std::set<const HepMC::GenVertex*>& 
 						   visited_vertices );
 
 	protected:                  // intended for internal use only
@@ -276,7 +275,7 @@ namespace HepMC {
 	private:
 	    GenVertex*       m_vertex;   // the vertex associated to this iter
 	    IteratorRange    m_range;
-	    std::set<const GenVertex*>* m_visited_vertices;
+	    std::set<const HepMC::GenVertex*>* m_visited_vertices;
 	    bool             m_it_owns_set;  // true if it is responsible for 
 	                                     // deleting the visited vertex set
 	    edge_iterator    m_edge; // particle edge pointing to return vtx
@@ -342,11 +341,15 @@ namespace HepMC {
     protected: 
         /// for internal use only
 	void delete_adopted_particles();
+	/// for internal use only - remove particle from incoming list
+	void remove_particle_in( GenParticle* );
+	/// for internal use only - remove particle from outgoing list
+	void remove_particle_out( GenParticle* );
 	
     private: // GenVertex data members
 	FourVector              m_position;      //4-vec of vertex [mm]
-	std::set<GenParticle*,GenParticleComparison>  m_particles_in;  //all incoming particles
-	std::set<GenParticle*,GenParticleComparison>  m_particles_out; //all outgoing particles
+	std::vector<HepMC::GenParticle*>  m_particles_in;  //all incoming particles
+	std::vector<HepMC::GenParticle*>  m_particles_out; //all outgoing particles
 	int                  m_id;
 	WeightContainer      m_weights;       // weights for this vtx
 	GenEvent*            m_event;
@@ -359,9 +362,9 @@ namespace HepMC {
     // INLINES access methods //
     ////////////////////////////
 
-    inline GenVertex::operator FourVector() const { return position(); }
+    inline GenVertex::operator HepMC::FourVector() const { return position(); }
 
-    inline GenVertex::operator ThreeVector() const { return point3d(); }
+    inline GenVertex::operator HepMC::ThreeVector() const { return point3d(); }
 
     inline FourVector GenVertex::position() const { return m_position; }
 

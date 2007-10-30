@@ -5,8 +5,8 @@
 
 #include "HepMC/Flow.h"
 #include "HepMC/GenParticle.h"
-#include "HepMC/GenParticleComparison.h"
 #include "HepMC/GenVertex.h"
+#include "HepMC/SearchVector.h"
 
 namespace HepMC {
 
@@ -35,7 +35,7 @@ namespace HepMC {
 	ostr << "Flow(" << m_particle_owner << "): " << *this << std::endl;
     }
     
-    std::set<GenParticle*,GenParticleComparison> Flow::connected_partners( int code, int code_index, 
+    std::vector<GenParticle*> Flow::connected_partners( int code, int code_index, 
 						  int num_indices ) const {
 	/// Returns all flow partners which have "code" in any  of the 
 	///  num_indices beginning with index code_index.
@@ -46,10 +46,10 @@ namespace HepMC {
 	///   set<GenParticle*> result = 
 	///             p->flow().connected_partners(p->flow().icode(2),2,3);
 	//
-	std::set<GenParticle*,GenParticleComparison> output;
+	std::vector<GenParticle*> output;
 	for ( int i = code_index; i!=code_index+num_indices; ++i ) {
 	    if ( icode(i)==code ) {
-		output.insert(m_particle_owner);
+		output.push_back(m_particle_owner);
 		connected_partners( &output, code, code_index, num_indices );
 		break;
 	    } 
@@ -57,7 +57,7 @@ namespace HepMC {
 	return output;
     }
 
-    void Flow::connected_partners( std::set<GenParticle*,GenParticleComparison>* output, int code, 
+    void Flow::connected_partners( std::vector<GenParticle*>* output, int code, 
 				   int code_index, int num_indices ) const
     {
 	/// protected: for recursive use by Flow::connected_partners()
@@ -74,8 +74,8 @@ namespace HepMC {
 		// the set, then we recursively call connected_partners
 		for ( int index = code_index; index!=code_index+num_indices; 
 		      ++index ){
-		    if ( (*p)->flow(index)==code &&
-			 output->insert(*p).second ) {
+		    if ( (*p)->flow(index)==code && not_in_vector(output,(*p)) ) {
+			output->push_back(*p);
 			(*p)->flow().connected_partners( output, code,
 							 code_index, 
 							 num_indices );
@@ -94,8 +94,8 @@ namespace HepMC {
 		// the set, then we recursively call connected_partners
 		for ( int index = code_index; index!=code_index+num_indices; 
 		      ++index ){
-		    if ( (*p)->flow(index)==code &&
-			 output->insert(*p).second ) {
+		    if ( (*p)->flow(index)==code && not_in_vector(output,(*p)) ) {
+			output->push_back(*p);
 			(*p)->flow().connected_partners( output, code,
 							 code_index, 
 							 num_indices );
@@ -105,13 +105,13 @@ namespace HepMC {
 	}
     }
 
-    std::set<GenParticle*,GenParticleComparison> Flow::dangling_connected_partners( int code, 
+    std::vector<GenParticle*> Flow::dangling_connected_partners( int code, 
 				     int code_index, int num_indices ) const {
-	std::set<GenParticle*,GenParticleComparison> output;
-	std::set<GenParticle*,GenParticleComparison> visited_particles;
+	std::vector<GenParticle*> output;
+	std::vector<GenParticle*> visited_particles;
 	for ( int i = code_index; i!=code_index+num_indices; ++i ) {
 	    if ( icode(i)==code ) {
-		visited_particles.insert(m_particle_owner);
+		visited_particles.push_back(m_particle_owner);
 		dangling_connected_partners( &output, &visited_particles, code,
 					     code_index, num_indices );
 		break;
@@ -120,8 +120,8 @@ namespace HepMC {
 	return output;
     }
 
-    void Flow::dangling_connected_partners( std::set<GenParticle*,GenParticleComparison>* output, 
-					    std::set<GenParticle*,GenParticleComparison>* 
+    void Flow::dangling_connected_partners( std::vector<GenParticle*>* output, 
+					    std::vector<GenParticle*>* 
 					    visited_particles,
 					    int code, int code_index, 
 					    int num_indices ) const 
@@ -143,7 +143,8 @@ namespace HepMC {
 		      ++index ){
 		    if ( (*p)->flow(index)==code ) {
 			if ( *p!=m_particle_owner ) ++count_partners;
-			if ( visited_particles->insert(*p).second ) {
+			if ( not_in_vector(visited_particles,(*p)) ) {
+			    visited_particles->push_back(*p);
 			    (*p)->flow().dangling_connected_partners( output, 
 					             visited_particles, code,
 						     code_index, num_indices );
@@ -167,7 +168,8 @@ namespace HepMC {
 		      ++index ){
 		    if ( (*p)->flow(index)==code ) {
 			if ( *p!=m_particle_owner ) ++count_partners;
-			if ( visited_particles->insert(*p).second ) {
+			if ( not_in_vector(visited_particles,(*p)) ) {
+			    visited_particles->push_back(*p);
 			    (*p)->flow().dangling_connected_partners( output, 
 					             visited_particles, code,
 						     code_index, num_indices );
@@ -177,7 +179,7 @@ namespace HepMC {
 		}
 	    }
 	}
-	if ( count_partners <= 1 ) output->insert( m_particle_owner );
+	if ( count_partners <= 1 ) output->push_back( m_particle_owner );
     }
 	
     /////////////

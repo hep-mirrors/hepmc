@@ -6,6 +6,7 @@
 #include "HepMC/GenParticle.h"
 #include "HepMC/GenVertex.h"
 #include "HepMC/GenEvent.h"
+#include "HepMC/SearchVector.h"
 #include <iomanip>       // needed for formatted output
 
 namespace HepMC {
@@ -273,9 +274,9 @@ namespace HepMC {
 	// if inparticle previously had a decay vertex, remove it from that
 	// vertex's list
 	if ( inparticle->end_vertex() ) {
-	    inparticle->end_vertex()->m_particles_in.erase( inparticle );
+	    inparticle->end_vertex()->remove_particle_in( inparticle );
 	}
-	m_particles_in.insert( inparticle );
+	m_particles_in.push_back( inparticle );
 	inparticle->set_end_vertex_( this );
     }
 
@@ -284,10 +285,9 @@ namespace HepMC {
 	// if outparticle previously had a production vertex,
 	// remove it from that vertex's list
 	if ( outparticle->production_vertex() ) {
-	    outparticle->production_vertex()->m_particles_out.erase( 
-		outparticle );
+	    outparticle->production_vertex()->remove_particle_out( outparticle );
 	}
-	m_particles_out.insert( outparticle );
+	m_particles_out.push_back( outparticle );
 	outparticle->set_production_vertex_( this );
     }
 
@@ -304,13 +304,25 @@ namespace HepMC {
 	if ( !particle ) return 0;
 	if ( particle->end_vertex() == this ) {
 	    particle->set_end_vertex_( 0 );
-	    m_particles_in.erase(particle);
+	    remove_particle_in(particle);
 	}
 	if ( particle->production_vertex() == this ) {
 	    particle->set_production_vertex_(0);
-	    m_particles_out.erase(particle);
+	    remove_particle_out(particle);
 	}
 	return particle;
+    }
+
+    void GenVertex::remove_particle_in( GenParticle* particle ) {
+	/// this finds *particle in m_particles_in and removes it from that list
+	if ( !particle ) return;
+	m_particles_in.erase( already_in_vector( &m_particles_in, particle ) );
+    }
+
+    void GenVertex::remove_particle_out( GenParticle* particle ) {
+	/// this finds *particle in m_particles_out and removes it from that list
+	if ( !particle ) return;
+	m_particles_out.erase( already_in_vector( &m_particles_out, particle ) );
     }
 
     void GenVertex::delete_adopted_particles() {
@@ -321,7 +333,7 @@ namespace HepMC {
 	// 1. delete all outgoing particles which don't have decay vertices.
 	//    those that do become the responsibility of the decay vertex
 	//    and have their productionvertex pointer set to NULL
-	for ( std::set<GenParticle*,GenParticleComparison>::iterator part1 = m_particles_out.begin();
+	for ( std::vector<GenParticle*>::iterator part1 = m_particles_out.begin();
 	      part1 != m_particles_out.end(); ) {
 	    if ( !(*part1)->end_vertex() ) {
 		delete *(part1++);
@@ -335,7 +347,7 @@ namespace HepMC {
 	// 2. delete all incoming particles which don't have production
 	//    vertices. those that do become the responsibility of the 
 	//    production vertex and have their decayvertex pointer set to NULL
-	for ( std::set<GenParticle*,GenParticleComparison>::iterator part2 = m_particles_in.begin();
+	for ( std::vector<GenParticle*>::iterator part2 = m_particles_in.begin();
 	      part2 != m_particles_in.end(); ) {
 	    if ( !(*part2)->production_vertex() ) { 
 		delete *(part2++);

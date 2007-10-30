@@ -19,7 +19,7 @@
 //
 //
 
-#include <set>
+#include <map>
 #include <vector>
 #include "HepMC/IO_BaseClass.h"
 #include "HepMC/HEPEVT_Wrapper.h"
@@ -86,13 +86,13 @@ namespace HepMC {
 	GenParticle* build_particle( int index );
         /// create a production vertex
 	void build_production_vertex( 
-	    int i,std::vector<GenParticle*>& hepevt_particle, GenEvent* evt );
+	    int i,std::vector<HepMC::GenParticle*>& hepevt_particle, GenEvent* evt );
         /// create an end vertex
 	void build_end_vertex( 
-	    int i, std::vector<GenParticle*>& hepevt_particle, GenEvent* evt );
+	    int i, std::vector<HepMC::GenParticle*>& hepevt_particle, GenEvent* evt );
         /// find this particle in the particle map
 	int  find_in_map( 
-	    const std::map<GenParticle*,int>& m, GenParticle* p) const;
+	    const std::map<HepMC::GenParticle*,int>& m, GenParticle* p) const;
 
     private: // following are not implemented for HEPEVT
         virtual void write_particle_data_table( const ParticleDataTable* ){}

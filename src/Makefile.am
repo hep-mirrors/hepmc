@@ -17,7 +17,8 @@ libHepMC_a_SOURCES = \
 	IO_PDG_ParticleDataTable.cc	\
 	IO_GenEvent.cc	\
 	ParticleData.cc	\
-	Polarization.cc
+	Polarization.cc	\
+	SearchVector.cc
 
 libHepMC_so_OBJECTS = $(patsubst %.cc,$(shareddir)/%.$(OBJEXT),$(libHepMC_a_SOURCES))
 

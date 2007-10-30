@@ -14,8 +14,7 @@ namespace HepMC {
     GenParticle::GenParticle( void ) :
 	m_momentum(0), m_pdg_id(0), m_status(0), m_flow(this),
         m_polarization(0), m_production_vertex(0), m_end_vertex(0),
-        m_barcode(0), m_generated_mass(0.),
-	m_serialnumber(++s_serialize)
+        m_barcode(0), m_generated_mass(0.)
     {
 	s_counter++;
     }
@@ -26,8 +25,7 @@ namespace HepMC {
 			const Polarization& polar ) : 
 	m_momentum(momentum), m_pdg_id(pdg_id), m_status(status), m_flow(this),
 	m_polarization(polar), m_production_vertex(0), m_end_vertex(0),
-        m_barcode(0), m_generated_mass(momentum.m()),
-	m_serialnumber(++s_serialize)
+        m_barcode(0), m_generated_mass(momentum.m())
     {
 	// Establishing *this as the owner of m_flow is done above,
 	// then we set it equal to the other flow pattern (subtle)
@@ -44,8 +42,7 @@ namespace HepMC {
 	m_production_vertex(0), 
 	m_end_vertex(0), 
 	m_barcode(0), 
-        m_generated_mass( inparticle.generated_mass() ),
-	m_serialnumber( inparticle.serialnumber() )
+        m_generated_mass( inparticle.generated_mass() )
     {
 	/// Shallow copy: does not copy the vertex pointers
 	/// (note - impossible to copy vertex pointers which having the vertex
@@ -74,7 +71,6 @@ namespace HepMC {
 	std::swap( m_end_vertex, other.m_end_vertex );
 	std::swap( m_barcode, other.m_barcode );
 	std::swap( m_generated_mass, other.m_generated_mass );
-	std::swap( m_serialnumber, other.m_serialnumber );
     }
 
     GenParticle& GenParticle::operator=( const GenParticle& inparticle ) {
@@ -183,9 +179,6 @@ namespace HepMC {
     /////////////
     unsigned int GenParticle::counter() { return s_counter; }
     unsigned int GenParticle::s_counter = 0U; 
-
-    hepmc_uint64_t GenParticle::serialnumber() const { return m_serialnumber; }
-    hepmc_uint64_t GenParticle::s_serialize = 0U; 
 
     /////////////
     // Friends //

@@ -147,11 +147,11 @@ namespace HepMC {
 	GenEvent( int signal_process_id = 0, int event_number = 0,
 		  GenVertex* signal_vertex = 0,
 		  const WeightContainer& weights = std::vector<double>(),
-		  const std::vector<long int>& randomstates = std::vector<long int>() );
+		  const std::vector<long>& randomstates = std::vector<long>() );
         /// explicit constructor that takes HeavyIon and PdfInfo
 	GenEvent( int signal_process_id, int event_number,
 		  GenVertex* signal_vertex, const WeightContainer& weights,
-		  const std::vector<long int>& randomstates,
+		  const std::vector<long>& randomstates,
 		  const HeavyIon& ion, const PdfInfo& pdf );
 	GenEvent( const GenEvent& inevent );          //!< deep copy
 	GenEvent& operator=( const GenEvent& inevent ); //!< make a deep copy
@@ -160,6 +160,7 @@ namespace HepMC {
         void swap( GenEvent & other );  //!< swap
     
 	void print( std::ostream& ostr = std::cout ) const; //!< dumps to ostr
+	void print_version( std::ostream& ostr = std::cout ) const; //!< dumps release version to ostr
 
         /// assign a barcode to a particle
 	GenParticle* barcode_to_particle( int barCode ) const;
@@ -181,7 +182,7 @@ namespace HepMC {
 	/// test to see if we have two valid beam particles
 	bool valid_beam_particles() const;
 	/// pair of pointers to the two incoming beam particles
-	std::pair<GenParticle*,GenParticle*> beam_particles() const;
+	std::pair<HepMC::GenParticle*,HepMC::GenParticle*> beam_particles() const;
 
 	/// direct access to the weights container is allowed. 
 	/// Thus you can use myevt.weights()[2];
@@ -199,7 +200,7 @@ namespace HepMC {
 	PdfInfo*                 pdf_info();
 
 	/// vector of integers containing information about the random state
-	std::vector<long int> random_states() const;
+	std::vector<long> random_states() const;
 
 	void set_signal_process_id( int id ); //!< set unique signal process id
 	void set_event_number( int eventno ); //!< set event number
@@ -213,9 +214,9 @@ namespace HepMC {
 	/// set incoming beam particles
 	bool set_beam_particles(GenParticle*, GenParticle*);
         /// use a pair of GenParticle*'s to set incoming beam particles
-	bool set_beam_particles(std::pair<GenParticle*,GenParticle*> const &);
+	bool set_beam_particles(std::pair<HepMC::GenParticle*,HepMC::GenParticle*> const &);
 	/// provide random state information
-	void set_random_states( const std::vector<long int>& randomstates );
+	void set_random_states( const std::vector<long>& randomstates );
 
 	/// provide a pointer to the HeavyIon container
 	void set_heavy_ion( const HeavyIon& ion );
@@ -253,13 +254,13 @@ namespace HepMC {
 	/// HepMC::GenEvent::vertex_const_iterator
 	/// is used to iterate over all vertices in the event.
 	class vertex_const_iterator :
-	  public std::iterator<std::forward_iterator_tag,GenVertex*,ptrdiff_t>{
+	  public std::iterator<std::forward_iterator_tag,HepMC::GenVertex*,ptrdiff_t>{
 	    // Iterates over all vertices in this event
 	public:
 	    /// constructor requiring vertex information
 	    vertex_const_iterator(
 		const 
-		std::map<int,GenVertex*,std::greater<int> >::const_iterator& i)
+		std::map<int,HepMC::GenVertex*,std::greater<int> >::const_iterator& i)
 		: m_map_iterator(i) {}
 	    vertex_const_iterator() {}
 	    /// copy constructor
@@ -285,7 +286,7 @@ namespace HepMC {
 		{ return !(m_map_iterator == a.m_map_iterator); }
 	protected:
 	    /// const iterator to a vertex map
-	    std::map<int,GenVertex*,std::greater<int> >::const_iterator 
+	    std::map<int,HepMC::GenVertex*,std::greater<int> >::const_iterator 
 	                                                        m_map_iterator;
 	};
 	friend class vertex_const_iterator;
@@ -305,13 +306,13 @@ namespace HepMC {
 	/// HepMC::GenEvent::vertex_iterator
 	/// is used to iterate over all vertices in the event.
 	class vertex_iterator :
-	  public std::iterator<std::forward_iterator_tag,GenVertex*,ptrdiff_t>{
+	  public std::iterator<std::forward_iterator_tag,HepMC::GenVertex*,ptrdiff_t>{
 	    // Iterates over all vertices in this event
 	public:
 	    /// constructor requiring vertex information
 	    vertex_iterator( 
 		const 
-		std::map<int,GenVertex*,std::greater<int> >::iterator& i )
+		std::map<int,HepMC::GenVertex*,std::greater<int> >::iterator& i )
 		: m_map_iterator( i ) {}
 	    vertex_iterator() {}
 	    /// copy constructor
@@ -342,7 +343,7 @@ namespace HepMC {
 		{ return !(m_map_iterator == a.m_map_iterator); }
 	protected:
 	    /// iterator to the vertex map
-	    std::map<int,GenVertex*,std::greater<int> >::iterator 
+	    std::map<int,HepMC::GenVertex*,std::greater<int> >::iterator 
 	                                                       m_map_iterator;
 	};
 	friend class vertex_iterator;
@@ -372,12 +373,12 @@ namespace HepMC {
 	/// HepMC::GenEvent::particle_const_iterator 
 	/// is used to iterate over all particles in the event.
 	class particle_const_iterator :
-	  public std::iterator<std::forward_iterator_tag,GenParticle*,ptrdiff_t>{
+	  public std::iterator<std::forward_iterator_tag,HepMC::GenParticle*,ptrdiff_t>{
 	    // Iterates over all vertices in this event
 	public:
 	    /// iterate over particles
 	    particle_const_iterator(
-		const std::map<int,GenParticle*>::const_iterator& i )
+		const std::map<int,HepMC::GenParticle*>::const_iterator& i )
 		: m_map_iterator(i) {}
 	    particle_const_iterator() {}
 	    /// copy constructor
@@ -405,7 +406,7 @@ namespace HepMC {
 		{ return !(m_map_iterator == a.m_map_iterator); }
 	protected:
 	    /// const iterator to the GenParticle map
-	    std::map<int,GenParticle*>::const_iterator m_map_iterator;
+	    std::map<int,HepMC::GenParticle*>::const_iterator m_map_iterator;
 	};	
 	friend class particle_const_iterator;
 	/// begin particle iteration
@@ -423,11 +424,11 @@ namespace HepMC {
 	/// HepMC::GenEvent::particle_iterator 
 	/// is used to iterate over all particles in the event.
  	class particle_iterator :
-	  public std::iterator<std::forward_iterator_tag,GenParticle*,ptrdiff_t>{
+	  public std::iterator<std::forward_iterator_tag,HepMC::GenParticle*,ptrdiff_t>{
 	    // Iterates over all vertices in this event
 	public:
 	    /// iterate over particles
-	    particle_iterator( const std::map<int,GenParticle*>::iterator& i )
+	    particle_iterator( const std::map<int,HepMC::GenParticle*>::iterator& i )
 		: m_map_iterator( i ) {}
 	    particle_iterator() {}
 	    /// copy constructor
@@ -458,7 +459,7 @@ namespace HepMC {
 		{ return !(m_map_iterator == a.m_map_iterator); }
 	protected:
 	    /// iterator for GenParticle map
-	    std::map<int,GenParticle*>::iterator m_map_iterator;
+	    std::map<int,HepMC::GenParticle*>::iterator m_map_iterator;
 	};
 	friend class particle_iterator;
 	/// begin particle iteration
@@ -499,11 +500,11 @@ namespace HepMC {
 	GenParticle*          m_beam_particle_2;
 	WeightContainer       m_weights; // weights for this event first weight
 	                                 // is used by default for hit and miss
-	std::vector<long int> m_random_states; // container of rndm num 
+	std::vector<long> m_random_states; // container of rndm num 
 	                                       // generator states
 
-	std::map< int,GenVertex*,std::greater<int> >   m_vertex_barcodes;
-	std::map< int,GenParticle*,std::less<int> >    m_particle_barcodes;
+	std::map< int,HepMC::GenVertex*,std::greater<int> >   m_vertex_barcodes;
+	std::map< int,HepMC::GenParticle*,std::less<int> >    m_particle_barcodes;
 	HeavyIon*        m_heavy_ion; 	      // undefined by default
 	PdfInfo*         m_pdf_info; 	      // undefined by default
 
@@ -560,7 +561,7 @@ namespace HepMC {
     ///  generator to make use of this. We envision a vector of
     ///  RndmStatesTags to be included with a run class which
     ///  would specify the meaning of the random_states.
-    inline std::vector<long int> GenEvent::random_states() const 
+    inline std::vector<long> GenEvent::random_states() const 
     { return m_random_states; }
 
     inline void GenEvent::set_signal_process_id( int id )
@@ -591,7 +592,7 @@ namespace HepMC {
     inline void GenEvent::set_pdf_info( const PdfInfo& p )
     { m_pdf_info = new PdfInfo(p); }
 
-    inline void GenEvent::set_random_states( const std::vector<long int>&
+    inline void GenEvent::set_random_states( const std::vector<long>&
 					     randomstates )
     { m_random_states = randomstates; }
 
@@ -616,7 +617,7 @@ namespace HepMC {
     /// comes under the ownership of an event (i.e. it is contained in an event).
     inline GenParticle* GenEvent::barcode_to_particle( int barCode ) const
     { 
-	std::map<int,GenParticle*>::const_iterator i 
+	std::map<int,HepMC::GenParticle*>::const_iterator i 
 	    = m_particle_barcodes.find(barCode);
 	return ( i != m_particle_barcodes.end() ) ? (*i).second : 0;
     }
@@ -655,7 +656,7 @@ namespace HepMC {
     }
     
     // beam particles
-    inline std::pair<GenParticle *,GenParticle *> GenEvent::beam_particles() const {
+    inline std::pair<HepMC::GenParticle *,HepMC::GenParticle *> GenEvent::beam_particles() const {
         return std::pair<GenParticle *,GenParticle *> (m_beam_particle_1, m_beam_particle_2);
     }
 

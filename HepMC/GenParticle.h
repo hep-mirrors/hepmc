@@ -79,7 +79,7 @@ namespace HepMC {
 	/// dump this particle's full info to ostr
 	void       print( std::ostream& ostr = std::cout ) const; 
 
-	operator FourVector() const; //!< conversion operator
+	operator HepMC::FourVector() const; //!< conversion operator
 
 	////////////////////
 	// access methods //
@@ -122,8 +122,6 @@ namespace HepMC {
 	///  vertex barcodes are negative numbers.
 	int                  barcode() const; //!< particle barcode
 
-	hepmc_uint64_t    serialnumber() const; //!< used by GenParticleComparison
-
 	/// In general there is no reason to "suggest_barcode"
 	bool                 suggest_barcode( int the_bar_code );
 
@@ -162,17 +160,15 @@ namespace HepMC {
 	GenVertex*       m_end_vertex;        // null if not-decayed
 	int              m_barcode;           // unique identifier in the event
         double           m_generated_mass;    // mass of this particle when it was generated
-	hepmc_uint64_t   m_serialnumber;      // unique ID for set comparator
 
 	static unsigned int       s_counter;
-	static hepmc_uint64_t     s_serialize;
     };  
 
     //////////////
     // INLINES  //
     //////////////
 
-    inline GenParticle::operator FourVector() const 
+    inline GenParticle::operator HepMC::FourVector() const 
     { return m_momentum; }
 
     inline FourVector GenParticle::momentum() const 

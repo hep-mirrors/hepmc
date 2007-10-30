@@ -15,6 +15,7 @@
 #include <map>
 #include <vector>
 #include "HepMC/IO_BaseClass.h"
+#include "HepMC/TempParticleMap.h"
 
 namespace HepMC {
 
@@ -92,7 +93,7 @@ namespace HepMC {
 	/// write vertex information
 	void          write_vertex( GenVertex* );
 	/// write beam particle information
-	void          write_beam_particles( std::pair<GenParticle *,GenParticle *> );
+	void          write_beam_particles( std::pair<HepMC::GenParticle *,HepMC::GenParticle *> );
 	/// write heavy ion information
 	void          write_heavy_ion( HeavyIon* );
 	/// write PDF information
@@ -102,11 +103,9 @@ namespace HepMC {
 	/// write particle data information
 	void          write_particle_data( const ParticleData* d );
 	/// read vertex information
-	GenVertex*    read_vertex( std::map<GenParticle*,int>& 
-				   particle_to_end_vertex );
+	GenVertex*    read_vertex( TempParticleMap& particle_to_end_vertex );
 	/// read GenParticle information
-	GenParticle*  read_particle( std::map<GenParticle*,int>& 
-				     particle_to_end_vertex );
+	GenParticle*  read_particle( TempParticleMap& particle_to_end_vertex );
 	/// read particle data table information
 	ParticleData* read_particle_data( ParticleDataTable* );
 	/// read heavy ion information
@@ -124,7 +123,7 @@ namespace HepMC {
 	/// string manipulation accounting
 	bool          eat_key( std::istream& in, const char* key );
 	/// find this vertex in the map of vertices
-	int           find_in_map( const std::map<GenVertex*,int>& m, 
+	int           find_in_map( const std::map<HepMC::GenVertex*,int>& m, 
 				   GenVertex* v) const;
 
 	void          output( const double& );  //!< write double

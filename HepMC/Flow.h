@@ -41,20 +41,19 @@
 //  later on if we wish to know the color partner of q1 we can ask for a list
 //  of all particles connected via this code to q1 which do have less than 
 //  2 color partners using:
-//    set<GenParticle*> result=q1->dangling_connected_partners(q1->icode(1),1,2);
+//    vector<GenParticle*> result=q1->dangling_connected_partners(q1->icode(1),1,2);
 //  this will return a list containing q1 and q4.
-//    set<GenParticle*> result=q1->connected_partners(q1->icode(1),1,2);
+//    vector<GenParticle*> result=q1->connected_partners(q1->icode(1),1,2);
 //  would return a list containing q1, g, and q4.
 //
 
 #include <iostream>
 #include <map>
-#include <set>
+#include <vector>
 
 namespace HepMC {
 
     class GenParticle;
-    class GenParticleComparison;
 
     //! The flow object
 
@@ -89,12 +88,12 @@ namespace HepMC {
 
 	/// returns all connected particles which have "code" in any  of the 
 	///  num_indices beginning with index code_index.
-	std::set<GenParticle*,GenParticleComparison> connected_partners( int code, int code_index =1,
+	std::vector<HepMC::GenParticle*> connected_partners( int code, int code_index =1,
 						   int num_indices = 2 ) const;
 	/// same as connected_partners, but returns only those particles which
 	///  are connected to <=1 other particles (i.e. the flow line "dangles"
 	///  at these particles)
-	std::set<GenParticle*,GenParticleComparison> dangling_connected_partners( int code, 
+	std::vector<HepMC::GenParticle*> dangling_connected_partners( int code, 
 			       int code_index = 1, int num_indices = 2 ) const;
 
 	////////////////////
@@ -138,14 +137,14 @@ namespace HepMC {
 
     protected: // intended for internal use only
         /// for internal use only
-	void            connected_partners( std::set<GenParticle*,GenParticleComparison>* output, 
+	void            connected_partners( std::vector<HepMC::GenParticle*>* output, 
 					    int code,
 					    int code_index,
 					    int num_indices ) const;
         /// for internal use only
-	void            dangling_connected_partners( std::set<GenParticle*,GenParticleComparison>* 
+	void            dangling_connected_partners( std::vector<HepMC::GenParticle*>* 
 						     output, 
-						     std::set<GenParticle*,GenParticleComparison>*
+						     std::vector<HepMC::GenParticle*>*
 						     visited_particles, 
 						     int code, int code_index, 
 						     int num_indices ) const; 
