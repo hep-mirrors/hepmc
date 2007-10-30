@@ -42,9 +42,9 @@ public:
 
 //! example class
 
-/// \class  IsFinalState
+/// \class  IsStateFinal
 /// this predicate returns true if the input has no decay vertex
-class IsFinalState {
+class IsStateFinal {
 public:
     /// returns true if the GenParticle does not decay
     bool operator()( const HepMC::GenParticle* p ) { 
@@ -83,8 +83,8 @@ int main() {
 	      back_inserter(allvertices2) );
 
 	// fill a list of all final state particles in the event, by requiring
-	// that each particle satisfyies the IsFinalState predicate
-	IsFinalState isfinal;
+	// that each particle satisfyies the IsStateFinal predicate
+	IsStateFinal isfinal;
 	std::list<HepMC::GenParticle*> finalstateparticles;
 	for ( HepMC::GenEvent::particle_iterator p = evt->particles_begin();
 	      p != evt->particles_end(); ++p ) {
@@ -96,7 +96,7 @@ int main() {
 	// you could get the identical results as above by using:
 	std::list<HepMC::GenParticle*> finalstateparticles2;
 	HepMC::copy_if( evt->particles_begin(), evt->particles_end(), 
-			back_inserter(finalstateparticles2), IsFinalState() );
+			back_inserter(finalstateparticles2), IsStateFinal() );
 
 	// lets print all photons in the event that satisfy the IsPhoton criteria
 	IsPhoton isphoton;

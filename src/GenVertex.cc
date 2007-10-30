@@ -252,7 +252,7 @@ namespace HepMC {
     double GenVertex::check_momentum_conservation() const {
 	/// finds the difference between the total momentum out and the total
 	/// momentum in vectors, and returns the magnitude of this vector
-	/// i.e.         returns | \vec{p_in} - \vec{p_out} |
+	/// i.e.         returns | vec{p_in} - vec{p_out} |
 	double sumpx = 0, sumpy = 0, sumpz = 0;
 	for ( particles_in_const_iterator part1 = particles_in_const_begin();
 	      part1 != particles_in_const_end(); part1++ ) {
@@ -603,7 +603,7 @@ namespace HepMC {
     }
 
     GenVertex::vertex_iterator::vertex_iterator( GenVertex& vtx_root,
-	IteratorRange range, std::set<const GenVertex*>& visited_vertices ) :
+	IteratorRange range, std::set<const HepMC::GenVertex*>& visited_vertices ) :
 	m_vertex(&vtx_root), m_range(range), 
 	m_visited_vertices(&visited_vertices), m_it_owns_set(0),
 	m_recursive_iterator(0) 
@@ -734,7 +734,7 @@ namespace HepMC {
 
     void GenVertex::vertex_iterator::copy_with_own_set( 
 	const vertex_iterator& v_iter, 
-	std::set<const GenVertex*>& visited_vertices ) {
+	std::set<const HepMC::GenVertex*>& visited_vertices ) {
 	/// intended for internal use only. (use with care!)
 	/// this is the same as the operator= method, but it allows the
 	/// user to specify which set container m_visited_vertices points to.

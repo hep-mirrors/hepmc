@@ -354,7 +354,7 @@ namespace HepMC {
     }
 
     void IO_ExtendedAscii::write_beam_particles( 
-        std::pair<GenParticle *,GenParticle *> pr ) {
+        std::pair<HepMC::GenParticle *,HepMC::GenParticle *> pr ) {
         GenParticle* p = pr.first;
 	//m_file << 'B';
 	if(!p) {
@@ -705,7 +705,7 @@ namespace HepMC {
 	return 0;
     }
 
-    int IO_ExtendedAscii::find_in_map( const std::map<GenVertex*,int>& m, 
+    int IO_ExtendedAscii::find_in_map( const std::map<HepMC::GenVertex*,int>& m, 
 			       GenVertex* v ) const {
 	std::map<GenVertex*,int>::const_iterator iter = m.find(v);
 	if ( iter == m.end() ) return 0;

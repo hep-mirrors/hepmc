@@ -183,7 +183,7 @@ namespace HepMC {
     }
 
     void IO_HEPEVT::build_production_vertex(int i, 
-					    std::vector<GenParticle*>& 
+					    std::vector<HepMC::GenParticle*>& 
 					    hepevt_particle,
 					    GenEvent* evt ) {
 	/// 
@@ -248,7 +248,7 @@ namespace HepMC {
     }
 
     void IO_HEPEVT::build_end_vertex
-    ( int i, std::vector<GenParticle*>& hepevt_particle, GenEvent* evt ) 
+    ( int i, std::vector<HepMC::GenParticle*>& hepevt_particle, GenEvent* evt ) 
     {
 	/// 
 	/// for particle in HEPEVT with index i, build an end vertex
@@ -331,7 +331,7 @@ namespace HepMC {
 	return p;
     }
 
-    int IO_HEPEVT::find_in_map( const std::map<GenParticle*,int>& m, 
+    int IO_HEPEVT::find_in_map( const std::map<HepMC::GenParticle*,int>& m, 
 				GenParticle* p) const {
         std::map<GenParticle*,int>::const_iterator iter = m.find(p);
         if ( iter == m.end() ) return 0;

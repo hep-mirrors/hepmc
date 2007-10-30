@@ -14,10 +14,10 @@
 
 //! example class
 
-/// \class  IsGoodEvent
+/// \class  IsEventGood
 /// event selection predicate. returns true if the event contains
 /// a photon with pT > 50 GeV
-class IsGoodEvent {
+class IsEventGood {
 public:
     /// check this event for goodness
     bool operator()( const HepMC::GenEvent* evt ) { 
@@ -42,7 +42,7 @@ int main() {
 	// declare another IO_GenEvent for writing out the good events
 	HepMC::IO_GenEvent ascii_out("example_EventSelection.dat",std::ios::out);
 	// declare an instance of the event selection predicate
-	IsGoodEvent is_good_event;
+	IsEventGood is_good_event;
 	//........................................EVENT LOOP
 	int icount=0;
 	int num_good_events=0;

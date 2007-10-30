@@ -19,7 +19,7 @@ namespace HepMC {
                         int event_number,
 			GenVertex* signal_vertex,
 			const WeightContainer& weights,
-			const std::vector<long int>& random_states ) :
+			const std::vector<long>& random_states ) :
 	m_signal_process_id(signal_process_id), 
 	m_event_number(event_number),
 	m_mpi(-1),
@@ -46,7 +46,7 @@ namespace HepMC {
     GenEvent::GenEvent( int signal_process_id, int event_number,
 			GenVertex* signal_vertex,
 			const WeightContainer& weights,
-			const std::vector<long int>& random_states,
+			const std::vector<long>& random_states,
 			const HeavyIon& ion, 
 			const PdfInfo& pdf ) :
 	m_signal_process_id(signal_process_id), 
@@ -507,7 +507,7 @@ namespace HepMC {
 
     /// construct the beam particle information using a std::pair of pointers to GenParticle
     /// returns false if either GenParticle* is null
-    bool  GenEvent::set_beam_particles(std::pair<GenParticle*, GenParticle*> const & bp) {
+    bool  GenEvent::set_beam_particles(std::pair<HepMC::GenParticle*, HepMC::GenParticle*> const & bp) {
 	return set_beam_particles(bp.first,bp.second);
     }
 
@@ -518,6 +518,4 @@ namespace HepMC {
     unsigned int GenEvent::s_counter = 0; 
 
 } // HepMC
-
-
 
