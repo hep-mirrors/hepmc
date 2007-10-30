@@ -13,8 +13,9 @@ if [ `whereis doxygen | wc -w` -gt 1 ]; then
       make pdf
       mv refman.ps  ../HepMC2_reference_manual.ps
       mv refman.pdf ../HepMC2_reference_manual.pdf
+      cd ..
+      rm -rf latex
    fi
-   cd ..
 fi
 # now run latex
 if [ `whereis latex | wc -w` -gt 1 ]; then
