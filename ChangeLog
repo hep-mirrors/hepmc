@@ -6,6 +6,9 @@
 
 	* doc: remove the latex subdirectory after building the reference library
 
+	* GenEvent: add print_version( std::ostream& ) method.
+	  If you don't specify an ostream, the default is std::cout.
+
 	* GenVertex: Store particles in vectors instead of sets.
 	  Root IO does not properly restore the state of the particle 
 	  serial number counter, so the previous solution to retaining
