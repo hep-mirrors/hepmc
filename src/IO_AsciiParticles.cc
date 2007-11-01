@@ -219,8 +219,5 @@ namespace HepMC {
 	return 0;
   }
 
-//  void IO_AsciiParticles::write_particle_data_table(const ParticleDataTable*) {;}
-//  bool IO_AsciiParticles::fill_particle_data_table( ParticleDataTable* ) {return false;}
-
 } // HepMC
 
