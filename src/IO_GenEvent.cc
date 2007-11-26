@@ -11,6 +11,7 @@
 #include "HepMC/ParticleDataTable.h"
 #include "HepMC/HeavyIon.h"
 #include "HepMC/PdfInfo.h"
+#include "HepMC/IOKey.h"
 #include "HepMC/Version.h"
 
 namespace HepMC {
@@ -212,12 +213,15 @@ namespace HepMC {
 	for ( int ii = 0; ii < weights_size; ++ii ) *m_istr >> weights[ii];
 	m_istr->ignore(2,'\n');
 	// 
-	// fill signal_process_id, event_number, weights, random_states
+	// fill signal_process_id, event_number, weights, random_states, etc.
 	evt->set_signal_process_id( signal_process_id );
 	evt->set_event_number( event_number );
 	evt->set_mpi( nmpi );
 	evt->weights() = weights;
 	evt->set_random_states( random_states );
+	evt->set_event_scale( eventScale );
+	evt->set_alphaQCD( alpha_qcd );
+	evt->set_alphaQED( alpha_qed );
 	// get HeavyIon and PdfInfo
 	HeavyIon* ion = read_heavy_ion();
 	if(ion) evt->set_heavy_ion( *ion );

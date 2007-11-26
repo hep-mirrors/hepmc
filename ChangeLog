@@ -1,4 +1,10 @@
+
+2007-11-26  Lynn Garren
+
+	* src/IO_GenEvent.cc: bug fix - fill event scale, alphaQED, and alphaQCD
+
   --------------------------  HepMC-2.03.00  --------------------------
+
 2007-10-30  Lynn Garren
 
 	* examples/example_ReadMyPythia.cc: New example to read the file 
