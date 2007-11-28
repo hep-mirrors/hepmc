@@ -1,6 +1,10 @@
 
 2007-11-26  Lynn Garren
 
+	* configure.in: add support for g++-*
+
+2007-11-26  Lynn Garren
+
 	* src/IO_GenEvent.cc: bug fix - fill event scale, alphaQED, and alphaQCD
 
   --------------------------  HepMC-2.03.00  --------------------------
