@@ -11,7 +11,7 @@
 #include "HepMC/ParticleDataTable.h"
 #include "HepMC/HeavyIon.h"
 #include "HepMC/PdfInfo.h"
-#include "HepMC/IOKey.h"
+#include "HepMC/CommonIO.h"
 #include "HepMC/Version.h"
 
 namespace HepMC {
@@ -23,7 +23,8 @@ namespace HepMC {
       m_istr(0),
       m_iostr(0),
       m_finished_first_event_io(false),
-      m_have_file(false)
+      m_have_file(false),
+      m_common_io()
     {
 	if ( (m_mode&std::ios::out && m_mode&std::ios::in) ||
 	     (m_mode&std::ios::app && m_mode&std::ios::in) ) {
@@ -57,7 +58,8 @@ namespace HepMC {
       m_istr(&istr),
       m_iostr(&istr),
       m_finished_first_event_io(false),
-      m_have_file(false)
+      m_have_file(false),
+      m_common_io()
     { }
 
     IO_GenEvent::IO_GenEvent( std::ostream & ostr )
@@ -65,7 +67,8 @@ namespace HepMC {
       m_istr(0),
       m_iostr(&ostr),
       m_finished_first_event_io(false),
-      m_have_file(false)
+      m_have_file(false),
+      m_common_io()
     {
 	// precision 16 (# digits following decimal point) is the minimum that
 	//  will capture the full information stored in a double
@@ -105,7 +108,8 @@ namespace HepMC {
 	if ( !m_finished_first_event_io ) {
 	    m_finished_first_event_io = 1;
 	    *m_ostr << "\n" << "HepMC::Version " << versionName();
-	    *m_ostr << "\n" << "HepMC::IO_GenEvent-START_EVENT_LISTING\n";
+	    *m_ostr << "\n";
+	    m_common_io.write_IO_GenEvent_Key(*m_ostr);
 	}
 	//
 	// output the event data including the number of primary vertices
@@ -164,10 +168,21 @@ namespace HepMC {
 	// search for event listing key before first event only.
 	//
 	// skip through the file just after first occurence of the start_key
+	/*
 	if ( !m_finished_first_event_io ) {
-	    //m_file.seekg( 0 ); // go to position zero in the file.
-	    if (!search_for_key_end( *m_istr,
-				     "HepMC::IO_GenEvent-START_EVENT_LISTING\n")){
+	    if (!search_for_key_end( *m_istr, IO_GenEvent_Key)){
+		std::cerr << "IO_GenEvent::fill_next_event start key not found "
+			  << "setting badbit." << std::endl;
+		m_istr->clear(std::ios::badbit); 
+		return false;
+	    }
+	    m_finished_first_event_io = 1;
+	}
+	*/
+	int iotype;
+	if ( !m_finished_first_event_io ) {
+	    iotype = m_common_io.find_file_type(*m_istr);
+	    if( iotype <= 0 ) {
 		std::cerr << "IO_GenEvent::fill_next_event start key not found "
 			  << "setting badbit." << std::endl;
 		m_istr->clear(std::ios::badbit); 
@@ -177,12 +192,13 @@ namespace HepMC {
 	}
 	//
 	// test to be sure the next entry is of type "E" then ignore it
+	/*
 	if ( !(*m_istr) || m_istr->peek()!='E' ) { 
 	    // if the E is not the next entry, then check to see if it is
 	    // the end event listing key - if yes, search for another start key
-	    if ( eat_key(*m_istr, "HepMC::IO_GenEvent-END_EVENT_LISTING\n") ) {
+	    if ( eat_key(*m_istr, IO_GenEvent_End) ) {
 		bool search_result = search_for_key_end(*m_istr,
-				      "HepMC::IO_GenEvent-START_EVENT_LISTING\n");
+				      IO_GenEvent_Key);
 		if ( !search_result ) {
 		    // this is the only case where we set an EOF state
 		    m_istr->clear(std::ios::eofbit);
@@ -195,74 +211,33 @@ namespace HepMC {
 		return false;
 	    }
 	} 
-	m_istr->ignore();
-	// read values into temp variables, then create a new GenEvent
-	int event_number = 0, signal_process_id = 0, signal_process_vertex = 0,
-	    num_vertices = 0, random_states_size = 0, weights_size = 0,
-	    nmpi = 0, bp1 = 0, bp2 = 0;
-	double eventScale = 0, alpha_qcd = 0, alpha_qed = 0;
-	*m_istr >> event_number >> nmpi >> eventScale >> alpha_qcd >> alpha_qed
-	       >> signal_process_id >> signal_process_vertex
-	       >> num_vertices >> bp1 >> bp2 >> random_states_size;
-	std::vector<long int> random_states(random_states_size);
-	for ( int i = 0; i < random_states_size; ++i ) {
-	    *m_istr >> random_states[i];
+	*/
+	if ( !(*m_istr) ) { 
+		std::cerr << "IO_GenEvent::fill_next_event end of stream found "
+			  << "setting badbit." << std::endl;
+		m_istr->clear(std::ios::badbit); 
+		return false;
 	}
-	*m_istr >> weights_size;
-	WeightContainer weights(weights_size);
-	for ( int ii = 0; ii < weights_size; ++ii ) *m_istr >> weights[ii];
-	m_istr->ignore(2,'\n');
-	// 
-	// fill signal_process_id, event_number, weights, random_states, etc.
-	evt->set_signal_process_id( signal_process_id );
-	evt->set_event_number( event_number );
-	evt->set_mpi( nmpi );
-	evt->weights() = weights;
-	evt->set_random_states( random_states );
-	evt->set_event_scale( eventScale );
-	evt->set_alphaQCD( alpha_qcd );
-	evt->set_alphaQED( alpha_qed );
-	// get HeavyIon and PdfInfo
-	HeavyIon* ion = read_heavy_ion();
-	if(ion) evt->set_heavy_ion( *ion );
-	PdfInfo* pdf = read_pdf_info();
-	if(pdf) evt->set_pdf_info( *pdf );
-	//
-	// the end vertices of the particles are not connected until
-	//  after the event is read --- we store the values in a map until then
-       	TempParticleMap particle_to_end_vertex;
-	//
-	// read in the vertices
-	for ( int iii = 1; iii <= num_vertices; ++iii ) {
-	    GenVertex* v = read_vertex(particle_to_end_vertex);
-	    evt->add_vertex( v );
-	}
-	// set the signal process vertex
-	if ( signal_process_vertex ) {
-	    evt->set_signal_process_vertex( 
-		evt->barcode_to_vertex(signal_process_vertex) );
-	}
-	//
-	// last connect particles to their end vertices
-	GenParticle* beam1(0);
-	GenParticle* beam2(0);
-	for ( std::map<int,GenParticle*>::iterator pmap 
-		  = particle_to_end_vertex.order_begin(); 
-	      pmap != particle_to_end_vertex.order_end(); ++pmap ) {
-	    GenParticle* p =  pmap->second;
-	    int vtx = particle_to_end_vertex.end_vertex( p );
-	    GenVertex* itsDecayVtx = evt->barcode_to_vertex(vtx);
-	    if ( itsDecayVtx ) itsDecayVtx->add_particle_in( p );
-	    else {
-		std::cerr << "IO_GenEvent::fill_next_event ERROR particle points"
-			  << "\n to null end vertex. " <<std::endl;
+	if ( !(*m_istr) || m_istr->peek()!='E' ) { 
+	    // if the E is not the next entry, then check to see if it is
+	    // the end event listing key - if yes, search for another start key
+	    if ( m_common_io.find_end_key(*m_istr) ) {
+		iotype = m_common_io.find_file_type(*m_istr);
+		if( iotype <= 0 ) {
+		    // this is the only case where we set an EOF state
+		    m_istr->clear(std::ios::eofbit);
+		    return false;
+		}
+	    } else {
+		std::cerr << "IO_GenEvent::fill_next_event end key not found "
+			  << "setting badbit." << std::endl;
+		m_istr->clear(std::ios::badbit); 
+		return false;
 	    }
-	    // also look for the beam particles
-	    if( p->barcode() == bp1 ) beam1 = p;
-	    if( p->barcode() == bp2 ) beam2 = p;
 	}
-	evt->set_beam_particles(beam1,beam2);
-	return true;
+	m_istr->ignore();
+	// call the read method
+	return m_common_io.read_io_genevent_event(m_istr, evt);
     }
 
     void IO_GenEvent::write_comment( const std::string comment ) {
@@ -530,43 +505,6 @@ namespace HepMC {
 	*m_ostr << " " << pdata->name().substr(0,21) << "\n";
     }
 
-    GenVertex* IO_GenEvent::read_vertex
-    ( TempParticleMap& particle_to_end_vertex )
-    {
-	// assumes mode has already been checked
-	//
-	// test to be sure the next entry is of type "V" then ignore it
-	if ( !(*m_istr) || m_istr->peek()!='V' ) {
-	    std::cerr << "IO_GenEvent::read_vertex setting badbit." << std::endl;
-	    m_istr->clear(std::ios::badbit); 
-	    return false;
-	} 
-	m_istr->ignore();
-	// read values into temp variables, then create a new GenVertex object
-	int identifier =0, id =0, num_orphans_in =0, 
-            num_particles_out = 0, weights_size = 0;
-	double x = 0., y = 0., z = 0., t = 0.; 
-	*m_istr >> identifier >> id >> x >> y >> z >> t
-	       >> num_orphans_in >> num_particles_out >> weights_size;
-	WeightContainer weights(weights_size);
-	for ( int i1 = 0; i1 < weights_size; ++i1 ) *m_istr >> weights[i1];
-	m_istr->ignore(2,'\n');
-	GenVertex* v = new GenVertex( FourVector(x,y,z,t),
-				id, weights);
-	v->suggest_barcode( identifier );
-	//
-	// read and create the associated particles. outgoing particles are
-	//  added to their production vertices immediately, while incoming
-	//  particles are added to a map and handles later.
-	for ( int i2 = 1; i2 <= num_orphans_in; ++i2 ) {
-	    read_particle(particle_to_end_vertex);
-	}
-	for ( int i3 = 1; i3 <= num_particles_out; ++i3 ) {
-	    v->add_particle_out( read_particle(particle_to_end_vertex) );
-	}
-	return v;
-    }
-
     HeavyIon* IO_GenEvent::read_heavy_ion()
     {
 	// assumes mode has already been checked
@@ -681,25 +619,10 @@ namespace HepMC {
 
     bool IO_GenEvent::write_end_listing() {
     	if ( m_finished_first_event_io && (m_ostr != NULL) ) {
-	    *m_ostr << "HepMC::IO_GenEvent-END_EVENT_LISTING\n" << std::flush;
+	    m_common_io.write_IO_GenEvent_End(*m_ostr);
+	    *m_ostr << std::flush;
 	    m_finished_first_event_io = 0;
 	    return true;
-	}
-	return false;
-    }
-
-    bool IO_GenEvent::search_for_key_end( std::istream& in, const char* key ) {
-	/// reads characters from in until the string of characters matching
-	/// key is found (success) or EOF is reached (failure).
-	/// It stops immediately thereafter. Returns T/F for success/fail
-	// 
-	char c[1];
-	unsigned int index = 0;
-	while ( in.get(c[0]) ) {
-	    if ( c[0] == key[index] ) { 
-		++index;
-	    } else { index = 0; }
-	    if ( index == strlen(key) ) return true;
 	}
 	return false;
     }
@@ -716,6 +639,22 @@ namespace HepMC {
 	    in.clear();
             return false;
 	}
+    }
+
+    bool IO_GenEvent::search_for_key_end( std::istream& in, const char* key ) {
+	/// reads characters from in until the string of characters matching
+	/// key is found (success) or EOF is reached (failure).
+	/// It stops immediately thereafter. Returns T/F for success/fail
+	// 
+	char c[1];
+	unsigned int index = 0;
+	while ( in.get(c[0]) ) {
+	    if ( c[0] == key[index] ) { 
+		++index;
+	    } else { index = 0; }
+	    if ( index == strlen(key) ) return true;
+	}
+	return false;
     }
 
     bool IO_GenEvent::eat_key( std::istream& in, const char* key ) {

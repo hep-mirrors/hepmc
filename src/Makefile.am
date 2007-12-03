@@ -7,6 +7,7 @@ endif
 INCLUDES = -I$(top_builddir) -I$(top_srcdir)
 
 libHepMC_a_SOURCES = \
+	CommonIO.cc	\
 	Flow.cc	\
 	GenEvent.cc	\
 	GenParticle.cc	\
