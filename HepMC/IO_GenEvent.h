@@ -16,6 +16,7 @@
 #include <vector>
 #include "HepMC/IO_BaseClass.h"
 #include "HepMC/TempParticleMap.h"
+#include "HepMC/CommonIO.h"
 
 namespace HepMC {
 
@@ -141,6 +142,7 @@ namespace HepMC {
 	std::ios *          m_iostr;
 	bool                m_finished_first_event_io;
 	bool                m_have_file;
+	CommonIO            m_common_io;
     };
 
     //////////////

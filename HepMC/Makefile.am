@@ -8,6 +8,7 @@ includedir = $(prefix)/include
 COPY_P = @COPY_P@
 
 pkginclude_HEADERS = \
+	CommonIO.h	\
 	Flow.h		\
 	GenEvent.h	\
 	GenParticle.h	\
