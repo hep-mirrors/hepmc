@@ -7,6 +7,9 @@
 	* src/IO_GenEvent.cc: use CommonIO
 	  search for any of several allowed input data types
 
+	* HepMC/IO_GenEvent.h: disable write_particle_data_table and 
+	  fill_particle_data_table - that is best done outside HepMC
+
   --------------------------  HepMC-2.03.01  --------------------------
 
 2007-11-26  Lynn Garren

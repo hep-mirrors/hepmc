@@ -192,26 +192,6 @@ namespace HepMC {
 	}
 	//
 	// test to be sure the next entry is of type "E" then ignore it
-	/*
-	if ( !(*m_istr) || m_istr->peek()!='E' ) { 
-	    // if the E is not the next entry, then check to see if it is
-	    // the end event listing key - if yes, search for another start key
-	    if ( eat_key(*m_istr, IO_GenEvent_End) ) {
-		bool search_result = search_for_key_end(*m_istr,
-				      IO_GenEvent_Key);
-		if ( !search_result ) {
-		    // this is the only case where we set an EOF state
-		    m_istr->clear(std::ios::eofbit);
-		    return false;
-		}
-	    } else {
-		std::cerr << "IO_GenEvent::fill_next_event end key not found "
-			  << "setting badbit." << std::endl;
-		m_istr->clear(std::ios::badbit); 
-		return false;
-	    }
-	} 
-	*/
 	if ( !(*m_istr) ) { 
 		std::cerr << "IO_GenEvent::fill_next_event end of stream found "
 			  << "setting badbit." << std::endl;
@@ -253,74 +233,6 @@ namespace HepMC {
 	// insert the comment key before the comment
 	*m_ostr << "\n" << "HepMC::IO_GenEvent-COMMENT\n";
 	*m_ostr << comment << std::endl;
-    }
-
-    void IO_GenEvent::write_particle_data_table( const ParticleDataTable* pdt) {
-	//
-	// make sure the stream is good, and that it is in output mode
-	if ( !(*m_ostr) ) return;
-	if ( m_ostr == NULL ) {
-	    std::cerr << "HepMC::IO_GenEvent::write_particle_data_table "
-		      << " attempt to write to input file." << std::endl;
-	    return;
-	}
-	// write end of event listing key if events have already been written
-	write_end_listing();
-	//
-	*m_ostr << "\n" << "HepMC::IO_GenEvent-START_PARTICLE_DATA\n";
-        for ( ParticleDataTable::const_iterator pd = pdt->begin(); 
-	      pd != pdt->end(); pd++ ) {
-	    write_particle_data( pd->second );
-        }
-	*m_ostr << "HepMC::IO_GenEvent-END_PARTICLE_DATA\n" << std::flush;
-    }
-
-    bool IO_GenEvent::fill_particle_data_table( ParticleDataTable* pdt ) {
-	//
-	// test that pdt pointer is not null
-	if ( !pdt ) {
-	    std::cerr 
-		<< "IO_GenEvent::fill_particle_data_table - passed null table." 
-		<< std::endl;
-	    return false;
-	}
-	//
-	// check the state of m_istr is good
-	if ( !(*m_istr) ) return false;
-	if ( m_istr == NULL ) {
-	    std::cerr << "HepMC::IO_GenEvent::fill_particle_data_table "
-		      << " attempt to read from output file." << std::endl;
-	    return false;
-	}
-	// position to beginning of file
-	int initial_file_position = m_istr->tellg();
-	std::ios::iostate initial_state = m_istr->rdstate();
-	m_istr->seekg( 0 );
-	// skip through the file just after first occurence of the start_key
-	if (!search_for_key_end( *m_istr,
-				 "HepMC::IO_GenEvent-START_PARTICLE_DATA\n")) {
-	    m_istr->seekg( initial_file_position );
-	    std::cerr << "IO_GenEvent::fill_particle_data_table start key not  "
-		      << "found setting badbit." << std::endl;
-	    m_istr->clear(std::ios::badbit); 
-	    return false;
-	}
-	//
-	pdt->set_description("Read with IO_GenEvent");
-	// 
-	// read Individual GenParticle data entries
-	while ( read_particle_data( pdt ) );
-	//
-	// eat end_key
-	if ( !eat_key(*m_istr,"HepMC::IO_GenEvent-END_PARTICLE_DATA\n") ){
-	    std::cerr << "IO_GenEvent::fill_particle_data_table end key not  "
-		      << "found setting badbit." << std::endl;
-	    m_istr->clear(std::ios::badbit);
-	}
-	// put the file back into its original state and position
-	m_istr->clear( initial_state );
-	m_istr->seekg( initial_file_position );
-	return true;
     }
 
     void IO_GenEvent::write_vertex( GenVertex* v ) {

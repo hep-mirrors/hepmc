@@ -18,7 +18,7 @@
 namespace HepMC {
 
 /// The known_io enum is used to track which type of input is being read
-enum known_io { gen=1, ascii, extascii, pdt };
+enum known_io { gen=1, ascii, extascii };
 
 class CommonIO {
 
