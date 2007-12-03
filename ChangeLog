@@ -1,3 +1,12 @@
+
+2007-12-03  Lynn Garren
+
+	* HepMC/CommonIO.h, src/CommonIO.cc: 
+	  new header for shared IO methods and keys
+	
+	* src/IO_GenEvent.cc: use CommonIO
+	  search for any of several allowed input data types
+
   --------------------------  HepMC-2.03.01  --------------------------
 
 2007-11-26  Lynn Garren
