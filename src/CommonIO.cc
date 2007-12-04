@@ -3,8 +3,6 @@
 // CommonIO.cc
 // Author:  Lynn Garren
 //
-//  Allowed keys used at the beginning and end of HepMC data dumps
-//
 // ----------------------------------------------------------------------
 
 #include "HepMC/CommonIO.h"
@@ -24,23 +22,18 @@ int CommonIO::find_file_type( std::istream& istr )
 	// search for event listing key before first event only.
 	//
 	if( line == m_io_genevent_start ) {
-	    std::cout << "begin IO_GenEvent" << std::endl;
 	    m_io_type = gen;
 	    return gen;
 	} else if( line == m_io_ascii_start ) {
-	    std::cout << "begin IO_Ascii" << std::endl;
 	    m_io_type = ascii;
 	    return ascii;
 	} else if( line == m_io_extendedascii_start ) {
-	    std::cout << "begin IO_ExtendedAscii" << std::endl;
 	    m_io_type = extascii;
 	    return extascii;
 	} else if( line == m_io_ascii_pdt_start ) {
-	    std::cout << "begin IO_Ascii Particle Data" << std::endl;
 	    m_io_type = ascii_pdt;
 	    return ascii_pdt;
 	} else if( line == m_io_extendedascii_pdt_start ) {
-	    std::cout << "begin IO_ExtendedAscii Particle Data" << std::endl;
 	    m_io_type = extascii_pdt;
 	    return extascii_pdt;
 	}
@@ -60,19 +53,14 @@ int CommonIO::find_end_key( std::istream& istr )
     // check to see if this is an end key
     int iotype = 0;
     if( line == m_io_genevent_end ) {
-	std::cout << "end IO_GenEvent" << std::endl;
 	m_io_type = gen;
     } else if( line == m_io_ascii_end ) {
-	std::cout << "end IO_Ascii" << std::endl;
 	m_io_type = ascii;
     } else if( line == m_io_extendedascii_end ) {
-	std::cout << "end IO_ExtendedAscii" << std::endl;
 	m_io_type = extascii;
     } else if( line == m_io_ascii_pdt_end ) {
-	std::cout << "end IO_Ascii Particle Data" << std::endl;
 	m_io_type = ascii_pdt;
     } else if( line == m_io_extendedascii_pdt_end ) {
-	std::cout << "end IO_ExtendedAscii Particle Data" << std::endl;
 	m_io_type = extascii_pdt;
     }
     if( iotype != 0 && m_io_type != iotype ) {
