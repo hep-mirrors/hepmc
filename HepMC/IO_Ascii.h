@@ -44,6 +44,7 @@
 #include <vector>
 #include "HepMC/IO_BaseClass.h"
 #include "HepMC/TempParticleMap.h"
+#include "HepMC/CommonIO.h"
 
 namespace HepMC {
 
@@ -91,25 +92,8 @@ namespace HepMC {
 	void          write_particle( GenParticle* p );
 	/// write ParticleDataTable information
 	void          write_particle_data( const ParticleData* d );
-	/// read vertex information
-	GenVertex*    read_vertex( TempParticleMap& particle_to_end_vertex );
-	/// read GenParticle information
-	GenParticle*  read_particle( TempParticleMap& particle_to_end_vertex );
-	/// read ParticleDataTable information
-	ParticleData* read_particle_data( ParticleDataTable* );
 	/// write end tag
 	bool          write_end_listing();
-	/// look for line type (key)
-	bool          search_for_key_end( std::istream& in, 
-					  const char* key);
-	/// not tested and NOT used anywhere!
-	bool          search_for_key_beginning( std::istream& in, 
-						const char* key );
-	/// string manipulation accounting
-	bool          eat_key( std::iostream& in, const char* key );
-	/// find this vertex in the map of vertices
-	int           find_in_map( const std::map<GenVertex*,int>& m, 
-				   GenVertex* v) const;
 
 	void          output( const double& );  //!< write double
 	void          output( const int& );  //!< write int
@@ -121,6 +105,7 @@ namespace HepMC {
 	std::ios::openmode  m_mode;
 	std::fstream        m_file;
 	bool                m_finished_first_event_io;
+	CommonIO            m_common_io;
     };
 
     //////////////

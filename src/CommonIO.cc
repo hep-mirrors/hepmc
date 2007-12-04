@@ -12,6 +12,7 @@
 #include "HepMC/HeavyIon.h"
 #include "HepMC/PdfInfo.h"
 #include "HepMC/TempParticleMap.h"
+#include "HepMC/ParticleDataTable.h"
 
 namespace HepMC {
 
@@ -24,13 +25,24 @@ int CommonIO::find_file_type( std::istream& istr )
 	//
 	if( line == m_io_genevent_start ) {
 	    std::cout << "begin IO_GenEvent" << std::endl;
+	    m_io_type = gen;
 	    return gen;
 	} else if( line == m_io_ascii_start ) {
 	    std::cout << "begin IO_Ascii" << std::endl;
+	    m_io_type = ascii;
 	    return ascii;
 	} else if( line == m_io_extendedascii_start ) {
 	    std::cout << "begin IO_ExtendedAscii" << std::endl;
+	    m_io_type = extascii;
 	    return extascii;
+	} else if( line == m_io_ascii_pdt_start ) {
+	    std::cout << "begin IO_Ascii Particle Data" << std::endl;
+	    m_io_type = ascii_pdt;
+	    return ascii_pdt;
+	} else if( line == m_io_extendedascii_pdt_start ) {
+	    std::cout << "begin IO_ExtendedAscii Particle Data" << std::endl;
+	    m_io_type = extascii_pdt;
+	    return extascii_pdt;
 	}
     }
     return -1;
@@ -46,15 +58,27 @@ int CommonIO::find_end_key( std::istream& istr )
     std::getline(istr,line);
     //
     // check to see if this is an end key
+    int iotype = 0;
     if( line == m_io_genevent_end ) {
 	std::cout << "end IO_GenEvent" << std::endl;
-	return gen;
+	m_io_type = gen;
     } else if( line == m_io_ascii_end ) {
 	std::cout << "end IO_Ascii" << std::endl;
-	return ascii;
+	m_io_type = ascii;
     } else if( line == m_io_extendedascii_end ) {
 	std::cout << "end IO_ExtendedAscii" << std::endl;
-	return extascii;
+	m_io_type = extascii;
+    } else if( line == m_io_ascii_pdt_end ) {
+	std::cout << "end IO_Ascii Particle Data" << std::endl;
+	m_io_type = ascii_pdt;
+    } else if( line == m_io_extendedascii_pdt_end ) {
+	std::cout << "end IO_ExtendedAscii Particle Data" << std::endl;
+	m_io_type = extascii_pdt;
+    }
+    if( iotype != 0 && m_io_type != iotype ) {
+        std::cerr << "CommonIO::find_end_key: iotype keys have changed" << std::endl;
+    } else {
+        return iotype;
     }
     //
     // if we get here, then something has gotten badly confused
@@ -62,14 +86,127 @@ int CommonIO::find_end_key( std::istream& istr )
     return -1;
 }
 
-bool CommonIO::read_io_ascii_event( std::istream* is, GenEvent* evt )
+bool CommonIO::read_io_ascii( std::istream* istr, GenEvent* evt )
 {
-    return false;
+	// read values into temp variables, then create a new GenEvent
+	int event_number = 0, signal_process_id = 0, signal_process_vertex = 0,
+	    num_vertices = 0, random_states_size = 0, weights_size = 0;
+	double eventScale = 0, alpha_qcd = 0, alpha_qed = 0;
+	*istr >> event_number >> eventScale >> alpha_qcd >> alpha_qed
+	       >> signal_process_id >> signal_process_vertex
+	       >> num_vertices >> random_states_size;
+	std::vector<long int> random_states(random_states_size);
+	for ( int i = 0; i < random_states_size; ++i ) {
+	    *istr >> random_states[i];
+	}
+	*istr >> weights_size;
+	WeightContainer weights(weights_size);
+	for ( int ii = 0; ii < weights_size; ++ii ) *istr >> weights[ii];
+	istr->ignore(2,'\n');
+	// 
+	// fill signal_process_id, event_number, weights, random_states
+	evt->set_signal_process_id( signal_process_id );
+	evt->set_event_number( event_number );
+	evt->weights() = weights;
+	evt->set_random_states( random_states );
+	//
+	// the end vertices of the particles are not connected until
+	//  after the event is read --- we store the values in a map until then
+       	TempParticleMap particle_to_end_vertex;
+	//
+	// read in the vertices
+	for ( int iii = 1; iii <= num_vertices; ++iii ) {
+	    GenVertex* v = read_vertex(istr,particle_to_end_vertex);
+	    evt->add_vertex( v );
+	}
+	// set the signal process vertex
+	if ( signal_process_vertex ) {
+	    evt->set_signal_process_vertex( 
+		evt->barcode_to_vertex(signal_process_vertex) );
+	}
+	//
+	// last connect particles to their end vertices
+	for ( std::map<int,GenParticle*>::iterator pmap 
+		  = particle_to_end_vertex.order_begin(); 
+	      pmap != particle_to_end_vertex.order_end(); ++pmap ) {
+	    GenParticle* p =  pmap->second;
+	    int vtx = particle_to_end_vertex.end_vertex( p );
+	    GenVertex* itsDecayVtx = evt->barcode_to_vertex(vtx);
+	    if ( itsDecayVtx ) itsDecayVtx->add_particle_in( p );
+	    else {
+		std::cerr << "IO_Ascii::fill_next_event ERROR particle points"
+			  << "\n to null end vertex. " <<std::endl;
+	    }
+	}
+	return true;
 }
 
-bool CommonIO::read_io_extendedascii_event( std::istream* is, GenEvent* evt )
+bool CommonIO::read_io_extendedascii( std::istream* istr, GenEvent* evt )
 {
-    return false;
+	// read values into temp variables, then create a new GenEvent
+	int event_number = 0, signal_process_id = 0, signal_process_vertex = 0,
+	    num_vertices = 0, random_states_size = 0, weights_size = 0,
+	    nmpi = 0, bp1 = 0, bp2 = 0;
+	double eventScale = 0, alpha_qcd = 0, alpha_qed = 0;
+	*istr >> event_number >> nmpi >> eventScale >> alpha_qcd >> alpha_qed
+	       >> signal_process_id >> signal_process_vertex
+	       >> num_vertices >> bp1 >> bp2 >> random_states_size;
+	std::vector<long int> random_states(random_states_size);
+	for ( int i = 0; i < random_states_size; ++i ) {
+	    *istr >> random_states[i];
+	}
+	*istr >> weights_size;
+	WeightContainer weights(weights_size);
+	for ( int ii = 0; ii < weights_size; ++ii ) *istr >> weights[ii];
+	istr->ignore(2,'\n');
+	// 
+	// fill signal_process_id, event_number, weights, random_states
+	evt->set_signal_process_id( signal_process_id );
+	evt->set_event_number( event_number );
+	evt->set_mpi( nmpi );
+	evt->weights() = weights;
+	evt->set_random_states( random_states );
+	// get HeavyIon and PdfInfo
+	HeavyIon* ion = read_heavy_ion(istr);
+	if(ion) evt->set_heavy_ion( *ion );
+	PdfInfo* pdf = read_pdf_info(istr);
+	if(pdf) evt->set_pdf_info( *pdf );
+	//
+	// the end vertices of the particles are not connected until
+	//  after the event is read --- we store the values in a map until then
+       	TempParticleMap particle_to_end_vertex;
+	//
+	// read in the vertices
+	for ( int iii = 1; iii <= num_vertices; ++iii ) {
+	    GenVertex* v = read_vertex(istr,particle_to_end_vertex);
+	    evt->add_vertex( v );
+	}
+	// set the signal process vertex
+	if ( signal_process_vertex ) {
+	    evt->set_signal_process_vertex( 
+		evt->barcode_to_vertex(signal_process_vertex) );
+	}
+	//
+	// last connect particles to their end vertices
+	GenParticle* beam1(0);
+	GenParticle* beam2(0);
+	for ( std::map<int,GenParticle*>::iterator pmap 
+		  = particle_to_end_vertex.order_begin(); 
+	      pmap != particle_to_end_vertex.order_end(); ++pmap ) {
+	    GenParticle* p =  pmap->second;
+	    int vtx = particle_to_end_vertex.end_vertex( p );
+	    GenVertex* itsDecayVtx = evt->barcode_to_vertex(vtx);
+	    if ( itsDecayVtx ) itsDecayVtx->add_particle_in( p );
+	    else {
+		std::cerr << "IO_ExtendedAscii::fill_next_event ERROR particle points"
+			  << "\n to null end vertex. " <<std::endl;
+	    }
+	    // also look for the beam particles
+	    if( p->barcode() == bp1 ) beam1 = p;
+	    if( p->barcode() == bp2 ) beam2 = p;
+	}
+	evt->set_beam_particles(beam1,beam2);
+	return true;
 }
 
 bool CommonIO::read_io_genevent_event( std::istream* is, GenEvent* evt )
@@ -153,7 +290,7 @@ HeavyIon* CommonIO::read_heavy_ion(std::istream* is)
     //
     // test to be sure the next entry is of type "H" then ignore it
     if ( !(*is) || is->peek()!='H' ) {
-	std::cerr << "IO_GenEvent::read_heavy_ion setting badbit." << std::endl;
+	std::cerr << "CommonIO::read_heavy_ion setting badbit." << std::endl;
 	is->clear(std::ios::badbit); 
 	return false;
     } 
@@ -179,7 +316,7 @@ PdfInfo* CommonIO::read_pdf_info(std::istream* is)
     //
     // test to be sure the next entry is of type "F" then ignore it
     if ( !(*is) || is->peek() !='F') {
-	std::cerr << "IO_GenEvent::read_pdf_info setting badbit." << std::endl;
+	std::cerr << "CommonIO::read_pdf_info setting badbit." << std::endl;
 	is->clear(std::ios::badbit); 
 	return false;
     } 
@@ -201,7 +338,7 @@ GenVertex* CommonIO::read_vertex( std::istream* is, TempParticleMap& particle_to
     //
     // test to be sure the next entry is of type "V" then ignore it
     if ( !(*is) || is->peek()!='V' ) {
-	std::cerr << "IO_GenEvent::read_vertex setting badbit." << std::endl;
+	std::cerr << "CommonIO::read_vertex setting badbit." << std::endl;
 	is->clear(std::ios::badbit); 
 	return false;
     } 
@@ -237,7 +374,7 @@ GenParticle* CommonIO::read_particle(std::istream* is,
     //
     // test to be sure the next entry is of type "P" then ignore it
     if ( !(*is) || is->peek()!='P' ) { 
-	std::cerr << "IO_GenEvent::read_particle setting badbit." 
+	std::cerr << "CommonIO::read_particle setting badbit." 
 		  << std::endl;
 	is->clear(std::ios::badbit); 
 	return false;
@@ -247,8 +384,13 @@ GenParticle* CommonIO::read_particle(std::istream* is,
     // declare variables to be read in to, and read everything except flow
     double px = 0., py = 0., pz = 0., e = 0., m = 0., theta = 0., phi = 0.;
     int bar_code = 0, id = 0, status = 0, end_vtx_code = 0, flow_size = 0;
-    *is >> bar_code >> id >> px >> py >> pz >> e >> m >> status 
-	   >> theta >> phi >> end_vtx_code >> flow_size;
+    if( m_io_type == ascii ) {
+	*is >> bar_code >> id >> px >> py >> pz >> e >> status 
+	    >> theta >> phi >> end_vtx_code >> flow_size;
+    } else {
+        *is >> bar_code >> id >> px >> py >> pz >> e >> m >> status 
+	    >> theta >> phi >> end_vtx_code >> flow_size;
+    }
     //
     // read flow patterns if any exist
     Flow flow;
@@ -261,7 +403,9 @@ GenParticle* CommonIO::read_particle(std::istream* is,
     GenParticle* p = new GenParticle( FourVector(px,py,pz,e), 
 				id, status, flow, 
 				Polarization(theta,phi) );
-    p->set_generated_mass( m );
+    if( m_io_type != ascii ) {
+        p->set_generated_mass( m );
+    }
     p->suggest_barcode( bar_code );
     //
     // all particles are connected to their end vertex separately 
@@ -271,6 +415,28 @@ GenParticle* CommonIO::read_particle(std::istream* is,
 	particle_to_end_vertex.addEndParticle(p,end_vtx_code);
     }
     return p;
+}
+
+ParticleData* CommonIO::read_particle_data( std::istream* is, ParticleDataTable* pdt ) {
+    // assumes mode has already been checked
+    //
+    // test to be sure the next entry is of type "D" then ignore it
+    if ( !(*is) || is->peek()!='D' ) return 0;
+    is->ignore();
+    //
+    // read values into temp variables then create new ParticleData object
+    char its_name[22];
+    int its_id = 0, its_spin = 0;  
+    double its_charge = 0, its_mass = 0, its_clifetime = 0;
+    *is >> its_id >> its_charge >> its_mass 
+	   >> its_clifetime >> its_spin;
+    is->ignore(1); // eat the " "
+    is->getline( its_name, 22, '\n' );
+    ParticleData* pdata = new ParticleData( its_name, its_id, its_charge, 
+					    its_mass, its_clifetime, 
+					    double(its_spin)/2.);
+    pdt->insert(pdata);
+    return pdata;
 }
 
 }	// end namespace HepMC

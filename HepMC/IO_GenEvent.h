@@ -115,17 +115,6 @@ namespace HepMC {
 	PdfInfo*      read_pdf_info(  );
 	/// write end tag
 	bool          write_end_listing();
-	/// look for line type (key)
-	bool          search_for_key_end( std::istream& in, 
-					  const char* key);
-	/// look for line type (key)
-	bool          search_for_key_beginning( std::istream& in, 
-						const char* key );
-	/// string manipulation accounting
-	bool          eat_key( std::istream& in, const char* key );
-	/// find this vertex in the map of vertices
-	int           find_in_map( const std::map<HepMC::GenVertex*,int>& m, 
-				   GenVertex* v) const;
 
 	void          output( const double& );  //!< write double
 	void          output( const float& );  //!< write float

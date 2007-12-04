@@ -168,17 +168,6 @@ namespace HepMC {
 	// search for event listing key before first event only.
 	//
 	// skip through the file just after first occurence of the start_key
-	/*
-	if ( !m_finished_first_event_io ) {
-	    if (!search_for_key_end( *m_istr, IO_GenEvent_Key)){
-		std::cerr << "IO_GenEvent::fill_next_event start key not found "
-			  << "setting badbit." << std::endl;
-		m_istr->clear(std::ios::badbit); 
-		return false;
-	    }
-	    m_finished_first_event_io = 1;
-	}
-	*/
 	int iotype;
 	if ( !m_finished_first_event_io ) {
 	    iotype = m_common_io.find_file_type(*m_istr);
@@ -201,13 +190,19 @@ namespace HepMC {
 	if ( !(*m_istr) || m_istr->peek()!='E' ) { 
 	    // if the E is not the next entry, then check to see if it is
 	    // the end event listing key - if yes, search for another start key
-	    if ( m_common_io.find_end_key(*m_istr) ) {
+	    int ioendtype = m_common_io.find_end_key(*m_istr);
+	    if ( ioendtype == iotype ) {
 		iotype = m_common_io.find_file_type(*m_istr);
 		if( iotype <= 0 ) {
 		    // this is the only case where we set an EOF state
 		    m_istr->clear(std::ios::eofbit);
 		    return false;
 		}
+	    } else if ( ioendtype > 0 ) {
+		std::cerr << "IO_GenEvent::fill_next_event end key does not match start key "
+			  << "setting badbit." << std::endl;
+		m_istr->clear(std::ios::badbit); 
+		return false;
 	    } else {
 		std::cerr << "IO_GenEvent::fill_next_event end key not found "
 			  << "setting badbit." << std::endl;
@@ -537,71 +532,6 @@ namespace HepMC {
 	    return true;
 	}
 	return false;
-    }
-
-    bool IO_GenEvent::search_for_key_beginning( std::istream& in,
-					     const char* key ) {
-	/// not tested and NOT used anywhere!
-	if ( search_for_key_end( in, key) ) {
-	    int i = strlen(key);
-	    while ( i>=0 ) in.putback(key[i--]); 
-            return true; 
-	} else {
-	    in.putback(EOF);
-	    in.clear();
-            return false;
-	}
-    }
-
-    bool IO_GenEvent::search_for_key_end( std::istream& in, const char* key ) {
-	/// reads characters from in until the string of characters matching
-	/// key is found (success) or EOF is reached (failure).
-	/// It stops immediately thereafter. Returns T/F for success/fail
-	// 
-	char c[1];
-	unsigned int index = 0;
-	while ( in.get(c[0]) ) {
-	    if ( c[0] == key[index] ) { 
-		++index;
-	    } else { index = 0; }
-	    if ( index == strlen(key) ) return true;
-	}
-	return false;
-    }
-
-    bool IO_GenEvent::eat_key( std::istream& in, const char* key ) {
-	/// eats the character string key from istream in - only if the key
-	/// is the very next occurence in the stream
-	/// if the key is not the next occurence, it eats nothing ... i.e.
-	///  it puts back whatever it would have eaten.
-	int key_length = strlen(key);
-	// below is the only way I know of to get a variable length string
-	//  conforming to ansi standard.
-	char* c = new char[key_length +1];
-	int i=0;
-	// read the stream until get fails (because of EOF), a character
-	//  doesn't match a character in the string, or all characters in
-	//  the string have been checked and match.
-	while ( in.get(c[i]) && c[i]==key[i] && i<key_length ) {
-	    ++i;
-	}
-	if ( i == key_length ) {
-	    delete [] c;
-	    return true;
-	}
-	//
-	// if we get here, then we have eaten the wrong this and we must put it
-	// back
-	while ( i>=0 ) in.putback(c[i--]); 
-	delete c;
-	return false;
-    }
-
-    int IO_GenEvent::find_in_map( const std::map<HepMC::GenVertex*,int>& m, 
-			       GenVertex* v ) const {
-	std::map<GenVertex*,int>::const_iterator iter = m.find(v);
-	if ( iter == m.end() ) return false;
-	return iter->second;
     }
 	
 } // HepMC
