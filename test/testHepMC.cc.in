@@ -11,9 +11,10 @@
 //////////////////////////////////////////////////////////////////////////
 //
 
-#include "HepMC/IO_GenEvent.h"
-#include "HepMC/IO_AsciiParticles.h"
 #include "HepMC/GenEvent.h"
+#include "HepMC/IO_GenEvent.h"
+#include "HepMC/IO_Ascii.h"
+#include "HepMC/IO_AsciiParticles.h"
 
 // define methods and classes used by this test
 #include "IsGoodEvent.h"
@@ -69,8 +70,8 @@ void read_testAscii()
         // declare an input strategy to read the data produced with the 
 	// example_MyPythia
 	HepMC::IO_GenEvent ascii_in("@srcdir@/testAscii.input",std::ios::in);
-	// declare another IO_GenEvent for writing out the good events
-	HepMC::IO_GenEvent ascii_out("testIOAscii.dat",std::ios::out);
+	// use IO_Ascii because we are checking against the original input file 
+	HepMC::IO_Ascii ascii_out("testIOAscii.dat",std::ios::out);
 	//........................................EVENT LOOP
 	int icount=0;
 	int num_good_events=0;
@@ -98,8 +99,6 @@ void read_testExtendedAscii()
     HepMC::IO_GenEvent xout("testIOHepMCExtended.dat",std::ios::out);
     //........................................EVENT LOOP
     int icount=0;
-    int num_good_events=0;
-    double x=0., y=0., z=0.;
     HepMC::GenEvent* evt = xin.read_next_event();
     while ( evt ) {
 	icount++;
