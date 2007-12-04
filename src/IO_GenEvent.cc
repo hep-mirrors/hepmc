@@ -168,7 +168,7 @@ namespace HepMC {
 	// search for event listing key before first event only.
 	//
 	// skip through the file just after first occurence of the start_key
-	int iotype;
+	int iotype = 0;
 	if ( !m_finished_first_event_io ) {
 	    iotype = m_common_io.find_file_type(*m_istr);
 	    if( iotype <= 0 ) {
@@ -211,8 +211,18 @@ namespace HepMC {
 	    }
 	}
 	m_istr->ignore();
-	// call the read method
-	return m_common_io.read_io_genevent_event(m_istr, evt);
+	// call the appropriate read method
+	if( m_common_io.io_type() == gen ) {
+	    return m_common_io.read_io_genevent(m_istr, evt);
+	} else if( m_common_io.io_type() == ascii ) { 
+	    return m_common_io.read_io_ascii(m_istr, evt);
+	} else if( m_common_io.io_type() == extascii ) { 
+	    return m_common_io.read_io_extendedascii(m_istr, evt);
+	} else if( m_common_io.io_type() == ascii_pdt ) { 
+	} else if( m_common_io.io_type() == extascii_pdt ) { 
+	}
+	// should not get to this statement
+	return false;
     }
 
     void IO_GenEvent::write_comment( const std::string comment ) {

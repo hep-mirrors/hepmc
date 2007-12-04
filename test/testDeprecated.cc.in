@@ -20,8 +20,8 @@
 int main() { 
     // declare an instance of the event selection predicate
     IsGoodEvent is_good_event;
-    // declare an input strategy to read the data produced with the 
     {
+        // declare an input strategy to read the data produced with the 
 	// example_MyPythia
 	HepMC::IO_Ascii ascii_in("@srcdir@/testAscii.input",std::ios::in);
 	// declare another IO_Ascii for writing out the good events

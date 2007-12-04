@@ -1,4 +1,11 @@
 
+2007-12-04  Lynn Garren
+
+	* HepMC/IO_Ascii.h, IO_ExtendedAscii.h, IO_GenEvent.h and
+	  src/IO_Ascii.cc, IO_ExtendedAscii.cc, IO_GenEvent.cc:
+	  common input methodologies now handled by CommonIO
+
+
 2007-12-03  Lynn Garren
 
 	* HepMC/CommonIO.h, src/CommonIO.cc: 

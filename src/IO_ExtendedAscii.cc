@@ -238,9 +238,7 @@ namespace HepMC {
 	}
 	//
 	pdt->set_description("Read with IO_ExtendedAscii");
-	// 
-	// read Individual GenParticle data entries
-	while ( m_common_io.read_particle_data( &m_file, pdt ) );
+	m_common_io.read_io_particle_data_table( &m_file, pdt );
 	//
 	// check for the end event listing key
 	iotype =  m_common_io.find_end_key(m_file);

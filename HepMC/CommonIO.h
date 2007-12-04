@@ -37,7 +37,9 @@ public:
   // IO_ExtendedAscii is deprecated, but we want to be able to read these files
   std::string IO_ExtendedAscii_Key()     const { return m_io_extendedascii_start; }
   std::string IO_ExtendedAscii_End()     const { return m_io_extendedascii_end; }
-  
+  /// get IO type
+  int io_type() const { return m_io_type; }
+
   // write keys
   void write_IO_GenEvent_Key( std::ostream& );
   void write_IO_GenEvent_End( std::ostream& );
@@ -64,11 +66,11 @@ public:
 
   bool read_io_extendedascii( std::istream* is, GenEvent* evt );
 
-  bool read_io_genevent_event( std::istream* is, GenEvent* evt );
+  bool read_io_genevent( std::istream* is, GenEvent* evt );
 
   /// ParticleDataTable is deprecated.
   /// We include this method for reading old files which may have ParticleData information.
-  ParticleData* read_particle_data( std::istream*, ParticleDataTable* );
+  bool read_io_particle_data_table( std::istream*, ParticleDataTable* );
  
 protected:
   // methods used by the read_io* methods
@@ -76,6 +78,9 @@ protected:
   PdfInfo*     read_pdf_info( std::istream* );
   GenParticle* read_particle( std::istream*, TempParticleMap&  );
   GenVertex*   read_vertex( std::istream*, TempParticleMap&  );
+  /// ParticleDataTable is deprecated.
+  /// We include this method for reading old files which may have ParticleData information.
+  ParticleData* read_particle_data( std::istream*, ParticleDataTable* );
 
 private:
   std::string m_io_genevent_start;

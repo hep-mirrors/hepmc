@@ -209,7 +209,7 @@ bool CommonIO::read_io_extendedascii( std::istream* istr, GenEvent* evt )
 	return true;
 }
 
-bool CommonIO::read_io_genevent_event( std::istream* is, GenEvent* evt )
+bool CommonIO::read_io_genevent( std::istream* is, GenEvent* evt )
 {
     /// this method ONLY works if called from fill_next_event
     //
@@ -273,14 +273,22 @@ bool CommonIO::read_io_genevent_event( std::istream* is, GenEvent* evt )
 	GenVertex* itsDecayVtx = evt->barcode_to_vertex(vtx);
 	if ( itsDecayVtx ) itsDecayVtx->add_particle_in( p );
 	else {
-	    std::cerr << "read_io_genevent_event: ERROR particle points"
-		      << "\n to null end vertex. " <<std::endl;
+	    std::cerr << "read_io_genevent: ERROR particle points"
+		      << " to null end vertex. " <<std::endl;
 	}
 	// also look for the beam particles
 	if( p->barcode() == bp1 ) beam1 = p;
 	if( p->barcode() == bp2 ) beam2 = p;
     }
     evt->set_beam_particles(beam1,beam2);
+    return true;
+}
+
+bool CommonIO::read_io_particle_data_table( std::istream* is, ParticleDataTable* pdt )
+{
+    // 
+    // read Individual GenParticle data entries
+    while ( read_particle_data( is, pdt ) );
     return true;
 }
 

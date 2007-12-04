@@ -11,16 +11,28 @@ CYGWIN*)
        sed 's/e-0/e-/g' -   | \
 	@DIFF_Q@ - @srcdir@/testHepMC.dat`
   cmd2=
+  cmd3=`sed 's/IO_GenEvent/IO_Ascii/g' testIOAscii.dat | \
+        grep -v Version | @DIFF_Q@ - @srcdir@/testAscii.input`
+  cmd4=`sed 's/IO_GenEvent/IO_ExtendedAscii/g' testIOHepMCExtended.dat | \
+        grep -v Version | @DIFF_Q@ - @srcdir@/testHepMCExtended.input`
   ;;
 Darwin*)
   # MacOSX fix
+  cmd1=`@DIFF_Q@ testHepMC.out @srcdir@/testHepMC.dat`
   cmd2=`sed 's/e-00/e+00/g'  @srcdir@/testHepMCParticle.output | \
 	@DIFF_Q@ - testHepMCParticle.out`
-  cmd1=`@DIFF_Q@ testHepMC.out @srcdir@/testHepMC.dat`
+  cmd3=`sed 's/IO_GenEvent/IO_Ascii/g' testIOAscii.dat | \
+        grep -v Version | @DIFF_Q@ - @srcdir@/testAscii.input`
+  cmd4=`sed 's/IO_GenEvent/IO_ExtendedAscii/g' testIOHepMCExtended.dat | \
+        grep -v Version | @DIFF_Q@ - @srcdir@/testHepMCExtended.input`
   ;;
 *)
-  cmd2=`@DIFF_Q@ testHepMCParticle.out @srcdir@/testHepMCParticle.output`
   cmd1=`@DIFF_Q@ testHepMC.out @srcdir@/testHepMC.dat`
+  cmd2=`@DIFF_Q@ testHepMCParticle.out @srcdir@/testHepMCParticle.output`
+  cmd3=`sed 's/IO_GenEvent/IO_Ascii/g' testIOAscii.dat | \
+        grep -v Version | @DIFF_Q@ - @srcdir@/testAscii.input`
+  cmd4=`sed 's/IO_GenEvent/IO_ExtendedAscii/g' testIOHepMCExtended.dat | \
+        grep -v Version | @DIFF_Q@ - @srcdir@/testHepMCExtended.input`
 esac
 
 if [ `@DIFF_Q@ testHepMC.cout @srcdir@/testHepMC.output > /dev/null` ]; then
@@ -37,6 +49,12 @@ fi
 if [ -n "$cmd2" ]
 then
   echo $cmd2
+  exit 1;
+fi
+
+if [ -n "$cmd4" ]
+then
+  echo $cmd4
   exit 1;
 fi
 
