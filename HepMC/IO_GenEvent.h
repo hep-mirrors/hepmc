@@ -155,8 +155,22 @@ namespace HepMC {
     inline void IO_GenEvent::output( const int& i ) { *m_ostr << ' ' << i; }
     inline void IO_GenEvent::output( const long int& i ) { *m_ostr << ' ' << i; }
     inline void IO_GenEvent::output( const char& c ) { *m_ostr << c; }
-    inline int  IO_GenEvent::rdstate() const { return (int)m_ostr->rdstate(); }
-    inline void IO_GenEvent::clear() { m_ostr->clear(); }
+    inline int  IO_GenEvent::rdstate() const { 
+        int state;
+	if( m_istr ) {
+	    state =  (int)m_istr->rdstate();
+	} else {
+	    state =  (int)m_ostr->rdstate();
+	}
+        return state; 
+    }
+    inline void IO_GenEvent::clear() { 
+	if( m_istr ) {
+	    m_istr->clear();
+	} else {
+	    m_ostr->clear();
+	}
+    }
     // these are required by IO_BaseClass, but not used here
     inline void IO_GenEvent::write_particle_data_table(const ParticleDataTable*) {;}
     inline bool IO_GenEvent::fill_particle_data_table( ParticleDataTable* ) 
