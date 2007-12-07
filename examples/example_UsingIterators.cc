@@ -6,7 +6,7 @@
 // gmake examples/example_UsingIterators.exe
 //
 
-#include "HepMC/IO_Ascii.h"
+#include "HepMC/IO_GenEvent.h"
 #include "HepMC/GenEvent.h"
 #include <math.h>
 #include <algorithm>
@@ -56,8 +56,8 @@ public:
 int main() {
     { // begin scope of ascii_in
 	// an event has been prepared in advance for this example, read it
-	// into memory using the IO_Ascii input strategy
-	HepMC::IO_Ascii ascii_in("example_UsingIterators.txt",std::ios::in);
+	// into memory using the IO_GenEvent input strategy
+	HepMC::IO_GenEvent ascii_in("example_UsingIterators.txt",std::ios::in);
 	if ( ascii_in.rdstate() == std::ios::failbit ) {
 	    std::cerr << "ERROR input file example_UsingIterators.txt is needed "
 		      << "and does not exist. "
