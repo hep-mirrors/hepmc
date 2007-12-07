@@ -24,8 +24,18 @@ int main() {
         // declare an input strategy to read the data produced with the 
 	// example_MyPythia
 	HepMC::IO_Ascii ascii_in("@srcdir@/testAscii.input",std::ios::in);
+	if ( ascii_in.rdstate() == std::ios::failbit ) {
+	    std::cerr << "ERROR input file @srcdir@/testAscii.input is needed "
+		      << "and does not exist.  Exit." << std::endl;
+	    return 1;
+	}
 	// declare another IO_Ascii for writing out the good events
 	HepMC::IO_Ascii ascii_out("testAscii.dat",std::ios::out);
+	if ( ascii_out.rdstate() == std::ios::failbit ) {
+	    std::cerr << "ERROR opening output file testAscii.dat.  Exit."
+	              << std::endl;
+	    return 1;
+	}
 	//........................................EVENT LOOP
 	int icount=0;
 	int num_good_events=0;

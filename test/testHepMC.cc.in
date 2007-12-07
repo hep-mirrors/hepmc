@@ -72,8 +72,18 @@ void read_testAscii()
         // declare an input strategy to read the data produced with the 
 	// example_MyPythia
 	HepMC::IO_GenEvent ascii_in("@srcdir@/testAscii.input",std::ios::in);
+	if ( ascii_in.rdstate() == std::ios::failbit ) {
+	    std::cerr << "ERROR input file @srcdir@/testAscii.input is needed "
+		      << "and does not exist.  Exit." << std::endl;
+	    return;
+	}
 	// use IO_Ascii because we are checking against the original input file 
 	HepMC::IO_Ascii ascii_out("testIOAscii.dat",std::ios::out);
+	if ( ascii_out.rdstate() == std::ios::failbit ) {
+	    std::cerr << "ERROR opening output file testAscii.dat.  Exit."
+	              << std::endl;
+	    return;
+	}
 	//........................................EVENT LOOP
 	int icount=0;
 	HepMC::GenEvent* evt = ascii_in.read_next_event();

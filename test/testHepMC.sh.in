@@ -1,6 +1,12 @@
 #! /bin/sh
 # @configure_input@
 
+# cleanup any old output files first
+rm -f testHepMC.out
+rm -f testHepMCParticle.out
+rm -f testIOAscii.dat
+rm -f testIOHepMCExtended.dat
+
 ./testHepMC@EXEEXT@ >& testHepMC.cout
 
 OS=`uname`
