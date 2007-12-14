@@ -9,15 +9,12 @@ endif
 doc_srcdir = $(top_srcdir)/doc
 doc_installdir = $(prefix)/doc/HepMC
 
-HEPMC1_DOC   = HepMC_user_manual.ps
 HEPMC2_DOCS  = HepMC2_user_manual.pdf HepMC2_user_manual.ps
 HEPMC2_REF   = HepMC2_reference_manual.pdf HepMC2_reference_manual.ps
 
-DOCUMENTS = $(HEPMC1_DOC) $(HEPMC2_DOCS) $(HEPMC2_REF)
+DOCUMENTS =$(HEPMC2_DOCS) $(HEPMC2_REF)
 
 EXTRA_DIST = $(DOCUMENTS)
-
-#all: $(DOCUMENTS)
 
 
 install-data-local:
