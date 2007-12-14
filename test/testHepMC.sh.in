@@ -12,15 +12,14 @@ rm -f testIOHepMCExtended.dat
 OS=`uname`
 case "$OS" in
 CYGWIN*)
-  #don't compare these on Windows (hopelessly different default output)
   cmd1=`sed 's/e+0/e+/g' testHepMC.out   | \
        sed 's/e-0/e-/g' -   | \
 	@DIFF_Q@ - @srcdir@/testHepMC.dat`
+  cmd3=`sed 's/e+0/e+/g' testIOAscii.dat | sed 's/e-0/e-/g' -  | \
+       grep -v Version | @DIFF_Q@ - @srcdir@/testAscii.input`
+  #don't compare these on Windows (hopelessly different default output)
   cmd2=
-  cmd3=`cat testIOAscii.dat | grep -v Version | \
-        @DIFF_Q@ - @srcdir@/testAscii.input`
-  cmd4=`sed 's/IO_GenEvent/IO_ExtendedAscii/g' testIOHepMCExtended.dat | \
-        grep -v Version | @DIFF_Q@ - @srcdir@/testHepMCExtended.input`
+  cmd4=
   ;;
 Darwin*)
   # MacOSX fix
