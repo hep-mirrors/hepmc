@@ -139,22 +139,50 @@ namespace HepMC {
     //////////////
 
     inline void IO_GenEvent::output( const double& d ) {
-	if ( d == 0. ) {
-	    *m_ostr << ' ' << (int)0;
-	} else {
-	    *m_ostr << ' ' << d;
+	if( m_ostr  ) {
+	    if ( d == 0. ) {
+		*m_ostr << ' ' << (int)0;
+	    } else {
+		*m_ostr << ' ' << d;
+	    }
 	}
     }
     inline void IO_GenEvent::output( const float& d ) {
-	if ( d == 0. ) {
-	    *m_ostr << ' ' << (int)0;
-	} else {
-	    *m_ostr << ' ' << d;
+	if( m_ostr  ) {
+	    if ( d == 0. ) {
+		*m_ostr << ' ' << (int)0;
+	    } else {
+		*m_ostr << ' ' << d;
+	    }
 	}
     }
-    inline void IO_GenEvent::output( const int& i ) { *m_ostr << ' ' << i; }
-    inline void IO_GenEvent::output( const long int& i ) { *m_ostr << ' ' << i; }
-    inline void IO_GenEvent::output( const char& c ) { *m_ostr << c; }
+    inline void IO_GenEvent::output( const int& i ) { 
+	if( m_ostr  ) {
+	    if ( i == 0. ) {
+		*m_ostr << ' ' << (int)0;
+	    } else {
+        	*m_ostr << ' ' << i; 
+	    }
+	}
+    }
+    inline void IO_GenEvent::output( const long int& i ) {
+	if( m_ostr  ) {
+	    if ( i == 0. ) {
+		*m_ostr << ' ' << (int)0;
+	    } else {
+        	*m_ostr << ' ' << i; 
+	    }
+	}
+    }
+    inline void IO_GenEvent::output( const char& c ) {
+	if( m_ostr  ) {
+	    if ( c ) {
+        	*m_ostr << c; 
+	    } else {
+		*m_ostr << ' ' ;
+	    }
+	}
+    }
     inline int  IO_GenEvent::rdstate() const { 
         int state;
 	if( m_istr ) {

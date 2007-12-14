@@ -17,14 +17,12 @@ EXTRA_DIST = \
     example_MyPythiaWithEventSelection.cc \
     example_PythiaParticle.cc	\
     example_ReadMyPythia.cc	\
-    example_ReadPDGtable.cc \
     example_UsingIterators.cc \
     initPythia.cc \
     PythiaHelper.h \
     initpydata.f \
     VectorConversion.h \
-    example_UsingIterators.txt \
-    PDG_ParticleDataTable.txt
+    example_UsingIterators.txt
 
 install-data-local:
 	$(mkinstalldirs) $(DESTDIR)$(INSTALLDIR)

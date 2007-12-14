@@ -1,4 +1,11 @@
 
+2007-12-14  Lynn Garren
+
+	* doc: The HepMC 1 and HepMC 2 user manuals have been merged 
+	into a single manual.
+	
+	* HepMC/IO_GenEvent.h: check operator methods for consistency
+
 2007-12-07  Lynn Garren
 
 	* HepMC/IO_GenEvent.h: fix problem with rdstate() and clear()
