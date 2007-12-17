@@ -213,7 +213,7 @@ namespace HepMC {
 	}
 	// Random State
 	ostr << " RndmState(" << m_random_states.size() << ")=";
-	for ( std::vector<long int>::const_iterator rs 
+	for ( std::vector<long>::const_iterator rs 
 		  = m_random_states.begin();
 	      rs != m_random_states.end(); ++rs ) { ostr << *rs << " "; }
 	ostr << "\n";
@@ -294,7 +294,7 @@ namespace HepMC {
 	m_alphaQCD = -1;
 	m_alphaQED = -1;
 	m_weights = std::vector<double>();
-	m_random_states = std::vector<long int>();
+	m_random_states = std::vector<long>();
         // error check just to be safe
 	if ( m_vertex_barcodes.size() != 0 
 	     || m_particle_barcodes.size() != 0 ) {

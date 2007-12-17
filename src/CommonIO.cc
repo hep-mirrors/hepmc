@@ -83,7 +83,7 @@ bool CommonIO::read_io_ascii( std::istream* istr, GenEvent* evt )
 	*istr >> event_number >> eventScale >> alpha_qcd >> alpha_qed
 	       >> signal_process_id >> signal_process_vertex
 	       >> num_vertices >> random_states_size;
-	std::vector<long int> random_states(random_states_size);
+	std::vector<long> random_states(random_states_size);
 	for ( int i = 0; i < random_states_size; ++i ) {
 	    *istr >> random_states[i];
 	}
@@ -139,7 +139,7 @@ bool CommonIO::read_io_extendedascii( std::istream* istr, GenEvent* evt )
 	*istr >> event_number >> nmpi >> eventScale >> alpha_qcd >> alpha_qed
 	       >> signal_process_id >> signal_process_vertex
 	       >> num_vertices >> bp1 >> bp2 >> random_states_size;
-	std::vector<long int> random_states(random_states_size);
+	std::vector<long> random_states(random_states_size);
 	for ( int i = 0; i < random_states_size; ++i ) {
 	    *istr >> random_states[i];
 	}
@@ -154,6 +154,9 @@ bool CommonIO::read_io_extendedascii( std::istream* istr, GenEvent* evt )
 	evt->set_mpi( nmpi );
 	evt->weights() = weights;
 	evt->set_random_states( random_states );
+	evt->set_event_scale( eventScale );
+	evt->set_alphaQCD( alpha_qcd );
+	evt->set_alphaQED( alpha_qed );
 	// get HeavyIon and PdfInfo
 	HeavyIon* ion = read_heavy_ion(istr);
 	if(ion) evt->set_heavy_ion( *ion );
@@ -211,7 +214,7 @@ bool CommonIO::read_io_genevent( std::istream* is, GenEvent* evt )
     *is >> event_number >> nmpi >> eventScale >> alpha_qcd >> alpha_qed
 	   >> signal_process_id >> signal_process_vertex
 	   >> num_vertices >> bp1 >> bp2 >> random_states_size;
-    std::vector<long int> random_states(random_states_size);
+    std::vector<long> random_states(random_states_size);
     for ( int i = 0; i < random_states_size; ++i ) {
 	*is >> random_states[i];
     }

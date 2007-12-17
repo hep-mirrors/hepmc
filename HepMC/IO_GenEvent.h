@@ -119,7 +119,7 @@ namespace HepMC {
 	void          output( const double& );  //!< write double
 	void          output( const float& );  //!< write float
 	void          output( const int& ); //!< write int
-	void          output( const long int& ); //!< write long int
+	void          output( const long& ); //!< write long
 	void          output( const char& );  //!< write a single character
     private: // use of copy constructor is not allowed
 	IO_GenEvent( const IO_GenEvent& ) : IO_BaseClass() {}
@@ -165,7 +165,7 @@ namespace HepMC {
 	    }
 	}
     }
-    inline void IO_GenEvent::output( const long int& i ) {
+    inline void IO_GenEvent::output( const long& i ) {
 	if( m_ostr  ) {
 	    if ( i == 0. ) {
 		*m_ostr << ' ' << (int)0;

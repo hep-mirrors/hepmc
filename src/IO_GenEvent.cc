@@ -114,7 +114,7 @@ namespace HepMC {
 	//
 	// output the event data including the number of primary vertices
 	//  and the total number of vertices
-	std::vector<long int> random_states = evt->random_states();
+	std::vector<long> random_states = evt->random_states();
 	*m_ostr << 'E';
 	output( evt->event_number() );
 	output( evt->mpi() );
@@ -127,7 +127,7 @@ namespace HepMC {
 	output( evt->vertices_size() ); // total number of vertices.
 	write_beam_particles( evt->beam_particles() );
 	output( (int)random_states.size() );
-	for ( std::vector<long int>::iterator rs = random_states.begin(); 
+	for ( std::vector<long>::iterator rs = random_states.begin(); 
 	      rs != random_states.end(); ++rs ) {
 	    output( *rs );
 	}
