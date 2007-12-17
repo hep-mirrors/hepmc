@@ -603,7 +603,7 @@ namespace HepMC {
     }
 
     GenVertex::vertex_iterator::vertex_iterator( GenVertex& vtx_root,
-	IteratorRange range, std::set<const GenVertex*>& visited_vertices ) :
+	IteratorRange range, std::set<const HepMC::GenVertex*>& visited_vertices ) :
 	m_vertex(&vtx_root), m_range(range), 
 	m_visited_vertices(&visited_vertices), m_it_owns_set(0),
 	m_recursive_iterator(0) 
@@ -734,7 +734,7 @@ namespace HepMC {
 
     void GenVertex::vertex_iterator::copy_with_own_set( 
 	const vertex_iterator& v_iter, 
-	std::set<const GenVertex*>& visited_vertices ) {
+	std::set<const HepMC::GenVertex*>& visited_vertices ) {
 	/// intended for internal use only. (use with care!)
 	/// this is the same as the operator= method, but it allows the
 	/// user to specify which set container m_visited_vertices points to.

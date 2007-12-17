@@ -1,3 +1,18 @@
+
+2007-12-17  Lynn Garren
+
+	* HepMC/SimpleVector.h: Add simple math methods:
+	FourVector   operator +  (const FourVector &) const;
+	FourVector & operator += (const FourVector &);
+	FourVector   operator -  (const FourVector &) const;
+	FourVector & operator -= (const FourVector &);
+	FourVector   operator -  () const;
+	FourVector & operator *= (double);
+	The same methods were also added to ThreeVector.
+
+	* configure.in: add support for g++-*
+	build dynamic libraries for MacOSX - thanks to James Monk
+
   --------------------------  HepMC-2.01.08  --------------------------
 
 2007-10-23  Lynn Garren

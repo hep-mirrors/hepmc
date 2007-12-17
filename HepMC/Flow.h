@@ -41,9 +41,9 @@
 //  later on if we wish to know the color partner of q1 we can ask for a list
 //  of all particles connected via this code to q1 which do have less than 
 //  2 color partners using:
-//    set<GenParticle*> result=q1->dangling_connected_partners(q1->icode(1),1,2);
+//    vector<GenParticle*> result=q1->dangling_connected_partners(q1->icode(1),1,2);
 //  this will return a list containing q1 and q4.
-//    set<GenParticle*> result=q1->connected_partners(q1->icode(1),1,2);
+//    vector<GenParticle*> result=q1->connected_partners(q1->icode(1),1,2);
 //  would return a list containing q1, g, and q4.
 //
 
@@ -54,7 +54,6 @@
 namespace HepMC {
 
     class GenParticle;
-    class GenParticleComparison;
 
     //! The flow object
 
@@ -191,9 +190,9 @@ namespace HepMC {
     ///////////////////////////
 
     inline bool Flow::operator==( const Flow& a ) const {
-	// equivalent flows have the same flow codes for all flow_numbers 
-	// (i.e. their m_icode maps are identical), but they need not have the
-	// same m_particle owner
+	/// equivalent flows have the same flow codes for all flow_numbers 
+	/// (i.e. their m_icode maps are identical), but they need not have the
+	/// same m_particle owner
 	return (m_icode == a.m_icode);
     }
     inline bool Flow::operator!=( const Flow& a ) const {

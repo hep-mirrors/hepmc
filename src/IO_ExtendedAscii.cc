@@ -178,6 +178,9 @@ namespace HepMC {
 	evt->set_mpi( nmpi );
 	evt->weights() = weights;
 	evt->set_random_states( random_states );
+	evt->set_event_scale( eventScale );
+	evt->set_alphaQCD( alpha_qcd );
+	evt->set_alphaQED( alpha_qed );
 	// get HeavyIon and PdfInfo
 	HeavyIon* ion = read_heavy_ion();
 	if(ion) evt->set_heavy_ion( *ion );

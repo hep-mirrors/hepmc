@@ -57,7 +57,7 @@ namespace HepMC {
 	return output;
     }
 
-    void Flow::connected_partners( std::vector<GenParticle*>* output, int code, 
+    void Flow::connected_partners( std::vector<HepMC::GenParticle*>* output, int code, 
 				   int code_index, int num_indices ) const
     {
 	/// protected: for recursive use by Flow::connected_partners()
@@ -120,8 +120,8 @@ namespace HepMC {
 	return output;
     }
 
-    void Flow::dangling_connected_partners( std::vector<GenParticle*>* output, 
-					    std::vector<GenParticle*>* 
+    void Flow::dangling_connected_partners( std::vector<HepMC::GenParticle*>* output, 
+					    std::vector<HepMC::GenParticle*>* 
 					    visited_particles,
 					    int code, int code_index, 
 					    int num_indices ) const 
