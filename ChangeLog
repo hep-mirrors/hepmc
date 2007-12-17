@@ -1,3 +1,15 @@
+
+2007-12-17  Lynn Garren
+
+	* HepMC/SimpleVector.h: Add simple math methods:
+	FourVector   operator +  (const FourVector &) const;
+	FourVector & operator += (const FourVector &);
+	FourVector   operator -  (const FourVector &) const;
+	FourVector & operator -= (const FourVector &);
+	FourVector   operator -  () const;
+	FourVector & operator *= (double);
+	The same methods were also added to ThreeVector.
+
   --------------------------  HepMC-2.03.02  --------------------------
 
 2007-12-14  Lynn Garren
