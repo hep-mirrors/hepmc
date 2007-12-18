@@ -150,8 +150,8 @@ general overview is available in Ref.~\cite{dobbs:2000CompPhysComm}.
 
 The HEP community has moved towards Object-Oriented computing tools
 (usually C++): most upcoming experiments are choosing OO software
-architecture, and Pythia 8~\cite{Torbjorn} in C++ and 
-Herwig++~\cite{Richardson} are both out.  
+architecture, and Pythia 8~\cite{Torbjorn} and 
+Herwig++~\cite{Richardson}, written in C++, are available.  
 A standard event record must be simple for the end user to access information,
 while maintaining the power and flexibility offered by OO design. The
 HepMC event record has been developed to satisfy these criteria.
@@ -218,10 +218,11 @@ nodes respectively of a graph~\footnote{
 (Figure~\ref{graph_structure}, right). Each vertex maintains a listing of
 its incoming and outgoing particles, while each particle points back
 to its production vertex and decay vertex.
-The extension to  multiple collisions is natural - a
-super-position of many non-connected graphs - and so
-the event may contain an unlimited number of (possibly interconnected)
-graphs. The number of vertices/particles in each event is also open-ended.
+The extension to  multiple collisions is natural - the 
+super-position of graphs from several different initial processes - 
+and so the event may contain an unlimited number 
+of (possibly interconnected) graphs. 
+The number of vertices/particles in each event is also open-ended.
 A subset of the event (such as one connected graph or a single vertex
 and its descendants) may be examined or modified without having to
 interpret complex parent/child relationship codes or re-shuffle the rest 
@@ -256,9 +257,10 @@ of the event record.
 \item ability to store the state of random number generators (as
   integers)
 \item ability to store an arbitrary number of event weights
-\item strategies for input/output to/from HEPEVT and ascii files which
-  are easily extendible to support other event records and forms of
-  persistency
+\item strategies for conversion to/from HEPEVT\ref{Boos:2001cv} which
+  are easily extendible to support other event records
+\item strategies for input/output to/from ascii files which
+  are easily extendible to support other forms of persistency
 \end{itemize}
 
 %
@@ -344,7 +346,7 @@ particle within an event belongs to at least one vertex. In addition
 the vertex is composed of position, id, and (spin density matrix) 
 weight information. Particles and vertices are uniquely identified by
 an integer---referred to as a ``barcode''---which is meant to be a
-persistent label for a particular particule instance.
+persistent label for a particular particle instance.
 The event is the container class for all (possibly
 inter-connected) vertices in the event and contains process id, event
 number, weight, and random number state information.
@@ -660,7 +662,9 @@ package~\cite{evtgen} requirements.
 The WeightContainer is just a storage area for double precision
 weights used in GenEvent and GenVertex. It is essentially an interface
 to the STL vector class, and its member functions are chosen in that
-spirit.
+spirit.  
+You might, for instance, use the GenEvent weights to include
+information about differential cross sections.
 
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -789,6 +793,27 @@ example is given at the top of the Flow header file.
 Polarization is a data member of GenParticle - its use is
 optional. It stores the $(\theta,\phi)$ polarization information which
 can be returned as a ThreeVector as well.
+
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+
+\subsubsection{HepMC::FourVector}
+\begin{myitemize}{Important Public Methods}
+  \item A number of simple vector manipulations are available.
+          Check the reference manual for details.
+\end{myitemize}
+\begin{myitemize}{Relevant Data Members}
+  \myitem{x}{position x or momentum px}
+  \myitem{y}{position y or momentum py}
+  \myitem{z}{position z or momentum pz}
+  \myitem{t}{time or energy}
+\end{myitemize}
+
+GenParticle momentum and GenVertex position are stored as FourVectors.
+FourVector has a templated constructor that will automatically convert 
+any other vector with x(), y(), z(), and t() access methods to a FourVector.
+This feature is used when converting from the HEPEVT common block.
 
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -1255,6 +1280,7 @@ arXiv:hep-ph/0109068.
   W.-M.~Yao {\it et al.}, ``Review of particle physics,''
   Journal\ of\ Physics {\bf G33}, 1 (2006).
   Available from \htmladdnormallink{http://pdg.lbl.gov/}{http://pdg.lbl.gov/}.
+
 
 \bibitem{stdhep5.05}
   L.~Garren, ``StdHep 5.05 Monte Carlo Standardization at FNAL,''
