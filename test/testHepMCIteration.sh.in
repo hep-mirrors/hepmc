@@ -1,8 +1,5 @@
 #! /bin/sh
 # @configure_input@
-# you can compare testHepMCIteration.out to @srcdir@/testHepMCIteration.dat
-# and testHepMCIterationExtended.out to @srcdir@/testHepMCIterationExtended.dat,
-# but the particles within a vertex are printed in "random" order
 
 ./testHepMCIteration@EXEEXT@ \
  | @DIFF_Q@ - @srcdir@/testHepMCIteration.output > /dev/null
@@ -15,12 +12,11 @@ CYGWIN*)
   ;;
 Darwin*)
   # MacOSX fix
-  cmd1=`sed 's/(-0,0)/(0,0)/g'  testHepMCIteration.dat  | \
+  cmd1=`sed 's/(-0,0)/(0,0)/g'  testHepMCIteration.out  | \
   	@DIFF_Q@ - @srcdir@/testHepMCIteration.dat`
-  # dealing with different ordering - can't compare
   ;;
 *)
-  cmd1=`sed 's/(-0,0)/(0,0)/g'  testHepMCIteration.dat  | \
+  cmd1=`sed 's/(-0,0)/(0,0)/g'  testHepMCIteration.out  | \
   	@DIFF_Q@ - @srcdir@/testHepMCIteration.dat`
 esac
 
