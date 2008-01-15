@@ -3,7 +3,6 @@
 //
 // garren@fnal.gov, January 2008
 // Multiple events in memory at the same time
-// run with valgrind or some other leak checker
 //////////////////////////////////////////////////////////////////////////
 
 #include <fstream>
