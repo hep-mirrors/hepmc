@@ -400,11 +400,21 @@ namespace HepMC {
 	// read and create the associated particles. outgoing particles are
 	//  added to their production vertices immediately, while incoming
 	//  particles are added to a map and handles later.
+	// use a map of barcodes to outgoing particles
 	for ( int i2 = 1; i2 <= num_orphans_in; ++i2 ) {
 	    read_particle(particle_to_end_vertex);
 	}
+	// use another temporary map for consistent ordering
+       	std::map<int,HepMC::GenParticle*> tmpVertexMap;
 	for ( int i3 = 1; i3 <= num_particles_out; ++i3 ) {
-	    v->add_particle_out( read_particle(particle_to_end_vertex) );
+	    //v->add_particle_out( read_particle(particle_to_end_vertex) );
+	    GenParticle* p = read_particle(particle_to_end_vertex);
+	    tmpVertexMap[p->barcode()] = p;
+	}
+	// now add them
+	for ( std::map<int,GenParticle*>::iterator i = tmpVertexMap.begin();
+	      i != tmpVertexMap.end(); ++i ) {
+	      v->add_particle_out( i->second );
 	}
 	return v;
     }

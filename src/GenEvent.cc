@@ -73,12 +73,12 @@ namespace HepMC {
     }
 
     GenEvent::GenEvent( const GenEvent& inevent ) 
-      : m_signal_process_id    ( /* inevent.m_signal_process_id */ ),
-	m_event_number         ( /* inevent.m_event_number */ ),
-	m_mpi                  ( /* inevent.m_mpi */ ),
-	m_event_scale          ( /* inevent.m_event_scale */ ),
-	m_alphaQCD             ( /* inevent.m_alphaQCD */ ),
-	m_alphaQED             ( /* inevent.m_alphaQED */ ),
+      : m_signal_process_id    ( inevent.signal_process_id() ),
+	m_event_number         ( inevent.event_number() ),
+	m_mpi                  ( inevent.mpi() ),
+	m_event_scale          ( inevent.event_scale() ),
+	m_alphaQCD             ( inevent.alphaQCD() ),
+	m_alphaQED             ( inevent.alphaQED() ),
 	m_signal_process_vertex( /* inevent.m_signal_process_vertex */ ),
 	m_beam_particle_1      ( /* inevent.m_beam_particle_1 */ ),
 	m_beam_particle_2      ( /* inevent.m_beam_particle_2 */ ),
@@ -115,7 +115,7 @@ namespace HepMC {
 	} else set_signal_process_vertex( 0 );
         //
         // 3. create a NEW copy of all particles from inevent
-        //    taking care to attach them to the appropriate 
+        //    taking care to attach them to the appropriate vertex
 	GenParticle* beam1(0);
 	GenParticle* beam2(0);
         for ( GenEvent::particle_const_iterator p = inevent.particles_begin();
@@ -136,13 +136,7 @@ namespace HepMC {
         }
 	set_beam_particles( beam1, beam2 );
 	//
-	// 4. now that vtx/particles are copied, do everything else
-	set_signal_process_id( inevent.signal_process_id() );
-	set_event_number( inevent.event_number() );
-	set_event_scale( inevent.event_scale() );
-	set_alphaQCD( inevent.alphaQCD() );
-	set_alphaQED( inevent.alphaQED() );
-	set_mpi( inevent.mpi() );
+	// 4. now that vtx/particles are copied, copy weights and random states
 	set_random_states( inevent.random_states() );
 	weights() = inevent.weights();
     }

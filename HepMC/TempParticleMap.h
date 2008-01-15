@@ -58,8 +58,8 @@ namespace HepMC {
 
     inline void TempParticleMap::addEndParticle( GenParticle* p, int& end_vtx_code )
     {
-        ++m_counter;
-	m_particle_order[m_counter] = p;
+        //++m_counter;
+	m_particle_order[p->barcode()] = p;
         m_particle_to_end_vertex[p] = end_vtx_code;
     }
 
