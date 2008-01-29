@@ -54,7 +54,8 @@ int main() {
 	HepMC::GenEvent* evt4 = new HepMC::GenEvent(*evt);
 	evt4->print(out3);
  	if( !compareGenEvent(evt,evt4) ) { 
-	   std::cerr << "GenEvent comparison fails" << std::endl;
+	   std::cerr << "testPythiaCopies: GenEvent comparison fails at event "
+	             << evt->event_number() << std::endl;
 	   return -1; 
 	}
 	//
@@ -65,6 +66,7 @@ int main() {
     //........................................TERMINATION
     // write out some information from Pythia to the screen
     call_pystat( 1 );    
+    std::cout << "testPythiaCopies: event comparison is successful" << std::endl;
 
     return 0;
 }

@@ -36,7 +36,7 @@ int main() {
         hwbmch.PART2[i] = (i < 1) ? 'P' : ' ';
     }
     hwigin();    // INITIALISE OTHER COMMON BLOCKS
-    hwevnt.MAXPR = 1; // number of events to print
+    hwevnt.MAXPR = 0; // number of events to print
     hwuinc(); // compute parameter-dependent constants
     hweini(); // initialise elementary process
 
@@ -78,12 +78,6 @@ int main() {
 	// add some information to the event
 	evt->set_event_number(i);
 	evt->set_signal_process_id(20);
-	if (i<=hwevnt.MAXPR) {
-	    std::cout << "\n\n This is the FIXED version of HEPEVT as "
-		      << "coded in IO_HERWIG " << std::endl;
-	    HepMC::HEPEVT_Wrapper::print_hepevt();
-	    evt->print();
-	}
 	//
 	//.......................make some copies
 	evt->print(out1);
@@ -92,7 +86,8 @@ int main() {
 	HepMC::GenEvent* evt4 = new HepMC::GenEvent(*evt);
 	evt4->print(out3);
  	if( !compareGenEvent(evt,evt4) ) { 
-	   std::cerr << "GenEvent comparison fails" << std::endl;
+	   std::cerr << "testHerwigCopies: GenEvent comparison fails at event "
+	             << evt->event_number() << std::endl;
 	   return -1; 
 	}
 
@@ -102,6 +97,7 @@ int main() {
     }
     //........................................TERMINATION
     hwefin();
+    std::cout << "testHerwigCopies: event comparison is successful" << std::endl;
 
     return 0;
 }
