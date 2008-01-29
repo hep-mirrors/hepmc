@@ -46,10 +46,12 @@ testSimpleVector_SOURCES   = testSimpleVector.cc
 # Identify input data file(s) and prototype output file(s):
 EXTRA_DIST = testHepMC.input testHepMC.output testHepMCParticle.output \
              testPrintBug.output testHepMCExtended.dat \
-	     testHepMCIteration.output testHepMCIterationExtended.output \
+	     testHepMCIteration.output \
 	     testMultipleCopies.output
 
 # Identify generated file(s) to be removed when 'make clean' is requested:
-CLEANFILES = testHepMC.out testHepMCParticle.out testHepMCExtended.out \
-             testPrintBug.out testHepMCIterationExtended.out testMass.out \
-	     testMultipleCopies.out
+CLEANFILES = testHepMC.out testHepMC.cout \
+             testHepMCParticle.out testHepMCExtended.dat \
+             testPrintBug.out testHepMCIteration.out testMass.dat \
+	     testMultipleCopies.out testMultipleOriginals.dat \
+	     testMultipleCopies1.dat testMultipleCopies2.dat
