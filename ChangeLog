@@ -1,15 +1,35 @@
-  --------------------------  HepMC-2.01.09  --------------------------
+
+2007-01-29  Lynn Garren
+
+	* examples/testHerwigCopies.cc: compare copies of Herwig events
+
+	* examples/testPythiaCopies.cc: compare copies of Pythia events
+
+2007-01-15  Lynn Garren
+
+	* TempParticleMap.h: use barcode instead of counter for ordering
+	to solve a problem with changed order of particles when making copies
+
+2007-01-14  Lynn Garren
+
+	* HepMC/CompareGenEvent.h: new utility to compare two
+	copies of a GenEvent object
+
+	* test/testMultipleCopies.cc.in: verify that two copies of
+	the same GenEvent object are, indeed, the same
+	
+	* test/testHepMCIteration: use a different output file name so the 
+	test will work if you build on top of the source code
 
 2007-12-17  Lynn Garren
 
-	* HepMC/SimpleVector.h: Add simple math methods:
-	FourVector   operator +  (const FourVector &) const;
-	FourVector & operator += (const FourVector &);
-	FourVector   operator -  (const FourVector &) const;
-	FourVector & operator -= (const FourVector &);
-	FourVector   operator -  () const;
-	FourVector & operator *= (double);
-	The same methods were also added to ThreeVector.
+	* HepMC/Flow.h: comment changes for doxygen
+
+	* HepMC/GenParticle.h, src/GenParticle.cc: remove remnant static counter
+
+        * Use fully qualified names (e.g., HepMC::GenParticle) inside class
+          templates (e.g., std::map<>) wherever they are used within a
+          header so that rootcint can make the dictionary.
 
 	* configure.in: add support for g++-*
 	build dynamic libraries for MacOSX - thanks to James Monk
