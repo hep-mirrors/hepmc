@@ -110,14 +110,6 @@ public:
   void setPz(double z) { m_z=z; }  //!< set pz
   void setE(double t)  { m_t=t; }  //!< set E
 
-  // simple math
-  FourVector   operator +  (const FourVector &) const; //!< addition
-  FourVector & operator += (const FourVector &);       //!< addition
-  FourVector   operator -  (const FourVector &) const; //!< subtraction
-  FourVector & operator -= (const FourVector &);       //!< subtraction
-  FourVector   operator -  () const;                   //!< unary minus
-  FourVector & operator *= (double);                   //!< scale
-
 private:
 
   double m_x;
@@ -186,14 +178,6 @@ public:
 
   bool operator == (const ThreeVector &) const; //!< equality
   bool operator != (const ThreeVector &) const; //!< inequality
-
-  // simple math
-  ThreeVector   operator +  (const ThreeVector &) const; //!< addition
-  ThreeVector & operator += (const ThreeVector &);       //!< addition
-  ThreeVector   operator -  (const ThreeVector &) const; //!< subtraction
-  ThreeVector & operator -= (const ThreeVector &);       //!< subtraction
-  ThreeVector   operator -  () const;                    //!< unary minus
-  ThreeVector & operator *= (double);                    //!< scale
 
 private:
 

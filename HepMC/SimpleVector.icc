@@ -86,42 +86,6 @@ inline double FourVector::pseudoRapidity() const {
 
 inline double FourVector::eta()    const { return pseudoRapidity();}
 
-inline FourVector FourVector::operator + (const FourVector & q) const {
-  return FourVector(x()+q.x(), y()+q.y(), z()+q.z(), t()+q.t());
-}
-
-inline FourVector & FourVector::operator += (const FourVector & q) {
-  m_x += q.x();
-  m_y += q.y();
-  m_z += q.z();
-  m_t += q.t();
-  return *this;
-}
-
-inline FourVector FourVector::operator - (const FourVector & q) const {
-  return FourVector(x()-q.x(), y()-q.y(), z()-q.z(), t()-q.t());
-}
-
-inline FourVector & FourVector::operator -= (const FourVector & q) {
-  m_x -= q.x();
-  m_y -= q.y();
-  m_z -= q.z();
-  m_t -= q.t();
-  return *this;
-}
-
-inline FourVector FourVector::operator - () const {
-  return FourVector(-x(), -y(), -z(), -t());
-}
-
-inline FourVector& FourVector::operator *= (double a) {
-  m_x *= a;
-  m_y *= a;
-  m_z *= a;
-  m_t *= a;
-  return *this;
-}
-
 
 //////////////////////////////////////////////////////////////////////////
 //  ThreeVector inline methods
@@ -185,39 +149,6 @@ inline bool ThreeVector::operator == (const ThreeVector& v) const {
 
 inline bool ThreeVector::operator != (const ThreeVector& v) const {
   return (v.x()!=x() || v.y()!=y() || v.z()!=z()) ? true : false;
-}
-
-inline ThreeVector ThreeVector::operator + (const ThreeVector & q) const {
-  return ThreeVector(x()+q.x(), y()+q.y(), z()+q.z());
-}
-
-inline ThreeVector & ThreeVector::operator += (const ThreeVector & q) {
-  m_x += q.x();
-  m_y += q.y();
-  m_z += q.z();
-  return *this;
-}
-
-inline ThreeVector ThreeVector::operator - (const ThreeVector & q) const {
-  return ThreeVector(x()-q.x(), y()-q.y(), z()-q.z());
-}
-
-inline ThreeVector & ThreeVector::operator -= (const ThreeVector & q) {
-  m_x -= q.x();
-  m_y -= q.y();
-  m_z -= q.z();
-  return *this;
-}
-
-inline ThreeVector ThreeVector::operator - () const {
-  return ThreeVector(-x(), -y(), -z());
-}
-
-inline ThreeVector& ThreeVector::operator *= (double a) {
-  m_x *= a;
-  m_y *= a;
-  m_z *= a;
-  return *this;
 }
 
 } // HepMC
