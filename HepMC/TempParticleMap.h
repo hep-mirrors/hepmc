@@ -29,7 +29,7 @@ namespace HepMC {
 	typedef TempOrderMap::iterator  orderIterator;
 	
 	TempParticleMap() 
-	: m_particle_to_end_vertex(), m_particle_order(), m_counter(0) {}
+	: m_particle_to_end_vertex(), m_particle_order() {}
 	
 	~TempParticleMap() {}
 	
@@ -45,7 +45,6 @@ namespace HepMC {
     private:
         TempMap       m_particle_to_end_vertex;
 	TempOrderMap  m_particle_order;
-	int           m_counter;
     };
     
     inline int TempParticleMap::end_vertex( GenParticle* p )
@@ -58,8 +57,7 @@ namespace HepMC {
 
     inline void TempParticleMap::addEndParticle( GenParticle* p, int& end_vtx_code )
     {
-        ++m_counter;
-	m_particle_order[m_counter] = p;
+	m_particle_order[p->barcode()] = p;
         m_particle_to_end_vertex[p] = end_vtx_code;
     }
 
