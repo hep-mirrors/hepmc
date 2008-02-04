@@ -16,5 +16,9 @@
 	 */
 	/** \example example_UsingIterators.cc
 	 */
+	/** \example testHerwigCopies.cc
+	 */
+	/** \example testPythiaCopies.cc
+	 */
 
 // This file is used by Doxygen when generating the documentation.

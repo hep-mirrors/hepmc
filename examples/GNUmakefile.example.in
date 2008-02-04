@@ -42,6 +42,8 @@ endif
 		  example_PythiaParticle.cc	\
 		  example_ReadMyPythia.cc	\
 		  example_UsingIterators.cc	\
+		  testPythiaCopies.cc	\
+		  testHerwigCopies.cc	\
 		  initPythia.cc		\
 		  initpydata.f
   HDRS          = $(HepMCdir)/include/HepMC/*.h *.h
@@ -54,7 +56,9 @@ endif
 		  example_MyPythiaWithEventSelection.exe	\
 		  example_PythiaParticle.exe	\
 		  example_ReadMyPythia.exe	\
-		  example_UsingIterators.exe
+		  example_UsingIterators.exe	\
+		  testPythiaCopies.exe	\
+		  testHerwigCopies.exe
 
 ################################################################################ 
 
@@ -189,6 +193,18 @@ example_UsingIterators.exe: example_UsingIterators.o
 	$(CXX) $(FLAGS) example_UsingIterators.o \
 		$(HepMClib) \
 	        $(LINK_LIBS) -o $@
+
+testPythiaCopies.exe: $(initpydata_OBJ) $(pythia_OBJ) testPythiaCopies.o
+	@echo "Building $@ ..."
+	$(CXX) $(FLAGS) $(pythia_OBJ) testPythiaCopies.o \
+		$(HepMClib) $(HepMCfiolib) \
+	        $(Pythia_LIB) $(LINK_LIBS) -o $@
+
+testHerwigCopies.exe: testHerwigCopies.o
+	@echo "Building $@ ..."
+	$(CXX) $(FLAGS) testHerwigCopies.o \
+		$(HepMClib) $(HepMCfiolib) \
+	        $(Herwig_LIB) $(LINK_LIBS) -o $@
 
 ###############################################################################
 # instructions for building a .o file from a .cxx file
