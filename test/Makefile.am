@@ -24,14 +24,15 @@ endif
 
 # Identify executables needed during testing:
 check_PROGRAMS = testHepMC testHepMCIteration testMass \
-                 testPrintBug testSimpleVector testDeprecated
+                 testPrintBug testSimpleVector testMultipleCopies \
+		 testDeprecated
 
 check_SCRIPTS = testHepMC.sh testHepMCIteration.sh testPrintBug.sh \
                 testMass.sh testDeprecated.sh
 
 # Identify test(s) to run when 'make check' is requested:
 TESTS = testHepMC.sh testHepMCIteration.sh testMass.sh \
-        testPrintBug.sh testSimpleVector testDeprecated.sh
+        testPrintBug.sh testSimpleVector testMultipleCopies testDeprecated.sh
 
 # Identify the test(s) for which failure is the intended outcome:
 XFAIL_TESTS = 
@@ -40,6 +41,7 @@ XFAIL_TESTS =
 testHepMC_SOURCES          = testHepMC.cc
 testMass_SOURCES           = testMass.cc
 testHepMCIteration_SOURCES = testHepMCIteration.cc
+testMultipleCopies_SOURCES = testMultipleCopies.cc
 testPrintBug_SOURCES       = testPrintBug.cc
 testSimpleVector_SOURCES   = testSimpleVector.cc
 testDeprecated_SOURCES     = testDeprecated.cc
@@ -55,4 +57,5 @@ CLEANFILES = testHepMC.out testHepMCParticle.out testHepMCExtended.out \
              testPrintBug.out testHepMCIterationExtended.out testMass.out \
 	     testAscii.dat testHepMCExtended.dat \
              testHepMCIteration.dat testMass1.dat testMass2.dat \
-             testDeprecated.cout testHepMC.cout testHepMCIteration.cout 
+             testDeprecated.cout testHepMC.cout testHepMCIteration.cout \
+	     testMultipleCopies.out
