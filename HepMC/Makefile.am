@@ -9,6 +9,7 @@ COPY_P = @COPY_P@
 
 pkginclude_HEADERS = \
 	CommonIO.h	\
+	CompareGenEvent.h	\
 	Flow.h		\
 	GenEvent.h	\
 	GenParticle.h	\
