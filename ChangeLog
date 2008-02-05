@@ -1,3 +1,42 @@
+  --------------------------  HepMC-2.03.04  --------------------------
+
+2008-02-05  Lynn Garren
+
+	* test: use /bin/bash instead of /bin/sh in shell scripts
+	
+	* GenEvent, GenVertex, GenParticle: remove static counters
+	These counters were only for the debugging convenience of the 
+	HepMC code developer.  They were not accessible by users.
+
+2008-02-04  Lynn Garren
+
+	* fio/IO_HERWIG.cc: fix for Z0 mother-daughter problem (from Atlas)
+	
+	* HepMC/SimpleVector.h: Remove simple math methods
+
+2007-01-29  Lynn Garren
+
+	* examples/testHerwigCopies.cc: compare copies of Herwig events
+
+	* examples/testPythiaCopies.cc: compare copies of Pythia events
+
+2007-01-15  Lynn Garren
+
+	* TempParticleMap.h: use barcode instead of counter for ordering
+	to solve a problem with changed order of particles when making copies
+
+2007-01-14  Lynn Garren
+
+	* HepMC/CompareGenEvent.h: new utility to compare two
+	copies of a GenEvent object
+
+	* test/testMultipleCopies.cc.in: verify that two copies of
+	the same GenEvent object are, indeed, the same
+	
+	* test/testHepMCIteration: use a different output file name so the 
+	test will work if you build on top of the source code
+
+
   --------------------------  HepMC-2.03.03  --------------------------
 
 2007-12-17  Lynn Garren
@@ -96,6 +135,39 @@
 	  an output stream.
 	* IO_Ascii and IO_ExtendedAscii are deprecated.
 	* examples use IO_GenEvent
+
+  --------------------------  HepMC-2.01.10  --------------------------
+
+2008-02-05  Lynn Garren
+
+	* test: use /bin/bash instead of /bin/sh in shell scripts
+
+	* doc: The HepMC 1 and HepMC 2 user manuals have been merged 
+	into a single manual.
+
+2008-02-04  Lynn Garren
+
+	* fio/IO_HERWIG.cc: fix for Z0 mother-daughter problem (from Atlas)
+
+2008-01-14  Lynn Garren
+	
+	* test/testHepMCIteration: use a different output file name so the 
+	test will work if you build on top of the source code
+
+2007-12-17  Lynn Garren
+
+	* HepMC/Flow.h: comment changes for doxygen
+
+	* HepMC/GenParticle.h, src/GenParticle.cc: remove remnant static counter
+
+        * Use fully qualified names (e.g., HepMC::GenParticle) inside class
+          templates (e.g., std::map<>) wherever they are used within a
+          header so that rootcint can make the dictionary.
+	  
+	* src/IO_ExtendedAscii.cc: make sure all info is filled when reading
+
+	* configure.in: add support for g++-*
+	build dynamic libraries for MacOSX - thanks to James Monk
 
   --------------------------  HepMC-2.01.08  --------------------------
 
