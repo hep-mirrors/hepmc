@@ -24,13 +24,13 @@ endif
 
 # Identify executables needed during testing:
 check_PROGRAMS = testHepMC testHepMCIteration testMass \
-                 testPrintBug testSimpleVector testMultipleCopies
+                 testPrintBug testSimpleVector
 
 check_SCRIPTS = testHepMC.sh testHepMCIteration.sh testPrintBug.sh testMass.sh
 
 # Identify test(s) to run when 'make check' is requested:
 TESTS = testHepMC.sh testHepMCIteration.sh testMass.sh \
-        testPrintBug.sh testSimpleVector testMultipleCopies
+        testPrintBug.sh testSimpleVector
 
 # Identify the test(s) for which failure is the intended outcome:
 XFAIL_TESTS = 
@@ -39,19 +39,15 @@ XFAIL_TESTS =
 testHepMC_SOURCES          = testHepMC.cc
 testMass_SOURCES           = testMass.cc
 testHepMCIteration_SOURCES = testHepMCIteration.cc
-testMultipleCopies_SOURCES = testMultipleCopies.cc
 testPrintBug_SOURCES       = testPrintBug.cc
 testSimpleVector_SOURCES   = testSimpleVector.cc
 
 # Identify input data file(s) and prototype output file(s):
 EXTRA_DIST = testHepMC.input testHepMC.output testHepMCParticle.output \
              testPrintBug.output testHepMCExtended.dat \
-	     testHepMCIteration.output \
-	     testMultipleCopies.output
+	     testHepMCIteration.output
 
 # Identify generated file(s) to be removed when 'make clean' is requested:
 CLEANFILES = testHepMC.out testHepMC.cout \
              testHepMCParticle.out testHepMCExtended.dat \
-             testPrintBug.out testHepMCIteration.out testMass.dat \
-	     testMultipleCopies.out testMultipleOriginals.dat \
-	     testMultipleCopies1.dat testMultipleCopies2.dat
+             testPrintBug.out testHepMCIteration.out testMass.dat
