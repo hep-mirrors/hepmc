@@ -1,4 +1,4 @@
-#! /bin/sh
+#! /bin/bash
 # @configure_input@
 
 # cleanup any old output files first
@@ -57,11 +57,11 @@ then
   exit 1;
 fi
 
-if [ -n "$cmd3" ]
-then
-  echo $cmd3
-  exit 1;
-fi
+##if [ -n "$cmd3" ]
+##then
+##  echo $cmd3
+##  exit 1;
+##fi
 
 if [ -n "$cmd4" ]
 then
