@@ -1,22 +1,17 @@
+  --------------------------  HepMC-2.01.10  --------------------------
 
-2007-01-29  Lynn Garren
+2008-02-05  Lynn Garren
 
-	* examples/testHerwigCopies.cc: compare copies of Herwig events
+	* test: use /bin/bash instead of /bin/sh in shell scripts
 
-	* examples/testPythiaCopies.cc: compare copies of Pythia events
+	* doc: The HepMC 1 and HepMC 2 user manuals have been merged 
+	into a single manual.
 
-2007-01-15  Lynn Garren
+2008-02-04  Lynn Garren
 
-	* TempParticleMap.h: use barcode instead of counter for ordering
-	to solve a problem with changed order of particles when making copies
+	* fio/IO_HERWIG.cc: fix for Z0 mother-daughter problem (from Atlas)
 
-2007-01-14  Lynn Garren
-
-	* HepMC/CompareGenEvent.h: new utility to compare two
-	copies of a GenEvent object
-
-	* test/testMultipleCopies.cc.in: verify that two copies of
-	the same GenEvent object are, indeed, the same
+2008-01-14  Lynn Garren
 	
 	* test/testHepMCIteration: use a different output file name so the 
 	test will work if you build on top of the source code
@@ -30,6 +25,8 @@
         * Use fully qualified names (e.g., HepMC::GenParticle) inside class
           templates (e.g., std::map<>) wherever they are used within a
           header so that rootcint can make the dictionary.
+	  
+	* src/IO_ExtendedAscii.cc: make sure all info is filled when reading
 
 	* configure.in: add support for g++-*
 	build dynamic libraries for MacOSX - thanks to James Monk
