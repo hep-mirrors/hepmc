@@ -252,7 +252,7 @@ namespace HepMC {
     double GenVertex::check_momentum_conservation() const {
 	/// finds the difference between the total momentum out and the total
 	/// momentum in vectors, and returns the magnitude of this vector
-	/// i.e.         returns | \vec{p_in} - \vec{p_out} |
+	/// i.e.         returns | vec{p_in} - vec{p_out} |
 	double sumpx = 0, sumpy = 0, sumpz = 0;
 	for ( particles_in_const_iterator part1 = particles_in_const_begin();
 	      part1 != particles_in_const_end(); part1++ ) {
