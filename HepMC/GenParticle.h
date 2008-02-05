@@ -142,7 +142,7 @@ namespace HepMC {
 
     protected: // for internal use only by friend GenVertex class
 
-	static unsigned int counter(); //!< temporary for debugging
+	//static unsigned int counter(); //!< temporary for debugging
 
         /// set production vertex
 	void   set_production_vertex_( GenVertex* productionvertex = 0);
@@ -161,7 +161,7 @@ namespace HepMC {
 	int              m_barcode;           // unique identifier in the event
         double           m_generated_mass;    // mass of this particle when it was generated
 
-	static unsigned int       s_counter;
+	//static unsigned int       s_counter;
     };  
 
     //////////////

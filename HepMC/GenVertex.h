@@ -145,7 +145,7 @@ namespace HepMC {
 	int                                 particles_out_size() const;
 
     protected:
-	static unsigned int     counter(); //!< temporary for debugging
+	//static unsigned int     counter(); //!< temporary for debugging
 
 	/// only the GenEvent (friend) is allowed to set the parent_event,
 	///  and barcode. It is done automatically anytime you add a 
@@ -355,7 +355,7 @@ namespace HepMC {
 	GenEvent*            m_event;
 	int                  m_barcode;   // unique identifier in the event
 
-	static unsigned int  s_counter;
+	//static unsigned int  s_counter;
     };  
 
     ////////////////////////////

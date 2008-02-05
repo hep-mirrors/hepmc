@@ -485,7 +485,7 @@ namespace HepMC {
 	///  intended for use by GenVertex
 	void         remove_barcode( GenVertex*   v );
 
-	static unsigned int counter(); //!<num GenEvent objects in memory
+	//static unsigned int counter(); //!<num GenEvent objects in memory
    	void delete_all_vertices(); //!<delete all vertices owned by this event
 
     private: // data members
@@ -508,7 +508,7 @@ namespace HepMC {
 	HeavyIon*        m_heavy_ion; 	      // undefined by default
 	PdfInfo*         m_pdf_info; 	      // undefined by default
 
-	static unsigned int   s_counter;
+	//static unsigned int   s_counter;
     };
 
     ///////////////////////////

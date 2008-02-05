@@ -15,9 +15,10 @@ namespace HepMC {
 			  int id, const WeightContainer& weights ) 
 	: m_position(position), m_id(id), m_weights(weights), m_event(0),
 	  m_barcode(0)
-    {
-	s_counter++;
-    }
+    {}
+    //{
+	//s_counter++;
+    //}
 
     GenVertex::GenVertex( const GenVertex& invertex ) 
     : m_position( invertex.position() ),
@@ -56,7 +57,7 @@ namespace HepMC {
 	}
 	suggest_barcode( invertex.barcode() );
 	//
-	s_counter++;
+	//s_counter++;
     }
     
     GenVertex::~GenVertex() {
@@ -64,7 +65,7 @@ namespace HepMC {
 	// need to delete any particles previously owned by this vertex
 	if ( parent_event() ) parent_event()->remove_barcode(this);
 	delete_adopted_particles();
-	s_counter--;
+	//s_counter--;
     }
 
     void GenVertex::swap( GenVertex & other)
@@ -418,8 +419,8 @@ namespace HepMC {
     /////////////
     // Static  //
     /////////////
-    unsigned int GenVertex::counter() { return s_counter; }
-    unsigned int GenVertex::s_counter = 0; 
+    //unsigned int GenVertex::counter() { return s_counter; }
+    //unsigned int GenVertex::s_counter = 0; 
 
     /////////////
     // Friends //

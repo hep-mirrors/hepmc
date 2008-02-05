@@ -40,7 +40,7 @@ namespace HepMC {
 	///
 	/// note: default values for m_event_scale, m_alphaQCD, m_alphaQED
 	///       are as suggested in hep-ph/0109068, "Generic Interface..."
-	++s_counter;
+	//++s_counter;
     }
 
     GenEvent::GenEvent( int signal_process_id, int event_number,
@@ -69,7 +69,7 @@ namespace HepMC {
 	///
 	/// note: default values for m_event_scale, m_alphaQCD, m_alphaQED
 	///       are as suggested in hep-ph/0109068, "Generic Interface..."
-	++s_counter;
+	//++s_counter;
     }
 
     GenEvent::GenEvent( const GenEvent& inevent ) 
@@ -89,9 +89,8 @@ namespace HepMC {
 	m_heavy_ion            ( inevent.heavy_ion() ? new HeavyIon(*inevent.heavy_ion()) : 0 ),
 	m_pdf_info             ( inevent.pdf_info() ? new PdfInfo(*inevent.pdf_info()) : 0 )
     {
-	/// deep copy
-	++s_counter;
-	/// deep - makes a copy of all vertices!
+	/// deep copy - makes a copy of all vertices!
+	//++s_counter;
 	//
 
 	// 1. create a NEW copy of all vertices from inevent
@@ -169,7 +168,7 @@ namespace HepMC {
 	delete_all_vertices();
 	delete m_heavy_ion;
 	delete m_pdf_info;
-	--s_counter;
+	//--s_counter;
     }
 
     GenEvent& GenEvent::operator=( const GenEvent& inevent ) 
@@ -193,10 +192,10 @@ namespace HepMC {
 	     << ( signal_process_vertex() ? signal_process_vertex()->barcode()
 		  : 0 )
 	     << "\n";
-	ostr << " Current Memory Usage: " 
-	     << GenEvent::counter() << " events, "
-	     << GenVertex::counter() << " vertices, "
-	     << GenParticle::counter() << " particles.\n"; 
+	//ostr << " Current Memory Usage: " 
+	//     << GenEvent::counter() << " events, "
+	//     << GenVertex::counter() << " vertices, "
+	//     << GenParticle::counter() << " particles.\n"; 
 	ostr << " Entries this event: " << vertices_size() << " vertices, "
 	     << particles_size() << " particles.\n"; 
 	if( m_beam_particle_1 && m_beam_particle_2 ) {
@@ -297,10 +296,10 @@ namespace HepMC {
             std::cerr << "Number vtx,particle the event after deleting = "
                       << m_vertex_barcodes.size() << "  " 
 		      << m_particle_barcodes.size() << std::endl;
-            std::cerr << "Total Number vtx,particle in memory "
-                      << "after method called = "
-                      << GenVertex::counter() << "\t"
-		      << GenParticle::counter() << std::endl;
+            //std::cerr << "Total Number vtx,particle in memory "
+             //         << "after method called = "
+             //         << GenVertex::counter() << "\t"
+		//      << GenParticle::counter() << std::endl;
         }
 	return;
     }
@@ -329,10 +328,10 @@ namespace HepMC {
             std::cerr << "Number vtx,particle the event after deleting = "
                       << m_vertex_barcodes.size() << "  " 
 		      << m_particle_barcodes.size() << std::endl;
-            std::cerr << "Total Number vtx,particle in memory "
-                      << "after method called = "
-                      << GenVertex::counter() << "\t"
-		      << GenParticle::counter() << std::endl;
+            //std::cerr << "Total Number vtx,particle in memory "
+            //          << "after method called = "
+            //          << GenVertex::counter() << "\t"
+		//      << GenParticle::counter() << std::endl;
 	}
     }
     
@@ -508,7 +507,7 @@ namespace HepMC {
     /////////////
     // Static  //
     /////////////
-    unsigned int GenEvent::counter() { return s_counter; }
-    unsigned int GenEvent::s_counter = 0; 
+    //unsigned int GenEvent::counter() { return s_counter; }
+    //unsigned int GenEvent::s_counter = 0; 
 
 } // HepMC

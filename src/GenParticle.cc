@@ -15,9 +15,10 @@ namespace HepMC {
 	m_momentum(0), m_pdg_id(0), m_status(0), m_flow(this),
         m_polarization(0), m_production_vertex(0), m_end_vertex(0),
         m_barcode(0), m_generated_mass(0.)
-    {
-	s_counter++;
-    }
+    {}
+    //{
+	//s_counter++;
+    //}
 
     GenParticle::GenParticle( const FourVector& momentum, 
 			int pdg_id, int status, 
@@ -30,7 +31,7 @@ namespace HepMC {
 	// Establishing *this as the owner of m_flow is done above,
 	// then we set it equal to the other flow pattern (subtle)
 	set_flow(itsflow);
-	s_counter++;
+	//s_counter++;
     }
 
     GenParticle::GenParticle( const GenParticle& inparticle ) : 
@@ -51,12 +52,12 @@ namespace HepMC {
 	set_production_vertex_( 0 );
 	set_end_vertex_( 0 );
 	suggest_barcode( inparticle.barcode() );
-	s_counter++;
+	//s_counter++;
     }
 
     GenParticle::~GenParticle() {    
 	if ( parent_event() ) parent_event()->remove_barcode(this);
-	s_counter--;
+	//s_counter--;
     }
 
     void GenParticle::swap( GenParticle & other)
@@ -177,8 +178,8 @@ namespace HepMC {
     /////////////
     // Static  //
     /////////////
-    unsigned int GenParticle::counter() { return s_counter; }
-    unsigned int GenParticle::s_counter = 0U; 
+    //unsigned int GenParticle::counter() { return s_counter; }
+    //unsigned int GenParticle::s_counter = 0U; 
 
     /////////////
     // Friends //
