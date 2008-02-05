@@ -512,6 +512,3 @@ namespace HepMC {
     unsigned int GenEvent::s_counter = 0; 
 
 } // HepMC
-
-
-
