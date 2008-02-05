@@ -46,7 +46,9 @@ namespace HepMC {
 	m_herwig_to_pdg_id[36] =36;
 	m_herwig_to_pdg_id[37] =37;
 	m_herwig_to_pdg_id[39] =39;
-       
+ 
+	m_herwig_to_pdg_id[40] =40; //Charybdis Black Hole
+      
 	m_herwig_to_pdg_id[81] =81;
 	m_herwig_to_pdg_id[82] =82;
 	m_herwig_to_pdg_id[83] =83;
@@ -123,6 +125,7 @@ namespace HepMC {
 	//
 	// Here we assume that the first two particles in the list 
 	// are the incoming beam particles.
+	// Best make sure this is done before any rearranging...
 	evt->set_beam_particles( hepevt_particle[1], hepevt_particle[2] );
 	//
 	// 3. We need to take special care with the hard process
@@ -146,7 +149,29 @@ namespace HepMC {
 	    hard_vtx->add_particle_in( hepevt_particle[index_122] );
 	    // evt->add_vertex( hard_vtx ); // not necessary, its done in 
 	                                    // set_signal_process_vertex
-	    evt->set_signal_process_vertex( hard_vtx );
+	    //BPK - Atlas -> index_hard retained if it is a boson
+	    int index_hard = 0;
+	    for ( int i = 1; i <=HEPEVT_Wrapper::number_entries(); i++ ) {
+	      if ( HEPEVT_Wrapper::status(i)==120 ) index_hard=i;
+	      if ( index_hard!=0 ) break;
+	    }
+	    
+	    if ( index_hard!=0) {
+	      hard_vtx->add_particle_out( hepevt_particle[index_hard] );
+	      GenVertex* hard_vtx2 = new GenVertex();
+	      hard_vtx2->add_particle_in( hepevt_particle[index_hard] );
+		  for ( int i = 1; i <= HEPEVT_Wrapper::number_entries(); ++i ) {
+		if (  HEPEVT_Wrapper::first_parent(i)==index_hard ) {
+		  hard_vtx2->add_particle_out( hepevt_particle[i] );
+		}
+	      }
+	      evt->set_signal_process_vertex( hard_vtx );
+	      evt->set_signal_process_vertex( hard_vtx2 );
+	    }
+	    else {
+	      evt->set_signal_process_vertex( hard_vtx );
+	    }
+	    //BPK - Atlas -<
 	}
 	//
 	// 4. loop over HEPEVT particles AGAIN, this time creating vertices
@@ -430,9 +455,13 @@ namespace HepMC {
 
 	for ( int i = HEPEVT_Wrapper::first_child(index_hard);
 	      i <= HEPEVT_Wrapper::last_child(index_hard); i++ ) {
-	    HEPEVT_Wrapper::set_parents( 
-		i, HEPEVT_Wrapper::first_parent(index_hard), 
-		HEPEVT_Wrapper::last_parent(index_hard) );
+	    //BPK - Atlas ->
+	    if (index_hard && HEPEVT_Wrapper::id(index_hard) == 0 ) {
+	      HEPEVT_Wrapper::set_parents( 
+		  i, HEPEVT_Wrapper::first_parent(index_hard), 
+		  HEPEVT_Wrapper::last_parent(index_hard) );
+	    }
+	    //BPK - Atlas -<
 
 	    // When the direct descendants of the hard process are hadrons,
 	    // then the 2nd child contains color flow information, and so
@@ -447,8 +476,10 @@ namespace HepMC {
 	}
 
 	// now zero the collision and hard entries.
-	if (index_hard) zero_hepevt_entry(index_hard);
-	if (index_hard) zero_hepevt_entry(index_collision);
+	//BPK - Atlas ->
+	if (index_hard && HEPEVT_Wrapper::id(index_hard) == 0 ) zero_hepevt_entry(index_hard);
+	if (index_hard && HEPEVT_Wrapper::id(index_collision) == 0  ) zero_hepevt_entry(index_collision);
+	//BPK - Atlas -<
 
 	//     Loop over the particles individually and handle oddities
 	for ( int i=1; i <=HEPEVT_Wrapper::number_entries(); i++ ) {
@@ -584,6 +615,11 @@ namespace HepMC {
 		}
 	    }
 	    // if any one of the mothers gave a bad outcome, zero all mothers
+	    //BPK - Atlas ->
+	    // do not disconnect photons (most probably from photos)
+	    if ( HEPEVT_Wrapper::id(i) == 22 && HEPEVT_Wrapper::status(i) == 1 )
+	      { first_is_acceptable = true; }
+	    //BPK - Atlas -<
 	    if ( !first_is_acceptable ) {
 	      HEPEVT_Wrapper::set_parents( i, 0, 0 );
 	    } else if ( !last_is_acceptable ) {
