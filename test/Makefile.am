@@ -55,7 +55,9 @@ EXTRA_DIST = testHepMC.input testHepMC.output testHepMCParticle.output \
 # Identify generated file(s) to be removed when 'make clean' is requested:
 CLEANFILES = testHepMC.out testHepMCParticle.out testHepMCExtended.out \
              testPrintBug.out testHepMCIterationExtended.out testMass.out \
-	     testAscii.dat testHepMCExtended.dat \
+	     testAscii.dat testHepMCExtended.dat testHepMCIteration.out \
              testHepMCIteration.dat testMass1.dat testMass2.dat \
              testDeprecated.cout testHepMC.cout testHepMCIteration.cout \
-	     testMultipleCopies.out
+	     testMultipleCopies.out testHepMCVarious.out testIOAscii.dat \
+	     testMultipleCopies1.dat testMultipleCopies2.dat \
+	     testMultipleOriginals.dat testIOHepMCExtended.dat
