@@ -1,3 +1,19 @@
+
+2008-02-22  Lynn Garren
+
+	* fio/IO_HEPEVT.cc:  According to standard HepMC design, all vertices 
+	in an event are expected to contain particles.  If, for instance, the
+	first two particles have no parents, then they should simply not have 
+	a production vertex.  However, in at least one instance empty production
+	vertices were created for the first two particles. IO_HEPEVT now
+	protects against this.
+
+
+2008-02-18  Lynn Garren
+
+	* HepMC/HEPEVT_Wrapper.h: fix calculation of the total size 
+	of the common block
+
   --------------------------  HepMC-2.03.04  --------------------------
 
 2008-02-05  Lynn Garren
