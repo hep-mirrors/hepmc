@@ -20,7 +20,7 @@ std::string versionName( );	//!< return HepMC version
 
 inline std::string versionName( )
 {
-    return "2.03.04";
+    return "2.03.05";
 }
 
 inline void version( )
