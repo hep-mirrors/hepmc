@@ -161,7 +161,10 @@ namespace HepMC {
 	    FourVector m = index_to_particle[i]->momentum();
 	    HEPEVT_Wrapper::set_momentum( i, m.px(), m.py(), m.pz(), m.e() );
 	    HEPEVT_Wrapper::set_mass( i, index_to_particle[i]->generatedMass() );
-	    if ( index_to_particle[i]->production_vertex() ) {
+	    // there should ALWAYS be particles in any vertex, but some generators
+	    // are making non-kosher HepMC events
+	    if ( index_to_particle[i]->production_vertex() && 
+	         index_to_particle[i]->production_vertex()->particles_in_size()) {
 		FourVector p = index_to_particle[i]->
 				     production_vertex()->position();
 		HEPEVT_Wrapper::set_position( i, p.x(), p.y(), p.z(), p.t() );
