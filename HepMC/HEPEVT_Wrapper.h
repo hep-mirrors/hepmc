@@ -64,7 +64,7 @@
 #include <ctype.h>
 
     const unsigned int hepevt_bytes_allocation = 
-                sizeof(long int) * ( 2 + 4 * HEPEVT_EntriesAllocation )
+                sizeof(long int) * ( 2 + 6 * HEPEVT_EntriesAllocation )
                 + sizeof(double) * ( 9 * HEPEVT_EntriesAllocation );
 
 
