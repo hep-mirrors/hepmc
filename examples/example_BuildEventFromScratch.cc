@@ -123,7 +123,7 @@ int main() {
     for ( GenEvent::particle_const_iterator p = evt->particles_begin(); 
 	      p != evt->particles_end(); ++p ){
 	if( (*p)->status() == 1 ) {
-	    sum += SVtoLV( (*p)->momentum() );
+	    sum += convertTo( (*p)->momentum() );
 	    (*p)->print();
 	}
     }

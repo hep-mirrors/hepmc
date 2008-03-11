@@ -29,7 +29,7 @@ int main() {
     hwproc.PBEAM2 = 7000.; // energy of beam2
     // 1610 = gg->H--> WW, 1706 = qq-->ttbar, 2510 = ttH -> ttWW
     hwproc.IPROC = 1706; // qq -> ttbar production 
-    hwproc.MAXEV = 100; // number of events
+    hwproc.MAXEV = 50; // number of events
     // tell it what the beam particles are:
     for ( unsigned int i = 0; i < 8; ++i ) {
         hwbmch.PART1[i] = (i < 1) ? 'P' : ' ';

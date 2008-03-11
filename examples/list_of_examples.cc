@@ -20,5 +20,7 @@
 	 */
 	/** \example testPythiaCopies.cc
 	 */
+	/** \example VectorConversion.h
+	 */
 
 // This file is used by Doxygen when generating the documentation.

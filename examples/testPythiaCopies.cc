@@ -37,7 +37,7 @@ int main() {
     std::ofstream out3( "testPythiaCopies2.dat" );
     //
     //........................................EVENT LOOP
-    for ( int i = 1; i <= 100; i++ ) {
+    for ( int i = 1; i <= 50; i++ ) {
 	if ( i%50==1 ) std::cout << "Processing Event Number " 
 				 << i << std::endl;
 	call_pyevnt();      // generate one event with Pythia
