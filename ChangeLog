@@ -1,10 +1,13 @@
 
-2008-03-10  Lynn Garren
+2008-03-11  Lynn Garren
 
 	* src/GenEvent.cc: The GenVertex pointer to the parent event was 
 	  not properly moved when the operator= method was used to copy
 	  a GenEvent.  That bug is now fixed.
-	* test/testMultipleCopies.cc.in: Add explicit test for the reported bug.
+	* GenVertex: added protected change_parent_event_ method for swap 
+	  as part of bug fix.
+	* test/testMultipleCopies.cc.in: Add explicit tests for operator=
+	  and swap.
 
   --------------------------  HepMC-2.03.05  --------------------------
 

@@ -97,27 +97,68 @@ int main() {
 	//........................................PRINT RESULT
 	os << std::endl;
 	os << num_good_events << " out of " << icount 
-	   << " processed events passed the cuts. Finished." << std::endl;
+	   << " processed events passed the cuts." << std::endl;
+	os << std::endl;
+	os << " GenEvent copy constructor passes the test" << std::endl;
+	os << std::endl;
     }
 
-    // block to test 
+    // test operator= and swap
     {
 	// declare an input strategy
 	HepMC::IO_GenEvent ascii_in("@srcdir@/testIOGenEvent.input",std::ios::in);
         //
         HepMC::GenEvent* evt5 = ascii_in.read_next_event();
-	
-        //HepMC::GenEvent* evt5 = new HepMC::GenEvent();
         HepMC::GenEvent* evt6 = new HepMC::GenEvent();
-	//evt5->set_event_number(101);
         os << "event number for evt5: " << evt5->event_number() << std::endl;
         os << "event number for evt6: " << evt6->event_number() << std::endl;
-	// copy actual GenEvents, not pointers
+	// copy  GenEvent object
         (*evt6) = (*evt5);
+	if( !compareGenEvent(evt5,evt6) ) { return -4; }
         delete evt5;
         os << "event number for evt6 after copy: " << evt6->event_number() << std::endl;
+	os << std::endl;
         delete evt6;
+	os << " GenEvent operator= passes the test" << std::endl;
+	os << std::endl;
+	
+	evt5 = ascii_in.read_next_event();
+	evt6 = ascii_in.read_next_event();
+        HepMC::GenEvent* evt7 = new HepMC::GenEvent(*evt5);
+        HepMC::GenEvent* evt8 = new HepMC::GenEvent(*evt6);
+        os << "event number for evt5: " << evt5->event_number() << std::endl;
+        os << "event number for evt6: " << evt6->event_number() << std::endl;
+        os << "before swap, evt5 has: " << evt5->vertices_size() << " vertices and "
+	   << evt5->particles_size() << " particles" << std::endl;
+        os << "before swap, evt6 has: " << evt6->vertices_size() << " vertices and "
+	   << evt6->particles_size() << " particles" << std::endl;
+        os << "before swap, evt7 has: " << evt7->vertices_size() << " vertices and "
+	   << evt7->particles_size() << " particles" << std::endl;
+        os << "before swap, evt8 has: " << evt8->vertices_size() << " vertices and "
+	   << evt8->particles_size() << " particles" << std::endl;
+	(*evt6).swap((*evt5));
+        os << "event number for evt5 after swap: " << evt5->event_number() << std::endl;
+        os << "event number for evt6 after swap: " << evt6->event_number() << std::endl;
+        // evt6 should now match evt7
+        os << "after swap, evt6 has: " << evt6->vertices_size() << " vertices and "
+	   << evt6->particles_size() << " particles" << std::endl;
+        os << "after swap, evt7 has: " << evt7->vertices_size() << " vertices and "
+	   << evt7->particles_size() << " particles" << std::endl;
+	if( !compareGenEvent(evt6,evt7) ) { return -6; }
+        // evt5 should now match evt8
+        os << "after swap, evt5 has: " << evt5->vertices_size() << " vertices and "
+	   << evt5->particles_size() << " particles" << std::endl;
+        os << "after swap, evt8 has: " << evt8->vertices_size() << " vertices and "
+	   << evt8->particles_size() << " particles" << std::endl;
+	if( !compareGenEvent(evt5,evt8) ) { return -5; }
+	// cleanup
+        delete evt5;
+        delete evt6;
+        delete evt7;
+        delete evt8;
+	os << std::endl;
+	os << " GenEvent swap passes the test" << std::endl;
+	os << std::endl;
     }
-
     return 0;
 }

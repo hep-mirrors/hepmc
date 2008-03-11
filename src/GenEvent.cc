@@ -159,21 +159,13 @@ namespace HepMC {
 	std::swap(m_heavy_ion            , other.m_heavy_ion            );
 	std::swap(m_pdf_info             , other.m_pdf_info             );
 	// must now adjust GenVertex back pointers
-	for ( GenEvent::vertex_const_iterator v = vertices_begin();
-	      v != vertices_end(); ++v ) {
-	    // if v previously pointed to another GenEvent, 
-	    // remove it from that GenEvent's list
-	    if ( (*v)->parent_event() && (*v)->parent_event() != this ) {
-		bool remove_status = (*v)->parent_event()->remove_vertex( (*v) );
-		if ( !remove_status ) {	       
-		    std::cerr << "GenEvent::swap ERROR "
-			      << "GenVertex::parent_event points to \n"
-			      << "an event that does not point back to the "
-			      << "GenVertex. \n This probably indicates a deeper "
-			      << "problem. " << std::endl;
-		}
-	    }
-	    (*v)->set_parent_event_( this );
+	for ( GenEvent::vertex_const_iterator vthis = vertices_begin();
+	      vthis != vertices_end(); ++vthis ) {
+	    (*vthis)->change_parent_event_( this );
+	}
+	for ( GenEvent::vertex_const_iterator voth = other.vertices_begin();
+	      voth != other.vertices_end(); ++voth ) {
+	    (*voth)->change_parent_event_( &other );
 	}
     }
 

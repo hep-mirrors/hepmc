@@ -152,6 +152,7 @@ namespace HepMC {
 	///  vertex to an event
 	void                    set_parent_event_( GenEvent* evt ); //!< set parent event
 	void                    set_barcode_( int the_bar_code ); //!< set identifier
+	void                    change_parent_event_( GenEvent* evt ); //!< for use with swap
 
 	/////////////////////////////
 	// edge_iterator           // (protected - for internal use only)

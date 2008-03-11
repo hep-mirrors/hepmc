@@ -416,6 +416,16 @@ namespace HepMC {
 	}
     }
 
+    void GenVertex::change_parent_event_( GenEvent* new_evt ) 
+    { 
+	//
+	// this method is for use with swap
+	// particles and vertices have already been exchanged, 
+	// but the backpointer needs to be fixed
+	//GenEvent* orig_evt = m_event;
+	m_event = new_evt; 
+    }
+
     /////////////
     // Static  //
     /////////////
