@@ -8,6 +8,10 @@
 	  as part of bug fix.
 	* test/testMultipleCopies.cc.in: Add explicit tests for operator=
 	  and swap.
+	  
+	* examples: minor tweaks for readability
+	
+	* test: reduce size of input files
 
   --------------------------  HepMC-2.03.05  --------------------------
 
