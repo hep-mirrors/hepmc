@@ -52,6 +52,8 @@ namespace HepMC {
 	bool              trust_mothers_before_daughters() const;
 	/// default is true
 	bool              print_inconsistency_errors() const;
+	/// default is true
+	bool              trust_beam_particles() const;
         /// define mother daughter trust rules
 	void              set_trust_mothers_before_daughters( bool b = 1 );
         /// define mother daughter trust rules
@@ -80,6 +82,8 @@ namespace HepMC {
 	/// happens for the stdhep(2001) translation of Isajet, so we need
 	/// an option to toggle the choices.
 	void              set_print_inconsistency_errors( bool b = 1 );
+        /// declare whether or not beam particles exist
+	void              set_trust_beam_particles( bool b = true );
 
     protected: // for internal use only
         /// create a GenParticle
@@ -107,6 +111,7 @@ namespace HepMC {
 	bool m_trust_mothers_before_daughters;
 	bool m_trust_both_mothers_and_daughters;
 	bool m_print_inconsistency_errors; 
+	bool m_trust_beam_particles;
     };
 
     ////////////////////////////
@@ -129,6 +134,12 @@ namespace HepMC {
 
     inline void IO_HEPEVT::set_print_inconsistency_errors( bool b  )
     { m_print_inconsistency_errors = b; }
+
+    inline bool IO_HEPEVT::trust_beam_particles() const
+    { return m_trust_beam_particles; }
+
+    inline void IO_HEPEVT::set_trust_beam_particles( bool b )
+    { m_trust_beam_particles = b; }
 
 } // HepMC
 

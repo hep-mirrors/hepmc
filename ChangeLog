@@ -2,6 +2,10 @@
 2008-03-12  Lynn Garren
 	
 	* test: reduce size of input files
+	
+	* IO_HEPEVT: add trust_beam_particles and set_trust_beam_particles
+	  methods so the user can specify that no beam particles are available.
+	  This fixes a problem with pythia6 input when the user chooses "none".
 
 2008-03-11  Lynn Garren
 

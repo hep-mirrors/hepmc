@@ -11,7 +11,8 @@ namespace HepMC {
 
     IO_HEPEVT::IO_HEPEVT() : m_trust_mothers_before_daughters(1),
 			     m_trust_both_mothers_and_daughters(0),
-			     m_print_inconsistency_errors(1)
+			     m_print_inconsistency_errors(1),
+			     m_trust_beam_particles(true)
     {}
 
     IO_HEPEVT::~IO_HEPEVT(){}
@@ -65,7 +66,9 @@ namespace HepMC {
 	//
 	// Here we assume that the first two particles in the list 
 	// are the incoming beam particles.
+	if( trust_beam_particles() ) {
 	evt->set_beam_particles( hepevt_particle[1], hepevt_particle[2] );
+	}
 	//
 	// 3.+4. loop over HEPEVT particles AGAIN, this time creating vertices
 	for ( int i = 1; i <= HEPEVT_Wrapper::number_entries(); ++i ) {
