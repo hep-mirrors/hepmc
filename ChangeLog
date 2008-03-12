@@ -1,4 +1,8 @@
 
+2008-03-12  Lynn Garren
+	
+	* test: reduce size of input files
+
 2008-03-11  Lynn Garren
 
 	* src/GenEvent.cc: The GenVertex pointer to the parent event was 
@@ -10,8 +14,6 @@
 	  and swap.
 	  
 	* examples: minor tweaks for readability
-	
-	* test: reduce size of input files
 
   --------------------------  HepMC-2.03.05  --------------------------
 
