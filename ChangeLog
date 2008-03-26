@@ -1,3 +1,24 @@
+
+2008-03-26  Lynn Garren
+
+	* HepMC/MomentumUnits.h: new class to encapsulate momentum units,
+	  which are represented by a single enum
+	* HepMC/PositionUnits.h: new class to encapsulate position units,
+	  which are represented by a single enum
+	* GenEvent: add MomentumUnits and PositionUnits data members and
+	  associated methods
+	* GenVertex: add protected convert_position method
+	* GenParticle: add protected convert_momentum method
+
+	* HepMC/PdfInfo.h: add pdf_id1(), pdf_id2(), set_pdf_id1(), and
+	  set_pdf_id2() for the pdf set id numbers
+	
+	* IO_GenEvent: get and put unit information in a new line 
+	  The first character of the unit line is "U".
+	* IO_GenEvent: process the new PdfInfo data members
+	
+	* test/testUnits.cc: new test for MomentumUnits and PositionUnits
+	
   --------------------------  HepMC-2.03.06  --------------------------
 
 2008-03-12  Lynn Garren
