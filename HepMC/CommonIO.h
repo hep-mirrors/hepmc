@@ -68,6 +68,8 @@ public:
 
   bool read_io_genevent( std::istream* is, GenEvent* evt );
 
+  bool read_units( std::istream* is, GenEvent* evt );
+
   /// ParticleDataTable is deprecated.
   /// We include this method for reading old files which may have ParticleData information.
   bool read_io_particle_data_table( std::istream*, ParticleDataTable* );
@@ -94,6 +96,7 @@ private:
   std::string m_io_extendedascii_pdt_start;
   std::string m_io_ascii_pdt_end;
   std::string m_io_extendedascii_pdt_end;
+  // io type
   int         m_io_type;
   
 
@@ -144,7 +147,6 @@ inline void CommonIO::write_IO_ExtendedAscii_PDT_Key( std::ostream& os )
 
 inline void CommonIO::write_IO_ExtendedAscii_PDT_End( std::ostream& os )
 { os << m_io_extendedascii_pdt_end << "\n"; }
-
 
 }
 

@@ -5,12 +5,17 @@
 //
 // ----------------------------------------------------------------------
 
+#include <string>
+#include <sstream>
+
 #include "HepMC/CommonIO.h"
 #include "HepMC/GenEvent.h"
 #include "HepMC/HeavyIon.h"
 #include "HepMC/PdfInfo.h"
 #include "HepMC/TempParticleMap.h"
 #include "HepMC/ParticleDataTable.h"
+#include "HepMC/MomentumUnits.h"
+#include "HepMC/PositionUnits.h"
 
 namespace HepMC {
 
@@ -237,6 +242,8 @@ bool CommonIO::read_io_genevent( std::istream* is, GenEvent* evt )
     if(ion) evt->set_heavy_ion( *ion );
     PdfInfo* pdf = read_pdf_info(is);
     if(pdf) evt->set_pdf_info( *pdf );
+    // get unit information if it exists
+    read_units( is, evt );
     //
     // the end vertices of the particles are not connected until
     //  after the event is read --- we store the values in a map until then
@@ -321,12 +328,17 @@ PdfInfo* CommonIO::read_pdf_info(std::istream* is)
     } 
     is->ignore();
     // read values into temp variables, then create a new PdfInfo object
-    int id1 =0, id2 =0;
+    int id1 =0, id2 =0, pdf_id1=0, pdf_id2=0;
     double  x1 = 0., x2 = 0., scale = 0., pdf1 = 0., pdf2 = 0.; 
     *is >> id1 >> id2 >> x1 >> x2 >> scale >> pdf1 >> pdf2;
+    // check to see if we are at the end of the line
+    if( is->peek() != 10 ) {
+        *is >> pdf_id1 >> pdf_id2;
+    }
     is->ignore(2,'\n');
     if( id1 == 0 ) return false;
-    PdfInfo* pdf = new PdfInfo( id1, id2, x1, x2, scale, pdf1, pdf2);
+    PdfInfo* pdf = new PdfInfo( id1, id2, x1, x2, scale, pdf1, pdf2,
+                                pdf_id1, pdf_id2 );
     //
     return pdf;
 }
@@ -338,6 +350,9 @@ GenVertex* CommonIO::read_vertex( std::istream* is, TempParticleMap& particle_to
     // test to be sure the next entry is of type "V" then ignore it
     if ( !(*is) || is->peek()!='V' ) {
 	std::cerr << "CommonIO::read_vertex setting badbit." << std::endl;
+	std::string line;
+	*is >> line;
+	std::cerr << "attempting to read " << line << std::endl;
 	is->clear(std::ios::badbit); 
 	return false;
     } 
@@ -436,6 +451,38 @@ ParticleData* CommonIO::read_particle_data( std::istream* is, ParticleDataTable*
 					    double(its_spin)/2.);
     pdt->insert(pdata);
     return pdata;
+}
+
+bool CommonIO::read_units( std::istream* is, GenEvent* evt ) {
+    // assumes mode has already been checked
+    //
+    // test to be sure the next entry is of type "F" then ignore it
+    if ( !(*is) ) {
+	std::cerr << "CommonIO::read_units setting badbit." << std::endl;
+	is->clear(std::ios::badbit); 
+	return false;
+    } 
+    // somehow got here when we weren't using IO_GenEvent
+    if ( m_io_type != gen ) {
+        evt->set_momentum_units( MomentumUnits::unknown );
+        evt->set_position_units( PositionUnits::unknown );
+        return true;
+    }
+    // have no units, but this is not an error
+    // releases prior to 2.04.00 did not write unit information
+    if ( is->peek() !='U') {
+        evt->set_momentum_units( MomentumUnits::unknown );
+        evt->set_position_units( PositionUnits::unknown );
+	return true;
+    } 
+    is->ignore();	// ignore the first character in the line
+    std::string mom, pos;
+    *is >> mom >> pos;
+    is->ignore(1);      // eat the extra whitespace
+    evt->set_momentum_units(mom);
+    evt->set_position_units(pos);
+    //
+    return true;
 }
 
 }	// end namespace HepMC

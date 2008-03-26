@@ -139,6 +139,7 @@ namespace HepMC {
 	output('\n');
 	write_heavy_ion( evt->heavy_ion() );
 	write_pdf_info( evt->pdf_info() );
+	write_unit_info( evt );
 	//
 	// Output all of the vertices - note there is no real order.
 	for ( GenEvent::vertex_const_iterator v = evt->vertices_begin();
@@ -365,6 +366,8 @@ namespace HepMC {
 	    output( 0. );
 	    output( 0. );
 	    output( 0. );
+	    output( 0 );
+	    output( 0 );
 	    output('\n');
 	    return;
 	}
@@ -376,6 +379,21 @@ namespace HepMC {
 	output( pdf->scalePDF() );
 	output( pdf->pdf1() );
 	output( pdf->pdf2() );
+	output( pdf->pdf_id1() );
+	output( pdf->pdf_id2() );
+	output('\n');
+    }
+
+    void IO_GenEvent::write_unit_info( const GenEvent* evt ) {
+	if ( !(*m_ostr) ) {
+	    std::cerr << "IO_GenEvent::write_unit_info !(*m_ostr), "
+		      << " setting badbit" << std::endl;
+	    m_ostr->clear(std::ios::badbit); 
+	    return;
+	}
+	// could write enums here, but strings are more readable
+	*m_ostr << "U " << evt->momentum_units().name();
+	*m_ostr << " " << evt->position_units().name();
 	output('\n');
     }
 
@@ -446,28 +464,6 @@ namespace HepMC {
 				     impact, plane, xcen, inel );
 	//
 	return ion;
-    }
-
-    PdfInfo* IO_GenEvent::read_pdf_info()
-    {
-	// assumes mode has already been checked
-	//
-	// test to be sure the next entry is of type "F" then ignore it
-	if ( !(*m_istr) || m_istr->peek() !='F') {
-	    std::cerr << "IO_GenEvent::read_pdf_info setting badbit." << std::endl;
-	    m_istr->clear(std::ios::badbit); 
-	    return false;
-	} 
-	m_istr->ignore();
-	// read values into temp variables, then create a new PdfInfo object
-	int id1 =0, id2 =0;
-	double  x1 = 0., x2 = 0., scale = 0., pdf1 = 0., pdf2 = 0.; 
-	*m_istr >> id1 >> id2 >> x1 >> x2 >> scale >> pdf1 >> pdf2;
-	m_istr->ignore(2,'\n');
-	if( id1 == 0 ) return false;
-	PdfInfo* pdf = new PdfInfo( id1, id2, x1, x2, scale, pdf1, pdf2);
-	//
-	return pdf;
     }
 
     GenParticle* IO_GenEvent::read_particle(

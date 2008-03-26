@@ -99,6 +99,8 @@ namespace HepMC {
 	void          write_heavy_ion( HeavyIon* );
 	/// write PDF information
 	void          write_pdf_info( PdfInfo* );
+	/// write units
+	void          write_unit_info( const GenEvent* evt );
 	/// write particle information
 	void          write_particle( GenParticle* p );
 	/// write particle data information
@@ -111,10 +113,12 @@ namespace HepMC {
 	ParticleData* read_particle_data( ParticleDataTable* );
 	/// read heavy ion information
 	HeavyIon*     read_heavy_ion(  );
-	/// read PDF information
-	PdfInfo*      read_pdf_info(  );
+	/// read units
+	void          read_unit_info( GenEvent* evt );
 	/// write end tag
 	bool          write_end_listing();
+	/// set input version
+	void          set_input_version( std::string & );
 
 	void          output( const double& );  //!< write double
 	void          output( const float& );  //!< write float
@@ -132,6 +136,7 @@ namespace HepMC {
 	bool                m_finished_first_event_io;
 	bool                m_have_file;
 	CommonIO            m_common_io;
+	std::string         m_input_version;
     };
 
     //////////////

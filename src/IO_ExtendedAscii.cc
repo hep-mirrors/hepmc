@@ -378,6 +378,8 @@ namespace HepMC {
 	    output( 0. );
 	    output( 0. );
 	    output( 0. );
+	    output( 0 );
+	    output( 0 );
 	    output('\n');
 	    return;
 	}
@@ -389,6 +391,8 @@ namespace HepMC {
 	output( pdf->scalePDF() );
 	output( pdf->pdf1() );
 	output( pdf->pdf2() );
+	output( pdf->pdf_id1() );
+	output( pdf->pdf_id2() );
 	output('\n');
     }
 
