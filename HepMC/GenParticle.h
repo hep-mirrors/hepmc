@@ -150,6 +150,10 @@ namespace HepMC {
 	void   set_end_vertex_( GenVertex* decayvertex = 0 );
 	void   set_barcode_( int the_bar_code ); //!< for use by GenEvent only
 
+        /// scale the momentum vector and generated mass 
+        /// this method is only for use by GenEvent
+	void convert_momentum( const double& );
+
     private:
 	FourVector       m_momentum;          // momentum vector
 	int              m_pdg_id;            // id according to PDG convention

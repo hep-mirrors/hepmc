@@ -899,4 +899,15 @@ namespace HepMC {
 	return *m_edge;
     }
 
+    /// scale the position vector
+    /// this method is only for use by GenEvent
+    /// convert_position assumes that 4th component of the position vector 
+    /// is ctau rather than time and has units of length-time
+    void GenVertex::convert_position( const double& f ) {
+        m_position = FourVector( f*m_position.x(),
+                                 f*m_position.y(),
+                                 f*m_position.z(),
+                                 f*m_position.t() );
+   }
+
 } // HepMC

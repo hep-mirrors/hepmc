@@ -346,7 +346,10 @@ namespace HepMC {
 	void remove_particle_in( GenParticle* );
 	/// for internal use only - remove particle from outgoing list
 	void remove_particle_out( GenParticle* );
-	
+	/// scale the position vector
+        /// this method is only for use by GenEvent
+	void convert_position( const double& );
+
     private: // GenVertex data members
 	FourVector              m_position;      //4-vec of vertex [mm]
 	std::vector<HepMC::GenParticle*>  m_particles_in;  //all incoming particles

@@ -238,5 +238,15 @@ namespace HepMC {
         m_generated_mass = m;
     }
 
+    /// scale the momentum vector and generated mass 
+    /// this method is only for use by GenEvent
+    void GenParticle::convert_momentum( const double & f ) {
+       m_momentum = FourVector( f*m_momentum.px(),
+                                f*m_momentum.py(),
+                                f*m_momentum.pz(),
+                                f*m_momentum.e() );
+       if( m_generated_mass > 0. ) m_generated_mass = f*m_generated_mass;
+    }
+
 } // HepMC
 

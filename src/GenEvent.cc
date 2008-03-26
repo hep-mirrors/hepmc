@@ -10,6 +10,8 @@
 // Event record for MC generators (for use at any stage of generation)
 //////////////////////////////////////////////////////////////////////////
 
+#include <iomanip>
+
 #include "HepMC/GenEvent.h"
 #include "HepMC/Version.h"
 
@@ -34,7 +36,9 @@ namespace HepMC {
 	m_vertex_barcodes(),
 	m_particle_barcodes(),
 	m_heavy_ion(0), 
-	m_pdf_info(0)
+	m_pdf_info(0),
+	m_momentum_units(),
+	m_position_units()
     {
         /// This constructor only allows null pointers to HeavyIon and PdfInfo
 	///
@@ -63,7 +67,9 @@ namespace HepMC {
 	m_vertex_barcodes(),
 	m_particle_barcodes(),
 	m_heavy_ion( new HeavyIon(ion) ), 
-	m_pdf_info( new PdfInfo(pdf) )
+	m_pdf_info( new PdfInfo(pdf) ),
+	m_momentum_units(),
+	m_position_units()
     {
         /// GenEvent makes its own copy of HeavyIon and PdfInfo
 	///
@@ -87,7 +93,9 @@ namespace HepMC {
 	m_vertex_barcodes      ( /* inevent.m_vertex_barcodes */ ),
 	m_particle_barcodes    ( /* inevent.m_particle_barcodes */ ),
 	m_heavy_ion            ( inevent.heavy_ion() ? new HeavyIon(*inevent.heavy_ion()) : 0 ),
-	m_pdf_info             ( inevent.pdf_info() ? new PdfInfo(*inevent.pdf_info()) : 0 )
+	m_pdf_info             ( inevent.pdf_info() ? new PdfInfo(*inevent.pdf_info()) : 0 ),
+	m_momentum_units       ( inevent.momentum_units() ),
+	m_position_units       ( inevent.position_units() )
     {
 	/// deep copy - makes a copy of all vertices!
 	//++s_counter;
@@ -158,6 +166,8 @@ namespace HepMC {
 	m_particle_barcodes.swap( other.m_particle_barcodes );
 	std::swap(m_heavy_ion            , other.m_heavy_ion            );
 	std::swap(m_pdf_info             , other.m_pdf_info             );
+	std::swap(m_momentum_units       , other.m_momentum_units       );
+	std::swap(m_position_units       , other.m_position_units       );
 	// must now adjust GenVertex back pointers
 	for ( GenEvent::vertex_const_iterator vthis = vertices_begin();
 	      vthis != vertices_end(); ++vthis ) {
@@ -205,6 +215,7 @@ namespace HepMC {
 	//     << GenEvent::counter() << " events, "
 	//     << GenVertex::counter() << " vertices, "
 	//     << GenParticle::counter() << " particles.\n"; 
+	write_units( ostr );
 	ostr << " Entries this event: " << vertices_size() << " vertices, "
 	     << particles_size() << " particles.\n"; 
 	if( m_beam_particle_1 && m_beam_particle_2 ) {
@@ -297,6 +308,8 @@ namespace HepMC {
 	m_alphaQED = -1;
 	m_weights = std::vector<double>();
 	m_random_states = std::vector<long>();
+	m_momentum_units = HepMC::MomentumUnits::unknown;
+	m_position_units = HepMC::PositionUnits::unknown;
         // error check just to be safe
 	if ( m_vertex_barcodes.size() != 0 
 	     || m_particle_barcodes.size() != 0 ) {
@@ -513,10 +526,70 @@ namespace HepMC {
 	return set_beam_particles(bp.first,bp.second);
     }
 
-    /////////////
-    // Static  //
-    /////////////
-    //unsigned int GenEvent::counter() { return s_counter; }
-    //unsigned int GenEvent::s_counter = 0; 
+    void GenEvent::write_units( std::ostream & os ) const {
+	os << " Momenutm units:" << std::setw(8) << momentum_units().name();
+	os << "     Position units:" << std::setw(8) << position_units().name();
+	os << std::endl;
+    }
+
+    /// Convert momentum units and change the internal unit designation.
+    /// convert_momentum_units will fail if the units are unknown.
+    /// convert_momentum_units will succeed but take no action if 
+    /// the requested units match the internal unit designation.
+    bool GenEvent::convert_momentum_units( MomentumUnits::HepMCmomentumUnits mom ) {
+        // check units for validity
+        if( momentum_units().units() == MomentumUnits::unknown ) return false;
+        if( mom == MomentumUnits::unknown ) return false;
+	// check to see if action is necessary
+	if( momentum_units().units() == mom ) return true;
+	// get the conversion factor
+	double cf = momentum_units().conversion_factor(mom);
+	// double check - should not be necessary so don't enable this code
+	// if( cf == 0. ) return false;
+	// if( cf == 1. ) return true;
+	// now process the momentum vectors in each particle
+        for ( GenEvent::particle_iterator p = particles_begin();
+                                          p != particles_end(); ++p ) 
+        {
+	    (*p)->convert_momentum(cf);
+        }
+	// change the unit designation
+	change_momentum_units(mom);
+	return true;
+    }
+
+    /// Convert position units and change the internal unit designation.
+    /// convert_position_units will fail if the units are unknown.
+    /// convert_position_units will succeed but take no action if 
+    /// the requested units match the internal unit designation.
+    bool GenEvent::convert_position_units( PositionUnits::HepMCpositionUnits pos ) {
+        // check units for validity
+        if( position_units().units() == PositionUnits::unknown ) return false;
+        if( pos == PositionUnits::unknown ) return false;
+	// check to see if action is necessary
+	if( position_units().units() == pos ) return true;
+	// get the conversion factor
+	double cf = position_units().conversion_factor(pos);
+	// double check - should not be necessary so don't enable this code
+	// if( cf == 0. ) return false;
+	// if( cf == 1. ) return true;
+	// now process the position vectors in each vertex
+	for ( GenEvent::vertex_iterator vtx = vertices_begin();
+	                                vtx != vertices_end(); ++vtx ) {
+	    (*vtx)->convert_position(cf);
+	}
+	// change the unit designation
+	change_position_units(pos);
+	return true;
+    }
+
+    void GenEvent::change_momentum_units( MomentumUnits::HepMCmomentumUnits mom ) {
+        m_momentum_units = MomentumUnits(mom);
+    }
+
+    void GenEvent::change_position_units( PositionUnits::HepMCpositionUnits pos ) {
+        m_position_units = PositionUnits(pos);
+    }
+
 
 } // HepMC
