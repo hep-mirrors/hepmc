@@ -80,6 +80,7 @@ int main() {
 		    x = 0.1 * icount;
 		    y = 0.13 * icount;
 		    z = 0.012 * icount;
+		    // old style constructor without pdf set ids
 		    HepMC::PdfInfo pdf( 11, 12, x, y, z, 0.11, 0.34);
 		    evt->set_pdf_info(pdf);
 		}

@@ -24,6 +24,8 @@ void read_testAscii();
 void read_testExtendedAscii();
 void read_various();
 
+double findPiZero( HepMC::GenEvent* );
+
 int main() { 
     read_testIOGenEvent();
     read_testAscii();
@@ -34,6 +36,8 @@ int main() {
 
 void read_testIOGenEvent()
 {
+    std::cout << std::endl;
+    std::cout << "basic IO_GenEvent input and output" << std::endl;
     // declare an input strategy to read the data produced with the 
     // example_MyPythia
     HepMC::IO_GenEvent ascii_in("@srcdir@/testIOGenEvent.input",std::ios::in);
@@ -69,7 +73,9 @@ void read_testIOGenEvent()
 
 void read_testAscii()
 {
-        // declare an input strategy to read the data produced with the 
+    std::cout << std::endl;
+    std::cout << "read file written with IO_Ascii" << std::endl;
+       // declare an input strategy to read the data produced with the 
 	// example_MyPythia
 	HepMC::IO_GenEvent ascii_in("@srcdir@/testAscii.input",std::ios::in);
 	if ( ascii_in.rdstate() == std::ios::failbit ) {
@@ -104,6 +110,8 @@ void read_testAscii()
 
 void read_testExtendedAscii()
 {
+    std::cout << std::endl;
+    std::cout << "read file written with IO_ExtendedAscii" << std::endl;
     // extended (complete) output
     HepMC::IO_GenEvent xin("@srcdir@/testHepMCExtended.input",std::ios::in);
     // declare another IO_GenEvent for output
@@ -127,6 +135,8 @@ void read_testExtendedAscii()
 
 void read_various()
 {
+    std::cout << std::endl;
+    std::cout << "process varied input" << std::endl;
     // declare an input strategy 
     HepMC::IO_GenEvent ascii_in("@srcdir@/testHepMCVarious.input",std::ios::in);
     // declare another IO_GenEvent for writing out the good events
@@ -136,14 +146,60 @@ void read_various()
     HepMC::GenEvent* evt = ascii_in.read_next_event();
     while ( evt ) {
 	icount++;
-	if ( icount%50==1 ) std::cout << "Processing Event Number " << icount
-				      << " its # " << evt->event_number() 
-				      << std::endl;
+	double pim;
+	std::cout << "Processing Event Number " << icount
+		  << " its # " << evt->event_number() 
+		  << std::endl;
 	ascii_out << evt;
+	// units should be unknown
+	evt->write_units();
+	pim = findPiZero(evt);
+	std::cout << " pizero mass: " << pim << std::endl;
+	// set units differently for every other event
+	if ( icount%2==1 ) {
+	    // set units to GeV
+	    if( evt->set_momentum_units(HepMC::MomentumUnits::GeV) ) {
+	       evt->write_units();
+	       pim = findPiZero(evt);
+	       std::cout << " pizero mass: " << pim 
+	        	 << " " << evt->momentum_units().name() << std::endl;
+	    }
+	    // convert units to MeV
+	    evt->convert_momentum_units(HepMC::MomentumUnits::MeV);
+	    evt->write_units();
+	    pim = findPiZero(evt);
+	    std::cout << " pizero mass: " << pim 
+	              << " " << evt->momentum_units().name() << std::endl;
+	} else {
+	    // set units to GeV and mm
+	    if( evt->set_units(HepMC::MomentumUnits::GeV, HepMC::PositionUnits::mm) ) {
+	       evt->write_units();
+	       pim = findPiZero(evt);
+	       std::cout << " pizero mass: " << pim 
+	        	 << " " << evt->momentum_units().name() << std::endl;
+	    }
+	    // convert units to MeV
+	    evt->convert_momentum_units(HepMC::MomentumUnits::MeV);
+	    evt->write_units();
+	    pim = findPiZero(evt);
+	    std::cout << " pizero mass: " << pim 
+	              << " " << evt->momentum_units().name() << std::endl;
+	}
 	// clean up and get next event
 	delete evt;
 	ascii_in >> evt;
     }
     //........................................PRINT RESULT
     std::cout << icount << " events processed. Finished." << std::endl;
+}
+
+double findPiZero( HepMC::GenEvent* evt )
+{
+    for ( HepMC::GenEvent::particle_const_iterator p 
+	      = evt->particles_begin(); p != evt->particles_end(); ++p ){
+	if ( (*p)->pdg_id() == 111 ) {
+	    return (*p)->generated_mass();
+	}
+    }
+    return 0.;
 }

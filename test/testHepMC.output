@@ -1,3 +1,53 @@
+
+basic IO_GenEvent input and output
 Processing Event Number 1 its # 1
-Processing Event Number 51 its # 51
-2 out of 100 processed events passed the cuts. Finished.
+3 out of 34 processed events passed the cuts. Finished.
+
+read file written with IO_Ascii
+-------------------------------------------------------
+Use of HepMC/IO_Ascii is deprecated
+-------------------------------------------------------
+Processing Event Number 1 its # 1
+36 events processed. Finished.
+
+read file written with IO_ExtendedAscii
+Processing Event Number 1 its # 1
+37 events processed. Finished.
+
+process varied input
+Processing Event Number 1 its # 1
+ Momenutm units: unknown     Position units: unknown
+ pizero mass: 0.13498
+ Momenutm units:     GeV     Position units: unknown
+ pizero mass: 0.13498 GeV
+ Momenutm units:     MeV     Position units: unknown
+ pizero mass: 134.98 MeV
+Processing Event Number 2 its # 1
+ Momenutm units: unknown     Position units: unknown
+ pizero mass: 0.13498
+ Momenutm units:     GeV     Position units:      mm
+ pizero mass: 0.13498 GeV
+ Momenutm units:     MeV     Position units:      mm
+ pizero mass: 134.98 MeV
+Processing Event Number 3 its # 1
+ Momenutm units: unknown     Position units: unknown
+ pizero mass: 0.13498
+ Momenutm units:     GeV     Position units: unknown
+ pizero mass: 0.13498 GeV
+ Momenutm units:     MeV     Position units: unknown
+ pizero mass: 134.98 MeV
+Processing Event Number 4 its # 2
+ Momenutm units: unknown     Position units: unknown
+ pizero mass: 0.13498
+ Momenutm units:     GeV     Position units:      mm
+ pizero mass: 0.13498 GeV
+ Momenutm units:     MeV     Position units:      mm
+ pizero mass: 134.98 MeV
+Processing Event Number 5 its # 3
+ Momenutm units: unknown     Position units: unknown
+ pizero mass: 0.13498
+ Momenutm units:     GeV     Position units: unknown
+ pizero mass: 0.13498 GeV
+ Momenutm units:     MeV     Position units: unknown
+ pizero mass: 134.98 MeV
+5 events processed. Finished.

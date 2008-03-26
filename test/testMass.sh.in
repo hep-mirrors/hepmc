@@ -10,9 +10,11 @@ CYGWIN*)
   cmd1=`sed 's/e+0/e+/g'  testMass1.dat  | \
      sed 's/e-0/e-/g'  -  | \
 	@DIFF_Q@ - @srcdir@/testMass1.dat`
+  cmd2=`@DIFF_Q@ testMass2.dat testMass1.dat`
   ;;
 *)
   cmd1=`@DIFF_Q@ testMass1.dat @srcdir@/testMass1.dat`
+  cmd2=`@DIFF_Q@ testMass2.dat testMass1.dat`
 esac
 
 if [ -n "$cmd1" ]
@@ -21,9 +23,9 @@ then
   exit 1;
 fi
 
-if ( ! `@DIFF_Q@ testMass2.dat testMass1.dat` )
+if [ -n "$cmd2" ]
 then
-  echo "comparison of testMass2.dat failed"
+  echo $cmd2
   exit 1;
 fi
 
