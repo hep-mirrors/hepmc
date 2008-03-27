@@ -1,4 +1,8 @@
 
+2008-03-27  Lynn Garren
+
+	* examples: set Herwig and Pythia units to GeV and mm
+
 2008-03-26  Lynn Garren
 
 	* HepMC/MomentumUnits.h: new class to encapsulate momentum units,

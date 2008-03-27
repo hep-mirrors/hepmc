@@ -55,6 +55,8 @@ int main() {
 	    // pythia pyhepc routine converts common PYJETS in common HEPEVT
 	    call_pyhepc( 1 );
 	    HepMC::GenEvent* evt = hepevtio.read_next_event();
+	    // pythia uses GeV and mm
+	    evt->set_units( HepMC::MomentumUnits::GeV, HepMC::PositionUnits::mm);
 	    // add some information to the event
 	    evt->set_event_number(i);
 	    evt->set_signal_process_id(20);

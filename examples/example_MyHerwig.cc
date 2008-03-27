@@ -77,6 +77,8 @@ int main() {
 	// finish event
 	hwufne();
 	HepMC::GenEvent* evt = hepevtio.read_next_event();
+	// herwig uses GeV and mm
+	evt->set_units( HepMC::MomentumUnits::GeV, HepMC::PositionUnits::mm);
 	// add some information to the event
 	evt->set_event_number(i);
 	evt->set_signal_process_id(20);
