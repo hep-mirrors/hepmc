@@ -86,7 +86,7 @@ namespace HepMC {
 	////////////////////
 
 	/// standard 4 momentum
-	FourVector           momentum() const;
+	const FourVector &          momentum() const;
 	/// particle ID
 	int                  pdg_id() const;
 	/// HEPEVT decay status
@@ -175,7 +175,7 @@ namespace HepMC {
     inline GenParticle::operator HepMC::FourVector() const 
     { return m_momentum; }
 
-    inline FourVector GenParticle::momentum() const 
+    inline const FourVector & GenParticle::momentum() const 
     { return m_momentum; }
 
     inline int GenParticle::pdg_id() const { return m_pdg_id; }

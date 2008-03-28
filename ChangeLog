@@ -1,4 +1,10 @@
 
+2008-03-28  Lynn Garren
+
+	* HepMC/GenParticle.h: The momentum() method now returns a const
+	  reference to a FourVector instead of a copy of a FourVector.
+	  This change should be backwards compatible.
+
 2008-03-27  Lynn Garren
 
 	* examples: set Herwig and Pythia units to GeV and mm
