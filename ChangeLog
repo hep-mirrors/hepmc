@@ -1,4 +1,11 @@
 
+2008-03-31  Lynn Garren
+
+	* HepMC/GenEvent.h: random_states() now returns const std::vector<long>&
+	  HepMC/GenVertex.h: position() now returns a const FourVector&
+	  HepMC/GenParticle.h: flow() now returns const Flow&
+	  and polarization() now returns const Polarization&
+
 2008-03-28  Lynn Garren
 
 	* HepMC/GenParticle.h: The momentum() method now returns a const

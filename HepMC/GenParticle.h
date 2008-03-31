@@ -92,11 +92,11 @@ namespace HepMC {
 	/// HEPEVT decay status
 	int                  status() const;
 	/// particle flow
-	Flow                 flow() const;
+	const Flow &         flow() const;
 	/// particle flow index
 	int                  flow( int code_index ) const;
         /// polarization information
-	Polarization         polarization() const;
+	const Polarization & polarization() const;
 	/// pointer to the production vertex
 	GenVertex*           production_vertex() const;
 	/// pointer to the decay vertex
@@ -187,12 +187,12 @@ namespace HepMC {
 
     inline GenVertex* GenParticle::end_vertex() const { return m_end_vertex; }
 
-    inline Flow GenParticle::flow() const { return m_flow; }
+    inline const Flow & GenParticle::flow() const { return m_flow; }
 
     inline int GenParticle::flow( int code_index ) const
     { return m_flow.icode( code_index ); }
 
-    inline Polarization GenParticle::polarization() const 
+    inline const Polarization & GenParticle::polarization() const 
     { return m_polarization; }
 
     inline void GenParticle::set_momentum( const FourVector& vec4 )

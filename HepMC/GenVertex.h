@@ -99,7 +99,7 @@ namespace HepMC {
 	/// vertex position
 	ThreeVector             point3d() const;
 	/// vertex position and time
-	FourVector              position() const;
+	const FourVector &      position() const;
 	/// set vertex position and time
 	void                    set_position( const FourVector& position = FourVector(0,0,0,0) );
 	/// we don't define what you use the id for -- but we imagine,
@@ -370,7 +370,7 @@ namespace HepMC {
 
     inline GenVertex::operator HepMC::ThreeVector() const { return point3d(); }
 
-    inline FourVector GenVertex::position() const { return m_position; }
+    inline const FourVector & GenVertex::position() const { return m_position; }
 
     inline GenEvent* GenVertex::parent_event() const { return m_event; }
 

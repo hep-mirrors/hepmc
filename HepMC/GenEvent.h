@@ -203,7 +203,7 @@ namespace HepMC {
 	PdfInfo*                 pdf_info();
 
 	/// vector of integers containing information about the random state
-	std::vector<long> random_states() const;
+	const std::vector<long>& random_states() const;
 
 	void set_signal_process_id( int id ); //!< set unique signal process id
 	void set_event_number( int eventno ); //!< set event number
@@ -611,7 +611,7 @@ namespace HepMC {
     ///  generator to make use of this. We envision a vector of
     ///  RndmStatesTags to be included with a run class which
     ///  would specify the meaning of the random_states.
-    inline std::vector<long> GenEvent::random_states() const 
+    inline const std::vector<long>& GenEvent::random_states() const 
     { return m_random_states; }
 
     inline void GenEvent::set_signal_process_id( int id )
