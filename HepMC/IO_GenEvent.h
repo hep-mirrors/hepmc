@@ -65,6 +65,8 @@ namespace HepMC {
     class IO_GenEvent : public IO_BaseClass {
     public:
         /// constructor requiring a file name and std::ios mode
+	IO_GenEvent( std::string& filename="IO_GenEvent.dat", 
+		  std::ios::openmode mode=std::ios::out );
 	IO_GenEvent( const char* filename="IO_GenEvent.dat", 
 		  std::ios::openmode mode=std::ios::out );
         /// constructor requiring an input stream

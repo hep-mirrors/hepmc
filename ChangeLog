@@ -6,6 +6,9 @@
 	  HepMC/GenParticle.h: flow() now returns const Flow&
 	  and polarization() now returns const Polarization&
 
+	* HepMC/IO_GenEvent.h: add a constructor that accepts the filename
+	  as a string.
+
 2008-03-28  Lynn Garren
 
 	* HepMC/GenParticle.h: The momentum() method now returns a const
