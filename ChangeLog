@@ -1,4 +1,10 @@
 
+2008-04-01  Lynn Garren
+
+
+	* HepMC/IO_GenEvent.h: replace const char* filename with 
+	  const std::string& in the constructor accepting a filename.
+
 2008-03-31  Lynn Garren
 
 	* HepMC/GenEvent.h: random_states() now returns const std::vector<long>&

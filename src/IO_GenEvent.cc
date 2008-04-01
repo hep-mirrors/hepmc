@@ -16,7 +16,7 @@
 
 namespace HepMC {
 
-    IO_GenEvent::IO_GenEvent( std::string& filename, std::ios::openmode mode ) 
+    IO_GenEvent::IO_GenEvent( const std::string& filename, std::ios::openmode mode ) 
     : m_mode(mode), 
       m_file(filename.c_str(), mode), 
       m_ostr(0),
@@ -53,42 +53,6 @@ namespace HepMC {
 	m_have_file = true;
     }
 
-    IO_GenEvent::IO_GenEvent( const char* filename, std::ios::openmode mode ) 
-    : m_mode(mode), 
-      m_file(filename, mode), 
-      m_ostr(0),
-      m_istr(0),
-      m_iostr(0),
-      m_finished_first_event_io(false),
-      m_have_file(false),
-      m_common_io()
-    {
-	if ( (m_mode&std::ios::out && m_mode&std::ios::in) ||
-	     (m_mode&std::ios::app && m_mode&std::ios::in) ) {
-	    std::cerr << "IO_GenEvent::IO_GenEvent Error, open of file requested "
-		      << "of input AND output type. Not allowed. Closing file."
-		      << std::endl;
-	    m_file.close();
-	    return;
-	}
-	// precision 16 (# digits following decimal point) is the minimum that
-	//  will capture the full information stored in a double
-	m_file.precision(16);
-	// we use decimal to store integers, because it is smaller than hex!
-	m_file.setf(std::ios::dec,std::ios::basefield);
-	m_file.setf(std::ios::scientific,std::ios::floatfield);
-	// now we set the streams
-	m_iostr = &m_file;
-	if ( m_mode&std::ios::in ) {
-	    m_istr = &m_file;
-	    m_ostr = NULL;
-	}
-	if ( m_mode&std::ios::out ) {
-	    m_ostr = &m_file;
-	    m_istr = NULL;
-	}
-	m_have_file = true;
-    }
 
     IO_GenEvent::IO_GenEvent( std::istream & istr ) 
     : m_ostr(0),
