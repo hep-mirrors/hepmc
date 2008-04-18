@@ -205,27 +205,6 @@ namespace HepMC {
 	/// vector of integers containing information about the random state
 	const std::vector<long>& random_states() const;
 
-	void set_signal_process_id( int id ); //!< set unique signal process id
-	void set_event_number( int eventno ); //!< set event number
-	void set_mpi( int  ); //!< set number of multi parton interactions
-	void set_event_scale( double scale ); //!< set energy scale
-	void set_alphaQCD( double a ); //!< set QCD coupling
-	void set_alphaQED( double a ); //!< set QED coupling
-
-        /// set pointer to the vertex containing the signal process
-	void set_signal_process_vertex( GenVertex* );
-	/// set incoming beam particles
-	bool set_beam_particles(GenParticle*, GenParticle*);
-        /// use a pair of GenParticle*'s to set incoming beam particles
-	bool set_beam_particles(std::pair<HepMC::GenParticle*,HepMC::GenParticle*> const &);
-	/// provide random state information
-	void set_random_states( const std::vector<long>& randomstates );
-
-	/// provide a pointer to the HeavyIon container
-	void set_heavy_ion( const HeavyIon& ion );
-	/// provide a pointer to the PdfInfo container
-	void set_pdf_info( const PdfInfo& p );
-
         /// how many particle barcodes exist?
 	int     particles_size() const;
         /// return true if there are no particle barcodes
@@ -248,6 +227,27 @@ namespace HepMC {
 	bool    remove_vertex( GenVertex* vtx ); //!< erases vtx from evt
 	void    clear();                         //!< empties the entire event
 	
+	void set_signal_process_id( int id ); //!< set unique signal process id
+	void set_event_number( int eventno ); //!< set event number
+	void set_mpi( int  ); //!< set number of multi parton interactions
+	void set_event_scale( double scale ); //!< set energy scale
+	void set_alphaQCD( double a ); //!< set QCD coupling
+	void set_alphaQED( double a ); //!< set QED coupling
+
+        /// set pointer to the vertex containing the signal process
+	void set_signal_process_vertex( GenVertex* );
+	/// set incoming beam particles
+	bool set_beam_particles(GenParticle*, GenParticle*);
+        /// use a pair of GenParticle*'s to set incoming beam particles
+	bool set_beam_particles(std::pair<HepMC::GenParticle*,HepMC::GenParticle*> const &);
+	/// provide random state information
+	void set_random_states( const std::vector<long>& randomstates );
+
+	/// provide a pointer to the HeavyIon container
+	void set_heavy_ion( const HeavyIon& ion );
+	/// provide a pointer to the PdfInfo container
+	void set_pdf_info( const PdfInfo& p );
+
 	// The following set units methods are designed to be used if  
 	// and only if the units have not already been declared.
 	// To change an existing unit designation, and perform the desired 

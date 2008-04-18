@@ -122,6 +122,10 @@ namespace HepMC {
 	///  vertex barcodes are negative numbers.
 	int                  barcode() const; //!< particle barcode
 
+	/////////////////////
+	// mutator methods //
+	/////////////////////
+
 	/// In general there is no reason to "suggest_barcode"
 	bool                 suggest_barcode( int the_bar_code );
 
@@ -144,9 +148,9 @@ namespace HepMC {
 
 	//static unsigned int counter(); //!< temporary for debugging
 
-        /// set production vertex
+        /// set production vertex - for internal use only
 	void   set_production_vertex_( GenVertex* productionvertex = 0);
-        /// set decay vertex
+        /// set decay vertex - for internal use only
 	void   set_end_vertex_( GenVertex* decayvertex = 0 );
 	void   set_barcode_( int the_bar_code ); //!< for use by GenEvent only
 
