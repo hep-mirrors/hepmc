@@ -3,6 +3,11 @@
 
 	* ReadMe.cygwin: changing cygwin directions for new versions of VC
 
+	* HepMC/MomentumUnits.h: enum HepMCmomentumUnits{ UNKNOWN = 0, MEV, GEV };
+	Recommended usage: MomentumUnits::GEV
+	* HepMC/PositionUnits.h: enum HepMCpositionUnits{ unknown = 0, MM, CM } 
+	Recommended usage: PositionUnits::MM
+
 2008-04-17  Lynn Garren
 
 	* Rename configure.in to configure.ac, which is now the common usage.

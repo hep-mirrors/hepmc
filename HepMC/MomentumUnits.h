@@ -23,10 +23,10 @@ class MomentumUnits {
 
 public:
 
-enum HepMCmomentumUnits { unknown = 0, eV, keV, MeV, GeV, TeV };
-// this enum scheme can accomodate additional definitions
+/// this enum scheme can accomodate additional definitions
+enum HepMCmomentumUnits { UNKNOWN = 0, MEV, GEV };
 
-    MomentumUnits( HepMCmomentumUnits mom = unknown ); //!< default constructor
+    MomentumUnits( HepMCmomentumUnits mom = UNKNOWN ); //!< default constructor
     ~MomentumUnits() {}
 
     MomentumUnits( const MomentumUnits& inevent );            //!< copy
@@ -45,7 +45,7 @@ enum HepMCmomentumUnits { unknown = 0, eV, keV, MeV, GeV, TeV };
     bool set_units  ( std::string& );       //!< set the momentum units
 
 private: // data members
-    HepMCmomentumUnits m_units;    // unknown by default
+    HepMCmomentumUnits m_units;    // UNKNOWN by default
 };
 
 //--------------------------------------------------------------------------
@@ -82,7 +82,7 @@ inline MomentumUnits::HepMCmomentumUnits MomentumUnits::units() const
 inline bool MomentumUnits::set_units( HepMCmomentumUnits mom )
 {
    /// set_units will FAIL if the units are already defined
-   if( m_units != unknown ) return false;
+   if( m_units != UNKNOWN ) return false;
    m_units = mom;
    return true;
 }
@@ -90,13 +90,10 @@ inline bool MomentumUnits::set_units( HepMCmomentumUnits mom )
 inline bool MomentumUnits::set_units( std::string& mom )
 {
    /// set_units will FAIL if the units are already defined
-   if( m_units != unknown ) return false;
-   if( mom == "eV"     )       m_units = eV;
-   else if( mom == "keV"     ) m_units = keV;
-   else if( mom == "MeV"     ) m_units = MeV;
-   else if( mom == "GeV"     ) m_units = GeV;
-   else if( mom == "TeV"     ) m_units = TeV;
-   else if( mom == "unknown" ) m_units = unknown;
+   if( m_units != UNKNOWN ) return false;
+   if( mom == "MEV"     ) m_units = MEV;
+   else if( mom == "GEV"     ) m_units = GEV;
+   else if( mom == "UNKNOWN" ) m_units = UNKNOWN;
    else return false;
    return true;
 }
@@ -104,8 +101,8 @@ inline bool MomentumUnits::set_units( std::string& mom )
 inline double MomentumUnits::conversion_factor( HepMCmomentumUnits mom ) const
 {
    /// This routine returns the desired scale factor
-   /// If momentum units are unknown, the scale factor is 0.
-   if( m_units == unknown ) return 0.;
+   /// If momentum units are UNKNOWN, the scale factor is 0.
+   if( m_units == UNKNOWN ) return 0.;
    if( m_units == mom ) return 1.;
    double f = MomentumUnits(mom).unitFactor();
    return  f < 0. ? 0. : unitFactor()/f;
@@ -114,11 +111,8 @@ inline double MomentumUnits::conversion_factor( HepMCmomentumUnits mom ) const
 inline double MomentumUnits::unitFactor() const
 {
     switch( m_units ) {
-	case eV      : return 1.;
-	case keV     : return 1000.;
-	case MeV     : return 1000000.;
-	case GeV     : return 1000000000.;
-	case TeV     : return 1000000000000.;
+	case MEV     : return 1000000.;
+	case GEV     : return 1000000000.;
 	default      : return -1.;
     }
 }
@@ -126,12 +120,9 @@ inline double MomentumUnits::unitFactor() const
 inline std::string MomentumUnits::name() const
 {
     switch( m_units ) {
-	case eV      : return "eV";
-	case keV     : return "keV";
-	case MeV     : return "MeV";
-	case GeV     : return "GeV";
-	case TeV     : return "TeV";
-	case unknown : return "unknown";
+	case MEV     : return "MEV";
+	case GEV     : return "GEV";
+	case UNKNOWN : return "UNKNOWN";
 	default      : return "badValue";
     }
 }

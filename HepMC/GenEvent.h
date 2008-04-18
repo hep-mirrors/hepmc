@@ -272,12 +272,12 @@ namespace HepMC {
         bool set_position_units( std::string& );
 	
         /// convert to the desired units and change the unit designation
-	/// convert_momentum_units will fail if either set of units is unknown
+	/// convert_momentum_units will fail if either set of units is UNKNOWN
 	/// convert_momentum_units will succeed but take no action if
 	/// conversion is requested to units which are presently defined
 	bool convert_momentum_units( MomentumUnits::HepMCmomentumUnits );
         /// convert to the desired units and change the unit designation
-	/// convert_position_units will fail if either set of units is unknown
+	/// convert_position_units will fail if either set of units is UNKNOWN
 	/// convert_position_units will succeed but take no action if
 	/// conversion is requested to units which are presently defined
 	bool convert_position_units( PositionUnits::HepMCpositionUnits );
@@ -555,8 +555,8 @@ namespace HepMC {
 	std::map< int,HepMC::GenParticle*,std::less<int> >    m_particle_barcodes;
 	HeavyIon*        m_heavy_ion; 	      // undefined by default
 	PdfInfo*         m_pdf_info; 	      // undefined by default
-	MomentumUnits    m_momentum_units;    // default value is "unknown"
-	PositionUnits    m_position_units;    // default value is "unknown"
+	MomentumUnits    m_momentum_units;    // default value is "UNKNOWN"
+	PositionUnits    m_position_units;    // default value is "UNKNOWN"
 
 	//static unsigned int   s_counter;
     };
@@ -721,8 +721,8 @@ namespace HepMC {
     inline bool GenEvent::set_units( MomentumUnits::HepMCmomentumUnits mom, 
                                      PositionUnits::HepMCpositionUnits pos ) {
         /// set_momentum_units will FAIL if either momenum or positions units are already defined
-        if( m_momentum_units.units() != MomentumUnits::unknown ) return false;
-        if( m_position_units.units() != PositionUnits::unknown ) return false;
+        if( m_momentum_units.units() != MomentumUnits::UNKNOWN ) return false;
+        if( m_position_units.units() != PositionUnits::UNKNOWN ) return false;
         bool m = m_momentum_units.set_units(mom);
         bool p = m_position_units.set_units(pos);
 	return (m && p);

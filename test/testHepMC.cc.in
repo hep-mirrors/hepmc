@@ -158,28 +158,28 @@ void read_various()
 	// set units differently for every other event
 	if ( icount%2==1 ) {
 	    // set units to GeV
-	    if( evt->set_momentum_units(HepMC::MomentumUnits::GeV) ) {
+	    if( evt->set_momentum_units(HepMC::MomentumUnits::GEV) ) {
 	       evt->write_units();
 	       pim = findPiZero(evt);
 	       std::cout << " pizero mass: " << pim 
 	        	 << " " << evt->momentum_units().name() << std::endl;
 	    }
 	    // convert units to MeV
-	    evt->convert_momentum_units(HepMC::MomentumUnits::MeV);
+	    evt->convert_momentum_units(HepMC::MomentumUnits::MEV);
 	    evt->write_units();
 	    pim = findPiZero(evt);
 	    std::cout << " pizero mass: " << pim 
 	              << " " << evt->momentum_units().name() << std::endl;
 	} else {
 	    // set units to GeV and mm
-	    if( evt->set_units(HepMC::MomentumUnits::GeV, HepMC::PositionUnits::mm) ) {
+	    if( evt->set_units(HepMC::MomentumUnits::GEV, HepMC::PositionUnits::MM) ) {
 	       evt->write_units();
 	       pim = findPiZero(evt);
 	       std::cout << " pizero mass: " << pim 
 	        	 << " " << evt->momentum_units().name() << std::endl;
 	    }
 	    // convert units to MeV
-	    evt->convert_momentum_units(HepMC::MomentumUnits::MeV);
+	    evt->convert_momentum_units(HepMC::MomentumUnits::MEV);
 	    evt->write_units();
 	    pim = findPiZero(evt);
 	    std::cout << " pizero mass: " << pim 

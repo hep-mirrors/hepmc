@@ -31,7 +31,7 @@ Darwin*)
   cmd3=`cat testIOAscii.dat | grep -v Version | \
         @DIFF_Q@ - @srcdir@/testAscii.input`
   cmd4=`sed 's/IO_GenEvent/IO_ExtendedAscii/g' testIOHepMCExtended.dat | \
-        grep -v unknown | @DIFF_Q@ - @srcdir@/testHepMCExtended.input`
+        grep -v UNKNOWN | @DIFF_Q@ - @srcdir@/testHepMCExtended.input`
   ;;
 *)
   cmd=`@DIFF_Q@ testHepMC.cout @srcdir@/testHepMC.output`
@@ -40,7 +40,7 @@ Darwin*)
   cmd3=`cat testIOAscii.dat | grep -v Version | \
         @DIFF_Q@ - @srcdir@/testAscii.input`
   cmd4=`sed 's/IO_GenEvent/IO_ExtendedAscii/g' testIOHepMCExtended.dat | \
-        grep -v unknown | @DIFF_Q@ - @srcdir@/testHepMCExtended.input`
+        grep -v UNKNOWN | @DIFF_Q@ - @srcdir@/testHepMCExtended.input`
 esac
 
 if [ -n "$cmd" ]; then

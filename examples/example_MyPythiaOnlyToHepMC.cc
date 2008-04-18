@@ -47,7 +47,7 @@ int main() {
 	call_pyhepc( 1 );
 	HepMC::GenEvent* evt = hepevtio.read_next_event();
 	// pythia uses GeV and mm
-	evt->set_units( HepMC::MomentumUnits::GeV, HepMC::PositionUnits::mm);
+	evt->set_units( HepMC::MomentumUnits::GEV, HepMC::PositionUnits::MM);
 	// set number of multi parton interactions
 	evt->set_mpi( pypars.msti[31-1] );
 	//

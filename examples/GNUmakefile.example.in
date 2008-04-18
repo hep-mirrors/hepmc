@@ -32,7 +32,7 @@ endif
   CLHEP_LIB     = -L$(CLHEPdir)/lib -lCLHEP
   initpydata_OBJ= initpydata.o
   pythia_OBJ    = initPythia.o initpydata.o
-  LINK_LIBS     = @AM_LDFLAGS@
+  LINK_LIBS     = 
   SRCS	        = example_BuildEventFromScratch.cc	\
 		  example_EventSelection.cc	\
 		  example_MyHerwig.cc	\
@@ -63,38 +63,9 @@ endif
 ################################################################################ 
 
 PLATFORM=$(shell uname)
-ifeq "$(PLATFORM)" "IRIX"
-    IRIX6 = $(findstring 6,$(shell uname -r))
-    ifeq "$(IRIX6)" "6"
-	PLATFORM=IRIX64
-    endif
-endif
 
-ifeq "$(PLATFORM)" "HP-UX"
-    LINK_LIBS        += -lg2c -lftn -lf
-endif
-ifeq "$(PLATFORM)" "IRIX"
-    LINK_LIBS     += -lg2c -lftn
-endif
-ifeq "$(PLATFORM)" "IRIX64"
-    LINK_LIBS     += -lg2c -lftn
-endif
 ifeq "$(PLATFORM)" "Linux"
     LINK_LIBS     += -lg2c 
-endif
-ifeq "$(PLATFORM)" "OSF1"
-    LINK_LIBS += -lfor -lUfor
-endif
-ifeq "$(PLATFORM)" "SunOS"
-    LINK_LIBS     += -lg2c 
-endif
-
-################################################################################ HP-UX Options and Fixes
-# see http://consult.cern.ch/qa/2534 for hint at HP-UX solution
-#
-PLATFORM=$(shell uname)
-ifeq "$(PLATFORM)" "HP-UX"
-  LINK_LIBS        = $(LINK_LIBS) -lf
 endif
 
 ################################################################################ definition of the compiler options

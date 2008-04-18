@@ -308,8 +308,8 @@ namespace HepMC {
 	m_alphaQED = -1;
 	m_weights = std::vector<double>();
 	m_random_states = std::vector<long>();
-	m_momentum_units = HepMC::MomentumUnits::unknown;
-	m_position_units = HepMC::PositionUnits::unknown;
+	m_momentum_units = HepMC::MomentumUnits::UNKNOWN;
+	m_position_units = HepMC::PositionUnits::UNKNOWN;
         // error check just to be safe
 	if ( m_vertex_barcodes.size() != 0 
 	     || m_particle_barcodes.size() != 0 ) {
@@ -533,13 +533,13 @@ namespace HepMC {
     }
 
     /// Convert momentum units and change the internal unit designation.
-    /// convert_momentum_units will fail if the units are unknown.
+    /// convert_momentum_units will fail if the units are UNKNOWN.
     /// convert_momentum_units will succeed but take no action if 
     /// the requested units match the internal unit designation.
     bool GenEvent::convert_momentum_units( MomentumUnits::HepMCmomentumUnits mom ) {
         // check units for validity
-        if( momentum_units().units() == MomentumUnits::unknown ) return false;
-        if( mom == MomentumUnits::unknown ) return false;
+        if( momentum_units().units() == MomentumUnits::UNKNOWN ) return false;
+        if( mom == MomentumUnits::UNKNOWN ) return false;
 	// check to see if action is necessary
 	if( momentum_units().units() == mom ) return true;
 	// get the conversion factor
@@ -559,13 +559,13 @@ namespace HepMC {
     }
 
     /// Convert position units and change the internal unit designation.
-    /// convert_position_units will fail if the units are unknown.
+    /// convert_position_units will fail if the units are UNKNOWN.
     /// convert_position_units will succeed but take no action if 
     /// the requested units match the internal unit designation.
     bool GenEvent::convert_position_units( PositionUnits::HepMCpositionUnits pos ) {
         // check units for validity
-        if( position_units().units() == PositionUnits::unknown ) return false;
-        if( pos == PositionUnits::unknown ) return false;
+        if( position_units().units() == PositionUnits::UNKNOWN ) return false;
+        if( pos == PositionUnits::UNKNOWN ) return false;
 	// check to see if action is necessary
 	if( position_units().units() == pos ) return true;
 	// get the conversion factor

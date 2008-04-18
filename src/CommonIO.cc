@@ -464,15 +464,15 @@ bool CommonIO::read_units( std::istream* is, GenEvent* evt ) {
     } 
     // somehow got here when we weren't using IO_GenEvent
     if ( m_io_type != gen ) {
-        evt->set_momentum_units( MomentumUnits::unknown );
-        evt->set_position_units( PositionUnits::unknown );
+        evt->set_momentum_units( MomentumUnits::UNKNOWN );
+        evt->set_position_units( PositionUnits::UNKNOWN );
         return true;
     }
     // have no units, but this is not an error
     // releases prior to 2.04.00 did not write unit information
     if ( is->peek() !='U') {
-        evt->set_momentum_units( MomentumUnits::unknown );
-        evt->set_position_units( PositionUnits::unknown );
+        evt->set_momentum_units( MomentumUnits::UNKNOWN );
+        evt->set_position_units( PositionUnits::UNKNOWN );
 	return true;
     } 
     is->ignore();	// ignore the first character in the line

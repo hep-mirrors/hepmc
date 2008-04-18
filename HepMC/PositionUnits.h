@@ -22,11 +22,10 @@ namespace HepMC {
 class PositionUnits {
 public:
 
-enum HepMCpositionUnits { unknown = 0, mm, cm, meter };
-// this enum scheme can accomodate additional definitions
-// use "meter" because we don't want to have a single character enum ("m")
+/// this enum scheme can accomodate additional definitions
+enum HepMCpositionUnits { UNKNOWN = 0, MM, CM };
 
-    PositionUnits( HepMCpositionUnits pos = unknown ); //!< default constructor
+    PositionUnits( HepMCpositionUnits pos = UNKNOWN ); //!< default constructor
     ~PositionUnits() {}
 
     PositionUnits( const PositionUnits& inevent );            //!< copy
@@ -44,7 +43,7 @@ enum HepMCpositionUnits { unknown = 0, mm, cm, meter };
     bool   set_units( std::string& );       //!< set the position units
 
 private: // data members
-    HepMCpositionUnits m_units;    // unknown by default
+    HepMCpositionUnits m_units;    // UNKNOWN by default
 };
 
 //--------------------------------------------------------------------------
@@ -74,7 +73,7 @@ inline PositionUnits::HepMCpositionUnits PositionUnits::units() const
 inline bool PositionUnits::set_units( HepMCpositionUnits pos )
 {
    /// set_units will FAIL if the units are already defined
-   if( m_units != unknown ) return false;
+   if( m_units != UNKNOWN ) return false;
    m_units = pos;
    return true;
 }
@@ -82,11 +81,10 @@ inline bool PositionUnits::set_units( HepMCpositionUnits pos )
 inline bool PositionUnits::set_units( std::string& pos )
 {
    /// set_units will FAIL if the units are already defined
-   if( m_units != unknown ) return false;
-   if( pos == "mm"      )      m_units = mm;
-   else if( pos == "cm"      ) m_units = cm;
-   else if( pos == "meter"   ) m_units = meter;
-   else if( pos == "unknown" ) m_units = unknown;
+   if( m_units != UNKNOWN ) return false;
+   if( pos == "MM"      )      m_units = MM;
+   else if( pos == "CM"      ) m_units = CM;
+   else if( pos == "UNKNOWN" ) m_units = UNKNOWN;
    else return false;
    return true;
 }
@@ -94,8 +92,8 @@ inline bool PositionUnits::set_units( std::string& pos )
 inline double PositionUnits::conversion_factor( HepMCpositionUnits pos ) const
 {
    /// This routine returns the desired scale factor
-   /// If position units are unknown, the scale factor is 0.
-   if( m_units == unknown ) return 0.;
+   /// If position units are UNKNOWN, the scale factor is 0.
+   if( m_units == UNKNOWN ) return 0.;
    if( m_units == pos ) return 1.;
    double f = PositionUnits(pos).unitFactor();
    return  f < 0. ? 0. : unitFactor()/f;
@@ -104,9 +102,8 @@ inline double PositionUnits::conversion_factor( HepMCpositionUnits pos ) const
 inline double PositionUnits::unitFactor() const
 {
     switch( m_units ) {
-        case mm      : return 1.;
-        case cm      : return 10.;
-        case meter   : return 1000.;
+        case MM      : return 1.;
+        case CM      : return 10.;
         default      : return -1.;
     }
 }
@@ -114,10 +111,9 @@ inline double PositionUnits::unitFactor() const
 inline std::string PositionUnits::name(  ) const 
 {
     switch( m_units ) {
-        case mm      : return "mm";
-        case cm      : return "cm";
-        case meter   : return "meter";
-        case unknown : return "unknown";
+        case MM      : return "MM";
+        case CM      : return "CM";
+        case UNKNOWN : return "UNKNOWN";
         default      : return "bad value";
     }
 }
