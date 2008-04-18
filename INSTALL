@@ -10,7 +10,7 @@ we recommend that you create a separate build directory and work from there.
 #-------------------------------------------------------------
 
 To build for Windows Visual C++, configure with CXX=cl CC=cl.
-See the ReadMe.cygwin-VC* files for more information.
+See ReadMe.cygwin for more information.
 
 On MacOSX, you need to define MACOSX_DEPLOYMENT_TARGET appropriately.  
 For instance, set MACOSX_DEPLOYMENT_TARGET to "10.4" if you 

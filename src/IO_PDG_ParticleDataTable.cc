@@ -10,6 +10,7 @@
 #include <string>
 #include <vector>
 #include <cstdlib>      // needed for abort()
+#include <cstring>	// for strlen()
 #include "HepMC/IO_PDG_ParticleDataTable.h"
 
 namespace HepMC {
