@@ -1,4 +1,11 @@
 
+2008-04-17  Lynn Garren
+
+	* Rename configure.in to configure.ac, which is now the common usage.
+	* configure.ac: Major restructuring.  Using libtool. 
+	Only Linux, MacOSX, and Windows are explicitly supported.
+	All Makefile.am's have been restructured to use libtool.
+
 2008-04-01  Lynn Garren
 
 

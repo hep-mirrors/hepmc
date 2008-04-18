@@ -8,8 +8,13 @@ rm -f aclocal.m4
 rm -f Makefile.in */Makefile.in */defs.h.in
 rm -f missing install-sh depcomp 
 rm -f configure config.*
+rm -f ltmain.sh
 # run autotool commands
+libtoolize --copy
 aclocal 
+if [ -f /usr/share/aclocal/libtool.m4 ]; then
+   cat /usr/share/aclocal/libtool.m4 >> aclocal.m4
+fi
 autoheader
 automake --add-missing --copy
 autoconf

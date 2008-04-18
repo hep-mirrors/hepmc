@@ -2,10 +2,6 @@
 
 # documents are already built - this is just used to install them
 
-if USE_GMAKE
-  MAKE = gmake
-endif
-
 doc_srcdir = $(top_srcdir)/doc
 doc_installdir = $(prefix)/doc/HepMC
 

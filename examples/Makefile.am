@@ -1,9 +1,5 @@
 # This makefile is used to copy files during the "make install" step
 
-if USE_GMAKE
-  MAKE = gmake
-endif
-
 INSTALLDIR = @prefix@/examples/@PACKAGE@
 
 # files to distribute

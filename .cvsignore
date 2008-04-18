@@ -6,3 +6,4 @@ config.*
 missing
 install-sh
 depcomp
+ltmain.sh
