@@ -316,7 +316,7 @@ namespace HepMC {
 	}
     }
 
-    void IO_ExtendedAscii::write_heavy_ion( HeavyIon* ion ) {
+    void IO_ExtendedAscii::write_heavy_ion( HeavyIon const * ion ) {
 	// assumes mode has already been checked
 	if ( !m_file ) {
 	    std::cerr << "IO_ExtendedAscii::write_heavy_ion !m_file, "
@@ -360,7 +360,7 @@ namespace HepMC {
 	output('\n');
     }
 
-    void IO_ExtendedAscii::write_pdf_info( PdfInfo* pdf ) {
+    void IO_ExtendedAscii::write_pdf_info( PdfInfo const * pdf ) {
 	// assumes mode has already been checked
 	if ( !m_file ) {
 	    std::cerr << "IO_ExtendedAscii::write_pdf_info !m_file, "

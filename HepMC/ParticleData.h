@@ -48,7 +48,7 @@
 
 #include <iostream>
 #include <string>
-#include <cmath>
+#include <stdlib.h>   // for integer abs()
 
 namespace HepMC {
 

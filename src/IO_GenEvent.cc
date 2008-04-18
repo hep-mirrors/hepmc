@@ -303,7 +303,7 @@ namespace HepMC {
 	}
     }
 
-    void IO_GenEvent::write_heavy_ion( HeavyIon* ion ) {
+    void IO_GenEvent::write_heavy_ion( HeavyIon const * ion ) {
 	// assumes mode has already been checked
 	if ( !(*m_ostr) ) {
 	    std::cerr << "IO_GenEvent::write_heavy_ion !(*m_ostr), "
@@ -347,7 +347,7 @@ namespace HepMC {
 	output('\n');
     }
 
-    void IO_GenEvent::write_pdf_info( PdfInfo* pdf ) {
+    void IO_GenEvent::write_pdf_info( PdfInfo const * pdf ) {
 	// assumes mode has already been checked
 	if ( !(*m_ostr) ) {
 	    std::cerr << "IO_GenEvent::write_pdf_info !(*m_ostr), "

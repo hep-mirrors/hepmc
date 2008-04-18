@@ -1,3 +1,13 @@
+
+2008-04-18  Lynn Garren
+
+	* HepMC/GenEvent.h: minor bug fix for gcc 4.3.0
+	* HepMC/IO_ExtendedAscii.h: minor bug fix for gcc 4.3.0
+	* HepMC/IO_GenEvent.h: minor bug fix for gcc 4.3.0
+	* HepMC/ParticleData.h: minor bug fix for gcc 4.3.0
+	* src/IO_ExtendedAscii.cc: minor bug fix for gcc 4.3.0
+	* src/IO_GenEvent.cc: minor bug fix for gcc 4.3.0
+	
   --------------------------  HepMC-2.03.06  --------------------------
 
 2008-03-12  Lynn Garren
