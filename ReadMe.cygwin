@@ -1,3 +1,12 @@
+For the compilation under cygwin using VC++, you have to make sure that 
+the PATH contains the path to the installation of Visual Studio.  
+The safest way to do this, is to add VC to your cygwin.bat file.  
+Since it is possible to have several different versions of VC on the same 
+machine, we recommend keeping a generic cygwin.bat and creating special 
+cygwinXXX.bat file for each compiler you want to use.  
+
+Here is an example for VC9:
+
 
 For the compilation under cygwin using VC 7.1 (Version 13.10.3077)
 you have to make sure that the PATH contains the path to the
