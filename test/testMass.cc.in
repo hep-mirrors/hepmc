@@ -7,7 +7,8 @@
 // Add arbitrary PDF information to one of the good events
 // Write the selected events and read them back in using an istream
 //////////////////////////////////////////////////////////////////////////
-//
+
+#include <cmath>	// for min()
 
 #include "HepMC/IO_GenEvent.h"
 #include "HepMC/GenEvent.h"
@@ -33,7 +34,7 @@ int main() {
 	//........................................EVENT LOOP
 	int icount=0;
 	int num_good_events=0;
-        double x=0., y=0., z=0.;
+        double x1=0., x2=0., q=0., xf1=0., xf2=0.;
 	HepMC::GenEvent* evt = ascii_in.read_next_event();
 	while ( evt ) {
 	    icount++;
@@ -43,12 +44,21 @@ int main() {
 	    if ( is_good_event(evt) ) {
 		if (num_good_events == 0 ) {
 		    // add some arbitrary PDF information
-		    x = 0.1 * icount;
-		    y = 0.13 * icount;
-		    z = 0.012 * icount;
+		    x1 = std::min(0.8, 0.07 * icount);
+		    x2 = 1-x1;
+		    q = 1.69 * icount;
+		    // use beam momentum
+		    if( evt->valid_beam_particles() ) {
+		        HepMC::GenParticle* bp1 = evt->beam_particles().first;
+			xf1 = x1*bp1->momentum().mag();
+			xf2 = x2*bp1->momentum().mag();
+		    } else {
+			xf1 = x1*0.34;
+			xf2 = x2*0.34;
+		    }
 		    // provide optional pdf set id numbers 
 		    // (two ints at the end of the constructor)
-		    HepMC::PdfInfo pdf( 11, 12, x, y, z, 0.11, 0.34, 230, 230);
+		    HepMC::PdfInfo pdf( 2, 3, x1, x2, q, xf1, xf2, 230, 230);
 		    evt->set_pdf_info(pdf);
 		}
 		ascii_out << evt;

@@ -561,11 +561,22 @@ event record.
 \begin{myitemize}{Relevant Data Members}
   \myitem{id1}{flavour code of first parton}
   \myitem{id2}{flavour code of second parton }
+  \myitem{pdf\_id1}{LHAPDF set id of first parton}
+  \myitem{pdf\_id2}{LHAPDF set id of second parton}
   \myitem{x1}{fraction of beam momentum carried by first parton ("beam side")}
   \myitem{x2}{fraction of beam momentum carried by second parton ("target side")}
   \myitem{scalePDF}{Q-scale used in evaluation of PDF's (in GeV)}
-  \myitem{pdf1}{PDF (id1, x1, Q)}
-  \myitem{pdf2}{PDF (id2, x2, Q)}
+  \myitem{pdf1}{PDF (id1, x1, Q)  This should be of the form x*f(x)}
+  \myitem{pdf2}{PDF (id2, x2, Q)  This should be of the form x*f(x)}
+\end{myitemize}
+\begin{myitemize}{Notes and Conventions}
+  \item The LHAPDF\cite{lhapdf} set ids are the entries in the first column of
+	\htmladdnormallink
+	{http://projects.hepforge.org/lhapdf/PDFsets.index}
+	{http://projects.hepforge.org/lhapdf/PDFsets.index}.
+  \item The LHAPDF set ids pdf\_id1 and pdf\_id2 are zero by default.
+  \item IMPORTANT: The contents of pdf1 and pdf2 are expected to be x*f(x), 
+        which is the quantity returned by LHAPDF.
 \end{myitemize}
 
 PdfInfo stores additional PDF information for a GenEvent.
@@ -1270,6 +1281,13 @@ arXiv:hep-ph/0109068.
   T.~Sjostrand {\it et al.}, 
   ``High-energy physics event generation with PYTHIA 6.1,''
   Comput.\ Phys.\ Commun.\  {\bf 135}, 238 (2001).
+
+\bibitem{lhapdf}
+  ``the Les Houches Accord PDF Interface,'' (LHAPDF).
+  Available from 
+  \htmladdnormallink
+  {http://projects.hepforge.org/lhapdf/}
+  {http://projects.hepforge.org/lhapdf/}.
 
 \bibitem{evtgen}
   A.~Ryd, D.~Lange,

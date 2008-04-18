@@ -7,19 +7,6 @@
 //
 // Additional PDF information
 //////////////////////////////////////////////////////////////////////////
-//
-//      int id1; 	// flavour code of first parton
-//      int id2; 	// flavour code of second parton 
-//      int pdf_id1; 	// LHAPDF set id of first parton (zero by default)
-//      int pdf_id2; 	// LHAPDF set id of second parton  (zero by default)
-//      double x1;  	// fraction of beam momentum carried by first parton ("beam side") 
-//      double x2;  	// fraction of beam momentum carried by second parton ("target side") 
-//      double scalePDF;  //  Q-scale used in evaluation of PDF's   (in GeV) 
-//      pdf1 and pdf2 should store x*f(x)
-//      double pdf1;  	// PDF (id1, x1, Q) 
-//      double pdf2;  	// PDF (id2, x2, Q)   
-//
-//////////////////////////////////////////////////////////////////////////
 
 namespace HepMC {
 
@@ -29,6 +16,20 @@ namespace HepMC {
 /// \class  PdfInfo
 /// HepMC::PdfInfo stores additional PDF information for a GenEvent.
 /// Creation and use of this information is optional. 
+///
+///   - int id1; 	// flavour code of first parton
+///   - int id2; 	// flavour code of second parton 
+///   - int pdf_id1; 	// LHAPDF set id of first parton (zero by default)
+///   - int pdf_id2; 	// LHAPDF set id of second parton  (zero by default)
+///   - double x1;  	// fraction of beam momentum carried by first parton ("beam side") 
+///   - double x2;  	// fraction of beam momentum carried by second parton ("target side") 
+///   - double scalePDF;  //  Q-scale used in evaluation of PDF's   (in GeV) 
+///   - double pdf1;  	// PDF (id1, x1, Q) 
+///   - double pdf2;  	// PDF (id2, x2, Q)   
+/// 
+/// The contents of pdf1 and pdf2 are expected to be x*f(x).
+/// The LHAPDF set ids are the entries in the first column of
+/// http:///projects.hepforge.org/lhapdf/PDFsets.index
 ///
 class PdfInfo {
 
@@ -48,7 +49,7 @@ public:
       m_pdf2(0)
     {}
 
-  /// all values must be provided
+  /// all values EXCEPT pdf_id1 and pdf_id2 must be provided
   PdfInfo( int i1, int i2, double x1, double x2,
            double q, double p1, double p2,
 	   int pdf_id1 = 0, int pdf_id2 = 0 );
@@ -73,7 +74,7 @@ public:
     int   id2()                   const { return m_id2; }
     /// LHAPDF set id of first parton
     int   pdf_id1()                   const { return m_pdf_id1; }
-    /// LHAPDF set id of second parton 
+    /// LHAPDF set id of second parton
     int   pdf_id2()                   const { return m_pdf_id2; }
     /// fraction of beam momentum carried by first parton ("beam side") 
     double x1()                   const { return m_x1; } 
