@@ -1,3 +1,4 @@
+
 For the compilation under cygwin using VC++, you have to make sure that 
 the PATH contains the path to the installation of Visual Studio.  
 The safest way to do this, is to add VC to your cygwin.bat file.  
@@ -7,6 +8,15 @@ cygwinXXX.bat file for each compiler you want to use.
 
 Here is an example for VC9:
 
+@echo off
+
+@call "C:\Program Files\Microsoft Visual Studio 9.0\VC\bin\vcvars32.bat"
+@set PATH=%PATH%;C:\cygwin\bin
+
+C:
+chdir C:\cygwin\bin
+
+bash --login -i
 
 For the compilation under cygwin using VC 7.1 (Version 13.10.3077)
 you have to make sure that the PATH contains the path to the
