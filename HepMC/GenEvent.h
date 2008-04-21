@@ -196,10 +196,10 @@ namespace HepMC {
 	const WeightContainer&  weights() const; //!< direct access to WeightContainer
 
 	/// access the HeavyIon container if it exists
-	HeavyIon* const          heavy_ion() const;
+	HeavyIon const *          heavy_ion() const;
 	HeavyIon*                heavy_ion();
 	/// access the PdfInfo container if it exists
-	PdfInfo* const           pdf_info() const;
+	PdfInfo const *           pdf_info() const;
 	PdfInfo*                 pdf_info();
 
 	/// vector of integers containing information about the random state
@@ -594,13 +594,13 @@ namespace HepMC {
     inline const WeightContainer& GenEvent::weights() const 
     { return m_weights; }
 
-    inline HeavyIon* const GenEvent::heavy_ion() const 
+    inline HeavyIon const * GenEvent::heavy_ion() const 
     { return m_heavy_ion; }
 
     inline HeavyIon*  GenEvent::heavy_ion()  
     { return m_heavy_ion; }
 
-    inline PdfInfo* const GenEvent::pdf_info() const 
+    inline PdfInfo const * GenEvent::pdf_info() const 
     { return m_pdf_info; }
 
     inline PdfInfo*  GenEvent::pdf_info()  

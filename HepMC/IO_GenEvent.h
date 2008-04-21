@@ -96,9 +96,9 @@ namespace HepMC {
 	/// write beam particle information
 	void          write_beam_particles( std::pair<HepMC::GenParticle *,HepMC::GenParticle *> );
 	/// write heavy ion information
-	void          write_heavy_ion( HeavyIon* );
+	void          write_heavy_ion( HeavyIon const * );
 	/// write PDF information
-	void          write_pdf_info( PdfInfo* );
+	void          write_pdf_info( PdfInfo const * );
 	/// write units
 	void          write_unit_info( const GenEvent* evt );
 	/// write particle information

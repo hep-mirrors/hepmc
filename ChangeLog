@@ -1,6 +1,14 @@
 
 2008-04-18  Lynn Garren
 
+	* HepMC/GenEvent.h: minor bug fix for gcc 4.3.0
+	* HepMC/IO_ExtendedAscii.h: minor bug fix for gcc 4.3.0
+	* HepMC/IO_GenEvent.h: minor bug fix for gcc 4.3.0
+	* src/IO_ExtendedAscii.cc: minor bug fix for gcc 4.3.0
+	* src/IO_GenEvent.cc: minor bug fix for gcc 4.3.0
+
+2008-04-18  Lynn Garren
+
 	* ReadMe.cygwin: changing cygwin directions for new versions of VC
 
 	* HepMC/MomentumUnits.h: enum HepMCmomentumUnits{ UNKNOWN = 0, MEV, GEV };
