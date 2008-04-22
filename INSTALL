@@ -10,6 +10,9 @@ we recommend that you create a separate build directory and work from there.
 #-------------------------------------------------------------
 
 To build for Windows Visual C++, configure with CXX=cl CC=cl.
+Configure has an annoying habit of setting the -g flag, which is 
+ignored by Visual C++.  To avoid this warning, use the following command:
+/full/path/to/configure --prefix=<install directory> CXX=cl CC=cl CXXFLAGS=
 See ReadMe.cygwin for more information.
 
 On MacOSX, you need to define MACOSX_DEPLOYMENT_TARGET appropriately.  
