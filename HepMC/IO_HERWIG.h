@@ -69,7 +69,7 @@ namespace HepMC {
 	/// default is true
 	bool              print_inconsistency_errors() const;
 	/// decide whether or not to print inconsistency errors
-	void              set_print_inconsistency_errors( bool b = 1 );
+	void              set_print_inconsistency_errors( bool b = true );
 
         /// ask how to deal with extra non-physical pseudo particles
 	bool              no_gaps_in_barcodes() const 
@@ -94,9 +94,9 @@ namespace HepMC {
         /// default is false
 	bool              trust_mothers_before_daughters() const;
         /// define mother daughter trust rules
-	void              set_trust_mothers_before_daughters( bool b = 1 );
+	void              set_trust_mothers_before_daughters( bool b = true );
         /// define mother daughter trust rules
-	void              set_trust_both_mothers_and_daughters( bool b = 0 );
+	void              set_trust_both_mothers_and_daughters( bool b = false );
 
         /// make a particle
 	GenParticle* build_particle( int index );
@@ -123,7 +123,7 @@ namespace HepMC {
 	virtual void write_event( const GenEvent* ){}
         virtual void write_particle_data_table( const ParticleDataTable* ){}
         virtual bool fill_particle_data_table( ParticleDataTable* )
-	    { return 0; }
+	    { return false; }
 
     private: // use of copy constructor is not allowed
 	IO_HERWIG( const IO_HERWIG& ) : IO_BaseClass() {}

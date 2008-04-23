@@ -107,11 +107,11 @@ namespace HepMC {
 	///  particle's address, so we need to do more than just compare the
 	///  particle pointers
 	//
-	if ( a.position() !=  this->position() ) return 0;
+	if ( a.position() !=  this->position() ) return false;
 	// if the size of the inlist differs, return false.
-	if ( a.particles_in_size() !=  this->particles_in_size() ) return 0;
+	if ( a.particles_in_size() !=  this->particles_in_size() ) return false;
 	// if the size of the outlist differs, return false.
-	if ( a.particles_out_size() !=  this->particles_out_size() ) return 0;
+	if ( a.particles_out_size() !=  this->particles_out_size() ) return false;
 	// loop over the inlist and ensure particles are identical
 	//   (only do this if the lists aren't empty - we already know
 	//   if one isn't, then other isn't either!)
@@ -120,7 +120,7 @@ namespace HepMC {
 		      ia = a.particles_in_const_begin(),
 		      ib = this->particles_in_const_begin();
 		  ia != a.particles_in_const_end(); ia++, ib++ ){
-		if ( **ia != **ib ) return 0;
+		if ( **ia != **ib ) return false;
 	    }
 	}
 	// loop over the outlist and ensure particles are identical
@@ -131,10 +131,10 @@ namespace HepMC {
 		      ia = a.particles_out_const_begin(),
 		      ib = this->particles_out_const_begin();
 		  ia != a.particles_out_const_end(); ia++, ib++ ){
-		if ( **ia != **ib ) return 0;
+		if ( **ia != **ib ) return false;
 	    }
 	}
-	return 1;
+	return true;
     }
 
     bool GenVertex::operator!=( const GenVertex& a ) const {
@@ -583,13 +583,13 @@ namespace HepMC {
     }
 
     bool GenVertex::edge_iterator::is_parent() const {
-	if ( **this && (**this)->end_vertex() == m_vertex ) return 1;
-	return 0;
+	if ( **this && (**this)->end_vertex() == m_vertex ) return true;
+	return false;
     }
 
     bool GenVertex::edge_iterator::is_child() const {
-	if ( **this && (**this)->production_vertex() == m_vertex ) return 1;
-	return 0;
+	if ( **this && (**this)->production_vertex() == m_vertex ) return true;
+	return false;
     }
 
     int GenVertex::edges_size( IteratorRange range ) const {
@@ -768,12 +768,12 @@ namespace HepMC {
 	m_recursive_iterator = 0;
 	if ( m_it_owns_set ) delete m_visited_vertices;
 	m_visited_vertices = 0;
-	m_it_owns_set = 0;
+	m_it_owns_set = false;
 	// copy the target vertex_iterator to this iterator 
 	m_vertex = v_iter.m_vertex;
 	m_range = v_iter.m_range;
 	m_visited_vertices = &visited_vertices;
-	m_it_owns_set = 0;
+	m_it_owns_set = false;
         m_edge = v_iter.m_edge;
 	copy_recursive_iterator_( v_iter.m_recursive_iterator );
     }

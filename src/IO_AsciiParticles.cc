@@ -185,7 +185,7 @@ namespace HepMC {
 	    std::cerr 
 		<< "IO_AsciiParticles::fill_next_event error - passed null event." 
 		<< std::endl;
-	    return 0;
+	    return false;
 	}
 	// check the state of m_outstream is good, and that it is in input mode
 	if ( !m_file )
@@ -194,10 +194,10 @@ namespace HepMC {
 	if ( !(m_mode&std::ios::in) ) {
 	    std::cerr << "HepMC::IO_AsciiParticles::fill_next_event "
 		      << " attempt to read from output file" << std::endl;
-	    return 0;
+	    return false;
 	}
     std::cerr << "IO_AsciiParticles input is not yet implemented" << std::endl;
-    return 0;
+    return false;
   }
 
   void IO_AsciiParticles::write_comment( const std::string comment ) {
@@ -216,7 +216,7 @@ namespace HepMC {
   }
 
   bool IO_AsciiParticles::write_end_listing() {
-	return 0;
+	return false;
   }
 
 } // HepMC

@@ -90,13 +90,13 @@ namespace HepMC {
 	/// consistent with the definition of the copy constructor as a shallow
 	///  constructor,.. this operator does not test the vertex pointers.
 	///  Does not compare barcodes.
-	if ( a.momentum() != this->momentum() ) return 0;
-        if ( a.generated_mass() != this->generated_mass() ) return 0;
-	if ( a.pdg_id() != this->pdg_id() ) return 0;
-	if ( a.status() != this->status() ) return 0;
-	if ( a.m_flow != this->m_flow ) return 0;
-	if ( a.polarization() != this->polarization() ) return 0;
-	return 1;
+	if ( a.momentum() != this->momentum() ) return false;
+        if ( a.generated_mass() != this->generated_mass() ) return false;
+	if ( a.pdg_id() != this->pdg_id() ) return false;
+	if ( a.status() != this->status() ) return false;
+	if ( a.m_flow != this->m_flow ) return false;
+	if ( a.polarization() != this->polarization() ) return false;
+	return true;
     }
 
     bool GenParticle::operator!=( const GenParticle& a ) const {

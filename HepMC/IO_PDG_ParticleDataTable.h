@@ -68,7 +68,7 @@ namespace HepMC {
 	void read_entry( ParticleDataTable* );
     private: // following are not implemented
 	void write_event( const GenEvent* ){}
-	bool fill_next_event( GenEvent* ){ return 0; }
+	bool fill_next_event( GenEvent* ){ return false; }
 	void write_particle_data_table( const ParticleDataTable* ){}
     private: // use of copy constructor is not allowed
 	IO_PDG_ParticleDataTable( const IO_PDG_ParticleDataTable& ) : 

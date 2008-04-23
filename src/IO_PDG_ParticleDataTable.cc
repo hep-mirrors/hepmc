@@ -36,12 +36,12 @@ namespace HepMC {
 	    std::cerr 
 		<< "IO_Ascii::fill_particle_data_table - passed null table." 
 		<< std::endl;
-	    return 0;
+	    return false;
 	}
 	//
 	// test the file is good and advance to keyword
         if (!m_file ) {
-	  // return 0;
+	  // return false;
 	  std::cerr << "IO_PDG_ParticleDataTable::fill_particle_data_table "
 		    << " ERROR, file " << m_filename << " does not exist, "
 		    << " ABORT." << std::endl;
@@ -52,7 +52,7 @@ namespace HepMC {
 	    std::cerr << "IO_PDG_ParticleDataTable: "
 		      << "Error advancing to first entry." 
 		      << std::endl;
-	    return 0;
+	    return false;
 	}
 	// set description
 	std::string description = "Read from " + m_filename 
@@ -63,7 +63,7 @@ namespace HepMC {
 	while ( m_file.rdstate() == 0 ) {
 	    read_entry( pdt );
 	}
-	return 1;
+	return true;
     }
 
     void IO_PDG_ParticleDataTable::read_entry( ParticleDataTable* pdt ) {
@@ -219,9 +219,9 @@ namespace HepMC {
             if ( c[0] == key[index] ) { 
                 ++index;
             } else { index = 0; }
-            if ( index == strlen(key) ) return 1;
+            if ( index == strlen(key) ) return true;
         }
-        return 0;
+        return false;
     }
 
 } // HepMC

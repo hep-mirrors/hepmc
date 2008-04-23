@@ -102,7 +102,7 @@ namespace HepMC {
 	    std::cerr 
 		<< "IO_HERWIG::fill_next_event error - passed null event." 
 		<< std::endl;
-	    return 0;
+	    return false;
 	}
 
 	// 1. First we have to fix the HEPEVT input, which is all mucked up for

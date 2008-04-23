@@ -55,9 +55,9 @@ namespace HepMC {
 	/// default is true
 	bool              trust_beam_particles() const;
         /// define mother daughter trust rules
-	void              set_trust_mothers_before_daughters( bool b = 1 );
+	void              set_trust_mothers_before_daughters( bool b = true );
         /// define mother daughter trust rules
-	void              set_trust_both_mothers_and_daughters( bool b = 0 );
+	void              set_trust_both_mothers_and_daughters( bool b = false );
 	/// Since HEPEVT has bi-directional pointers, it is possible that
 	/// the mother/daughter pointers are inconsistent (though physically
 	/// speaking this should never happen). In practise it happens often.
@@ -81,7 +81,7 @@ namespace HepMC {
 	/// the daughters. [THIS IS THE DEFAULT]. Unfortunately the reverse
 	/// happens for the stdhep(2001) translation of Isajet, so we need
 	/// an option to toggle the choices.
-	void              set_print_inconsistency_errors( bool b = 1 );
+	void              set_print_inconsistency_errors( bool b = true );
         /// declare whether or not beam particles exist
 	void              set_trust_beam_particles( bool b = true );
 
@@ -101,7 +101,7 @@ namespace HepMC {
     private: // following are not implemented for HEPEVT
         virtual void write_particle_data_table( const ParticleDataTable* ){}
         virtual bool fill_particle_data_table( ParticleDataTable* ) 
-	    { return 0; }
+	    { return false; }
 
     private: // use of copy constructor is not allowed
 	IO_HEPEVT( const IO_HEPEVT& ) : IO_BaseClass() {}

@@ -48,7 +48,7 @@ namespace HepMC {
 	    std::cerr 
 		<< "IO_HEPEVT::fill_next_event error - passed null event." 
 		<< std::endl;
-	    return 0;
+	    return false;
 	}
 	evt->set_event_number( HEPEVT_Wrapper::event_number() );
 	//
@@ -104,7 +104,7 @@ namespace HepMC {
 		evt->add_vertex( prod_vtx );
 	    }
 	}
-	return 1;
+	return true;
     }
 
     void IO_HEPEVT::write_event( const GenEvent* evt ) {

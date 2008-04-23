@@ -39,8 +39,8 @@ namespace HepMC {
     //     class is_photon {
     //       public:
     //         bool operator() ( GenParticle const * p ) {
-    //             if ( p && p->pdg_id() == 22 ) return 1;
-    //             return 0;
+    //             if ( p && p->pdg_id() == 22 ) return true;
+    //             return false;
     //         }
     //     };
     // which the user defines herself.
@@ -519,9 +519,9 @@ namespace HepMC {
 	// Following methods intended for use by GenParticle/Vertex classes:
 	// In general there is no reason they should be used elsewhere.
 	/// set the barcode - intended for use by GenParticle
-	bool         set_barcode( GenParticle* p, int suggested_barcode =0 );
+	bool         set_barcode( GenParticle* p, int suggested_barcode =false );
 	/// set the barcode - intended for use by GenVertex
-	bool         set_barcode( GenVertex*   v, int suggested_barcode =0 );
+	bool         set_barcode( GenVertex*   v, int suggested_barcode =false );
 	///  intended for use by GenParticle
 	void         remove_barcode( GenParticle* p );
 	///  intended for use by GenVertex
