@@ -312,7 +312,7 @@ c++)
       AR="ar"; ARFLAGS="cru"
    esac;;
 cl)  
-   AM_CXXFLAGS="-EHsc -nologo -GR -GX -MD"
+   AM_CXXFLAGS="-EHsc -nologo -GR -MD"
    AR="ar"; ARFLAGS="cru"
    MY_SHFLAGS=" "; MY_SHLINK="lib /NOLOGO"; SHEXT=lib
    MY_SHNAME="/OUT:"; MY_LD=" "
