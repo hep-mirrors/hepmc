@@ -1,4 +1,8 @@
 
+2008-04-23  Lynn Garren
+
+	* src/GenVertex.cc: fix bug in edge_iterator operator++
+
 2008-04-18  Lynn Garren
 
 	* HepMC/GenEvent.h: minor bug fix for gcc 4.3.0

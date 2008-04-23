@@ -460,7 +460,7 @@ namespace HepMC {
     //
 
     GenVertex::edge_iterator::edge_iterator() : m_vertex(0), m_range(family), 
-	m_is_inparticle_iter(0), m_is_past_end(1)
+	m_is_inparticle_iter(false), m_is_past_end(true)
     {}
 
     GenVertex::edge_iterator::edge_iterator( const GenVertex& vtx, 
@@ -485,32 +485,32 @@ namespace HepMC {
 	if ( m_vertex->m_particles_in.empty() &&
 	     m_vertex->m_particles_out.empty() ) {
 	    // Case: particles_in and particles_out is empty.
-	    m_is_inparticle_iter = 0;
-	    m_is_past_end = 1;
+	    m_is_inparticle_iter = false;
+	    m_is_past_end = true;
 	} else if ( m_range == parents && m_vertex->m_particles_in.empty() ){
 	    // Case: particles in is empty and parents is requested.
-	    m_is_inparticle_iter = 1;
-	    m_is_past_end = 1;
+	    m_is_inparticle_iter = true;
+	    m_is_past_end = true;
 	} else if ( m_range == children && m_vertex->m_particles_out.empty() ){
 	    // Case: particles out is empty and children is requested.
-	    m_is_inparticle_iter = 0;
-	    m_is_past_end = 1;
+	    m_is_inparticle_iter = false;
+	    m_is_past_end = true;
 	} else if ( m_range == children ) {
 	    // Case: particles out is NOT empty, and children is requested
 	    m_set_iter = m_vertex->m_particles_out.begin();
-	    m_is_inparticle_iter = 0;
-	    m_is_past_end = 0;
+	    m_is_inparticle_iter = false;
+	    m_is_past_end = false;
 	} else if ( m_range == family && m_vertex->m_particles_in.empty() ) {
 	    // Case: particles in is empty, particles out is NOT empty,
 	    //       and family is requested. Then skip ahead to partilces out.
 	    m_set_iter = m_vertex->m_particles_out.begin();
-	    m_is_inparticle_iter = 0;
-	    m_is_past_end = 0;
+	    m_is_inparticle_iter = false;
+	    m_is_past_end = false;
 	} else {
 	    // Normal scenario: start with the first incoming particle
 	    m_set_iter = m_vertex->m_particles_in.begin();
-	    m_is_inparticle_iter = 1;
-	    m_is_past_end = 0;
+	    m_is_inparticle_iter = true;
+	    m_is_past_end = false;
 	}
     }
 
@@ -547,18 +547,30 @@ namespace HepMC {
 	    // at the end on in particle set, and range is family, so move to
 	    // out particle set
 	    m_set_iter = m_vertex->m_particles_out.begin();
-	    m_is_inparticle_iter = 0;
+	    m_is_inparticle_iter = false;
 	} else if ( m_range == parents && 
 		    m_set_iter == m_vertex->m_particles_in.end() ) {
 	    // at the end on in particle set, and range is parents only, so
 	    // move into past the end state
-	    m_is_past_end = 1;
+	    m_is_past_end = true;
+	    // might as well bail out now
+	    return *this;
 	} 
-	// the following is not else if because we might have range=family
-	// with an empty particles_out set.	
-	if ( m_set_iter == m_vertex->m_particles_out.end() ) {
-	    //whenever out particles end is reached, go into past the end state
-	    m_is_past_end = 1;
+	// are we iterating over input or output particles?
+	if( m_is_inparticle_iter ) {
+	    // the following is not else if because we might have range=family
+	    // with an empty particles_out set.	
+	    if ( m_set_iter == m_vertex->m_particles_in.end() ) {
+		//whenever out particles end is reached, go into past the end state
+		m_is_past_end = true;
+	    }
+	} else {
+	    // the following is not else if because we might have range=family
+	    // with an empty particles_out set.	
+	    if ( m_set_iter == m_vertex->m_particles_out.end() ) {
+		//whenever out particles end is reached, go into past the end state
+		m_is_past_end = true;
+	    }
 	}
 	return *this;
     }
@@ -862,17 +874,17 @@ namespace HepMC {
     GenVertex::particle_iterator::operator++(void) {
 	//Pre-fix increment 
 	//
-	if ( !*m_edge && !*m_vertex_iterator ) {
-	    // past the end condition: do nothing
-	    return *this;
-	} else if ( !*m_edge && *m_vertex_iterator ) {
+	if ( *m_edge ) {
+	    ++m_edge;
+	} else if ( *m_vertex_iterator ) {	// !*m_edge is implicit
 	    // past end of edge, but still have more vertices to visit
 	    // increment the vertex, checking that the result is valid
 	    if ( !*(++m_vertex_iterator) ) return *this;
 	    m_edge = GenVertex::edge_iterator( **m_vertex_iterator, 
 						  m_vertex_iterator.range() ); 
-	} else {
-	    ++m_edge;
+	} else {	// !*m_edge and !*m_vertex_iterator are implicit
+	    // past the end condition: do nothing
+	    return *this;
 	}
 	advance_to_first_();
 	return *this;
