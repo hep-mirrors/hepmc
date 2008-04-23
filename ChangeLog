@@ -2,6 +2,9 @@
 2008-04-23  Lynn Garren
 
 	* src/GenVertex.cc: fix bug in edge_iterator operator++
+        * src/IO_Ascii.cc: fix for VC9
+        * src/IO_ExtendedAscii.cc: fix for VC9
+        * src/IO_AsciiParticle.cc: fix for VC9
 
 2008-04-18  Lynn Garren
 

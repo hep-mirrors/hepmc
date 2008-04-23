@@ -559,7 +559,7 @@ namespace HepMC {
 	// are we iterating over input or output particles?
 	if( m_is_inparticle_iter ) {
 	    // the following is not else if because we might have range=family
-	    // with an empty particles_out set.	
+	    // with an empty particles_in set.	
 	    if ( m_set_iter == m_vertex->m_particles_in.end() ) {
 		//whenever out particles end is reached, go into past the end state
 		m_is_past_end = true;

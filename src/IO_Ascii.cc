@@ -56,7 +56,7 @@ namespace HepMC {
 	//
 	// check the state of m_file is good, and that it is in output mode
 	if ( !evt || !m_file ) return;
-	if ( !m_mode&std::ios::out ) {
+	if ( !(m_mode&std::ios::out) ) {
 	    std::cerr << "HepMC::IO_Ascii::write_event "
 		      << " attempt to write to input file." << std::endl;
 	    return;
@@ -166,7 +166,7 @@ namespace HepMC {
     void IO_Ascii::write_comment( const std::string comment ) {
 	// check the state of m_file is good, and that it is in output mode
 	if ( !m_file ) return;
-	if ( !m_mode&std::ios::out ) {
+	if ( !(m_mode&std::ios::out) ) {
 	    std::cerr << "HepMC::IO_Ascii::write_particle_data_table "
 		      << " attempt to write to input file." << std::endl;
 	    return;
@@ -182,7 +182,7 @@ namespace HepMC {
 	//
 	// check the state of m_file is good, and that it is in output mode
 	if ( !m_file ) return;
-	if ( !m_mode&std::ios::out ) {
+	if ( !(m_mode&std::ios::out) ) {
 	    std::cerr << "HepMC::IO_Ascii::write_particle_data_table "
 		      << " attempt to write to input file." << std::endl;
 	    return;
