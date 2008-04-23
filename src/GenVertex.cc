@@ -553,12 +553,24 @@ namespace HepMC {
 	    // at the end on in particle set, and range is parents only, so
 	    // move into past the end state
 	    m_is_past_end = 1;
+	    // might as well bail out now
+	    return *this;
 	} 
-	// the following is not else if because we might have range=family
-	// with an empty particles_out set.	
-	if ( m_set_iter == m_vertex->m_particles_out.end() ) {
-	    //whenever out particles end is reached, go into past the end state
-	    m_is_past_end = 1;
+	// are we iterating over input or output particles?
+	if( m_is_inparticle_iter ) {
+	    // the following is not else if because we might have range=family
+	    // with an empty particles_in set.	
+	    if ( m_set_iter == m_vertex->m_particles_in.end() ) {
+		//whenever out particles end is reached, go into past the end state
+		m_is_past_end = true;
+	    }
+	} else {
+	    // the following is not else if because we might have range=family
+	    // with an empty particles_out set.	
+	    if ( m_set_iter == m_vertex->m_particles_out.end() ) {
+		//whenever out particles end is reached, go into past the end state
+		m_is_past_end = true;
+	    }
 	}
 	return *this;
     }
