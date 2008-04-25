@@ -2,13 +2,7 @@
 	 */
 	/** \example example_MyPythiaOnlyToHepMC.cc
 	 */
-	/** \example example_MyPythiaRead.cc
-	 */
-	/** \example example_PythiaParticle.cc
-	 */
 	/** \example example_MyHerwig.cc
-	 */
-	/** \example example_MyPythiaWithEventSelection.cc
 	 */
 	/** \example example_EventSelection.cc
 	 */

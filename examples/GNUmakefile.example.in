@@ -38,9 +38,6 @@ endif
 		  example_MyHerwig.cc	\
 		  example_MyPythia.cc	\
 		  example_MyPythiaOnlyToHepMC.cc	\
-		  example_MyPythiaWithEventSelection.cc	\
-		  example_PythiaParticle.cc	\
-		  example_ReadMyPythia.cc	\
 		  example_UsingIterators.cc	\
 		  testPythiaCopies.cc	\
 		  testHerwigCopies.cc	\
@@ -51,11 +48,7 @@ endif
 		  example_EventSelection.exe	\
 		  example_MyHerwig.exe	\
 		  example_MyPythia.exe	\
-		  example_MyPythiaRead.exe	\
 		  example_MyPythiaOnlyToHepMC.exe	\
-		  example_MyPythiaWithEventSelection.exe	\
-		  example_PythiaParticle.exe	\
-		  example_ReadMyPythia.exe	\
 		  example_UsingIterators.exe	\
 		  testPythiaCopies.exe	\
 		  testHerwigCopies.exe
@@ -128,36 +121,11 @@ example_MyPythia.exe: $(initpydata_OBJ) $(pythia_OBJ) example_MyPythia.o
 		$(HepMClib) $(HepMCfiolib) \
 	        $(Pythia_LIB) $(LINK_LIBS) -o $@
 
-example_MyPythiaRead.exe: $(initpydata_OBJ) $(pythia_OBJ) example_MyPythiaRead.o
-	@echo "Building $@ ..."
-	$(CXX) $(FLAGS) $(pythia_OBJ) example_MyPythiaRead.o \
-		$(HepMClib) $(HepMCfiolib) \
-	        $(Pythia_LIB) $(LINK_LIBS) -o $@
-
 example_MyPythiaOnlyToHepMC.exe: $(initpydata_OBJ) $(pythia_OBJ) example_MyPythiaOnlyToHepMC.o
 	@echo "Building $@ ..."
 	$(CXX) $(FLAGS) $(pythia_OBJ) example_MyPythiaOnlyToHepMC.o \
 		$(HepMClib) $(HepMCfiolib) \
 	        $(Pythia_LIB) $(LINK_LIBS) -o $@
-
-example_MyPythiaWithEventSelection.exe: $(initpydata_OBJ) $(pythia_OBJ) example_MyPythiaWithEventSelection.o
-	@echo "Building $@ ..."
-	$(CXX) $(FLAGS) $(pythia_OBJ) example_MyPythiaWithEventSelection.o \
-		$(HepMClib) $(HepMCfiolib) \
-	        $(Pythia_LIB) $(LINK_LIBS) -o $@
-
-example_PythiaParticle.exe: $(initpydata_OBJ) $(pythia_OBJ) example_PythiaParticle.o
-	@echo "Building $@ ..."
-	$(CXX) $(FLAGS) $(pythia_OBJ) example_PythiaParticle.o \
-		$(HepMClib) $(HepMCfiolib) \
-	        $(Pythia_LIB) \
-		$(LINK_LIBS) -o $@
-
-example_ReadMyPythia.exe: example_ReadMyPythia.o
-	@echo "Building $@ ..."
-	$(CXX) $(FLAGS) example_ReadMyPythia.o \
-		$(HepMClib) \
-	        $(LINK_LIBS) -o $@
 
 example_UsingIterators.exe: example_UsingIterators.o
 	@echo "Building $@ ..."

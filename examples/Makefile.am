@@ -8,11 +8,7 @@ EXTRA_DIST = \
     example_EventSelection.cc \
     example_MyHerwig.cc \
     example_MyPythia.cc \
-    example_MyPythiaRead.cc \
     example_MyPythiaOnlyToHepMC.cc \
-    example_MyPythiaWithEventSelection.cc \
-    example_PythiaParticle.cc	\
-    example_ReadMyPythia.cc	\
     example_UsingIterators.cc \
     testHerwigCopies.cc	\
     testPythiaCopies.cc	\
