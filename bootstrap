@@ -12,8 +12,9 @@ rm -f ltmain.sh
 # run autotool commands
 libtoolize --copy
 aclocal 
-if [ -f /usr/share/aclocal/libtool.m4 ]; then
-   cat /usr/share/aclocal/libtool.m4 >> aclocal.m4
+m4dir=`aclocal --print-ac-dir`
+if [ -f $m4dir/libtool.m4 ]; then
+   cat $m4dir/libtool.m4 >> aclocal.m4
 fi
 autoheader
 automake --add-missing --copy
