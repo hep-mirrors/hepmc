@@ -1,10 +1,11 @@
+  --------------------------  HepMC-2.03.08  --------------------------
 
 2008-04-23  Lynn Garren
 
 	* src/GenVertex.cc: fix bug in edge_iterator operator++
-        * src/IO_Ascii.cc: fix for VC9
-        * src/IO_ExtendedAscii.cc: fix for VC9
-        * src/IO_AsciiParticle.cc: fix for VC9
+        * src/IO_Ascii.cc: minor fix for VC9
+        * src/IO_ExtendedAscii.cc: minor fix for VC9
+        * src/IO_AsciiParticle.cc: minor fix for VC9
 
   --------------------------  HepMC-2.03.07  --------------------------
 
