@@ -67,9 +67,7 @@ int main() {
     //
     // Note that the HepLorentzVectors will be automatically converted to 
     // HepMC::FourVector within GenParticle and GenVertex
-    GenEvent* evt = new GenEvent(HepMC::MomentumUnits(HepMC::MomentumUnits::GEV),
-                                 HepMC::PositionUnits(HepMC::PositionUnits::MM),
-				 20, 1 );
+    GenEvent* evt = new GenEvent( 20, 1 );
     //
     // create vertex 1 and vertex 2, together with their inparticles
     GenVertex* v1 = new GenVertex();
