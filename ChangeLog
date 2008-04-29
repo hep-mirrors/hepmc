@@ -1,9 +1,13 @@
 
+2008-04-29  Lynn Garren
+
+	* remove deprecated IO_ExtendedAscii
+
 2008-04-25  Lynn Garren
 
-	* cleanup examples: combine example_MyPythia.cc, example_MyPythiaRead.cc,
-	example_MyPythiaWithEventSelection.cc, example_PythiaParticle.cc, and
-	example_ReadMyPythia.cc into one example with multiple subsets.
+	* cleanup examples: combine example_MyPythia.cc, 
+	example_MyPythiaRead.cc, example_MyPythiaWithEventSelection.cc, 
+	example_PythiaParticle.cc, and example_ReadMyPythia.cc into one example with multiple subsets.
 	* add tests to list of examples in the reference manual
 
 2008-04-23  Lynn Garren
