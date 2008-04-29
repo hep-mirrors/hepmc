@@ -59,17 +59,16 @@ testDeprecated_LDADD     = $(top_builddir)/src/libHepMC.la
 
 # Identify input data file(s) and prototype output file(s):
 EXTRA_DIST = testHepMC.input testHepMC.output testHepMCParticle.output \
-             testPrintBug.output testHepMCExtended.dat \
-	     testHepMCIteration.output testHepMCIterationExtended.output \
+             testPrintBug.output \
+	     testHepMCIteration.output \
 	     testAscii.input testAscii.dat
 
 # Identify generated file(s) to be removed when 'make clean' is requested:
-CLEANFILES = testHepMC.out testHepMCParticle.out testHepMCExtended.out \
-             testPrintBug.out testHepMCIterationExtended.out testMass.out \
-	     testAscii.dat testHepMCExtended.dat testHepMCIteration.out \
+CLEANFILES = testHepMC.out testHepMCParticle.out \
+             testPrintBug.out testMass.out \
+	     testAscii.dat testHepMCIteration.out \
              testHepMCIteration.dat testMass1.dat testMass2.dat \
              testDeprecated.cout testHepMC.cout testHepMCIteration.cout \
 	     testMultipleCopies.out testHepMCVarious.out testIOAscii.dat \
 	     testMultipleCopies1.dat testMultipleCopies2.dat \
-	     testMultipleOriginals.dat testIOHepMCExtended.dat \
-	     testUnits.out
+	     testMultipleOriginals.dat testUnits.out

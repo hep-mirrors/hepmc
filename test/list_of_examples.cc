@@ -1,10 +1,7 @@
 /// The HepMC tests can also serve as useful examples
 
-	/// This program checks the deprecated IO_Ascii and IO_ExtendedAscii
-	/// Apply an event selection to the events in testAscii.input
-	/// Events containing a photon of pT > 25 GeV pass the selection and are
-	/// written to "testAscii.dat"
-	/// Also read and write events using IO_ExtendedAscii
+	/// This program checks the deprecated IO_Ascii class.
+	/// IO_Ascii is slated for removal in the 2.05 release.
 	/// \example testDeprecated.cc.in
 
 	/// based on example_EventSelection

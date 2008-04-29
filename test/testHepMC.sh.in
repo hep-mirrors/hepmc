@@ -5,7 +5,6 @@
 rm -f testHepMC.out
 rm -f testHepMCParticle.out
 rm -f testIOAscii.dat
-rm -f testIOHepMCExtended.dat
 
 ./testHepMC@EXEEXT@ >& testHepMC.cout
 
@@ -20,7 +19,6 @@ CYGWIN*)
        grep -v Version | @DIFF_Q@ - @srcdir@/testAscii.input`
   #don't compare these on Windows (hopelessly different default output)
   cmd2=
-  cmd4=
   ;;
 Darwin*)
   # MacOSX fix
@@ -30,8 +28,6 @@ Darwin*)
 	@DIFF_Q@ - testHepMCParticle.out`
   cmd3=`cat testIOAscii.dat | grep -v Version | \
         @DIFF_Q@ - @srcdir@/testAscii.input`
-  cmd4=`sed 's/IO_GenEvent/IO_ExtendedAscii/g' testIOHepMCExtended.dat | \
-        grep -v UNKNOWN | @DIFF_Q@ - @srcdir@/testHepMCExtended.input`
   ;;
 *)
   cmd=`@DIFF_Q@ testHepMC.cout @srcdir@/testHepMC.output`
@@ -39,8 +35,6 @@ Darwin*)
   cmd2=`@DIFF_Q@ testHepMCParticle.out @srcdir@/testHepMCParticle.output`
   cmd3=`cat testIOAscii.dat | grep -v Version | \
         @DIFF_Q@ - @srcdir@/testAscii.input`
-  cmd4=`sed 's/IO_GenEvent/IO_ExtendedAscii/g' testIOHepMCExtended.dat | \
-        grep -v UNKNOWN | @DIFF_Q@ - @srcdir@/testHepMCExtended.input`
 esac
 
 if [ -n "$cmd" ]; then
@@ -60,15 +54,9 @@ then
   exit 1;
 fi
 
-##if [ -n "$cmd3" ]
-##then
-##  echo $cmd3
-##  exit 1;
-##fi
-
-if [ -n "$cmd4" ]
+if [ -n "$cmd3" ]
 then
-  echo $cmd4
+  echo $cmd3
   exit 1;
 fi
 

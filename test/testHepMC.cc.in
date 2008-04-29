@@ -21,16 +21,14 @@
 
 void read_testIOGenEvent();
 void read_testAscii();
-void read_testExtendedAscii();
-void read_various();
+void read_variousFormats();
 
 double findPiZero( HepMC::GenEvent* );
 
 int main() { 
     read_testIOGenEvent();
     read_testAscii();
-    read_testExtendedAscii();
-    read_various();
+    read_variousFormats();
     return 0;
 }
 
@@ -108,32 +106,7 @@ void read_testAscii()
 	std::cout << icount << " events processed. Finished." << std::endl;
 }
 
-void read_testExtendedAscii()
-{
-    std::cout << std::endl;
-    std::cout << "read file written with IO_ExtendedAscii" << std::endl;
-    // extended (complete) output
-    HepMC::IO_GenEvent xin("@srcdir@/testHepMCExtended.input",std::ios::in);
-    // declare another IO_GenEvent for output
-    HepMC::IO_GenEvent xout("testIOHepMCExtended.dat",std::ios::out);
-    //........................................EVENT LOOP
-    int icount=0;
-    HepMC::GenEvent* evt = xin.read_next_event();
-    while ( evt ) {
-	icount++;
-	if ( icount%50==1 ) std::cout << "Processing Event Number " << icount
-				      << " its # " << evt->event_number() 
-				      << std::endl;
-	xout << evt;
-
-	// clean up and get next event
-	delete evt;
-	xin >> evt;
-    }
-    std::cout << icount << " events processed. Finished." << std::endl;
-}
-
-void read_various()
+void read_variousFormats()
 {
     std::cout << std::endl;
     std::cout << "process varied input" << std::endl;

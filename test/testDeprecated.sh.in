@@ -9,13 +9,9 @@ CYGWIN*)
   cmd1=`sed 's/e+0/e+/g' testAscii.dat   | \
      sed 's/e-0/e-/g' -   | \
 	@DIFF_Q@ - @srcdir@/testAscii.dat`
-  cmd2=`sed 's/e+0/e+/g'  testHepMCExtended.dat  | \
-     sed 's/e-0/e-/g'  -  | \
-	@DIFF_Q@ - @srcdir@/testHepMCExtended.dat`
   ;;
 *)
   cmd1=`@DIFF_Q@ testAscii.dat @srcdir@/testAscii.dat`
-  cmd2=`@DIFF_Q@ testHepMCExtended.dat @srcdir@/testHepMCExtended.dat`
 esac
 
 if [ -n "$cmd1" ]

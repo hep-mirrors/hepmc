@@ -10,10 +10,6 @@ Use of HepMC/IO_Ascii is deprecated
 Processing Event Number 1 its # 1
 36 events processed. Finished.
 
-read file written with IO_ExtendedAscii
-Processing Event Number 1 its # 1
-37 events processed. Finished.
-
 process varied input
 Processing Event Number 1 its # 1
  Momenutm units: UNKNOWN     Position units: UNKNOWN
