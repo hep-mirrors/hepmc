@@ -32,7 +32,7 @@ endif
   CLHEP_LIB     = -L$(CLHEPdir)/lib -lCLHEP
   initpydata_OBJ= initpydata.o
   pythia_OBJ    = initPythia.o initpydata.o
-  LINK_LIBS     = 
+  LINK_LIBS     = @LDFLAGS@
   SRCS	        = example_BuildEventFromScratch.cc	\
 		  example_EventSelection.cc	\
 		  example_MyHerwig.cc	\

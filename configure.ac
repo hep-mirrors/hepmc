@@ -44,11 +44,8 @@ AC_PROG_CXX
 AC_PROG_CC
 AC_PROG_MAKE_SET
 
-# special libtool rules for Windows
-case "$target" in
-*-*-win32*)
-  AC_LIBTOOL_WIN32_DLL
-esac
+# special libtool rules for Windows - work with gcc and cygwin
+AC_LIBTOOL_WIN32_DLL
 AC_PROG_LIBTOOL
 
 # ----------------------------------------------------------------------
