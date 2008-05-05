@@ -110,19 +110,11 @@ namespace HepMC {
 	repair_hepevt();
 
 	evt->set_event_number( HEPEVT_Wrapper::event_number() );
-	// set the units right here
-	if( !evt->set_momentum_units( MomentumUnits::GEV ) ) {
-	    std::cerr 
-		<< "IO_HERWIG::fill_next_event warning "
-		<< "- momentum units were not set." 
-		<< std::endl;
-	} 
-	if( !evt->set_position_units( PositionUnits::MM ) ) {
-	    std::cerr 
-		<< "IO_HERWIG::fill_next_event warning "
-		<< "- position units were not set." 
-		<< std::endl;
-	} 
+	// Herwig units are GeV and mm
+	// It would be nice to set the units right here,
+	// but this could cause problems with existing code that 
+	// might convert GeV to MeV without calling the appropriate HepMC method
+
 	//
 	// 2. create a particle instance for each HEPEVT entry and fill a map
 	//    create a vector which maps from the HEPEVT particle index to the 
