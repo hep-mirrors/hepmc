@@ -8,7 +8,7 @@ ignored by Visual C++.  To avoid this warning, use the following command:
 /full/path/to/configure --prefix=<install directory> CXX=cl CC=cl CXXFLAGS=
 
 #-------------------------------------------------------------
-# setup the compiler
+# setup the compiler for cygwin
 #-------------------------------------------------------------
 
 For the compilation under cygwin using VC++, you have to make sure that 
@@ -33,15 +33,22 @@ Here is an example for VC9:
 Two lines, "@call..." and "@set...", have been added to the default Cygwin.bat.
 
 #-------------------------------------------------------------
-# add information to the environment
+# building executables
 #-------------------------------------------------------------
 
-You need to tell VC where to find libraries and include files, 
-even if the location is specified in your Makefile.  Here is an 
-example for CLHEP:
+When building your own exectuables, we recommend using the Visual C++ command 
+shell, found under All Programs -> Visual C++ XXX -> Visual Studio Tools, 
+which will have the Visual C++ environment properly established.
+You will need to use the same compiler flags as used by configure.ac.
 
-export INCLUDE="C:/cygwin/home/clhep/1.9.2.2/include";${INCLUDE}
-export LIB="C:/cygwin/home/clhep/1.9.2.2/lib";${LIB}
+Compile an object file:
+cl /EHsc /MD /GR /nologo /c \
+   /IC:\cygwin\home\garren\lcg\hepmc\config\vc9\include \
+   example_UsingIterators.cc
+
+Build an executable:
+cl /Feexample.exe example_UsingIterators.obj \
+   C:\cygwin\home\garren\lcg\hepmc\config\vc9\lib\HepMC.lib
 
 #-------------------------------------------------------------
 # setting the path explicitly for VC 7.1
@@ -82,10 +89,4 @@ You may have to adapt to your installation path, if different.
 Please report problems using the bug-tracker of the savannah portal at: 
 
 http://savannah.cern.ch/projects/hepmc/
-
-# run these from a cmd shell
-
-cl /EHsc /MD /GR /nologo /c /IC:\cygwin\home\garren\lcg\hepmc\config\vc9\include example_UsingIterators.cc
-
-cl /Feexample.exe example_UsingIterators.obj C:\cygwin\home\garren\lcg\hepmc\config\vc9\lib\HepMC.lib
 

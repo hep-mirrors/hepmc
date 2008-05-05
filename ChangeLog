@@ -1,4 +1,9 @@
 
+2008-05-05  Lynn Garren
+
+	* configure.ac: use separate makefiles (VCMakefile.in) for Visual C++
+	The custom makefiles are invoked by default when using Visual C++.
+
 2008-04-29  Lynn Garren
 
 	* remove deprecated IO_ExtendedAscii
