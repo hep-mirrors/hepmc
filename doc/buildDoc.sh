@@ -11,7 +11,6 @@ if [ `whereis doxygen | wc -w` -gt 1 ]; then
       cd latex
       make all
       make pdf
-      mv refman.ps  ../HepMC2_reference_manual.ps
       mv refman.pdf ../HepMC2_reference_manual.pdf
       cd ..
       rm -rf latex
@@ -21,6 +20,8 @@ fi
 if [ `whereis latex | wc -w` -gt 1 ]; then
    latex HepMC2_user_manual.tex 
    latex HepMC2_user_manual.tex
-   dvips HepMC2_user_manual
    dvipdf HepMC2_user_manual
+   # cleanup latex files
+   rm -f *.aux *.dvi *.log *.toc
 fi
+

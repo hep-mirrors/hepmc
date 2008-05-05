@@ -5,8 +5,8 @@
 doc_srcdir = $(top_srcdir)/doc
 doc_installdir = $(prefix)/doc/HepMC
 
-HEPMC2_DOCS  = HepMC2_user_manual.pdf HepMC2_user_manual.ps
-HEPMC2_REF   = HepMC2_reference_manual.pdf HepMC2_reference_manual.ps
+HEPMC2_DOCS  = HepMC2_user_manual.pdf
+HEPMC2_REF   = HepMC2_reference_manual.pdf
 
 DOCUMENTS =$(HEPMC2_DOCS) $(HEPMC2_REF)
 
