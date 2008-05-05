@@ -266,9 +266,9 @@ namespace HepMC {
 	/// the string must match the enum exactly
 	/// set_momentum_units will fail if the momentum units have already been declared
         bool set_momentum_units( std::string& );
-	/// set the momentum units 
+	/// set the position units 
 	/// the string must match the enum exactly
-	/// set_momentum_units will fail if the momentum units have already been declared
+	/// set_position_units will fail if the position units have already been declared
         bool set_position_units( std::string& );
 	
         /// convert to the desired units and change the unit designation

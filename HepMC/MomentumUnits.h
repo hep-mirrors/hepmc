@@ -111,8 +111,8 @@ inline double MomentumUnits::conversion_factor( HepMCmomentumUnits mom ) const
 inline double MomentumUnits::unitFactor() const
 {
     switch( m_units ) {
-	case MEV     : return 1000000.;
-	case GEV     : return 1000000000.;
+	case MEV     : return 1.;
+	case GEV     : return 1000.;
 	default      : return -1.;
     }
 }
