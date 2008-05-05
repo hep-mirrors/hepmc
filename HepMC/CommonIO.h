@@ -34,7 +34,7 @@ public:
   // IO_Ascii is deprecated, but we want to be able to read these files
   std::string IO_Ascii_Key()             const { return m_io_ascii_start; }
   std::string IO_Ascii_End()             const { return m_io_ascii_end; }
-  // IO_ExtendedAscii is deprecated, but we want to be able to read these files
+  // IO_ExtendedAscii has been removed, but we want to be able to read these files
   std::string IO_ExtendedAscii_Key()     const { return m_io_extendedascii_start; }
   std::string IO_ExtendedAscii_End()     const { return m_io_extendedascii_end; }
   /// get IO type
@@ -46,13 +46,9 @@ public:
   // write keys for deprecated IO methods
   void write_IO_Ascii_Key( std::ostream& );
   void write_IO_Ascii_End( std::ostream& );
-  void write_IO_ExtendedAscii_Key( std::ostream& );
-  void write_IO_ExtendedAscii_End( std::ostream& );
   // write keys for deprecated particle data IO methods
   void write_IO_Ascii_PDT_Key( std::ostream& );
   void write_IO_Ascii_PDT_End( std::ostream& );
-  void write_IO_ExtendedAscii_PDT_Key( std::ostream& );
-  void write_IO_ExtendedAscii_PDT_End( std::ostream& );
 
   // methods to read input
 
@@ -130,24 +126,12 @@ inline void CommonIO::write_IO_Ascii_Key( std::ostream& os )
 inline void CommonIO::write_IO_Ascii_End( std::ostream& os )
 { os << m_io_ascii_end << "\n"; }
 
-inline void CommonIO::write_IO_ExtendedAscii_Key( std::ostream& os )
-{ os << m_io_extendedascii_start << "\n"; }
-
-inline void CommonIO::write_IO_ExtendedAscii_End( std::ostream& os )
-{ os << m_io_extendedascii_end << "\n"; }
-
 inline void CommonIO::write_IO_Ascii_PDT_Key( std::ostream& os )
 { os << m_io_ascii_pdt_start << "\n"; }
 
 inline void CommonIO::write_IO_Ascii_PDT_End( std::ostream& os )
 { os << m_io_ascii_pdt_end << "\n"; }
 
-inline void CommonIO::write_IO_ExtendedAscii_PDT_Key( std::ostream& os )
-{ os << m_io_extendedascii_pdt_start << "\n"; }
-
-inline void CommonIO::write_IO_ExtendedAscii_PDT_End( std::ostream& os )
-{ os << m_io_extendedascii_pdt_end << "\n"; }
-
-}
+} // HepMC
 
 #endif // HEPMC_COMMON_IO_H

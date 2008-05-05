@@ -3,7 +3,7 @@
 //////////////////////////////////////////////////////////////////////////
 // garren@fnal.gov, July 2006
 // event input/output in ascii format for machine reading
-// extended format contains HeavyIon and PdfInfo classes
+// IO_GenEvent format contains HeavyIon and PdfInfo classes
 //////////////////////////////////////////////////////////////////////////
 
 #include "HepMC/IO_GenEvent.h"

@@ -194,7 +194,7 @@ bool CommonIO::read_io_extendedascii( std::istream* istr, GenEvent* evt )
 	    GenVertex* itsDecayVtx = evt->barcode_to_vertex(vtx);
 	    if ( itsDecayVtx ) itsDecayVtx->add_particle_in( p );
 	    else {
-		std::cerr << "IO_ExtendedAscii::fill_next_event ERROR particle points"
+		std::cerr << "read_io_extendedascii: ERROR particle points"
 			  << "\n to null end vertex. " <<std::endl;
 	    }
 	    // also look for the beam particles

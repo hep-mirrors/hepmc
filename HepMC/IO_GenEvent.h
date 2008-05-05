@@ -58,7 +58,6 @@ namespace HepMC {
     ///  preceded by "HepMC::IO_GenEvent-COMMENT\n"
     /// Each event, vertex, particle, particle data, heavy ion, or pdf info line
     ///  is preceded by   "E ","V ","P ","D ","H ","F "    respectively.
-    /// ExtendedAscii ignores particle data blocks
     /// Comments may appear anywhere in the file -- so long as they do not contain
     ///  any of the start/stop keys.
     ///
