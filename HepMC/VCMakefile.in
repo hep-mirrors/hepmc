@@ -1,0 +1,156 @@
+# custom makefile for Visual C++
+
+@SET_MAKE@
+AM_MAKEFLAGS = @AM_MAKEFLAGS@
+
+srcdir = @srcdir@
+top_srcdir = @top_srcdir@
+VPATH = @srcdir@
+pkgincludedir = $(includedir)/@PACKAGE@
+datadir = @datadir@
+prefix = @prefix@
+install_sh = @install_sh@
+mkdir_p = @mkdir_p@
+COPY_P = @COPY_P@
+SET_MAKE = @SET_MAKE@
+
+top_builddir = ..
+subdir = HepMC
+
+DIST_COMMON = $(pkginclude_HEADERS) $(srcdir)/Makefile.am \
+	$(srcdir)/Makefile.in $(srcdir)/VCMakefile.in $(srcdir)/defs.h.in
+ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
+am__aclocal_m4_deps = $(top_srcdir)/configure.ac
+am__configure_deps = $(am__aclocal_m4_deps) $(CONFIGURE_DEPENDENCIES) \
+	$(ACLOCAL_M4)
+am__strip_dir = `echo $$p | sed -e 's|^.*/||'`;
+mkinstalldirs = $(install_sh) -d
+DISTFILES = $(DIST_COMMON) $(EXTRA_DIST)
+INSTALL = @INSTALL@
+INSTALL_DATA = @INSTALL_DATA@
+INSTALL_HEADER = $(INSTALL_DATA)
+NORMAL_INSTALL = :
+NORMAL_UNINSTALL = :
+pkgincludeHEADERS_INSTALL = $(INSTALL_HEADER)
+
+includedir = $(prefix)/include
+
+pkginclude_HEADERS = \
+	CommonIO.h	\
+	CompareGenEvent.h	\
+	Flow.h		\
+	GenEvent.h	\
+	GenParticle.h	\
+	GenVertex.h	\
+	HeavyIon.h	\
+	HEPEVT_Wrapper.h	\
+	HerwigWrapper6_4.h	\
+	HerwigWrapper.h	\
+	IO_Ascii.h	\
+	IO_AsciiParticles.h	\
+	IO_ExtendedAscii.h	\
+	IO_BaseClass.h	\
+	IO_GenEvent.h	\
+	IO_HEPEVT.h	\
+	IO_HERWIG.h	\
+	IO_PDG_ParticleDataTable.h	\
+	MomentumUnits.h	\
+	ParticleData.h	\
+	ParticleDataTable.h	\
+	PdfInfo.h	\
+	Polarization.h	\
+	PositionUnits.h	\
+	PythiaWrapper5_720.h	\
+	PythiaWrapper6_152.h	\
+	PythiaWrapper6_152_WIN32.h	\
+	PythiaWrapper6_2.h	\
+	PythiaWrapper6_2_WIN32.h	\
+	PythiaWrapper.h	\
+	WeightContainer.h	\
+	SearchVector.h	\
+	SimpleVector.h	\
+	SimpleVector.icc	\
+	enable_if.h	\
+	is_arithmetic.h	\
+	HepMC_CLHEP20.h	\
+	TempParticleMap.h	\
+	Version.h	\
+	defs.h
+
+all: defs.h
+	$(MAKE) $(AM_MAKEFLAGS) all-am
+
+check-am: all-am
+check: check-am
+all-am: VCMakefile $(HEADERS) defs.h
+
+defs.h: stamp-h1
+	@if test ! -f $@; then \
+	  rm -f stamp-h1; \
+	  $(MAKE) stamp-h1; \
+	else :; fi
+
+stamp-h1: $(srcdir)/defs.h.in $(top_builddir)/config.status
+	@rm -f stamp-h1
+	cd $(top_builddir) && $(SHELL) ./config.status HepMC/defs.h
+$(srcdir)/defs.h.in:  $(am__configure_deps) 
+	cd $(top_srcdir) && $(AUTOHEADER)
+	rm -f stamp-h1
+	touch $@
+
+install: install-am
+install-data: install-data-am
+uninstall: uninstall-am
+uninstall-am: uninstall-pkgincludeHEADERS
+
+install-am: all-am
+	@$(MAKE) $(AM_MAKEFLAGS) install-data-am
+
+install-data-am: install-pkgincludeHEADERS
+
+install-pkgincludeHEADERS: $(pkginclude_HEADERS)
+	@$(NORMAL_INSTALL)
+	test -z "$(pkgincludedir)" || $(mkdir_p) "$(DESTDIR)$(pkgincludedir)"
+	@list='$(pkginclude_HEADERS)'; for p in $$list; do \
+	  if test -f "$$p"; then d=; else d="$(srcdir)/"; fi; \
+	  f=$(am__strip_dir) \
+	  echo " $(pkgincludeHEADERS_INSTALL) '$$d$$p' '$(DESTDIR)$(pkgincludedir)/$$f'"; \
+	  $(pkgincludeHEADERS_INSTALL) "$$d$$p" "$(DESTDIR)$(pkgincludedir)/$$f"; \
+	done
+
+uninstall-pkgincludeHEADERS:
+	@$(NORMAL_UNINSTALL)
+	@list='$(pkginclude_HEADERS)'; for p in $$list; do \
+	  f=$(am__strip_dir) \
+	  echo " rm -f '$(DESTDIR)$(pkgincludedir)/$$f'"; \
+	  rm -f "$(DESTDIR)$(pkgincludedir)/$$f"; \
+	done
+
+clean: clean-am
+clean-am: 
+
+distclean: distclean-am
+	-rm -f Makefile
+distclean-am: clean-am distclean-hdr
+
+distclean-hdr:
+	-rm -f defs.h stamp-h1
+
+.SUFFIXES:
+
+.PRECIOUS: VCMakefile
+VCMakefile: $(srcdir)/VCMakefile.in $(top_builddir)/config.status
+	@case '$?' in \
+	  *config.status*) \
+	    cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh;; \
+	  *) \
+	    echo ' cd $(top_builddir) && $(SHELL) ./config.status $(subdir)/$@ $(am__depfiles_maybe)'; \
+	    cd $(top_builddir) && $(SHELL) ./config.status $(subdir)/$@ $(am__depfiles_maybe);; \
+	esac;
+
+.PHONY: all all-am check check-am clean clean-am \
+	distclean distclean-hdr \
+	install install-am install-data install-data-am \
+	uninstall uninstall-am uninstall-pkgincludeHEADERS
+
+.NOEXPORT:

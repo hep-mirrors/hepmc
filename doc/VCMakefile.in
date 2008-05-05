@@ -1,0 +1,76 @@
+# custom makefile for Visual C++
+# documents are already built - this is just used to install them
+
+@SET_MAKE@
+AM_MAKEFLAGS = @AM_MAKEFLAGS@
+
+srcdir = @srcdir@
+top_srcdir = @top_srcdir@
+prefix = @prefix@
+datadir = @datadir@
+install_sh = @install_sh@
+INSTALL = @INSTALL@
+INSTALL_DATA = @INSTALL_DATA@
+SET_MAKE = @SET_MAKE@
+
+am__depfiles_maybe = depfiles
+depcomp = $(SHELL) $(top_srcdir)/depcomp
+
+doc_srcdir = $(top_srcdir)/doc
+doc_installdir = $(prefix)/doc/HepMC
+top_builddir = ..
+
+mkinstalldirs = $(install_sh) -d
+DIST_COMMON = $(srcdir)/Makefile.am $(srcdir)/Makefile.in $(srcdir)/VCMakefile.in
+DISTFILES = $(DIST_COMMON) $(EXTRA_DIST)
+
+HEPMC2_DOCS  = HepMC2_user_manual.pdf HepMC2_user_manual.ps
+HEPMC2_REF   = HepMC2_reference_manual.pdf HepMC2_reference_manual.ps
+
+DOCUMENTS =$(HEPMC2_DOCS) $(HEPMC2_REF)
+
+EXTRA_DIST = $(DOCUMENTS)
+
+all: all-am
+all-am: VCMakefile
+
+install: install-am
+install-exec: install-exec-am
+install-data: install-data-local
+uninstall: uninstall-am
+install-exec-am:
+
+install-am: 
+	@$(MAKE) $(AM_MAKEFLAGS) install-data
+
+install-data-local:
+	$(mkinstalldirs) $(DESTDIR)$(doc_installdir)
+	list='$(DOCUMENTS)'; for file in $$list; do \
+	if test -f $(doc_srcdir)/$$file; then  \
+	($(INSTALL_DATA) $(doc_srcdir)/$$file $(DESTDIR)$(doc_installdir)/$$file); \
+	fi; done
+
+clean: clean-am
+clean-am: 
+
+check: check-am
+check-am: all-am
+
+# Identify generated file(s) to be removed when 'make clean' is requested:
+CLEANFILES = *.aux *.log *.toc *.dvi
+
+
+.PRECIOUS: VCMakefile
+VCMakefile: @srcdir@/VCMakefile.in $(top_builddir)/config.status
+	@case '$?' in \
+	  *config.status*) \
+	    cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh;; \
+	  *) \
+	    echo ' cd $(top_builddir) && $(SHELL) ./config.status $(subdir)/$@ $(am__depfiles_maybe)'; \
+	    cd $(top_builddir) && $(SHELL) ./config.status $(subdir)/$@ $(am__depfiles_maybe);; \
+	esac;
+
+.PHONY: all all-am install install-am install-data install-data-local \
+        clean clean-am check check-am
+
+.NOEXPORT:

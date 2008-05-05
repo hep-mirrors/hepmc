@@ -1,0 +1,87 @@
+# custom makefile for Visual C++
+# This makefile is used to copy files during the "make install" step
+
+@SET_MAKE@
+AM_MAKEFLAGS = @AM_MAKEFLAGS@
+
+INSTALLDIR = @prefix@/examples/@PACKAGE@
+
+srcdir = @srcdir@
+top_srcdir = @top_srcdir@
+top_builddir = @top_builddir@
+prefix = @prefix@
+datadir = @datadir@
+install_sh = @install_sh@
+VPATH = @srcdir@
+INSTALL = @INSTALL@
+INSTALL_DATA = @INSTALL_DATA@
+SET_MAKE = @SET_MAKE@
+
+mkinstalldirs = $(install_sh) -d
+DIST_COMMON = $(srcdir)/GNUmakefile.example.in $(srcdir)/VCMakefile.in 
+DISTFILES = $(DIST_COMMON) $(EXTRA_DIST)
+
+
+# files to distribute
+EXTRA_DIST = \
+    example_BuildEventFromScratch.cc \
+    example_EventSelection.cc \
+    example_MyHerwig.cc \
+    example_MyPythia.cc \
+    example_MyPythiaRead.cc \
+    example_MyPythiaOnlyToHepMC.cc \
+    example_MyPythiaWithEventSelection.cc \
+    example_PythiaParticle.cc	\
+    example_ReadMyPythia.cc	\
+    example_UsingIterators.cc \
+    testHerwigCopies.cc	\
+    testPythiaCopies.cc	\
+    initPythia.cc \
+    PythiaHelper.h \
+    initpydata.f \
+    VectorConversion.h \
+    example_UsingIterators.txt
+
+all: all-am
+all-am: VCMakefile GNUmakefile.example
+
+clean: clean-am
+clean-am: 
+
+check: check-am
+check-am: all-am
+
+install: install-am
+install-data: install-data-local
+uninstall: uninstall-am
+
+install-am: 
+	@$(MAKE) $(AM_MAKEFLAGS) install-data
+
+install-data-local:
+	$(mkinstalldirs) $(DESTDIR)$(INSTALLDIR)
+	$(INSTALL_DATA) GNUmakefile.example $(DESTDIR)$(INSTALLDIR)/GNUmakefile
+	for file in $(EXTRA_DIST); do \
+	  $(INSTALL_DATA) $(srcdir)/$$file $(DESTDIR)$(INSTALLDIR)/$$file; done
+
+.SUFFIXES:
+
+.PRECIOUS: VCMakefile
+VCMakefile: $(srcdir)/VCMakefile.in $(top_builddir)/config.status
+	@case '$?' in \
+	  *config.status*) \
+	    cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh;; \
+	  *) \
+	    echo ' cd $(top_builddir) && $(SHELL) ./config.status $(subdir)/$@ $(am__depfiles_maybe)'; \
+	    cd $(top_builddir) && $(SHELL) ./config.status $(subdir)/$@ $(am__depfiles_maybe);; \
+	esac;
+
+GNUmakefile.example: $(top_builddir)/config.status $(srcdir)/GNUmakefile.example.in
+	cd $(top_builddir) && $(SHELL) ./config.status $(subdir)/$@
+
+.PHONY: all all-am install install-am install-data install-data-local \
+        clean clean-am check check-am
+
+# Tell versions [3.59,3.63) of GNU make to not export all variables.
+# Otherwise a system limit (for SysV at least) may be exceeded.
+.NOEXPORT:
