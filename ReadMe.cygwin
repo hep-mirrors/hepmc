@@ -83,3 +83,9 @@ Please report problems using the bug-tracker of the savannah portal at:
 
 http://savannah.cern.ch/projects/hepmc/
 
+# run these from a cmd shell
+
+cl /EHsc /MD /GR /nologo /c /IC:\cygwin\home\garren\lcg\hepmc\config\vc9\include example_UsingIterators.cc
+
+cl /Feexample.exe example_UsingIterators.obj C:\cygwin\home\garren\lcg\hepmc\config\vc9\lib\HepMC.lib
+
