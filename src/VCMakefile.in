@@ -61,7 +61,6 @@ SOURCES = CommonIO.cc \
 	  GenVertex.cc \
 	  IO_Ascii.cc \
 	  IO_AsciiParticles.cc \
-	  IO_ExtendedAscii.cc \
 	  IO_GenEvent.cc \
 	  IO_PDG_ParticleDataTable.cc \
 	  ParticleData.cc \
@@ -76,7 +75,6 @@ OBJ = CommonIO.obj \
       GenVertex.obj \
       IO_Ascii.obj \
       IO_AsciiParticles.obj \
-      IO_ExtendedAscii.obj \
       IO_GenEvent.obj \
       IO_PDG_ParticleDataTable.obj \
       ParticleData.obj \
