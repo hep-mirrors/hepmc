@@ -86,8 +86,8 @@
 
 \vspace{1cm}
 
-{\Large User Manual Version 2.03} \\
-February 4, 2008
+{\Large User Manual Version 2.04} \\
+May 6, 2008
 
 \vspace{2cm}
 
@@ -257,8 +257,8 @@ of the event record.
 \item ability to store the state of random number generators (as
   integers)
 \item ability to store an arbitrary number of event weights
-\item strategies for conversion to/from HEPEVT\ref{Boos:2001cv} which
-  are easily extendible to support other event records
+\item strategies for conversion to/from HEPEVT (Ref.~\cite{Boos:2001cv}) 
+  which are easily extendible to support other event records
 \item strategies for input/output to/from ascii files which
   are easily extendible to support other forms of persistency
 \end{itemize}
@@ -299,7 +299,9 @@ Changes to HepMC must be approved by the LCG simulation project.
 See the HepMC ChangeLog~\cite{changelog} for a complete listing.
 
 GenEvent now contains pointers to a heavy ion class and a PDF information class.
-The pointers are null by default.
+The pointers are null by default.  
+In addition, GenEvent now has the capability to declare which
+momentum and position units are used.
 
 GenParticle momentum and GenVertex position are represented by a simple FourVector 
 class instead of the CLHEP Lorentz vectors.  
@@ -325,7 +327,8 @@ and stored in GenParticle.
 The IO\_AsciiParticles class provides output in the Pythia style.
 This output is intended for ease of reading event output, not for persistency.
 
-The IO\_Ascii output class is deprecated in favor of IO\_GenEvent.  
+The IO\_Ascii output class is deprecated in favor of IO\_GenEvent, 
+described in Section~\ref{iogenevent}.  
 IO\_GenEvent persists all information in the updated GenEvent object and
 uses iostreams for greater flexibility.  IO\_GenEvent also has a 
 constructor taking a file name and mode type for backwards compatibility. 
@@ -385,9 +388,10 @@ Template Library~\cite{stl} (STL).
 
 The HepMC 1 package dependencies were limited to STL 
 and the vector classes from the
-Class Library for High Energy Physics~\cite{clhep} (CLHEP).  Simple
-wrappers for the Fortran versions of Pythia~\cite{Sjostrand:2001yb} 
-and Herwig are supplied with the
+Class Library for High Energy Physics~\cite{clhep} (CLHEP).  
+
+Simple wrappers for the Fortran versions of Pythia~\cite{Sjostrand:2001yb} 
+and Herwig~\cite{herwig} are supplied with the
 package to allow the inclusion of event generation examples.
 
 \subsection{Namespace}
@@ -453,10 +457,14 @@ HepMC does not define which units are used for the information stored
 in the event record.
 The HEPEVT standard uses GeV/mm, and so the output from most Fortran
 generators will normally be in these units.
-CLHEP uses MeV/mm, and some collaborations such as ATLAS
+CLHEP and Geant4 use MeV/mm, and some collaborations such as ATLAS
 have adopted these units for their simulation.
-Due to this ambiguity all mention of units has been removed from 
-the HepMC documentation.  
+
+As of HepMC 2.04.00, GenEvent contains member data to store information
+about units used.  We recognize that while units may be defined, 
+HepMC itself will not know what the units are unless the user specifies them.
+Therefore, units are "unknown" until set by the user.
+
 HepMC users should refer to the code that fills the event record 
 to determine which units are being used.
 
@@ -484,6 +492,11 @@ to determine which units are being used.
   	associated with the integer barcode argument }
   \myitem{barcode\_to\_vertex}{ returns a pointer to the vertex
   	associated with the integer barcode argument }
+  \myitem{set\_units}{set both momentum and position units}
+  \myitem{set\_momentum\_units}{set the momentum units using the momentum enum}
+  \myitem{set\_position\_units}{set the position units using the position enum}
+  \myitem{convert\_momentum\_units}{convert from, for instance, GeV to MeV}
+  \myitem{convert\_position\_units}{convert from, for instance, mm to cm}
 \end{myitemize}
 \begin{myitemize}{Relevant Data Members}
   \myitem{signal\_process\_id}{an integer ID uniquely specifying the
@@ -511,6 +524,8 @@ to determine which units are being used.
                       (zero by default)}
   \myitem{pdf\_info}{(optional) a pointer to a PdfInfo object 
                      (zero by default)}
+  \myitem{momentum\_units}{momentum units (UNKNOWN, MEV, or GEV)}
+  \myitem{position\_units}{position units (UNKNOWN, MM, or CM)}
 \end{myitemize}
 \begin{myitemize}{Notes and Conventions}
   \item if hit and miss Monte Carlo integration is to be performed
@@ -607,6 +622,44 @@ Creation and use of this information is optional.
 
 HeavyIon provides additional information storage in GenEvent for Heavy Ion
 generators.  Creation and use of this information is optional. 
+
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+
+\subsubsection{HepMC::MomentumUnits}
+\begin{myitemize}{Important Public Methods}
+  \myitem{enum HepMCmomentumUnits}{values are UNKNOWN, MEV, GEV}
+\end{myitemize}
+\begin{myitemize}{Relevant Data Members}
+  \myitem{units}{momentum unit enum}
+\end{myitemize}
+\begin{myitemize}{Notes and Conventions}
+  \item Refer to a momentum unit enum as, for instance,
+    HepMC::MomentumUnits::GEV
+\end{myitemize}
+
+MomentumUnits contains a number of associated methods used to
+manipulate units.
+
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+
+\subsubsection{HepMC::PositionUnits}
+\begin{myitemize}{Important Public Methods}
+  \myitem{enum HepMCpositionUnits}{values are UNKNOWN, MM, CM}
+\end{myitemize}
+\begin{myitemize}{Relevant Data Members}
+  \myitem{units}{position unit enum}
+\end{myitemize}
+\begin{myitemize}{Notes and Conventions}
+  \item Refer to a position unit enum as, for instance,
+    HepMC::PositionUnits::MM
+\end{myitemize}
+
+PositionUnits contains a number of associated methods used to
+manipulate units.
 
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -886,6 +939,7 @@ Several IO strategies are supplied:
     from Pythia into HepMC is given in \verb!example_MyPythia.cc! 
     (Section~\ref{examples}).
 \end{itemize}
+
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
@@ -1034,6 +1088,39 @@ and the same considerations apply.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
 
+\section{Ascii Output}
+\label{iogenevent}
+
+Ascii output uses begin and end keys to denote blocks of events.
+The HepMC version is written immediately before the begin key, but 
+is not part of the event block.
+
+Within a block of events, each line of information begins with a 
+single character key denoting the information found on the line.
+
+General GenEvent information is followed by a list of vertices 
+and associated particles.  The count of vertices is expected to match the 
+number of vertices specified in the general event information.
+Each vertex line specifies how many particle lines are associated 
+with the vertex.
+\vspace{0.1cm}
+\begin{myitemize}{Block Keys}
+  \myitem{begin event block}{HepMC::IO\_GenEvent-START\_EVENT\_LISTING} 
+  \myitem{end event block}{HepMC::IO\_GenEvent-END\_EVENT\_LISTING} 
+\end{myitemize}
+\begin{myitemize}{Line Keys}
+  \myitem{E}{general GenEvent information} 
+  \myitem{H}{HeavyIon information} 
+  \myitem{F}{PdfInfo information} 
+  \myitem{U}{momentum and position units} 
+  \myitem{V}{GenVertex information} 
+  \myitem{P}{GenParticle information} 
+\end{myitemize}
+
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+
 \section{Building HepMC}
 
 Source code, binary and source code tarballs, bug tracking, etc. are
@@ -1081,18 +1168,16 @@ The tests are not installed.
   \item{\bf Using the HepMC vertex and particle iterators:}
        {example\_UsingIterators.cc} 
   \item{\bf Using HepMC with Pythia (Fortran):}
-      {example\_MyPythia.cc,
-      example\_MyPythiaOnlyToHepMC.cc, and
-      example\_PythiaParticle.cc
-      }
+      {example\_MyPythia.cc and
+       example\_MyPythiaOnlyToHepMC.cc}
   \item{\bf An Event Selection with Pythia Events:}
-      {example\_MyPythiaWithEventSelection.cc}
+      {example\_MyPythia.cc}
   \item{\bf Event Selection and Ascii IO}
       {example\_EventSelection.cc}
   \item{\bf Using HepMC with Herwig:}
      {example\_MyHerwig.cc}
  \item{\bf Write an event file and then read it:}
-     {example\_MyPythiaRead.cc}
+     {example\_MyPythia.cc}
   \item{\bf Building an Event from Scratch in the HepMC Framework:}
      {example\_BuildEventFromScratch.cc}
   \item{\bf Verify that copying generated events behaves as expected:}
@@ -1113,6 +1198,10 @@ IO\_Ascii is replaced by IO\_GenEvent, which uses iostreams instead of files.
 The ParticleData classes had become outmoded and would need a lot of
 work.  Instead, we recommend using packages already developed for this
 purpose, such as HepPDT~\cite{heppdt}.
+
+IO\_ExtendedAscii, introduced in 1.28.00, has been deprecated and removed.
+
+IO\_GenEvent reads files written by IO\_Ascii and IO\_ExtendedAscii.
 
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -1281,6 +1370,12 @@ arXiv:hep-ph/0109068.
   T.~Sjostrand {\it et al.}, 
   ``High-energy physics event generation with PYTHIA 6.1,''
   Comput.\ Phys.\ Commun.\  {\bf 135}, 238 (2001).
+
+\bibitem{herwig}
+   G. Corcella {\it et al.}, 
+  ``Herwig 6: an event generator for Hadron Emission Reactions
+  With Interfering Gluons (including supersymmetric processes)''
+  JHEP {\bf 0101}, 010 (2001) [hep-ph/0011363]; hep-ph/0210213.
 
 \bibitem{lhapdf}
   ``the Les Houches Accord PDF Interface,'' (LHAPDF).
