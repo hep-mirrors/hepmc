@@ -3,7 +3,8 @@
 
 	* configure.ac: use separate makefiles (VCMakefile.in) for Visual C++
 	The custom makefiles are invoked by default when using Visual C++.
-	* doc: only build and distribute PDF copies of the manuals
+	* doc: Stop building postscript copies of the manuals, just 
+	build and distribute PDF copies of the manuals.
 
 2008-04-29  Lynn Garren
 
