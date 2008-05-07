@@ -464,6 +464,11 @@ As of HepMC 2.04.00, GenEvent contains member data to store information
 about units used.  We recognize that while units may be defined, 
 HepMC itself will not know what the units are unless the user specifies them.
 Therefore, units are "unknown" until set by the user.
+Setting units to UNKNOWN is a choice required for backwards compatibility
+with persistent GenEvents created by previous versions of HepMC.
+However, we strongly encourage users to declare units 
+for {\bf forward} compatiblity.  
+It may be that units will be required in some future release.
 
 HepMC users should refer to the code that fills the event record 
 to determine which units are being used.
