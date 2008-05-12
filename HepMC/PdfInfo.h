@@ -27,6 +27,9 @@ namespace HepMC {
 ///   - double pdf1;  	// PDF (id1, x1, Q) 
 ///   - double pdf2;  	// PDF (id2, x2, Q)   
 /// 
+/// Input parton flavour codes id1 & id2 are expected to obey the 
+/// PDG code conventions, especially g = 21.
+/// 
 /// The contents of pdf1 and pdf2 are expected to be x*f(x).
 /// The LHAPDF set ids are the entries in the first column of
 /// http:///projects.hepforge.org/lhapdf/PDFsets.index

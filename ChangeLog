@@ -1,3 +1,9 @@
+
+2008-05-12  Lynn Garren
+
+	* HepMC/Pdfinfo.h: Input parton flavour codes id1 and id2 are expected 
+	to obey the PDG code conventions, especially g = 21.
+
   --------------------------  HepMC-2.04.00.beta  --------------------------
 
 2008-05-05  Lynn Garren
