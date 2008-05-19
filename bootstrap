@@ -10,7 +10,12 @@ rm -f missing install-sh depcomp
 rm -f configure config.*
 rm -f ltmain.sh
 # run autotool commands
-libtoolize --copy
+OS=`uname`
+if [ $OS = "Darwin" ]; then
+  glibtoolize --copy
+else
+  libtoolize --copy
+fi
 aclocal 
 m4dir=`aclocal --print-ac-dir`
 if [ -f $m4dir/libtool.m4 ]; then
