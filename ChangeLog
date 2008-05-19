@@ -101,6 +101,26 @@
 	
 	* test/testUnits.cc: new test for MomentumUnits and PositionUnits
 	
+  --------------------------  HepMC-2.03.08  --------------------------
+
+2008-04-23  Lynn Garren
+
+	* src/GenVertex.cc: fix bug in edge_iterator operator++
+        * src/IO_Ascii.cc: minor fix for VC9
+        * src/IO_ExtendedAscii.cc: minor fix for VC9
+        * src/IO_AsciiParticle.cc: minor fix for VC9
+
+  --------------------------  HepMC-2.03.07  --------------------------
+
+2008-04-18  Lynn Garren
+
+	* HepMC/GenEvent.h: minor bug fix for gcc 4.3.0
+	* HepMC/IO_ExtendedAscii.h: minor bug fix for gcc 4.3.0
+	* HepMC/IO_GenEvent.h: minor bug fix for gcc 4.3.0
+	* HepMC/ParticleData.h: minor bug fix for gcc 4.3.0
+	* src/IO_ExtendedAscii.cc: minor bug fix for gcc 4.3.0
+	* src/IO_GenEvent.cc: minor bug fix for gcc 4.3.0
+	
   --------------------------  HepMC-2.03.06  --------------------------
 
 2008-03-12  Lynn Garren
