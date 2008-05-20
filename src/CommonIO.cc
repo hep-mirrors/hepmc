@@ -462,25 +462,17 @@ bool CommonIO::read_units( std::istream* is, GenEvent* evt ) {
 	is->clear(std::ios::badbit); 
 	return false;
     } 
-    // somehow got here when we weren't using IO_GenEvent
-    if ( m_io_type != gen ) {
-        evt->set_momentum_units( MomentumUnits::UNKNOWN );
-        evt->set_position_units( PositionUnits::UNKNOWN );
-        return true;
-    }
     // have no units, but this is not an error
     // releases prior to 2.04.00 did not write unit information
     if ( is->peek() !='U') {
-        evt->set_momentum_units( MomentumUnits::UNKNOWN );
-        evt->set_position_units( PositionUnits::UNKNOWN );
+ 	evt->use_units( Units::default_momentum_unit(), Units::default_length_unit() );
 	return true;
     } 
     is->ignore();	// ignore the first character in the line
     std::string mom, pos;
     *is >> mom >> pos;
     is->ignore(1);      // eat the extra whitespace
-    evt->set_momentum_units(mom);
-    evt->set_position_units(pos);
+    evt->use_units(mom,pos);
     //
     return true;
 }

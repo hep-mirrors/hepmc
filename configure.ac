@@ -23,6 +23,25 @@ AC_ARG_ENABLE(visual,
         [build_visual="no"])
 
 # ----------------------------------------------------------------------
+# define the default momentum and length (position) units
+# these MUST be declared
+# ----------------------------------------------------------------------
+
+AC_ARG_WITH(momentum_units,
+   AC_HELP_STRING([--with-momentum_units],
+                  [--with-momentum_units=MEV or GEV, no other values allowed]),
+   [HEPMC_DEFAULT_MOM_UNIT=${withval}],
+   [HEPMC_DEFAULT_MOM_UNIT="Declare momentum units with configure --with-momenutm_units"])
+AC_SUBST(HEPMC_DEFAULT_MOM_UNIT)
+
+AC_ARG_WITH(length_units,
+   AC_HELP_STRING([--with-length_units],
+                  [--with-length_units=MM or CM, no other values allowed]),
+   [HEPMC_DEFAULT_LEN_UNIT=${withval}],
+   [HEPMC_DEFAULT_LEN_UNIT="Declare momentum units with configure --with-length_units"])
+AC_SUBST(HEPMC_DEFAULT_LEN_UNIT)
+
+# ----------------------------------------------------------------------
 # find CLHEP and/or GENSER:
 # these are used ONLY in the examples
 # ----------------------------------------------------------------------
@@ -125,6 +144,7 @@ AC_CONFIG_FILES([Makefile
                  fio/VCMakefile
                  src/Makefile
                  src/VCMakefile
+                 src/Units.cc
                  test/Makefile
                  test/VCMakefile
                  test/testHepMC.cc

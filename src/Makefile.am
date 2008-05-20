@@ -15,7 +15,8 @@ libHepMC_la_SOURCES = \
 	IO_GenEvent.cc	\
 	ParticleData.cc	\
 	Polarization.cc	\
-	SearchVector.cc
+	SearchVector.cc	\
+	Units.cc
 
 lib_LTLIBRARIES = libHepMC.la
 

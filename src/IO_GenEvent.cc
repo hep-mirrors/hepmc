@@ -393,8 +393,8 @@ namespace HepMC {
 	    return;
 	}
 	// could write enums here, but strings are more readable
-	*m_ostr << "U " << evt->momentum_units().name();
-	*m_ostr << " " << evt->position_units().name();
+	*m_ostr << "U " << name(evt->momentum_unit());
+	*m_ostr << " " << name(evt->length_unit());
 	output('\n');
     }
 

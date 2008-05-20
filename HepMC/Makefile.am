@@ -21,12 +21,10 @@ pkginclude_HEADERS = \
 	IO_HEPEVT.h	\
 	IO_HERWIG.h	\
 	IO_PDG_ParticleDataTable.h	\
-	MomentumUnits.h	\
 	ParticleData.h	\
 	ParticleDataTable.h	\
 	PdfInfo.h	\
 	Polarization.h	\
-	PositionUnits.h	\
 	PythiaWrapper5_720.h	\
 	PythiaWrapper6_152.h	\
 	PythiaWrapper6_152_WIN32.h	\
@@ -41,5 +39,6 @@ pkginclude_HEADERS = \
 	is_arithmetic.h	\
 	HepMC_CLHEP20.h	\
 	TempParticleMap.h	\
+	Units.h	\
 	Version.h	\
 	defs.h

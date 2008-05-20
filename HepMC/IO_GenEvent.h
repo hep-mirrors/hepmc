@@ -116,8 +116,6 @@ namespace HepMC {
 	void          read_unit_info( GenEvent* evt );
 	/// write end tag
 	bool          write_end_listing();
-	/// set input version
-	void          set_input_version( std::string & );
 
 	void          output( const double& );  //!< write double
 	void          output( const float& );  //!< write float
@@ -135,7 +133,6 @@ namespace HepMC {
 	bool                m_finished_first_event_io;
 	bool                m_have_file;
 	CommonIO            m_common_io;
-	std::string         m_input_version;
     };
 
     //////////////

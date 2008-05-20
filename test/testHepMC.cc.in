@@ -37,7 +37,7 @@ void read_testIOGenEvent()
     std::cout << std::endl;
     std::cout << "basic IO_GenEvent input and output" << std::endl;
     // declare an input strategy to read the data produced with the 
-    // example_MyPythia
+    // example_MyPythia - units are GeV and mm
     HepMC::IO_GenEvent ascii_in("@srcdir@/testIOGenEvent.input",std::ios::in);
     // declare another IO_GenEvent for writing out the good events
     HepMC::IO_GenEvent ascii_out("testHepMC.out",std::ios::out);
@@ -73,37 +73,37 @@ void read_testAscii()
 {
     std::cout << std::endl;
     std::cout << "read file written with IO_Ascii" << std::endl;
-       // declare an input strategy to read the data produced with the 
-	// example_MyPythia
-	HepMC::IO_GenEvent ascii_in("@srcdir@/testAscii.input",std::ios::in);
-	if ( ascii_in.rdstate() == std::ios::failbit ) {
-	    std::cerr << "ERROR input file @srcdir@/testAscii.input is needed "
-		      << "and does not exist.  Exit." << std::endl;
-	    return;
-	}
-	// use IO_Ascii because we are checking against the original input file 
-	HepMC::IO_Ascii ascii_out("testIOAscii.dat",std::ios::out);
-	if ( ascii_out.rdstate() == std::ios::failbit ) {
-	    std::cerr << "ERROR opening output file testAscii.dat.  Exit."
-	              << std::endl;
-	    return;
-	}
-	//........................................EVENT LOOP
-	int icount=0;
-	HepMC::GenEvent* evt = ascii_in.read_next_event();
-	while ( evt ) {
-	    icount++;
-	    if ( icount%50==1 ) std::cout << "Processing Event Number " << icount
-					  << " its # " << evt->event_number() 
-					  << std::endl;
-	    ascii_out << evt;
+    // declare an input strategy to read the data produced with the 
+    // example_MyPythia - units are GeV and mm
+    HepMC::IO_GenEvent ascii_in("@srcdir@/testAscii.input",std::ios::in);
+    if ( ascii_in.rdstate() == std::ios::failbit ) {
+	std::cerr << "ERROR input file @srcdir@/testAscii.input is needed "
+		  << "and does not exist.  Exit." << std::endl;
+	return;
+    }
+    // use IO_Ascii because we are checking against the original input file 
+    HepMC::IO_Ascii ascii_out("testIOAscii.dat",std::ios::out);
+    if ( ascii_out.rdstate() == std::ios::failbit ) {
+	std::cerr << "ERROR opening output file testAscii.dat.  Exit."
+	          << std::endl;
+	return;
+    }
+    //........................................EVENT LOOP
+    int icount=0;
+    HepMC::GenEvent* evt = ascii_in.read_next_event();
+    while ( evt ) {
+	icount++;
+	if ( icount%50==1 ) std::cout << "Processing Event Number " << icount
+				      << " its # " << evt->event_number() 
+				      << std::endl;
+	ascii_out << evt;
 
-	    // clean up and get next event
-	    delete evt;
-	    ascii_in >> evt;
-	}
-	//........................................PRINT RESULT
-	std::cout << icount << " events processed. Finished." << std::endl;
+	// clean up and get next event
+	delete evt;
+	ascii_in >> evt;
+    }
+    //........................................PRINT RESULT
+    std::cout << icount << " events processed. Finished." << std::endl;
 }
 
 void read_variousFormats()
@@ -128,36 +128,18 @@ void read_variousFormats()
 	evt->write_units();
 	pim = findPiZero(evt);
 	std::cout << " pizero mass: " << pim << std::endl;
-	// set units differently for every other event
-	if ( icount%2==1 ) {
-	    // set units to GeV
-	    if( evt->set_momentum_units(HepMC::MomentumUnits::GEV) ) {
-	       evt->write_units();
-	       pim = findPiZero(evt);
-	       std::cout << " pizero mass: " << pim 
-	        	 << " " << evt->momentum_units().name() << std::endl;
-	    }
-	    // convert units to MeV
-	    evt->convert_momentum_units(HepMC::MomentumUnits::MEV);
-	    evt->write_units();
-	    pim = findPiZero(evt);
-	    std::cout << " pizero mass: " << pim 
-	              << " " << evt->momentum_units().name() << std::endl;
-	} else {
-	    // set units to GeV and mm
-	    if( evt->set_units(HepMC::MomentumUnits::GEV, HepMC::PositionUnits::MM) ) {
-	       evt->write_units();
-	       pim = findPiZero(evt);
-	       std::cout << " pizero mass: " << pim 
-	        	 << " " << evt->momentum_units().name() << std::endl;
-	    }
-	    // convert units to MeV
-	    evt->convert_momentum_units(HepMC::MomentumUnits::MEV);
-	    evt->write_units();
-	    pim = findPiZero(evt);
-	    std::cout << " pizero mass: " << pim 
-	              << " " << evt->momentum_units().name() << std::endl;
-	}
+	// set units to GeV and mm
+	evt->use_units(HepMC::Units::GEV, HepMC::Units::MM);
+	evt->write_units();
+	pim = findPiZero(evt);
+	std::cout << " pizero mass: " << pim 
+	          << " " << HepMC::Units::name( evt->momentum_unit() ) << std::endl;
+	// convert units to MeV
+	evt->use_units(HepMC::Units::MEV, HepMC::Units::MM);
+	evt->write_units();
+	pim = findPiZero(evt);
+	std::cout << " pizero mass: " << pim 
+	          << " " << HepMC::Units::name( evt->momentum_unit() ) << std::endl;
 	// clean up and get next event
 	delete evt;
 	ascii_in >> evt;

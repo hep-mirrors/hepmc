@@ -125,8 +125,7 @@ namespace HepMC {
 #include "HepMC/WeightContainer.h"
 #include "HepMC/HeavyIon.h"
 #include "HepMC/PdfInfo.h"
-#include "HepMC/MomentumUnits.h"
-#include "HepMC/PositionUnits.h"
+#include "HepMC/Units.h"
 #include <map>
 #include <string>
 #include <vector>
@@ -216,8 +215,10 @@ namespace HepMC {
 
         void write_units( std::ostream & os = std::cout ) const; 
 
-        const MomentumUnits& momentum_units(  ) const; 
-        const PositionUnits& position_units(  ) const; 
+	/// Units used by the GenParticle momentum FourVector.
+	Units::MomentumUnit momentum_unit() const;
+	/// Units used by the GenVertex position FourVector.
+	Units::LengthUnit   length_unit()   const;
 
 	/////////////////////
 	// mutator methods //
@@ -247,40 +248,12 @@ namespace HepMC {
 	void set_heavy_ion( const HeavyIon& ion );
 	/// provide a pointer to the PdfInfo container
 	void set_pdf_info( const PdfInfo& p );
-
-	// The following set units methods are designed to be used if  
-	// and only if the units have not already been declared.
-	// To change an existing unit designation, and perform the desired 
-	// conversion, call the appropriate convert units method.
-
-        /// declare both position and momentum units with one call
-	/// set_units will fail if the either set of units has already been declared
-        bool set_units( MomentumUnits::HepMCmomentumUnits, PositionUnits::HepMCpositionUnits );
-	/// set the momentum units 
-	/// set_momentum_units will fail if the momentum units have already been declared
-        bool set_momentum_units( MomentumUnits::HepMCmomentumUnits );
-	/// set the position units 
-	/// set_position_units will fail if the position units have already been declared
-        bool set_position_units( PositionUnits::HepMCpositionUnits );
-	/// set the momentum units 
-	/// the string must match the enum exactly
-	/// set_momentum_units will fail if the momentum units have already been declared
-        bool set_momentum_units( std::string& );
-	/// set the position units 
-	/// the string must match the enum exactly
-	/// set_position_units will fail if the position units have already been declared
-        bool set_position_units( std::string& );
 	
-        /// convert to the desired units and change the unit designation
-	/// convert_momentum_units will fail if either set of units is UNKNOWN
-	/// convert_momentum_units will succeed but take no action if
-	/// conversion is requested to units which are presently defined
-	bool convert_momentum_units( MomentumUnits::HepMCmomentumUnits );
-        /// convert to the desired units and change the unit designation
-	/// convert_position_units will fail if either set of units is UNKNOWN
-	/// convert_position_units will succeed but take no action if
-	/// conversion is requested to units which are presently defined
-	bool convert_position_units( PositionUnits::HepMCpositionUnits );
+	/// set the momentum units using enums
+	void use_units( Units::MomentumUnit, Units::LengthUnit );
+	/// set the momentum units using strings
+	/// the string must match the enum exactly
+        void use_units( std::string&, std::string& );
 
     public:
 	///////////////////////////////
@@ -527,14 +500,15 @@ namespace HepMC {
 	///  intended for use by GenVertex
 	void         remove_barcode( GenVertex*   v );
 
-        /// change the momentum unit designation
-	/// Protected method used by convert_momentum_units.
-        void change_momentum_units( MomentumUnits::HepMCmomentumUnits );
-        /// change the position unit designation
-	/// Protected method used by convert_position_units.
-        void change_position_units( PositionUnits::HepMCpositionUnits );
-
    	void delete_all_vertices(); //!<delete all vertices owned by this event
+
+     private: // methods
+        /// internal method used when converting momentum units
+        bool use_momentum_unit( Units::MomentumUnit );
+        bool use_momentum_unit( std::string& );
+        /// internal method used when converting length units
+	bool use_length_unit( Units::LengthUnit );
+	bool use_length_unit( std::string& );
 
     private: // data members
 	int                   m_signal_process_id;
@@ -553,13 +527,25 @@ namespace HepMC {
 
 	std::map< int,HepMC::GenVertex*,std::greater<int> >   m_vertex_barcodes;
 	std::map< int,HepMC::GenParticle*,std::less<int> >    m_particle_barcodes;
-	HeavyIon*        m_heavy_ion; 	      // undefined by default
-	PdfInfo*         m_pdf_info; 	      // undefined by default
-	MomentumUnits    m_momentum_units;    // default value is "UNKNOWN"
-	PositionUnits    m_position_units;    // default value is "UNKNOWN"
+	HeavyIon*             m_heavy_ion; 	      // undefined by default
+	PdfInfo*              m_pdf_info; 	      // undefined by default
+	Units::MomentumUnit   m_momentum_unit;    // default value set by configure switch
+	Units::LengthUnit     m_position_unit;    // default value set by configure switch
 
 	//static unsigned int   s_counter;
     };
+
+
+    ///////////////////////////
+    // INLINE Free Functions //
+    ///////////////////////////
+
+    // Implemented in terms of GenEvent::use_...
+    inline GenEvent& convert_units(GenEvent & evt, Units::MomentumUnit m, Units::LengthUnit l)
+    {
+      evt.use_units(m, l);
+      return evt;
+    }
 
     ///////////////////////////
     // INLINE Access Methods //
@@ -710,42 +696,22 @@ namespace HepMC {
         return std::pair<GenParticle *,GenParticle *> (m_beam_particle_1, m_beam_particle_2);
     }
 
-    inline const MomentumUnits& GenEvent::momentum_units(  ) const {
-        return m_momentum_units;
+    // units
+    inline Units::MomentumUnit GenEvent::momentum_unit() const {
+        return m_momentum_unit; 
     }
-
-    inline const PositionUnits& GenEvent::position_units(  ) const {
-        return m_position_units;
+    inline Units::LengthUnit   GenEvent::length_unit()   const {
+        return m_position_unit; 
     }
-
-    inline bool GenEvent::set_units( MomentumUnits::HepMCmomentumUnits mom, 
-                                     PositionUnits::HepMCpositionUnits pos ) {
-        /// set_momentum_units will FAIL if either momenum or positions units are already defined
-        if( m_momentum_units.units() != MomentumUnits::UNKNOWN ) return false;
-        if( m_position_units.units() != PositionUnits::UNKNOWN ) return false;
-        bool m = m_momentum_units.set_units(mom);
-        bool p = m_position_units.set_units(pos);
-	return (m && p);
+    
+    inline void GenEvent::use_units( Units::MomentumUnit new_m, Units::LengthUnit new_l ) { 
+       use_momentum_unit( new_m );
+       use_length_unit( new_l );
     }
-
-    inline bool GenEvent::set_momentum_units( MomentumUnits::HepMCmomentumUnits mom ) {
-        /// set_momentum_units will FAIL if the units are already defined
-        return m_momentum_units.set_units(mom);
-    }
- 
-    inline bool GenEvent::set_position_units( PositionUnits::HepMCpositionUnits pos ) {
-        /// set_position_units will FAIL if the units are already defined
-        return m_position_units.set_units(pos);
-    }
-
-    inline bool GenEvent::set_momentum_units( std::string& mom ) {
-        /// set_momentum_units will FAIL if the units are already defined
-        return m_momentum_units.set_units(mom);
-    }
- 
-    inline bool GenEvent::set_position_units( std::string& pos ) {
-        /// set_position_units will FAIL if the units are already defined
-        return m_position_units.set_units(pos);
+    
+    inline void GenEvent::use_units( std::string& new_m, std::string& new_l ) { 
+       use_momentum_unit( new_m );
+       use_length_unit( new_l );
     }
 
 } // HepMC
