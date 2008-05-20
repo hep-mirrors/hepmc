@@ -1,4 +1,15 @@
 
+2008-05-20  Lynn Garren
+
+	* revamp Units design completely
+	Replace MomentumUnits.h and PositionUnits.h with Units.h
+	Allowed unit designations are GEV, MEV, MM, and CM
+	
+	* configure.ac: User MUST specify both --with-momentum_units=XX
+	and --with-length_units=YY.  There are no defaults.
+	
+	* HepMC/GenEvent.h: unit data members are now enums
+
 2008-05-12  Lynn Garren
 
 	* HepMC/Pdfinfo.h: Input parton flavour codes id1 and id2 are expected 
