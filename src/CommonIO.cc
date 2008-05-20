@@ -237,13 +237,13 @@ bool CommonIO::read_io_genevent( std::istream* is, GenEvent* evt )
     evt->set_event_scale( eventScale );
     evt->set_alphaQCD( alpha_qcd );
     evt->set_alphaQED( alpha_qed );
+    // get unit information if it exists
+    read_units( is, evt );
     // get HeavyIon and PdfInfo
     HeavyIon* ion = read_heavy_ion(is);
     if(ion) evt->set_heavy_ion( *ion );
     PdfInfo* pdf = read_pdf_info(is);
     if(pdf) evt->set_pdf_info( *pdf );
-    // get unit information if it exists
-    read_units( is, evt );
     //
     // the end vertices of the particles are not connected until
     //  after the event is read --- we store the values in a map until then

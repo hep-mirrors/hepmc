@@ -459,16 +459,12 @@ The HEPEVT standard uses GeV/mm, and so the output from most Fortran
 generators will normally be in these units.
 CLHEP and Geant4 use MeV/mm, and some collaborations such as ATLAS
 have adopted these units for their simulation.
+We also note that Fluka uses cm.
 
 As of HepMC 2.04.00, GenEvent contains member data to store information
-about units used.  We recognize that while units may be defined, 
-HepMC itself will not know what the units are unless the user specifies them.
-Therefore, units are "unknown" until set by the user.
-Setting units to UNKNOWN is a choice required for backwards compatibility
-with persistent GenEvents created by previous versions of HepMC.
-However, we strongly encourage users to declare units 
-for {\bf forward} compatiblity.  
-It may be that units will be required in some future release.
+about units used.  Default units are declared with configure switches 
+--with-momentum and --with-length.  
+These configure switches are required or the code will not compile.
 
 HepMC users should refer to the code that fills the event record 
 to determine which units are being used.
@@ -497,11 +493,7 @@ to determine which units are being used.
   	associated with the integer barcode argument }
   \myitem{barcode\_to\_vertex}{ returns a pointer to the vertex
   	associated with the integer barcode argument }
-  \myitem{set\_units}{set both momentum and position units}
-  \myitem{set\_momentum\_units}{set the momentum units using the momentum enum}
-  \myitem{set\_position\_units}{set the position units using the position enum}
-  \myitem{convert\_momentum\_units}{convert from, for instance, GeV to MeV}
-  \myitem{convert\_position\_units}{convert from, for instance, mm to cm}
+  \myitem{use\_units}{set both momentum and position units, and scale FourVectors if necessary}
 \end{myitemize}
 \begin{myitemize}{Relevant Data Members}
   \myitem{signal\_process\_id}{an integer ID uniquely specifying the
@@ -529,8 +521,8 @@ to determine which units are being used.
                       (zero by default)}
   \myitem{pdf\_info}{(optional) a pointer to a PdfInfo object 
                      (zero by default)}
-  \myitem{momentum\_units}{momentum units (UNKNOWN, MEV, or GEV)}
-  \myitem{position\_units}{position units (UNKNOWN, MM, or CM)}
+  \myitem{momentum\_unit}{momentum units (MEV or GEV)}
+  \myitem{length\_unit}{position units (MM or CM)}
 \end{myitemize}
 \begin{myitemize}{Notes and Conventions}
   \item if hit and miss Monte Carlo integration is to be performed
@@ -634,39 +626,21 @@ generators.  Creation and use of this information is optional.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
 
-\subsubsection{HepMC::MomentumUnits}
-\begin{myitemize}{Important Public Methods}
-  \myitem{enum HepMCmomentumUnits}{values are UNKNOWN, MEV, GEV}
-\end{myitemize}
-\begin{myitemize}{Relevant Data Members}
-  \myitem{units}{momentum unit enum}
-\end{myitemize}
-\begin{myitemize}{Notes and Conventions}
-  \item Refer to a momentum unit enum as, for instance,
-    HepMC::MomentumUnits::GEV
-\end{myitemize}
-
-MomentumUnits contains a number of associated methods used to
-manipulate units.
-
-%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%
-
-\subsubsection{HepMC::PositionUnits}
-\begin{myitemize}{Important Public Methods}
-  \myitem{enum HepMCpositionUnits}{values are UNKNOWN, MM, CM}
-\end{myitemize}
-\begin{myitemize}{Relevant Data Members}
-  \myitem{units}{position unit enum}
+\subsubsection{HepMC::Units}
+\begin{myitemize}{Important Methods}
+  \myitem{enum MomentumUnit}{values are MEV or GEV}
+  \myitem{enum LengthUnit}{values are MM or CM}
+  \myitem{std::string name(MomentumUnit)}{return the unit designation as a string}
+  \myitem{std::string name(LengthUnit)}{return the unit designation as a string}
 \end{myitemize}
 \begin{myitemize}{Notes and Conventions}
-  \item Refer to a position unit enum as, for instance,
-    HepMC::PositionUnits::MM
+  \item Refer to a unit enum as, for instance, HepMC::Units::GEV
+  \item Whenever both unit types are passed, MomentumUnit always goes first.
 \end{myitemize}
 
-PositionUnits contains a number of associated methods used to
-manipulate units.
+Units is a namespace encapsulating methods used for unit manipulation.
+Default units are set at compile time by the configure switches
+--with-momentum and --with-length.  
 
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -1117,9 +1091,9 @@ with the vertex.
 \end{myitemize}
 \begin{myitemize}{Line Keys}
   \myitem{E}{general GenEvent information} 
+  \myitem{U}{momentum and position units} 
   \myitem{H}{HeavyIon information} 
   \myitem{F}{PdfInfo information} 
-  \myitem{U}{momentum and position units} 
   \myitem{V}{GenVertex information} 
   \myitem{P}{GenParticle information} 
 \end{myitemize}

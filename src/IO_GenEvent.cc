@@ -138,9 +138,9 @@ namespace HepMC {
 	    output( *w );
 	}
 	output('\n');
+	write_unit_info( evt );
 	write_heavy_ion( evt->heavy_ion() );
 	write_pdf_info( evt->pdf_info() );
-	write_unit_info( evt );
 	//
 	// Output all of the vertices - note there is no real order.
 	for ( GenEvent::vertex_const_iterator v = evt->vertices_begin();

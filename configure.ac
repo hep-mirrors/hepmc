@@ -27,18 +27,18 @@ AC_ARG_ENABLE(visual,
 # these MUST be declared
 # ----------------------------------------------------------------------
 
-AC_ARG_WITH(momentum_units,
-   AC_HELP_STRING([--with-momentum_units],
-                  [--with-momentum_units=MEV or GEV, no other values allowed]),
+AC_ARG_WITH(momentum,
+   AC_HELP_STRING([--with-momentum],
+                  [--with-momentum=MEV or GEV, no other values allowed]),
    [HEPMC_DEFAULT_MOM_UNIT=${withval}],
-   [HEPMC_DEFAULT_MOM_UNIT="Declare momentum units with configure --with-momenutm_units"])
+   [HEPMC_DEFAULT_MOM_UNIT="You MUST configure --with-momenutm_units=XX, where XX is MEV or GEV"])
 AC_SUBST(HEPMC_DEFAULT_MOM_UNIT)
 
-AC_ARG_WITH(length_units,
-   AC_HELP_STRING([--with-length_units],
-                  [--with-length_units=MM or CM, no other values allowed]),
+AC_ARG_WITH(length,
+   AC_HELP_STRING([--with-length],
+                  [--with-length=MM or CM, no other values allowed]),
    [HEPMC_DEFAULT_LEN_UNIT=${withval}],
-   [HEPMC_DEFAULT_LEN_UNIT="Declare momentum units with configure --with-length_units"])
+   [HEPMC_DEFAULT_LEN_UNIT="You MUST configure --with-length=YY, where YY is MM or CM"])
 AC_SUBST(HEPMC_DEFAULT_LEN_UNIT)
 
 # ----------------------------------------------------------------------

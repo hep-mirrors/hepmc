@@ -21,7 +21,9 @@ namespace HepMC {
                         int event_number,
 			GenVertex* signal_vertex,
 			const WeightContainer& weights,
-			const std::vector<long>& random_states ) :
+			const std::vector<long>& random_states,
+			Units::MomentumUnit mom, 
+			Units::LengthUnit len ) :
 	m_signal_process_id(signal_process_id), 
 	m_event_number(event_number),
 	m_mpi(-1),
@@ -37,8 +39,8 @@ namespace HepMC {
 	m_particle_barcodes(),
 	m_heavy_ion(0), 
 	m_pdf_info(0),
-	m_momentum_unit(Units::default_momentum_unit()),
-	m_position_unit(Units::default_length_unit())
+	m_momentum_unit(mom),
+	m_position_unit(len)
     {
         /// This constructor only allows null pointers to HeavyIon and PdfInfo
 	///
@@ -52,7 +54,9 @@ namespace HepMC {
 			const WeightContainer& weights,
 			const std::vector<long>& random_states,
 			const HeavyIon& ion, 
-			const PdfInfo& pdf ) :
+			const PdfInfo& pdf,
+			Units::MomentumUnit mom, 
+			Units::LengthUnit len ) :
 	m_signal_process_id(signal_process_id), 
 	m_event_number(event_number),
 	m_mpi(-1),
@@ -68,14 +72,13 @@ namespace HepMC {
 	m_particle_barcodes(),
 	m_heavy_ion( new HeavyIon(ion) ), 
 	m_pdf_info( new PdfInfo(pdf) ),
-	m_momentum_unit(),
-	m_position_unit()
+	m_momentum_unit(mom),
+	m_position_unit(len)
     {
         /// GenEvent makes its own copy of HeavyIon and PdfInfo
 	///
 	/// note: default values for m_event_scale, m_alphaQCD, m_alphaQED
 	///       are as suggested in hep-ph/0109068, "Generic Interface..."
-	//++s_counter;
     }
 
     GenEvent::GenEvent( const GenEvent& inevent ) 
