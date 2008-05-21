@@ -2,7 +2,12 @@
 2008-05-21  Lynn Garren
 
 	* examples: all examples except example_BuildEventFromScratch, 
-        testHerwigCopies, and testPythiaCopies use default units.
+        testHerwigCopies, and testPythiaCopies use default units
+	
+	* HepMC/IO_GenEvent.h: add use_input_units() method
+	This method is needed ONLY if a) the input stream has no 
+	unit information and b) it is known that the units of the input 
+	stream do not match the default units.
 
 2008-05-20  Lynn Garren
 

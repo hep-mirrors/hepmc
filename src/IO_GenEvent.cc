@@ -84,6 +84,10 @@ namespace HepMC {
 	if(m_have_file) m_file.close();
     }
 
+    void IO_GenEvent::use_input_units( Units::MomentumUnit mom, Units::LengthUnit len ) {
+	m_common_io.use_input_units(mom,len);
+    }
+
     void IO_GenEvent::print( std::ostream& ostr ) const { 
 	ostr << "IO_GenEvent: unformated ascii file IO for machine reading.\n"; 
 	if(m_have_file)    ostr  << "\tFile openmode: " << m_mode ;

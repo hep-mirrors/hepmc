@@ -39,6 +39,7 @@ void read_testIOGenEvent()
     // declare an input strategy to read the data produced with the 
     // example_MyPythia - units are GeV and mm
     HepMC::IO_GenEvent ascii_in("@srcdir@/testIOGenEvent.input",std::ios::in);
+    ascii_in.use_input_units( HepMC::Units::GEV, HepMC::Units::MM );
     // declare another IO_GenEvent for writing out the good events
     HepMC::IO_GenEvent ascii_out("testHepMC.out",std::ios::out);
     // declare an IO_AsciiParticle for output
@@ -76,6 +77,7 @@ void read_testAscii()
     // declare an input strategy to read the data produced with the 
     // example_MyPythia - units are GeV and mm
     HepMC::IO_GenEvent ascii_in("@srcdir@/testAscii.input",std::ios::in);
+    ascii_in.use_input_units( HepMC::Units::GEV, HepMC::Units::MM );
     if ( ascii_in.rdstate() == std::ios::failbit ) {
 	std::cerr << "ERROR input file @srcdir@/testAscii.input is needed "
 		  << "and does not exist.  Exit." << std::endl;
@@ -112,6 +114,7 @@ void read_variousFormats()
     std::cout << "process varied input" << std::endl;
     // declare an input strategy 
     HepMC::IO_GenEvent ascii_in("@srcdir@/testHepMCVarious.input",std::ios::in);
+    ascii_in.use_input_units( HepMC::Units::GEV, HepMC::Units::MM );
     // declare another IO_GenEvent for writing out the good events
     HepMC::IO_GenEvent ascii_out("testHepMCVarious.out",std::ios::out);
     //........................................EVENT LOOP

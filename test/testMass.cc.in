@@ -25,12 +25,13 @@ int main() {
 	// declare an input strategy to read the data produced with the 
 	// example_MyPythia
         HepMC::IO_GenEvent ascii_in("@srcdir@/testIOGenEvent.input",std::ios::in);
+        ascii_in.use_input_units( HepMC::Units::GEV, HepMC::Units::MM );
 	// declare another IO_GenEvent for output
 	HepMC::IO_GenEvent ascii_out("testMass1.dat",std::ios::out);
 	// declare an instance of the event selection predicate
 	IsGoodEvent is_good_event;
-    // send version to standard output
-    HepMC::version();
+	// send version to standard output
+	HepMC::version();
 	//........................................EVENT LOOP
 	int icount=0;
 	int num_good_events=0;

@@ -77,6 +77,12 @@ int CommonIO::find_end_key( std::istream& istr )
     return -1;
 }
 
+void CommonIO::use_input_units( Units::MomentumUnit mom, Units::LengthUnit len ) 
+{
+     m_io_momentum_unit = mom;
+     m_io_position_unit = len;
+}
+
 bool CommonIO::read_io_ascii( std::istream* istr, GenEvent* evt )
 {
 	// read values into temp variables, then create a new GenEvent
@@ -100,6 +106,9 @@ bool CommonIO::read_io_ascii( std::istream* istr, GenEvent* evt )
 	evt->set_event_number( event_number );
 	evt->weights() = weights;
 	evt->set_random_states( random_states );
+	// no unit information, so just set it
+	// this is done before the event has any vertices, so it is safe
+ 	evt->use_units( m_io_momentum_unit, m_io_position_unit );
 	//
 	// the end vertices of the particles are not connected until
 	//  after the event is read --- we store the values in a map until then
@@ -165,6 +174,9 @@ bool CommonIO::read_io_extendedascii( std::istream* istr, GenEvent* evt )
 	if(ion) evt->set_heavy_ion( *ion );
 	PdfInfo* pdf = read_pdf_info(istr);
 	if(pdf) evt->set_pdf_info( *pdf );
+	// no unit information, so just set it
+	// this is done before the event has any vertices, so it is safe
+ 	evt->use_units( m_io_momentum_unit, m_io_position_unit );
 	//
 	// the end vertices of the particles are not connected until
 	//  after the event is read --- we store the values in a map until then
@@ -463,7 +475,7 @@ bool CommonIO::read_units( std::istream* is, GenEvent* evt ) {
     // have no units, but this is not an error
     // releases prior to 2.04.00 did not write unit information
     if ( is->peek() !='U') {
- 	evt->use_units( Units::default_momentum_unit(), Units::default_length_unit() );
+ 	evt->use_units( m_io_momentum_unit, m_io_position_unit );
 	return true;
     } 
     is->ignore();	// ignore the first character in the line
