@@ -17,6 +17,7 @@
 #include "HepMC/IO_BaseClass.h"
 #include "HepMC/TempParticleMap.h"
 #include "HepMC/CommonIO.h"
+#include "HepMC/Units.h"
 
 namespace HepMC {
 
@@ -89,6 +90,12 @@ namespace HepMC {
         /// write to ostr
 	void          print( std::ostream& ostr = std::cout ) const;
 
+	/// needed when reading a file without units if those units are 
+	/// different than the declared default units 
+	/// (e.g., the default units are MeV, but the file was written with GeV)
+	/// This method is not necessary if the units are written in the file
+	void use_input_units( Units::MomentumUnit, Units::LengthUnit );
+
     protected: // for internal use only
 	/// write vertex information
 	void          write_vertex( GenVertex* );
@@ -133,6 +140,7 @@ namespace HepMC {
 	bool                m_finished_first_event_io;
 	bool                m_have_file;
 	CommonIO            m_common_io;
+	
     };
 
     //////////////

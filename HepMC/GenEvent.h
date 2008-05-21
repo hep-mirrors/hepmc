@@ -253,9 +253,9 @@ namespace HepMC {
 	/// provide a pointer to the PdfInfo container
 	void set_pdf_info( const PdfInfo& p );
 	
-	/// set the momentum units using enums
+	/// set the units using enums
 	void use_units( Units::MomentumUnit, Units::LengthUnit );
-	/// set the momentum units using strings
+	/// set the units using strings
 	/// the string must match the enum exactly
         void use_units( std::string&, std::string& );
 

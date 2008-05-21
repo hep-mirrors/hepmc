@@ -66,6 +66,12 @@ public:
 
   bool read_units( std::istream* is, GenEvent* evt );
 
+  /// needed when reading a file without units if those units are 
+  /// different than the declared default units 
+  /// (e.g., the default units are MeV, but the file was written with GeV)
+  /// This method is not necessary if the units are written in the file
+  void use_input_units( Units::MomentumUnit, Units::LengthUnit );
+
   /// ParticleDataTable is deprecated.
   /// We include this method for reading old files which may have ParticleData information.
   bool read_io_particle_data_table( std::istream*, ParticleDataTable* );
@@ -94,7 +100,9 @@ private:
   std::string m_io_extendedascii_pdt_end;
   // io type
   int         m_io_type;
-  
+  // default io units - used only when reading a file with no units
+  Units::MomentumUnit m_io_momentum_unit;
+  Units::LengthUnit   m_io_position_unit;
 
 };
 
@@ -111,8 +119,10 @@ inline CommonIO::CommonIO()
   m_io_extendedascii_pdt_start("HepMC::IO_ExtendedAscii-START_PARTICLE_DATA"),
   m_io_ascii_pdt_end("HepMC::IO_Ascii-END_PARTICLE_DATA"),
   m_io_extendedascii_pdt_end("HepMC::IO_ExtendedAscii-END_PARTICLE_DATA"),
-  m_io_type(0)
-{}
+  m_io_type(0),
+  m_io_momentum_unit(Units::default_momentum_unit()),
+  m_io_position_unit(Units::default_length_unit())
+  {}
 
 inline void CommonIO::write_IO_GenEvent_Key( std::ostream& os )
 { os << m_io_genevent_start << "\n"; }
