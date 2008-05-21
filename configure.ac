@@ -31,7 +31,7 @@ AC_ARG_WITH(momentum,
    AC_HELP_STRING([--with-momentum],
                   [--with-momentum=MEV or GEV, no other values allowed]),
    [HEPMC_DEFAULT_MOM_UNIT=${withval}],
-   [HEPMC_DEFAULT_MOM_UNIT="You MUST configure --with-momenutm_units=XX, where XX is MEV or GEV"])
+   [HEPMC_DEFAULT_MOM_UNIT="You MUST configure --with-momenutm=XX, where XX is MEV or GEV"])
 AC_SUBST(HEPMC_DEFAULT_MOM_UNIT)
 
 AC_ARG_WITH(length,

@@ -540,9 +540,8 @@ namespace HepMC {
 	// Easy to fix, though, if needed.
 	if ( m_momentum_unit != newunit ) { 
 	    const double factor = Units::conversion_factor( m_momentum_unit, newunit );
-	    // ... 
 	    // multiply all momenta by 'factor',  
-	    // optimized for empty particle list
+	    // loop is entered only if particle list is not empty
             for ( GenEvent::particle_iterator p = particles_begin();
                                               p != particles_end(); ++p ) 
             {
@@ -559,9 +558,8 @@ namespace HepMC {
 	// Easy to fix, though, if needed.
 	if ( m_position_unit != newunit ) { 
 	    const double factor = Units::conversion_factor( m_position_unit, newunit );
-	    // ... 
 	    // multiply all lengths by 'factor', 
-	    // optimized for empty vertex list
+	    // loop is entered only if vertex list is not empty
 	    for ( GenEvent::vertex_iterator vtx = vertices_begin();
 	                                    vtx != vertices_end(); ++vtx ) {
 		(*vtx)->convert_position(factor);
