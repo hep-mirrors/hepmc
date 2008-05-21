@@ -68,6 +68,8 @@ int main() {
     // Note that the HepLorentzVectors will be automatically converted to 
     // HepMC::FourVector within GenParticle and GenVertex
     GenEvent* evt = new GenEvent( 20, 1 );
+    // define the units
+    evt->use_units( HepMC::Units::GEV, HepMC::Units:MM );
     //
     // create vertex 1 and vertex 2, together with their inparticles
     GenVertex* v1 = new GenVertex();

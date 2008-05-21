@@ -1,4 +1,9 @@
 
+2008-05-21  Lynn Garren
+
+	* examples: all examples except example_BuildEventFromScratch, 
+        testHerwigCopies, and testPythiaCopies use default units.
+
 2008-05-20  Lynn Garren
 
 	* revamp Units design completely

@@ -129,8 +129,6 @@ void pythia_out()
 	    // pythia pyhepc routine converts common PYJETS in common HEPEVT
 	    call_pyhepc( 1 );
 	    HepMC::GenEvent* evt = hepevtio.read_next_event();
-	    // pythia uses GeV and mm
-	    evt->set_units( HepMC::MomentumUnits::GEV, HepMC::PositionUnits::MM);
 	    // add some information to the event
 	    evt->set_event_number(i);
 	    evt->set_signal_process_id(20);
@@ -179,8 +177,6 @@ void event_selection()
 	// pythia pyhepc routine convert common PYJETS in common HEPEVT
 	call_pyhepc( 1 );
 	HepMC::GenEvent* evt = hepevtio.read_next_event();
-	// pythia uses GeV and mm
-	evt->set_units( HepMC::MomentumUnits::GEV, HepMC::PositionUnits::MM);
 	// set number of multi parton interactions
 	evt->set_mpi( pypars.msti[31-1] );
 	// do event selection
@@ -267,8 +263,6 @@ void pythia_in_out()
 	    // pythia pyhepc routine converts common PYJETS in common HEPEVT
 	    call_pyhepc( 1 );
 	    HepMC::GenEvent* evt = hepevtio.read_next_event();
-	    // pythia uses GeV and mm
-	    evt->set_units( HepMC::MomentumUnits::GEV, HepMC::PositionUnits::MM);
 	    // add some information to the event
 	    evt->set_event_number(i);
 	    evt->set_signal_process_id(20);
@@ -336,8 +330,6 @@ void pythia_particle_out()
 	    // pythia pyhepc routine converts common PYJETS in common HEPEVT
 	    call_pyhepc( 1 );
 	    HepMC::GenEvent* evt = hepevtio.read_next_event();
-	    // pythia uses GeV and mm
-	    evt->set_units( HepMC::MomentumUnits::GEV, HepMC::PositionUnits::MM);
 	    // add some information to the event
 	    evt->set_event_number(i);
 	    evt->set_signal_process_id(20);
