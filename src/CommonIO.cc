@@ -14,8 +14,6 @@
 #include "HepMC/PdfInfo.h"
 #include "HepMC/TempParticleMap.h"
 #include "HepMC/ParticleDataTable.h"
-#include "HepMC/MomentumUnits.h"
-#include "HepMC/PositionUnits.h"
 
 namespace HepMC {
 
