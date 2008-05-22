@@ -159,6 +159,18 @@ namespace HepMC {
 		  const HeavyIon& ion, const PdfInfo& pdf,
 		  Units::MomentumUnit = Units::default_momentum_unit(), 
 		  Units::LengthUnit = Units::default_length_unit() );
+        /// constructor requiring units - all else is default
+	GenEvent( Units::MomentumUnit, Units::LengthUnit,
+	          int signal_process_id = 0, int event_number = 0,
+		  GenVertex* signal_vertex = 0,
+		  const WeightContainer& weights = std::vector<double>(),
+		  const std::vector<long>& randomstates = std::vector<long>() );
+        /// explicit constructor with units first that takes HeavyIon and PdfInfo
+	GenEvent( Units::MomentumUnit, Units::LengthUnit,
+	          int signal_process_id, int event_number,
+		  GenVertex* signal_vertex, const WeightContainer& weights,
+		  const std::vector<long>& randomstates,
+		  const HeavyIon& ion, const PdfInfo& pdf );
 	GenEvent( const GenEvent& inevent );          //!< deep copy
 	GenEvent& operator=( const GenEvent& inevent ); //!< make a deep copy
 	virtual ~GenEvent(); //!<deletes all vertices/particles in this evt
