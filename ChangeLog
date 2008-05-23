@@ -2,6 +2,9 @@
   --------------------------  HepMC-2.04.00.beta2  --------------------------
 
 2008-05-21  Lynn Garren
+	
+	* HepMC/GenEvent.h: Duplicate the existing constructors with new 
+	constructors that have momentum and length as the first 2 arguments.
 
 	* examples: all examples except example_BuildEventFromScratch, 
         testHerwigCopies, and testPythiaCopies use default units
