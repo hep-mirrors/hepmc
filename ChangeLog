@@ -1,4 +1,8 @@
 
+2008-05-27  Lynn Garren
+	
+	* configure.ac: Throw an error immediately if units are not specified.
+
   --------------------------  HepMC-2.04.00.beta2  --------------------------
 
 2008-05-21  Lynn Garren

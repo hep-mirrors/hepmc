@@ -31,14 +31,14 @@ AC_ARG_WITH(momentum,
    AC_HELP_STRING([--with-momentum],
                   [--with-momentum=MEV or GEV, no other values allowed]),
    [HEPMC_DEFAULT_MOM_UNIT=${withval}],
-   [HEPMC_DEFAULT_MOM_UNIT="You MUST configure --with-momenutm=XX, where XX is MEV or GEV"])
+   [AC_MSG_ERROR([You MUST configure --with-momentum=XX, where XX is MEV or GEV])])
 AC_SUBST(HEPMC_DEFAULT_MOM_UNIT)
 
 AC_ARG_WITH(length,
    AC_HELP_STRING([--with-length],
                   [--with-length=MM or CM, no other values allowed]),
    [HEPMC_DEFAULT_LEN_UNIT=${withval}],
-   [HEPMC_DEFAULT_LEN_UNIT="You MUST configure --with-length=YY, where YY is MM or CM"])
+   [AC_MSG_ERROR([You MUST configure --with-length=YY, where YY is MM or CM])])
 AC_SUBST(HEPMC_DEFAULT_LEN_UNIT)
 
 # ----------------------------------------------------------------------
