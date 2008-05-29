@@ -1,4 +1,6 @@
-################################################################################ Makefile for building a HepMC shared library with the gcc compiler
+################################################################################
+# Makefile for building a HepMC executable with the gcc compiler
+#
 # Matt.Dobbs@CERN.CH  1.2000
 #
 # This makefiles also works to compile the example programs.
@@ -31,10 +33,19 @@ else
   F77           = f77
   FLAGS 	= $(DFLG) $(INCDIR)
 endif
+
+  LINK_LIBS     = @LDFLAGS@ 
+UNAME = $(shell uname)
+ifeq "$(UNAME)" "Darwin"
+  CLHEP_LIB     = -L$(CLHEPdir)/lib -lCLHEP 
+else
+  CLHEP_LIB     = -L$(CLHEPdir)/lib -lCLHEP -Wl,-r -Wl,$(CLHEPdir)/lib
+  LINK_LIBS     += -Wl,-rpath -Wl,$(HepMCdir)/lib
+endif
+
   CLHEP_LIB     = -L$(CLHEPdir)/lib -lCLHEP -Wl,-rpath -Wl,$(CLHEPdir)/lib
   initpydata_OBJ= initpydata.o
   pythia_OBJ    = initPythia.o initpydata.o
-  LINK_LIBS     = @LDFLAGS@ -Wl,-rpath -Wl,$(HepMCdir)/lib
   SRCS	        = example_BuildEventFromScratch.cc	\
 		  example_EventSelection.cc	\
 		  example_MyHerwig.cc	\
