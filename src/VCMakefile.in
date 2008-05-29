@@ -65,7 +65,8 @@ SOURCES = CommonIO.cc \
 	  IO_PDG_ParticleDataTable.cc \
 	  ParticleData.cc \
 	  Polarization.cc \
-	  SearchVector.cc
+	  SearchVector.cc \
+          Units.cc
 
 OBJ = CommonIO.obj \
       CompareGenEvent.obj \
@@ -79,7 +80,8 @@ OBJ = CommonIO.obj \
       IO_PDG_ParticleDataTable.obj \
       ParticleData.obj \
       Polarization.obj \
-      SearchVector.obj
+      SearchVector.obj \
+      Units.obj
 
 
 lib_LIBRARIES = HepMC.lib
