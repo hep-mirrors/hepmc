@@ -14,3 +14,6 @@ if BUILD_VISUAL
 else
   lib_shared = libHepMC.so
 endif
+
+# shared library versioning
+libHepMCfio_la_LDFLAGS = $(LIBRARY_VERSION)

@@ -1,4 +1,8 @@
 
+2008-05-29  Lynn Garren
+	
+	* configure.ac: Use libtool versioning for libraries
+
 2008-05-27  Lynn Garren
 	
 	* configure.ac: Throw an error immediately if units are not specified.

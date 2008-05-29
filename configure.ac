@@ -11,6 +11,14 @@ AC_CONFIG_SRCDIR([src/CommonIO.cc])
 AC_CONFIG_HEADER([HepMC/defs.h])
 
 # ----------------------------------------------------------------------
+# shared library versioning
+# for various reasons, this cannot match the HepMC version
+# ----------------------------------------------------------------------
+
+LIBRARY_VERSION="-version-info 2:0:0"
+AC_SUBST(LIBRARY_VERSION)
+
+# ----------------------------------------------------------------------
 # define --enable-visual
 # ----------------------------------------------------------------------
 AC_ARG_ENABLE(visual,
