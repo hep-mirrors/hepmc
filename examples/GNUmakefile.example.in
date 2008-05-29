@@ -10,12 +10,14 @@
 #    You may have to change GENSERdir and/or other variables
 #
   HepMCdir             = @prefix@
-  HepMClib             = $(HepMCdir)/lib/libHepMC.a
-  HepMCfiolib          = $(HepMCdir)/lib/libHepMCfio.a
+  HepMClib             = -L$(HepMCdir)/lib -lHepMC
+  HepMCfiolib          = -L$(HepMCdir)/lib -lHepMCfio
   GENSERdir            = @GENSERdir@
   CLHEPdir             = @CLHEPdir@
-  Pythia_LIB	= -L$(GENSERdir)/lib -lpythia6_403 -lpythia6_403_dumm -lpythia6_403_pdfdumm
-  Herwig_LIB	= -L$(GENSERdir)/lib -lherwig6_510 -lherwig6_510_dumm -lherwig6_510_pdfdumm
+  Pythia_LIB	= -L$(GENSERdir)/lib -Wl,-rpath -Wl,$(GENSERdir)/lib \
+                  -lpythia6_403 -lpythia6_403_dumm -lpythia6_403_pdfdumm
+  Herwig_LIB	= -L$(GENSERdir)/lib -Wl,-rpath -Wl,$(GENSERdir)/lib \
+                  -lherwig6_510 -lherwig6_510_dumm -lherwig6_510_pdfdumm
 
 ################################################################################ Compiler options
 #
@@ -29,10 +31,10 @@ else
   F77           = f77
   FLAGS 	= $(DFLG) $(INCDIR)
 endif
-  CLHEP_LIB     = -L$(CLHEPdir)/lib -lCLHEP
+  CLHEP_LIB     = -L$(CLHEPdir)/lib -lCLHEP -Wl,-rpath -Wl,$(CLHEPdir)/lib
   initpydata_OBJ= initpydata.o
   pythia_OBJ    = initPythia.o initpydata.o
-  LINK_LIBS     = @LDFLAGS@
+  LINK_LIBS     = @LDFLAGS@ -Wl,-rpath -Wl,$(HepMCdir)/lib
   SRCS	        = example_BuildEventFromScratch.cc	\
 		  example_EventSelection.cc	\
 		  example_MyHerwig.cc	\
