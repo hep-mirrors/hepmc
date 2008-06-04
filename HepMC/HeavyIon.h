@@ -15,8 +15,8 @@
 //      int   N_Nwounded_collisions        // Number of N-Nwounded collisions
 //      int   Nwounded_N_collisions        // Number of Nwounded-N collisons
 //      int   Nwounded_Nwounded_collisions // Number of Nwounded-Nwounded collisions
-//      int   spectator_neutrons           // Number of spectators neutrons
-//      int   spectator_protons            // Number of spectators protons
+//      int   spectator_neutrons           // Number of spectator neutrons
+//      int   spectator_protons            // Number of spectator protons
 //      float impact_parameter        // Impact Parameter(fm) of collision
 //      float event_plane_angle       // Azimuthal angle of event plane
 //      float eccentricity            // eccentricity of participating nucleons

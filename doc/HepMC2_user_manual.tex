@@ -464,7 +464,7 @@ We also note that Fluka uses cm.
 As of HepMC 2.04.00, GenEvent contains member data to store information
 about units used.  Default units are declared with configure switches 
 --with-momentum and --with-length.  
-These configure switches are required or the code will not compile.
+These configure switches are required.
 
 HepMC users should refer to the code that fills the event record 
 to determine which units are being used.
@@ -475,6 +475,9 @@ to determine which units are being used.
 
 \subsection{HepMC::GenEvent}
 \begin{myitemize}{Important Public Methods}
+  \myitem{GenEvent(Units::MomentumUnit, Units::LengthUnit,...)}{As of
+    HepMC 2.04.00, additional constructors are available to enable
+    unit specification - see also use\_units below.}
   \myitem{add\_vertex}{adopts the specified vertex to the event and
     assumes responsibility for deleting the vertex}
   \myitem{remove\_vertex}{removes the specified vertex from the event,
@@ -532,6 +535,9 @@ to determine which units are being used.
     (particle) is added to a event (vertex), it is "adopted" and
     becomes the responsibility of the event (vertex) to delete that
     vertex (particle).
+  \item Although default units are specified with configure, the user
+    is strongly encouraged to explicitly set units with either the
+    appropriate constructor or a call to set\_units.
 \end{myitemize}
 
 The GenEvent is the container class for vertices. 
@@ -1084,6 +1090,16 @@ and associated particles.  The count of vertices is expected to match the
 number of vertices specified in the general event information.
 Each vertex line specifies how many particle lines are associated 
 with the vertex.
+
+We describe the format of IO\_GenEvent here, which persists all information
+contained in a HepMC GenEvent.
+
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+
+\subsection{Basic IO\_GenEvent Structure}
+
 \vspace{0.1cm}
 \begin{myitemize}{Block Keys}
   \myitem{begin event block}{HepMC::IO\_GenEvent-START\_EVENT\_LISTING} 
@@ -1092,10 +1108,111 @@ with the vertex.
 \begin{myitemize}{Line Keys}
   \myitem{E}{general GenEvent information} 
   \myitem{U}{momentum and position units} 
-  \myitem{H}{HeavyIon information} 
-  \myitem{F}{PdfInfo information} 
+  \myitem{H}{HeavyIon information:  
+             This line will contain zeros if there is no associated HeavyIon object.} 
+  \myitem{F}{PdfInfo information: 
+             This line will contain zeros if there is no associated PdfInfo object.} 
   \myitem{V}{GenVertex information} 
   \myitem{P}{GenParticle information} 
+\end{myitemize}
+
+Note that the E, U, H, and F lines contain event header information.
+There will be one and only one of these lines per event. 
+The header information is followed immediately by a V (vertex) line.
+Each vertex line is immediately followed by the P (particle) lines 
+for particles associated with that vertex.  
+For purposes of IO, particles are associated with a vertex if they
+are in the list of outgoing particles.
+In addition, if an incoming particle is not an outgoing particle of 
+some other vertex, then it is classified as an "orphan" incoming particle
+and associated with the vertex IO.
+In this way, each particle appears only once in the Ascii listing.
+
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+
+\subsection{General Event Information}
+
+\begin{myitemize}{E - general GenEvent information} 
+  \myitem{int}{event number} 
+  \myitem{int}{number of multi paricle interactions} 
+  \myitem{double}{event scale} 
+  \myitem{double}{alpha QCD} 
+  \myitem{double}{alpha QED} 
+  \myitem{int}{signal process id} 
+  \myitem{int}{barcode for signal process vertex} 
+  \myitem{int}{number of vertices in this event} 
+  \myitem{int}{barcode for beam particle 1} 
+  \myitem{int}{barcode for beam particle 2} 
+  \myitem{int}{number of entries in random state list (may be zero)} 
+  \myitem{long}{optional list of random state integers} 
+  \myitem{int}{number of entries in weight list (may be zero)} 
+  \myitem{double}{optional list of weights} 
+\end{myitemize}
+\begin{myitemize}{U - momentum and position units} 
+  \myitem{std::string}{momentum units (MEV or GEV)}
+  \myitem{std::string}{length units (MM or CM)}
+\end{myitemize}
+\begin{myitemize}{H - HeavyIon information} 
+  \myitem{int}{Number of hard scatterings}
+  \myitem{int}{Number of projectile participants}
+  \myitem{int}{Number of target participants}
+  \myitem{int}{Number of NN (nucleon-nucleon) collisions}
+  \myitem{int}{Number of spectator neutrons}
+  \myitem{int}{Number of spectator protons}
+  \myitem{int}{Number of N-Nwounded collisions}
+  \myitem{int}{Number of Nwounded-N collisons}
+  \myitem{int}{Number of Nwounded-Nwounded collisions}
+  \myitem{float}{Impact Parameter(fm) of collision}
+  \myitem{float}{Azimuthal angle of event plane}
+  \myitem{float}{eccentricity of participating nucleons in the transverse plane}
+  \myitem{float}{nucleon-nucleon inelastic cross-section}
+\end{myitemize}
+\begin{myitemize}{F - PdfInfo information} 
+  \myitem{int}{flavour code of first parton}
+  \myitem{int}{flavour code of second parton}
+  \myitem{double}{fraction of beam momentum carried by first parton}
+  \myitem{double}{fraction of beam momentum carried by second parton}
+  \myitem{double}{Q-scale used in evaluation of PDF's (in GeV)}
+  \myitem{double}{x*f(x) for id1, x1, Q}
+  \myitem{double}{x*f(x) for id2, x2, Q}
+  \myitem{int}{LHAPDF set id of first parton (zero by default)}
+  \myitem{int}{LHAPDF set id of second parton  (zero by default)}
+\end{myitemize}
+
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+
+\subsection{Vertices and Particles}
+
+\begin{myitemize}{V - GenVertex information} 
+  \myitem{int}{barcode}
+  \myitem{int}{id}
+  \myitem{double}{x}
+  \myitem{double}{y}
+  \myitem{double}{z}
+  \myitem{double}{ctau}
+  \myitem{int}{number of "orphan" incoming particles}
+  \myitem{int}{number of outgoing particles}
+  \myitem{int}{number of entries in weight list (may be zero)} 
+  \myitem{double}{optional list of weights} 
+\end{myitemize}
+\begin{myitemize}{P - GenParticle information} 
+  \myitem{int}{barcode}
+  \myitem{int}{PDG id}
+  \myitem{double}{px}
+  \myitem{double}{py}
+  \myitem{double}{pz}
+  \myitem{double}{energy}
+  \myitem{double}{generated mass}
+  \myitem{int}{status code}
+  \myitem{double}{Polarization theta}
+  \myitem{double}{Polarization phi}
+  \myitem{int}{barcode for vertex that has this particle as an incoming particle}
+  \myitem{int}{number of entries in flow list (may be zero)}
+  \myitem{int, int}{optional code\_index and code for each entry in the flow list}
 \end{myitemize}
 
 %

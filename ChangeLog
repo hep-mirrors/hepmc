@@ -1,4 +1,8 @@
 
+2008-06-04  Lynn Garren
+
+	* doc/HepMC2_user_manual.tex: expand description of Ascii IO format
+
 2008-05-29  Lynn Garren
 	
 	* configure.ac: Use libtool versioning for libraries
