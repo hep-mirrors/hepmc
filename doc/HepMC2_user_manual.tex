@@ -259,7 +259,7 @@ of the event record.
 \item ability to store an arbitrary number of event weights
 \item strategies for conversion to/from HEPEVT (Ref.~\cite{Boos:2001cv}) 
   which are easily extendible to support other event records
-\item strategies for input/output to/from ascii files which
+\item strategies for input/output to/from Ascii files which
   are easily extendible to support other forms of persistency
 \end{itemize}
 
@@ -332,7 +332,7 @@ described in Section~\ref{iogenevent}.
 IO\_GenEvent persists all information in the updated GenEvent object and
 uses iostreams for greater flexibility.  IO\_GenEvent also has a 
 constructor taking a file name and mode type for backwards compatibility. 
-Output remains in ascii format.
+Output remains in Ascii format.
 
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -399,6 +399,8 @@ package to allow the inclusion of event generation examples.
 The HepMC package is written within the HepMC:: namespace. Outside of
 this namespace all class names will need to be prefixed by HepMC::.
 
+The units methods and enums are in the HepMC::Units:: namespace.
+
 \subsection{Performance}
 
 The CPU time performance of the HepMC event record has been quantified
@@ -427,9 +429,9 @@ Pythia &           &          & 29 sec & \\
   CPU time performance and file size using a dedicated 450 MHz Pentium~III.}
 \end{table}
 
-The time to write HepMC events as ascii files using the IO\_Ascii
+The time to write HepMC events as Ascii files using the IO\_Ascii
 strategy was compared to \verb!LCWRITE!, a simple Fortran routine used
-in NLC studies to write the HEPEVT common block in formatted ascii to file.
+in NLC studies to write the HEPEVT common block in formatted Ascii to file.
 Generating the events with Pythia, transferring them to HepMC, and
 writing them to file took 64~seconds and produced a 60.5~Mbyte file.
 Generating the events with Pythia and writing them to file using the
@@ -876,10 +878,6 @@ This feature is used when converting from the HEPEVT common block.
     strategy} 
   \myitem{read\_next\_event}{reads the next event from the input
     strategy into memory}
-  \myitem{write\_particle\_data\_table}{writes out the specified
-    particle data table to the output strategy} 
-  \myitem{read\_particle\_data\_table}{reads a particle data table from
-    the input strategy}
   \myitem{operator$<<$,operator$>>$}{overloaded to give the
     same results as any of the above methods}
 \end{myitemize}
@@ -896,7 +894,7 @@ Several IO strategies are supplied:
     Events may be contained within the same file together with
     an unlimited number of comments. 
     The examples (Section~\ref{examples}) make use of this class.
-  \item {\bf IO\_Ascii} is deprecated.
+  \item {\bf IO\_Ascii} is deprecated (Section~\ref{deprecated}).
   \item {\bf IO\_AsciiParticles} writes events in a format similar to 
      Pythia 6 output.  This is intended for human readability.
   \item {\bf IO\_HEPEVT} reads and writes events to/from the Fortran HEPEVT
@@ -1128,6 +1126,29 @@ some other vertex, then it is classified as an "orphan" incoming particle
 and associated with the vertex IO.
 In this way, each particle appears only once in the Ascii listing.
 
+Below is an example of the format written to a file.  
+Only the first few lines are shown.
+{\tiny
+\begin{verbatim}
+HepMC::Version 2.04.00 
+HepMC::IO_GenEvent-START_EVENT_LISTING 
+E 9 51 -1.0000000000000000e+00 -1.0000000000000000e+00 -1.0000000000000000e+00 20 0 309 1 2 0 0
+U GEV MM 
+H 0 0 0 0 0 0 0 0 0 0 0 0 0 
+F 2 3 3.5000000000000003e-01 6.4999999999999991e-01 8.4499999999999993e+00 2.4499999779912355e+03 4.5499999591265787e+03 230 230
+V -1 0 0 0 0 0 1 3 0 
+P 1 2212 0 0 6.9999999371178146e+03 7.0000000000000000e+03 9.3827000000000005e-01 3 0 0 -1 0
+P 3 21 -9.5802904850995474e-01 3.4892974578914365e-01 1.5677975928920182e+01 1.5711094833049845e+01 0 3 0 0 -3 0
+P 12 2101 2.5787537037233477e-01 -1.1110299643709216e-01 1.2403958218239170e+03
+1.2403959888942973e+03 5.7933000000000001e-01 2 0 0 -9 0
+P 25 2 7.0015367813761997e-01 -2.3782674935205150e-01 2.3333682308044050e+00 2.4698753078332274e+00 3.3000000000000002e-01 2 0 0 -15 0
+V -2 0 0 0 0 0 1 2 0 
+P 2 2212 0 0 -6.9999999371178146e+03 7.0000000000000000e+03 9.3827000000000005e-01 3 0 0 -2 0
+P 4 1 2.7745239600449745e-01 -1.8469236508822412e-01 -1.2668437617555701e+03 1.2668438056011901e+03 0 3 0 0 -4 0
+P 116 2203 -2.7745239600449745e-01 1.8469236508822412e-01 -1.8910900158159372e+03 1.8910902024916190e+03 7.7132999999999996e-01 2 0 0 -15 0
+\end{verbatim}
+}
+
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
@@ -1284,11 +1305,44 @@ The tests are not installed.
 
 All examples use IO\_GenEvent instead of the deprecated IO\_Ascii.
 
+\vspace {1mm}
+Read HepMC events from a file:
+\vspace {-3mm}
+\begin{verbatim}
+HepMC::IO_GenEvent ascii_in("example.dat",std::ios::in);
+HepMC::GenEvent* evt =  ascii_in.read_next_event();
+while ( evt ) {
+    // analyze the event
+    ...
+    // delete the created event from memory
+    delete evt;
+}
+\end{verbatim}
+
+Convert events from the HEPEVT common block to HepMC format 
+and write them to a file:
+\vspace {-3mm}
+\begin{verbatim}
+HepMC::IO_HEPEVT hepevtio;	// the common block conversion methods
+HepMC::IO_GenEvent ascii_out("example.dat",std::ios::out);
+for ( int i = 1; i <= maxEvents; i++ ) {
+    // convert an event
+    HepMC::GenEvent* evt = hepevtio.read_next_event();
+    // analyze the event
+    ...
+    // write the HepMC event
+    ascii_out << evt;
+    // delete the created event from memory
+    delete evt;
+}
+\end{verbatim}
+
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
 
 \section{Deprecated Classes}
+\label{deprecated}
 
 Two major classes have been deprecated: IO\_Ascii and ParticleData.
 IO\_Ascii is replaced by IO\_GenEvent, which uses iostreams instead of files.
@@ -1309,7 +1363,7 @@ IO\_GenEvent reads files written by IO\_Ascii and IO\_ExtendedAscii.
 
 \begin{myitemize}{Notes and Conventions}
  \item {\bf IO\_Ascii} reads and writes events and particle data
-    tables to files in machine readable ascii, thereby providing a
+    tables to files in machine readable Ascii, thereby providing a
     form of persistency for the event record. Events and particle data
     tables may be contained within the same file (recommend to write
     the particle data table first to save access time) together with
@@ -1324,7 +1378,7 @@ IO\_GenEvent reads files written by IO\_Ascii and IO\_ExtendedAscii.
 \subsection{HepMC::ParticleData (deprecated)}
 
 \begin{myitemize}{Relevant Data Members}
-  \myitem{name}{std::string giving an ascii description of the
+  \myitem{name}{std::string giving an Ascii description of the
     particle type}
   \myitem{pdg\_id}{unique ID integer denoting the particle type 
     as defined by the PDG}
@@ -1382,7 +1436,7 @@ respectively.
     specified output stream}
 \end{myitemize}
 \begin{myitemize}{Relevant Data Members}
-  \myitem{description}{ascii description of the table stored as
+  \myitem{description}{Ascii description of the table stored as
     std::string} 
   \myitem{data\_table}{container of pointers to ParticleData instances
     mapped onto their associated pdg\_id's}
