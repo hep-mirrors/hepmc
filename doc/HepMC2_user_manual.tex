@@ -1309,13 +1309,18 @@ All examples use IO\_GenEvent instead of the deprecated IO\_Ascii.
 Read HepMC events from a file:
 \vspace {-3mm}
 \begin{verbatim}
+// specify an input file
 HepMC::IO_GenEvent ascii_in("example.dat",std::ios::in);
+// get the first event
 HepMC::GenEvent* evt =  ascii_in.read_next_event();
+// loop until we run out of events
 while ( evt ) {
     // analyze the event
     ...
     // delete the created event from memory
     delete evt;
+    // read the next event
+    ascii_in >> evt;
 }
 \end{verbatim}
 
@@ -1323,7 +1328,9 @@ Convert events from the HEPEVT common block to HepMC format
 and write them to a file:
 \vspace {-3mm}
 \begin{verbatim}
-HepMC::IO_HEPEVT hepevtio;	// the common block conversion methods
+// common block conversion methods
+HepMC::IO_HEPEVT hepevtio;
+// specify an output file
 HepMC::IO_GenEvent ascii_out("example.dat",std::ios::out);
 for ( int i = 1; i <= maxEvents; i++ ) {
     // convert an event
