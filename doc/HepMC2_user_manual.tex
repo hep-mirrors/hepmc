@@ -41,9 +41,10 @@
   \renewcommand{\makelabel}{}}}
 {\end{list}}
 
+%%%%  \vspace{-.2cm} {\bf \underline{\sc #1}} \vspace{-.2cm}
 \newenvironment{myitemize}[1]
 { \begin{small}
-  \vspace{-.2cm} {\bf \underline{\sc #1}} \vspace{-.2cm}
+  {\bf \underline{\sc #1}} \vspace{-.2cm}
   \begin{itemize}
   \setlength{\itemsep}{-4pt}
   \setlength{\parsep}{0pt}
@@ -87,7 +88,7 @@
 \vspace{1cm}
 
 {\Large User Manual Version 2.04} \\
-May 6, 2008
+June 9, 2008
 
 \vspace{2cm}
 
@@ -133,6 +134,8 @@ CERN
 
 \setcounter{page}{1}
 \tableofcontents
+\listoffigures
+\listoftables
 
 \newpage
 
@@ -202,7 +205,7 @@ in that document and is not addressed in HepMC).  }
             \mbox{\color{magenta}ATLfast}}$ \\
         \end{tabular}\end{small}
       \end{minipage}}\end{center}
-  \caption{\label{modularisation} 
+  \caption[Modularised event generation]{\label{modularisation} 
     HepMC supports the concept of modularised event generation
     (illustrated above) by containing sufficient information within the
     event record to act as a messenger between two modular steps in
@@ -236,7 +239,8 @@ of the event record.
      \parbox[c]{45mm}{\includegraphics[height=45mm,clip=]
        {graph_interpretation.eps}}
   \end{center}
-  \caption{\label{graph_structure} Events in HepMC are stored in a graph
+  \caption[Event visualization]
+   {\label{graph_structure} Events in HepMC are stored in a graph
     structure (right), similar to a physicist's visualisation of a
     collision event (left).}
 \end{figure}
@@ -252,11 +256,14 @@ of the event record.
 \item minimum dependencies
 \item information is stored in a graph structure, 
   physically similar to a collision event
+\item allows specification of momentum and length units
 \item allows for the inclusion of spin density matrices 
 \item allows for the tracing of an arbitrary number of flow patterns
 \item ability to store the state of random number generators (as
   integers)
 \item ability to store an arbitrary number of event weights
+\item ability to store parton distribution function information
+\item ability to store heavy ion information 
 \item strategies for conversion to/from HEPEVT (Ref.~\cite{Boos:2001cv}) 
   which are easily extendible to support other event records
 \item strategies for input/output to/from Ascii files which
@@ -282,7 +289,7 @@ there was concern about allowing dependencies on any external package.
 Therefore, the decision was made to replace the CLHEP Lorentz vectors with
 a minimal vector representation within HepMC.  
 
-Because this is a major change, the versioning is changed 
+Because this is a major change, the versioning was changed 
 from 1.xx.yy to 2.xx.yy.  Normally, a version number change in \emph{xx} 
 represents a change to the code and a version number change in \emph{yy}
 represents a bug fix.
@@ -352,23 +359,25 @@ an integer---referred to as a ``barcode''---which is meant to be a
 persistent label for a particular particle instance.
 The event is the container class for all (possibly
 inter-connected) vertices in the event and contains process id, event
-number, weight, and random number state information.
+number, unit information, weight, and random number state information.
 
 Iterators are provided as methods of the vertex and event classes
 which allow easy directed access to information in the C++ Standard
 Template Library (STL) style.
 
-The event record class relationships and the particle
-data class relationships are shown in Figure~\ref{UML_diagrams}.
-
-\begin{figure}[h]
+\begin{figure}[!ht]
   \begin{center}
     \includegraphics[width=\textwidth,clip=]{HepMC_basic_properties.eps}
   \end{center}
-  \caption{\label{UML_diagrams} Class diagrams for the event record
+  \caption[HepMC class diagrams]
+    {\label{UML_diagrams} Class diagrams for the event record
     classes (GenEvent, GenVertex, and GenParticle) and the IO strategies
     are shown in the UML notation.}
 \end{figure}
+\clearpage
+
+The event record class relationships and the particle
+data class relationships are shown in Figure~\ref{UML_diagrams}.
 
 Several input/output strategies are provided. The interface for these
 strategies is defined by an abstract base class, IO\_BaseClass.  These
@@ -425,7 +434,7 @@ Pythia &           &          & 29 sec & \\
 && 48.2 Mbytes \\ \hline
 \end{tabular}
 \end{center}
-\caption{\label{benchmarks} 
+\caption[Performance]{\label{benchmarks} 
   CPU time performance and file size using a dedicated 450 MHz Pentium~III.}
 \end{table}
 
@@ -750,8 +759,8 @@ information about differential cross sections.
 \begin{myitemize}{Notes and Conventions}
   \item the particle ID should be specified according to the 
     PDG standard~\cite{Yao:2006tx}
-  \item status codes are as defined for
-    HEPEVT~\cite{stdhep5.05}\footnote{
+  \item status codes are as defined for HEPEVT~\cite{stdhep5.05}\newline
+     {\footnotesize
       For convenience the HEPEVT standard status codes are enumerated:
       \begin{tabbing}
         0 \hspace{1cm} \= null entry \\
@@ -903,7 +912,7 @@ Several IO strategies are supplied:
     (which is defined in the header file HEPEVT\_Wrapper.h\footnote{
       Different conventions exist for the fortran HEPEVT common
       block. 4 or 8-byte floating point numbers may be used, and the
-      number of entries is often taken as 2000 or 4000. To account for
+      number of entries is often taken as 4000 or 10000. To account for
       all possibilities the precision (float or double) and number of
       entries can be set for the wrapper at run time,
       \begin{tabbing}
@@ -1049,8 +1058,8 @@ the particle\_iterator relative to a vertex (point in the graph) - thus
 the starting point (root) is still a vertex, and the range is defined
 relative to this root.  The extension to particles can be made by
 using the particle's production or end vertex as the root.  Possible
-ranges are defined by an enumeration called HepMC::IteratorRange and
-the possibilities are:
+ranges are defined by an enumeration called HepMC::IteratorRange.
+The possibilities are:
 \begin{itemize}\setlength{\itemsep}{0pt}
   \myitem{parents}{walks over all particles incoming to the root}
   \myitem{children}{walks over all particles outgoing from the root}
@@ -1098,7 +1107,6 @@ contained in a HepMC GenEvent.
 
 \subsection{Basic IO\_GenEvent Structure}
 
-\vspace{0.1cm}
 \begin{myitemize}{Block Keys}
   \myitem{begin event block}{HepMC::IO\_GenEvent-START\_EVENT\_LISTING} 
   \myitem{end event block}{HepMC::IO\_GenEvent-END\_EVENT\_LISTING} 
@@ -1125,11 +1133,11 @@ In addition, if an incoming particle is not an outgoing particle of
 some other vertex, then it is classified as an "orphan" incoming particle
 and associated with the vertex IO.
 In this way, each particle appears only once in the Ascii listing.
+An example of the format written to a file is shown in Figure~\ref{ascii_format}.
 
-Below is an example of the format written to a file.  
-Only the first few lines are shown.
-{\tiny
-\begin{verbatim}
+\begin{figure}[h]
+  \begin{center}
+{\tiny \begin{verbatim}
 HepMC::Version 2.04.00 
 HepMC::IO_GenEvent-START_EVENT_LISTING 
 E 9 51 -1.0000000000000000e+00 -1.0000000000000000e+00 -1.0000000000000000e+00 20 0 309 1 2 0 0
@@ -1146,8 +1154,12 @@ V -2 0 0 0 0 0 1 2 0
 P 2 2212 0 0 -6.9999999371178146e+03 7.0000000000000000e+03 9.3827000000000005e-01 3 0 0 -2 0
 P 4 1 2.7745239600449745e-01 -1.8469236508822412e-01 -1.2668437617555701e+03 1.2668438056011901e+03 0 3 0 0 -4 0
 P 116 2203 -2.7745239600449745e-01 1.8469236508822412e-01 -1.8910900158159372e+03 1.8910902024916190e+03 7.7132999999999996e-01 2 0 0 -15 0
-\end{verbatim}
-}
+\end{verbatim}}
+  \end{center}
+  \caption[Example of ascii format]
+          {\label{ascii_format} Example of the format written to a file.  
+           Only the first few lines are shown. }
+\end{figure}
 
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -1252,25 +1264,24 @@ Source code tarballs are on the download page:
 \htmladdnormallink
 {http://lcgapp.cern.ch/project/simu/HepMC/download/}
 {http://lcgapp.cern.ch/project/simu/HepMC/download/}.
+Binary downloads are available for some releases.
+The following recipe is a guideline and should be modified according to taste.
 
-\vspace{0.5cm}
-\begin{myitemize}
- {The following recipe is a guideline and should be modified according to taste.}
+\begin{myitemize}{}
   \myitem{download source code tarball}{}
   \myitem{mkdir cleanDIR}{Make a new directory to work in.}
   \myitem{cd cleanDIR}{}
   \myitem{tar -xzf HepMCtarball}{Unwind the tarball you downloaded.}
   \myitem{mkdir build install}{Define directories for building and installation.}
   \myitem{cd build}{This is your real working directory.}
-  \myitem{../../HepMC-release/configure --prefix=../install}
+  \myitem{../../HepMC-release/configure --prefix=../install
+          --with-momentum=XX --with-length=YY}
     {--prefix tells the tools where to install the library and headers.
      The default install location is /usr/local.}
   \myitem{make}{Compile HepMC.}
   \myitem{make check}{Run the tests.  This is optional but strongly recommended.}
   \myitem{make install}{Install everything in your specified directory. }
 \end{myitemize}
-
-Binary downloads are available for some releases.
 
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -1282,6 +1293,7 @@ Examples are provided in the examples directory of the package
 and are installed in the installation directory under examples/HepMC.
 Tests, found in the test directory of the package, also provide useful examples.
 The tests are not installed.
+All examples use IO\_GenEvent instead of the deprecated IO\_Ascii.
 
 \begin{itemize}\setlength{\itemsep}{0pt}
   \item{\bf Using the HepMC vertex and particle iterators:}
@@ -1303,12 +1315,11 @@ The tests are not installed.
      {testHerwigCopies.cc and testPythiaCopies.cc}
 \end{itemize}
 
-All examples use IO\_GenEvent instead of the deprecated IO\_Ascii.
+IO examples are shown in Figures \ref{read_ascii} and \ref{write_ascii}.
 
-\vspace {1mm}
-Read HepMC events from a file:
-\vspace {-3mm}
-\begin{verbatim}
+\begin{figure}[h]
+\caption[IO\_GenEvent exmple]{\label{read_ascii} Reading HepMC events from a file. }
+{\small \begin{verbatim}
 // specify an input file
 HepMC::IO_GenEvent ascii_in("example.dat",std::ios::in);
 // get the first event
@@ -1322,12 +1333,14 @@ while ( evt ) {
     // read the next event
     ascii_in >> evt;
 }
-\end{verbatim}
+\end{verbatim}}
+\end{figure}
 
-Convert events from the HEPEVT common block to HepMC format 
-and write them to a file:
-\vspace {-3mm}
-\begin{verbatim}
+\begin{figure}[h]
+\caption[IO\_HEPEVT and IO\_GenEvent exmple]
+{\label{write_ascii} Convert events from the HEPEVT common block 
+          to HepMC format and write them to a file. }
+{\small \begin{verbatim}
 // common block conversion methods
 HepMC::IO_HEPEVT hepevtio;
 // specify an output file
@@ -1342,7 +1355,8 @@ for ( int i = 1; i <= maxEvents; i++ ) {
     // delete the created event from memory
     delete evt;
 }
-\end{verbatim}
+\end{verbatim}}
+\end{figure}
 
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

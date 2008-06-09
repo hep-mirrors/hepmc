@@ -5,7 +5,10 @@ Makefile.in
 *.log
 *.dvi
 *.toc
+*.lot
+*.lof
 html
 latex
 doxygen.warnings
 buildManual.sh
+buildDoxy.sh
