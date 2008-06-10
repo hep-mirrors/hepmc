@@ -22,6 +22,6 @@ if [ `whereis latex | wc -w` -gt 1 ]; then
    latex HepMC2_user_manual.tex
    dvipdf HepMC2_user_manual
    # cleanup latex files
-   rm -f *.aux *.dvi *.log *.toc
+   rm -f *.aux *.dvi *.log *.toc *.lot *.lof
 fi
 
