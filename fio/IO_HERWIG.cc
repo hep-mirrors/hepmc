@@ -15,8 +15,8 @@ namespace HepMC {
 			     m_no_gaps_in_barcodes(true),
 			     m_herwig_to_pdg_id(100,0)
     {
-	// These arrays are copied from Lynn Garren's stdhep 5.01.
-	//   see http://www-pat.fnal.gov/stdhep.html
+	// These arrays are copied from Lynn Garren's stdhep 5.01-5.06.
+	//   see http://cepa.fnal.gov/psm/stdhep/
 	// Translation from HERWIG particle ID's to PDG particle ID's.
 	m_herwig_to_pdg_id[1] =1; 
 	m_herwig_to_pdg_id[2] =2;
@@ -39,7 +39,7 @@ namespace HepMC {
 	m_herwig_to_pdg_id[23] =23;
 	m_herwig_to_pdg_id[24] =24;
 	m_herwig_to_pdg_id[25] =25;
-	m_herwig_to_pdg_id[26] =51; // <--
+	m_herwig_to_pdg_id[26] =51; // <-- H_L0 (redundant with h0(25))
        
 	m_herwig_to_pdg_id[32] =32;
 	m_herwig_to_pdg_id[35] =35;
@@ -67,8 +67,8 @@ namespace HepMC {
 	m_herwig_to_pdg_id[95] =95;
 	m_herwig_to_pdg_id[96] =96;
 	m_herwig_to_pdg_id[97] =97;
-	m_herwig_to_pdg_id[98] =9920022; // <--
-	m_herwig_to_pdg_id[99] =9922212; // <--
+	m_herwig_to_pdg_id[98] =9920022; // <-- remnant photon
+	m_herwig_to_pdg_id[99] =9922212; // <-- remnant nucleon
 
 	// These particle ID's have no antiparticle, so aren't allowed.
 	m_no_antiparticles.insert(-21);
