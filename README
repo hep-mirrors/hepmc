@@ -23,6 +23,8 @@ and:
 2002-01-23 HepMC was developed on Linux with gcc.
         Thanks to the work of Witold Pokorski and Pere Mato, 
         it now compiles and runs on Windows with Microsoft Visual C++. 
+	To compile with Microsoft Visual C++, you need to define the 
+	_WIN32 variable.
 	
         *****************************************************
 
