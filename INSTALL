@@ -10,6 +10,8 @@ we recommend that you create a separate build directory and work from there.
 #-------------------------------------------------------------
 
 To build for Windows Visual C++, configure with CXX=cl CC=cl.
+To avoid autotool confusion, we recommend running the bootstrap 
+in your cygwin environment before beginning the build.
 Notice that custom makefiles are used by the Visual C++ build.
 See ReadMe.cygwin for more information.
 
