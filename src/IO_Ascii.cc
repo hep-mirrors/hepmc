@@ -10,12 +10,13 @@
 #include "HepMC/ParticleDataTable.h"
 #include "HepMC/CommonIO.h"
 #include "HepMC/Version.h"
+#include "HepMC/IO_Exception.h"
 
 namespace HepMC {
 
     IO_Ascii::IO_Ascii( const char* filename, std::ios::openmode mode ) 
 	: m_mode(mode), m_file(filename, mode), m_finished_first_event_io(0),
-          m_common_io()  
+          m_common_io(), m_error_type(0), m_error_message() 
     {
         std::cout << "-------------------------------------------------------" << std::endl;
         std::cout << "Use of HepMC/IO_Ascii is deprecated" << std::endl;
@@ -103,18 +104,23 @@ namespace HepMC {
     bool IO_Ascii::fill_next_event( GenEvent* evt ){
 	//
 	//
+	// reset error type
+        m_error_type = 0;
+	//
+	//
 	// test that evt pointer is not null
 	if ( !evt ) {
-	    std::cerr 
-		<< "IO_Ascii::fill_next_event error - passed null event." 
-		<< std::endl;
+            m_error_type = 101;
+	    m_error_message = "IO_Ascii::fill_next_event error - passed null event.";
+	    std::cerr << m_error_message << std::endl;
 	    return false;
 	}
 	// check the state of m_file is good, and that it is in input mode
 	if ( !m_file ) return false;
 	if ( !(m_mode&std::ios::in) ) {
-	    std::cerr << "HepMC::IO_Ascii::fill_next_event "
-		      << " attempt to read from output file." << std::endl;
+            m_error_type = 102;
+	    m_error_message = "HepMC::IO_Ascii::fill_next_event attempt to read from output file.";
+	    std::cerr << m_error_message << std::endl;
 	    return false;
 	}
 	//
@@ -126,8 +132,9 @@ namespace HepMC {
 	    m_file.seekg( 0 ); // go to position zero in the file.
 	    iotype = m_common_io.find_file_type(m_file);
 	    if( iotype != ascii ) {
-		std::cerr << "IO_Ascii::fill_next_event start key not found "
-			  << "setting badbit." << std::endl;
+                m_error_type = 103;
+		m_error_message = "IO_Ascii::fill_next_event start key not found setting badbit.";
+		std::cerr << m_error_message << std::endl;
 		m_file.clear(std::ios::badbit); 
 		return false;
 	    }
@@ -136,8 +143,9 @@ namespace HepMC {
 	//
 	// test to be sure the next entry is of type "E" then ignore it
 	if ( !m_file ) { 
-		std::cerr << "IO_Ascii::fill_next_event end of stream found "
-			  << "setting badbit." << std::endl;
+                m_error_type = 104;
+		m_error_message = "IO_Ascii::fill_next_event end of stream found setting badbit.";
+		std::cerr << m_error_message << std::endl;
 		m_file.clear(std::ios::badbit); 
 		return false;
 	}
@@ -152,16 +160,29 @@ namespace HepMC {
 		    return false;
 		}
 	    } else {
-		std::cerr << "IO_Ascii::fill_next_event end key not found "
-			  << "setting badbit." << std::endl;
+                m_error_type = 106;
+		m_error_message = "IO_Ascii::fill_next_event end key not found setting badbit.";
+		std::cerr << m_error_message << std::endl;
 		m_file.clear(std::ios::badbit); 
 		return false;
 	    }
 	} 
-	m_file.ignore();
-	// call the read method
-	return m_common_io.read_io_ascii(&m_file, evt);
-    }
+	// try/catch block deals with invalid data
+	bool ok = false;
+	try {
+	    m_file.ignore();
+	    // call the read method
+	    ok = m_common_io.read_io_ascii(&m_file, evt); 
+	}
+	// check for exceptions
+	catch (IO_Exception& e) {
+            m_error_type = 107;
+	    m_error_message = e.what();
+	    evt->clear();
+	    ok = false;
+	}
+	return ok;
+   }
 
     void IO_Ascii::write_comment( const std::string comment ) {
 	// check the state of m_file is good, and that it is in output mode

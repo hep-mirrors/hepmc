@@ -83,6 +83,11 @@ namespace HepMC {
 	///  only want to do this at the beginning or end of the file. All
 	///  comments are preceded with "HepMC::IO_GenEvent-COMMENT\n"
   	void          write_comment( const std::string comment );
+	
+	/// integer associated with read error
+	const int           error_type()    const;
+	/// the read error message string
+	const std::string & error_message() const;
 
 	int           rdstate() const;  //!< check the state of the IO stream
 	void          clear();  //!< clear the IO stream
@@ -132,6 +137,8 @@ namespace HepMC {
 	bool                m_finished_first_event_io;
 	bool                m_have_file;
 	CommonIO            m_common_io;
+	int                 m_error_type;
+	std::string         m_error_message;
     };
 
     //////////////
@@ -199,6 +206,15 @@ namespace HepMC {
 	    m_ostr->clear();
 	}
     }
+
+    inline const int IO_GenEvent::error_type() const {
+        return m_error_type;
+    }
+   
+    inline const std::string & IO_GenEvent::error_message() const {
+        return m_error_message;
+    }
+
     // these are required by IO_BaseClass, but not used here
     inline void IO_GenEvent::write_particle_data_table(const ParticleDataTable*) {;}
     inline bool IO_GenEvent::fill_particle_data_table( ParticleDataTable* ) 

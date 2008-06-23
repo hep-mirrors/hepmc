@@ -13,6 +13,7 @@
 #include "HepMC/PdfInfo.h"
 #include "HepMC/CommonIO.h"
 #include "HepMC/Version.h"
+#include "HepMC/IO_Exception.h"
 
 namespace HepMC {
 
@@ -24,7 +25,9 @@ namespace HepMC {
       m_iostr(0),
       m_finished_first_event_io(false),
       m_have_file(false),
-      m_common_io()
+      m_common_io(),
+      m_error_type(0),
+      m_error_message()
     {
 	if ( (m_mode&std::ios::out && m_mode&std::ios::in) ||
 	     (m_mode&std::ios::app && m_mode&std::ios::in) ) {
@@ -59,7 +62,9 @@ namespace HepMC {
       m_iostr(&istr),
       m_finished_first_event_io(false),
       m_have_file(false),
-      m_common_io()
+      m_common_io(),
+      m_error_type(0),
+      m_error_message()
     { }
 
     IO_GenEvent::IO_GenEvent( std::ostream & ostr )
@@ -68,7 +73,9 @@ namespace HepMC {
       m_iostr(&ostr),
       m_finished_first_event_io(false),
       m_have_file(false),
-      m_common_io()
+      m_common_io(),
+      m_error_type(0),
+      m_error_message()
     {
 	// precision 16 (# digits following decimal point) is the minimum that
 	//  will capture the full information stored in a double
@@ -150,18 +157,23 @@ namespace HepMC {
     bool IO_GenEvent::fill_next_event( GenEvent* evt ){
 	//
 	//
+	// reset error type
+        m_error_type = 0;
+	//
+	//
 	// test that evt pointer is not null
 	if ( !evt ) {
-	    std::cerr 
-		<< "IO_GenEvent::fill_next_event error - passed null event." 
-		<< std::endl;
+            m_error_type = 101;
+	    m_error_message = "IO_GenEvent::fill_next_event error - passed null event.";
+	    std::cerr << m_error_message << std::endl;
 	    return false;
 	}
 	// make sure the stream is good, and that it is in input mode
 	if ( !(*m_istr) ) return false;
 	if ( !m_istr ) {
-	    std::cerr << "HepMC::IO_GenEvent::fill_next_event "
-		      << " attempt to read from output file." << std::endl;
+            m_error_type = 102;
+	    m_error_message = "HepMC::IO_GenEvent::fill_next_event attempt to read from output file.";
+	    std::cerr << m_error_message << std::endl;
 	    return false;
 	}
 	//
@@ -172,8 +184,9 @@ namespace HepMC {
 	if ( !m_finished_first_event_io ) {
 	    iotype = m_common_io.find_file_type(*m_istr);
 	    if( iotype <= 0 ) {
-		std::cerr << "IO_GenEvent::fill_next_event start key not found "
-			  << "setting badbit." << std::endl;
+                m_error_type = 103;
+		m_error_message = "IO_GenEvent::fill_next_event start key not found setting badbit.";
+		std::cerr << m_error_message << std::endl;
 		m_istr->clear(std::ios::badbit); 
 		return false;
 	    }
@@ -182,8 +195,9 @@ namespace HepMC {
 	//
 	// test to be sure the next entry is of type "E" then ignore it
 	if ( !(*m_istr) ) { 
-		std::cerr << "IO_GenEvent::fill_next_event end of stream found "
-			  << "setting badbit." << std::endl;
+                m_error_type = 104;
+		m_error_message = "IO_GenEvent::fill_next_event end of stream found setting badbit.";
+		std::cerr << m_error_message << std::endl;
 		m_istr->clear(std::ios::badbit); 
 		return false;
 	}
@@ -199,30 +213,42 @@ namespace HepMC {
 		    return false;
 		}
 	    } else if ( ioendtype > 0 ) {
-		std::cerr << "IO_GenEvent::fill_next_event end key does not match start key "
-			  << "setting badbit." << std::endl;
+                m_error_type = 105;
+		m_error_message = "IO_GenEvent::fill_next_event end key does not match start key setting badbit.";
+		std::cerr << m_error_message << std::endl;
 		m_istr->clear(std::ios::badbit); 
 		return false;
 	    } else {
-		std::cerr << "IO_GenEvent::fill_next_event end key not found "
-			  << "setting badbit." << std::endl;
+                m_error_type = 106;
+		m_error_message = "IO_GenEvent::fill_next_event end key not found setting badbit.";
+		std::cerr << m_error_message << std::endl;
 		m_istr->clear(std::ios::badbit); 
 		return false;
 	    }
 	}
-	m_istr->ignore();
-	// call the appropriate read method
-	if( m_common_io.io_type() == gen ) {
-	    return m_common_io.read_io_genevent(m_istr, evt);
-	} else if( m_common_io.io_type() == ascii ) { 
-	    return m_common_io.read_io_ascii(m_istr, evt);
-	} else if( m_common_io.io_type() == extascii ) { 
-	    return m_common_io.read_io_extendedascii(m_istr, evt);
-	} else if( m_common_io.io_type() == ascii_pdt ) { 
-	} else if( m_common_io.io_type() == extascii_pdt ) { 
+	// try/catch block deals with invalid data
+	bool ok = false;
+	try {
+	    m_istr->ignore();
+	    // call the appropriate read method
+	    if( m_common_io.io_type() == gen ) {
+		ok = m_common_io.read_io_genevent(m_istr, evt);
+	    } else if( m_common_io.io_type() == ascii ) { 
+		ok = m_common_io.read_io_ascii(m_istr, evt);
+	    } else if( m_common_io.io_type() == extascii ) { 
+		ok = m_common_io.read_io_extendedascii(m_istr, evt);
+	    } else if( m_common_io.io_type() == ascii_pdt ) { 
+	    } else if( m_common_io.io_type() == extascii_pdt ) { 
+	    }
 	}
-	// should not get to this statement
-	return false;
+	// check for exceptions
+	catch (IO_Exception& e) {
+            m_error_type = 107;
+	    m_error_message = e.what();
+	    evt->clear();
+	    ok = false;
+	}
+	return ok;
     }
 
     void IO_GenEvent::write_comment( const std::string comment ) {

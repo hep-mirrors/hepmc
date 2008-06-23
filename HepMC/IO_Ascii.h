@@ -78,6 +78,11 @@ namespace HepMC {
 	///  only want to do this at the beginning or end of the file. All
 	///  comments are preceded with "HepMC::IO_Ascii-COMMENT\n"
   	void          write_comment( const std::string comment );
+	
+	/// integer associated with read error
+	const int           error_type()    const;
+	/// the read error message string
+	const std::string & error_message() const;
 
 	int           rdstate() const;  //!< check the state of the IO stream
 	void          clear();  //!< clear the IO stream
@@ -106,6 +111,8 @@ namespace HepMC {
 	std::fstream        m_file;
 	bool                m_finished_first_event_io;
 	CommonIO            m_common_io;
+	int                 m_error_type;
+	std::string         m_error_message;
     };
 
     //////////////
@@ -124,6 +131,14 @@ namespace HepMC {
     inline void IO_Ascii::output( const char& c ) { m_file << c; }
     inline int  IO_Ascii::rdstate() const { return (int)m_file.rdstate(); }
     inline void IO_Ascii::clear() { m_file.clear(); }
+
+    inline const int IO_Ascii::error_type() const {
+        return m_error_type;
+    }
+   
+    inline const std::string & IO_Ascii::error_message() const {
+        return m_error_message;
+    }
 
 } // HepMC
 

@@ -81,6 +81,10 @@ protected:
   /// ParticleDataTable is deprecated.
   /// We include this method for reading old files which may have ParticleData information.
   ParticleData* read_particle_data( std::istream*, ParticleDataTable* );
+  // call this to read a double and check for invalid data (e.g., NaN)
+  double read_double( std::istream* is );
+  // called by read_double to find the end of the current event
+  void find_event_end( std::istream* is );
 
 private:
   std::string m_io_genevent_start;
@@ -95,7 +99,7 @@ private:
   std::string m_io_ascii_pdt_end;
   std::string m_io_extendedascii_pdt_end;
   int         m_io_type;
-  
+
 
 };
 
