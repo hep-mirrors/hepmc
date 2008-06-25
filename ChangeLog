@@ -1,3 +1,10 @@
+  --------------------------  HepMC-2.03.09  --------------------------
+
+2008-06-24  Lynn Garren
+
+	* fio/IO_HEPEVT.cc: bug fix for inconsistency in HWHGUP
+	see https://savannah.cern.ch/bugs/?38173 for details
+
   --------------------------  HepMC-2.03.08  --------------------------
 
 2008-04-23  Lynn Garren

@@ -460,6 +460,9 @@ namespace HepMC {
 	      HEPEVT_Wrapper::set_parents( 
 		  i, HEPEVT_Wrapper::first_parent(index_hard), 
 		  HEPEVT_Wrapper::last_parent(index_hard) );
+	    //BPK -> inconsistency in HWHGUP, desc from hard vert should point to it.
+	    } else if (  HEPEVT_Wrapper::first_parent(i)!=index_hard) {
+	      HEPEVT_Wrapper::set_parents(i,index_hard,HEPEVT_Wrapper::last_parent(i) );
 	    }
 	    //BPK - Atlas -<
 
@@ -470,7 +473,8 @@ namespace HepMC {
 	    // a non-hadron, and so the 2nd child does contain real mother
 	    // daughter relationships. ( particularly relevant for H->WW,
 	    //                           April 18, 2003 )
-	    if ( HEPEVT_Wrapper::status(i) != 195 ) {	      
+	    // BPK - part of the inconsistency in HWHGUP problem
+	    if ( HEPEVT_Wrapper::status(i) != 195 && HEPEVT_Wrapper::status(i) != 155 ) {	      
 	      HEPEVT_Wrapper::set_children(i,HEPEVT_Wrapper::first_child(i),0);
 	    }
 	}
