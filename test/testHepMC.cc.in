@@ -92,7 +92,7 @@ void read_testAscii()
 	}
 	//........................................EVENT LOOP
 	int icount=0;
-	int ibad=0;
+	int invaliddata=0;
 	bool ok = true;
 	HepMC::GenEvent* evt = ascii_in.read_next_event();
 	while ( ok ) {
@@ -106,14 +106,13 @@ void read_testAscii()
 		// clean up and get next event
 		delete evt;
 		ascii_in >> evt;
-	    } else if (ascii_in.error_type() == 107 ) {
-	        ++ibad;
+	    } else if (ascii_in.error_type() == HepMC::IO_Exception::InvalidData ) {
+	        ++invaliddata;
                 std::cerr << "INPUT ERROR: " << ascii_in.error_message() << std::endl;
 		// clean up and get next event
 		delete evt;
 		ascii_in >> evt;
-	    } else if (ibad > 50 ) {
-                std::cerr << "INPUT ERROR: " << ascii_in.error_message() << std::endl;
+	    } else if (invaliddata > 50 ) {
 	        ok = false;
 	    } else {
 	        ok = false;
@@ -138,7 +137,7 @@ void read_testExtendedAscii()
     IsGoodEvent is_good_event;
     //........................................EVENT LOOP
     int icount=0;
-    int ibad=0;
+    int invaliddata=0;
     bool ok = true;
     int num_good_events=0;
     HepMC::GenEvent* evt = xin.read_next_event();
@@ -158,13 +157,13 @@ void read_testExtendedAscii()
 	    // clean up and get next event
 	    delete evt;
 	    xin >> evt;
-	} else if (xin.error_type() == 107 ) {
-	    ++ibad;
+	} else if (xin.error_type() == HepMC::IO_Exception::InvalidData ) {
+	    ++invaliddata;
             std::cerr << "INPUT ERROR: " << xin.error_message() << std::endl;
 	    // clean up and get next event
 	    delete evt;
 	    xin >> evt;
-	} else if (ibad > 50 ) {
+	} else if (invaliddata > 50 ) {
             std::cerr << "INPUT ERROR: " << xin.error_message() << std::endl;
 	    ok = false;
 	} else {

@@ -5,8 +5,6 @@
 //
 // ----------------------------------------------------------------------
 
-#include <sstream>
-
 #include "HepMC/CommonIO.h"
 #include "HepMC/GenEvent.h"
 #include "HepMC/HeavyIon.h"
@@ -459,12 +457,13 @@ double CommonIO::read_double( std::istream* is ) {
 	char badline[250]; 
 	is->getline( badline, 250, '\n' );
 	// formulate error message
-	std::ostringstream msg;
-	msg << "CommonIO::read_double encountered invalid data: " << badline;
+	std::string msg = 
+	     std::string("CommonIO::read_double encountered invalid data: ") 
+	     + badline;
 	// now read to the end of this event
 	find_event_end( is );
 	// throw after we finish reading the event
-	throw IO_Exception(msg.str());
+	throw IO_Exception(msg);
     }
     return xx;
 }

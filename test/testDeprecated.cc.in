@@ -56,7 +56,7 @@ int main() {
 		// clean up and get next event
 		delete evt;
 		ascii_in >> evt;
-	    } else if (ascii_in.error_type() == 107 ) {
+	    } else if (ascii_in.error_type() == HepMC::IO_Exception::InvalidData ) {
 	        ++ibad;
                 std::cerr << "INPUT ERROR: " << ascii_in.error_message() << std::endl;
 		// clean up and get next event
@@ -100,7 +100,7 @@ int main() {
 		// clean up and get next event
 		delete evt;
 		xin >> evt;
-	    } else if (xin.error_type() == 107 ) {
+	    } else if (xin.error_type() == HepMC::IO_Exception::InvalidData ) {
 	        ++ibad;
                 std::cerr << "INPUT ERROR: " << xin.error_message() << std::endl;
 		// clean up and get next event

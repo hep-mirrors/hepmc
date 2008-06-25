@@ -13,7 +13,6 @@
 #include "HepMC/PdfInfo.h"
 #include "HepMC/CommonIO.h"
 #include "HepMC/Version.h"
-#include "HepMC/IO_Exception.h"
 
 namespace HepMC {
 
@@ -26,14 +25,14 @@ namespace HepMC {
       m_finished_first_event_io(false),
       m_have_file(false),
       m_common_io(),
-      m_error_type(0),
+      m_error_type(IO_Exception::OK),
       m_error_message()
     {
 	if ( (m_mode&std::ios::out && m_mode&std::ios::in) ||
 	     (m_mode&std::ios::app && m_mode&std::ios::in) ) {
-	    std::cerr << "IO_GenEvent::IO_GenEvent Error, open of file requested "
-		      << "of input AND output type. Not allowed. Closing file."
-		      << std::endl;
+            m_error_type = IO_Exception::InputAndOutput;
+	    m_error_message ="IO_GenEvent::IO_GenEvent Error, open of file requested of input AND output type. Not allowed. Closing file.";
+	    std::cerr << m_error_message << std::endl;
 	    m_file.close();
 	    return;
 	}
@@ -63,7 +62,7 @@ namespace HepMC {
       m_finished_first_event_io(false),
       m_have_file(false),
       m_common_io(),
-      m_error_type(0),
+      m_error_type(IO_Exception::OK),
       m_error_message()
     { }
 
@@ -74,7 +73,7 @@ namespace HepMC {
       m_finished_first_event_io(false),
       m_have_file(false),
       m_common_io(),
-      m_error_type(0),
+      m_error_type(IO_Exception::OK),
       m_error_message()
     {
 	// precision 16 (# digits following decimal point) is the minimum that
@@ -106,8 +105,9 @@ namespace HepMC {
 	// make sure the state is good, and that it is in output mode
 	if ( !evt  ) return;
 	if ( m_ostr == NULL ) {
-	    std::cerr << "HepMC::IO_GenEvent::write_event "
-		      << " attempt to write to input file." << std::endl;
+            m_error_type = IO_Exception::WrongFileType;
+	    m_error_message = "HepMC::IO_GenEvent::write_event attempt to write to input file.";
+	    std::cerr << m_error_message << std::endl;
 	    return;
 	}
 	//
@@ -158,12 +158,12 @@ namespace HepMC {
 	//
 	//
 	// reset error type
-        m_error_type = 0;
+        m_error_type = IO_Exception::OK;
 	//
 	//
 	// test that evt pointer is not null
 	if ( !evt ) {
-            m_error_type = 101;
+            m_error_type = IO_Exception::NullEvent;
 	    m_error_message = "IO_GenEvent::fill_next_event error - passed null event.";
 	    std::cerr << m_error_message << std::endl;
 	    return false;
@@ -171,7 +171,7 @@ namespace HepMC {
 	// make sure the stream is good, and that it is in input mode
 	if ( !(*m_istr) ) return false;
 	if ( !m_istr ) {
-            m_error_type = 102;
+            m_error_type = IO_Exception::WrongFileType;
 	    m_error_message = "HepMC::IO_GenEvent::fill_next_event attempt to read from output file.";
 	    std::cerr << m_error_message << std::endl;
 	    return false;
@@ -184,7 +184,7 @@ namespace HepMC {
 	if ( !m_finished_first_event_io ) {
 	    iotype = m_common_io.find_file_type(*m_istr);
 	    if( iotype <= 0 ) {
-                m_error_type = 103;
+                m_error_type = IO_Exception::MissingStartKey;
 		m_error_message = "IO_GenEvent::fill_next_event start key not found setting badbit.";
 		std::cerr << m_error_message << std::endl;
 		m_istr->clear(std::ios::badbit); 
@@ -195,7 +195,7 @@ namespace HepMC {
 	//
 	// test to be sure the next entry is of type "E" then ignore it
 	if ( !(*m_istr) ) { 
-                m_error_type = 104;
+                m_error_type = IO_Exception::EndOfStream;
 		m_error_message = "IO_GenEvent::fill_next_event end of stream found setting badbit.";
 		std::cerr << m_error_message << std::endl;
 		m_istr->clear(std::ios::badbit); 
@@ -213,13 +213,13 @@ namespace HepMC {
 		    return false;
 		}
 	    } else if ( ioendtype > 0 ) {
-                m_error_type = 105;
+                m_error_type = IO_Exception::EndKeyMismatch;
 		m_error_message = "IO_GenEvent::fill_next_event end key does not match start key setting badbit.";
 		std::cerr << m_error_message << std::endl;
 		m_istr->clear(std::ios::badbit); 
 		return false;
 	    } else {
-                m_error_type = 106;
+                m_error_type = IO_Exception::MissingEndKey;
 		m_error_message = "IO_GenEvent::fill_next_event end key not found setting badbit.";
 		std::cerr << m_error_message << std::endl;
 		m_istr->clear(std::ios::badbit); 
@@ -243,7 +243,7 @@ namespace HepMC {
 	}
 	// check for exceptions
 	catch (IO_Exception& e) {
-            m_error_type = 107;
+            m_error_type = IO_Exception::InvalidData;
 	    m_error_message = e.what();
 	    evt->clear();
 	    ok = false;
@@ -255,8 +255,9 @@ namespace HepMC {
 	// make sure the stream is good, and that it is in output mode
 	if ( !(*m_ostr) ) return;
 	if ( m_ostr == NULL ) {
-	    std::cerr << "HepMC::IO_GenEvent::write_comment "
-		      << " attempt to write to input file." << std::endl;
+            m_error_type = IO_Exception::WrongFileType;
+	    m_error_message = "HepMC::IO_GenEvent::write_comment attempt to write to input file.";
+	    std::cerr << m_error_message << std::endl;
 	    return;
 	}
 	// write end of event listing key if events have already been written
@@ -269,6 +270,8 @@ namespace HepMC {
     void IO_GenEvent::write_vertex( GenVertex* v ) {
 	// assumes mode has already been checked
 	if ( !v || !(*m_ostr) ) {
+            m_error_type = IO_Exception::BadOutputStream;
+	    m_error_message = "IO_GenEvent::write_vertex !v||!(*m_ostr), setting badbit";
 	    std::cerr << "IO_GenEvent::write_vertex !v||!(*m_ostr), "
 		      << "v="<< v << " setting badbit" << std::endl;
 	    m_ostr->clear(std::ios::badbit); 
@@ -332,8 +335,9 @@ namespace HepMC {
     void IO_GenEvent::write_heavy_ion( HeavyIon const * ion ) {
 	// assumes mode has already been checked
 	if ( !(*m_ostr) ) {
-	    std::cerr << "IO_GenEvent::write_heavy_ion !(*m_ostr), "
-		      << " setting badbit" << std::endl;
+            m_error_type = IO_Exception::BadOutputStream;
+	    m_error_message = "IO_GenEvent::write_heavy_ion !(*m_ostr), setting badbit";
+	    std::cerr << m_error_message << std::endl;
 	    m_ostr->clear(std::ios::badbit); 
 	    return;
 	}
@@ -376,8 +380,9 @@ namespace HepMC {
     void IO_GenEvent::write_pdf_info( PdfInfo const * pdf ) {
 	// assumes mode has already been checked
 	if ( !(*m_ostr) ) {
-	    std::cerr << "IO_GenEvent::write_pdf_info !(*m_ostr), "
-		      << " setting badbit" << std::endl;
+            m_error_type = IO_Exception::BadOutputStream;
+	    m_error_message = "IO_GenEvent::write_pdf_info !(*m_ostr), setting badbit";
+	    std::cerr << m_error_message << std::endl;
 	    m_ostr->clear(std::ios::badbit); 
 	    return;
 	}
@@ -408,8 +413,10 @@ namespace HepMC {
     void IO_GenEvent::write_particle( GenParticle* p ) {
 	// assumes mode has already been checked
 	if ( !p || !(*m_ostr) ) {
+            m_error_type = IO_Exception::BadOutputStream;
+	    m_error_message = "IO_GenEvent::write_particle !p||!(*m_ostr), setting badbit";
 	    std::cerr << "IO_GenEvent::write_particle !p||!(*m_ostr), "
-		      << "v="<< p << " setting badbit" << std::endl;
+		      << "p="<< p << " setting badbit" << std::endl;
 	    m_ostr->clear(std::ios::badbit); 
 	    return;
 	}
@@ -433,6 +440,8 @@ namespace HepMC {
     void IO_GenEvent::write_particle_data( const ParticleData* pdata ) {
 	// assumes mode has already been checked
 	if ( !pdata || !(*m_ostr) ) {
+            m_error_type = IO_Exception::BadOutputStream;
+	    m_error_message = "IO_GenEvent::write_particle_data !pdata||!(*m_ostr), setting badbit";
 	    std::cerr << "IO_GenEvent::write_particle_data !pdata||!(*m_ostr), "
 		      << "pdata="<< pdata << " setting badbit" << std::endl;
 	    m_ostr->clear(std::ios::badbit); 
@@ -454,7 +463,9 @@ namespace HepMC {
 	//
 	// test to be sure the next entry is of type "H" then ignore it
 	if ( !(*m_istr) || m_istr->peek()!='H' ) {
-	    std::cerr << "IO_GenEvent::read_heavy_ion setting badbit." << std::endl;
+            m_error_type = IO_Exception::BadInputStream;
+	    m_error_message = "IO_GenEvent::read_heavy_ion setting badbit.";
+	    std::cerr << m_error_message << std::endl;
 	    m_istr->clear(std::ios::badbit); 
 	    return false;
 	} 
@@ -480,7 +491,9 @@ namespace HepMC {
 	//
 	// test to be sure the next entry is of type "F" then ignore it
 	if ( !(*m_istr) || m_istr->peek() !='F') {
-	    std::cerr << "IO_GenEvent::read_pdf_info setting badbit." << std::endl;
+            m_error_type = IO_Exception::BadInputStream;
+	    m_error_message = "IO_GenEvent::read_pdf_info setting badbit.";
+	    std::cerr << m_error_message << std::endl;
 	    m_istr->clear(std::ios::badbit); 
 	    return false;
 	} 
@@ -502,8 +515,9 @@ namespace HepMC {
 	//
 	// test to be sure the next entry is of type "P" then ignore it
 	if ( !(*m_istr) || m_istr->peek()!='P' ) { 
-	    std::cerr << "IO_GenEvent::read_particle setting badbit." 
-		      << std::endl;
+            m_error_type = IO_Exception::BadInputStream;
+	    m_error_message = "IO_GenEvent::read_particle setting badbit.";
+	    std::cerr << m_error_message << std::endl;
 	    m_istr->clear(std::ios::badbit); 
 	    return false;
 	} 

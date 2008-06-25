@@ -17,6 +17,7 @@
 #include "HepMC/IO_BaseClass.h"
 #include "HepMC/TempParticleMap.h"
 #include "HepMC/CommonIO.h"
+#include "HepMC/IO_Exception.h"
 
 namespace HepMC {
 
@@ -137,7 +138,7 @@ namespace HepMC {
 	bool                m_finished_first_event_io;
 	bool                m_have_file;
 	CommonIO            m_common_io;
-	int                 m_error_type;
+	IO_Exception::ErrorType m_error_type;
 	std::string         m_error_message;
     };
 
