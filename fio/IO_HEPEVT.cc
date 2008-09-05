@@ -12,7 +12,8 @@ namespace HepMC {
     IO_HEPEVT::IO_HEPEVT() : m_trust_mothers_before_daughters(1),
 			     m_trust_both_mothers_and_daughters(0),
 			     m_print_inconsistency_errors(1),
-			     m_trust_beam_particles(true)
+			     m_trust_beam_particles(true),
+			     m_have_incoming_vertex(false)
     {}
 
     IO_HEPEVT::~IO_HEPEVT(){}
@@ -25,7 +26,11 @@ namespace HepMC {
 	     << " trust_both_mothers_and_daughters = "
 	     << m_trust_both_mothers_and_daughters
 	     << ", print_inconsistency_errors = " 
-	     << m_print_inconsistency_errors << std::endl;
+	     << m_print_inconsistency_errors
+	     << ", trust_beam_particles = " 
+	     << m_trust_beam_particles 
+	     << ", have_incoming_vertex = " 
+	     << m_have_incoming_vertex << std::endl;
     }
 
     bool IO_HEPEVT::fill_next_event( GenEvent* evt ) {
@@ -67,7 +72,18 @@ namespace HepMC {
 	// Here we assume that the first two particles in the list 
 	// are the incoming beam particles.
 	if( trust_beam_particles() ) {
-	evt->set_beam_particles( hepevt_particle[1], hepevt_particle[2] );
+	    evt->set_beam_particles( hepevt_particle[1], hepevt_particle[2] );
+	}
+	//
+	// sometimes need vertex information for particle guns
+	if( have_incoming_vertex() ) {
+	    int i=1;
+	    GenVertex* prod_vtx = new GenVertex();
+	    prod_vtx->add_particle_out( hepevt_particle[i] );
+	    FourVector prod_pos( HEPEVT_Wrapper::x(i), HEPEVT_Wrapper::y(i), 
+				 HEPEVT_Wrapper::z(i), HEPEVT_Wrapper::t(i) ); 
+	    prod_vtx->set_position( prod_pos );
+	    evt->add_vertex( prod_vtx );
 	}
 	//
 	// 3.+4. loop over HEPEVT particles AGAIN, this time creating vertices
