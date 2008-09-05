@@ -1,4 +1,12 @@
 
+2008-09-05  Lynn Garren
+
+        * IO_HEPEVT: add flag to specify that the incoming vertex
+        of the initial particle should be saved.  This is needed in some
+        special cases when using a particle gun.
+        bool have_incoming_vertex() const
+        void set_have_incoming_vertex( bool )
+
 2008-06-25  Lynn Garren
 
 	* In the past, HepMC has stopped reading Ascii input when it 
