@@ -13,7 +13,7 @@ namespace HepMC {
 			     m_trust_both_mothers_and_daughters(0),
 			     m_print_inconsistency_errors(1),
 			     m_trust_beam_particles(true),
-			     m_have_incoming_vertex(false)
+			     m_using_particle_gun(false)
     {}
 
     IO_HEPEVT::~IO_HEPEVT(){}
@@ -29,8 +29,8 @@ namespace HepMC {
 	     << m_print_inconsistency_errors
 	     << ", trust_beam_particles = " 
 	     << m_trust_beam_particles 
-	     << ", have_incoming_vertex = " 
-	     << m_have_incoming_vertex << std::endl;
+	     << ", using_particle_gun = " 
+	     << m_using_particle_gun << std::endl;
     }
 
     bool IO_HEPEVT::fill_next_event( GenEvent* evt ) {
@@ -76,7 +76,7 @@ namespace HepMC {
 	}
 	//
 	// sometimes need vertex information for particle guns
-	if( have_incoming_vertex() ) {
+	if( using_particle_gun() ) {
 	    int i=1;
 	    GenVertex* prod_vtx = new GenVertex();
 	    prod_vtx->add_particle_out( hepevt_particle[i] );
