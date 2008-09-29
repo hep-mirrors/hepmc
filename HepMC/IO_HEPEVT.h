@@ -54,15 +54,10 @@ namespace HepMC {
 	bool              print_inconsistency_errors() const;
 	/// default is true
 	bool              trust_beam_particles() const;
-	/// default is false
-	bool              using_particle_gun() const;
         /// define mother daughter trust rules
 	void              set_trust_mothers_before_daughters( bool b = 1 );
         /// define mother daughter trust rules
 	void              set_trust_both_mothers_and_daughters( bool b = 0 );
-	/// should only be true for particle gun if need to save 
-	/// production vertex of initial particle
-	void              set_using_particle_gun( bool b = 0 );
 	/// Since HEPEVT has bi-directional pointers, it is possible that
 	/// the mother/daughter pointers are inconsistent (though physically
 	/// speaking this should never happen). In practise it happens often.
@@ -117,7 +112,6 @@ namespace HepMC {
 	bool m_trust_both_mothers_and_daughters;
 	bool m_print_inconsistency_errors; 
 	bool m_trust_beam_particles;
-	bool m_using_particle_gun;
     };
 
     ////////////////////////////
@@ -146,15 +140,6 @@ namespace HepMC {
 
     inline void IO_HEPEVT::set_trust_beam_particles( bool b )
     { m_trust_beam_particles = b; }
-
-    inline bool IO_HEPEVT::using_particle_gun() const
-    { return m_using_particle_gun; }
-
-    inline void IO_HEPEVT::set_using_particle_gun( bool b )
-    {
-      m_using_particle_gun = b; 
-      if( b == true ) { m_trust_beam_particles = false; }
-    }
 
 } // HepMC
 

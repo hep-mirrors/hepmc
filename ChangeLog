@@ -1,13 +1,4 @@
 
-2008-09-08  Lynn Garren
-
-        * IO_HEPEVT: add flag to specify that you are using a particle gun.
-	This has two implications.  First, trust_beam_particles is set
-	to false.  Second, the production vertex of the first particle in 
-	HEPEVT is saved and added to the event.  
-        bool using_particle_gun() const
-        void set_using_particle_gun( bool )
-
 2008-06-25  Lynn Garren
 
 	* In the past, HepMC has stopped reading Ascii input when it 
