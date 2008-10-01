@@ -1,16 +1,3 @@
-
-2008-06-25  Lynn Garren
-
-	* In the past, HepMC has stopped reading Ascii input when it 
-	encountered invalid data in an input stream.  However, if there
-	is a NaN instead of a number, it may be preferable to simply
-	skip the event and read the next event.  This is now possible.
-	Users wishing to take advantage of this must change their event 
-	reading loops to check for the new IO error flag.
-	* new class: HepMC/IO_Exception.h
-	* changes: CommonIO, IO_Ascii, IO_ExtendedAscii, IO_GenEvent,
-	           testHepMC, testDeprecated
-
   --------------------------  HepMC-2.03.09  --------------------------
 
 2008-06-24  Lynn Garren

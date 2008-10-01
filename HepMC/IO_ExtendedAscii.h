@@ -45,7 +45,6 @@
 #include "HepMC/IO_BaseClass.h"
 #include "HepMC/TempParticleMap.h"
 #include "HepMC/CommonIO.h"
-#include "HepMC/IO_Exception.h"
 
 namespace HepMC {
 
@@ -80,11 +79,6 @@ namespace HepMC {
 	///  only want to do this at the beginning or end of the file. All
 	///  comments are preceded with "HepMC::IO_ExtendedAscii-COMMENT\n"
   	void          write_comment( const std::string comment );
-	
-	/// integer associated with read error
-	const int           error_type()    const;
-	/// the read error message string
-	const std::string & error_message() const;
 
 	int           rdstate() const;  //!< check the state of the IO stream
 	void          clear();  //!< clear the IO stream
@@ -120,8 +114,6 @@ namespace HepMC {
 	std::fstream        m_file;
 	bool                m_finished_first_event_io;
 	CommonIO            m_common_io;
-	IO_Exception::ErrorType m_error_type;
-	std::string         m_error_message;
     };
 
     //////////////
@@ -147,14 +139,6 @@ namespace HepMC {
     inline void IO_ExtendedAscii::output( const char& c ) { m_file << c; }
     inline int  IO_ExtendedAscii::rdstate() const { return (int)m_file.rdstate(); }
     inline void IO_ExtendedAscii::clear() { m_file.clear(); }
-
-    inline const int IO_ExtendedAscii::error_type() const {
-        return m_error_type;
-    }
-   
-    inline const std::string & IO_ExtendedAscii::error_message() const {
-        return m_error_message;
-    }
 
 } // HepMC
 

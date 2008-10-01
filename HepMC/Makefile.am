@@ -25,7 +25,6 @@ pkginclude_HEADERS = \
 	IO_GenEvent.h	\
 	IO_HEPEVT.h	\
 	IO_HERWIG.h	\
-	IO_Exception.h	\
 	IO_PDG_ParticleDataTable.h	\
 	ParticleData.h	\
 	ParticleDataTable.h	\

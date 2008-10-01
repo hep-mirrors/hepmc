@@ -15,16 +15,16 @@ namespace HepMC {
 
     IO_Ascii::IO_Ascii( const char* filename, std::ios::openmode mode ) 
 	: m_mode(mode), m_file(filename, mode), m_finished_first_event_io(0),
-          m_common_io(), m_error_type(IO_Exception::OK), m_error_message() 
+          m_common_io()  
     {
         std::cout << "-------------------------------------------------------" << std::endl;
         std::cout << "Use of HepMC/IO_Ascii is deprecated" << std::endl;
         std::cout << "-------------------------------------------------------" << std::endl;
 	if ( (m_mode&std::ios::out && m_mode&std::ios::in) ||
 	     (m_mode&std::ios::app && m_mode&std::ios::in) ) {
-            m_error_type = IO_Exception::InputAndOutput;
-	    m_error_message ="IO_Ascii::IO_Ascii Error, open of file requested of input AND output type. Not allowed. Closing file.";
-	    std::cerr << m_error_message << std::endl;
+	    std::cerr << "IO_Ascii::IO_Ascii Error, open of file requested "
+		      << "of input AND output type. Not allowed. Closing file."
+		      << std::endl;
 	    m_file.close();
 	    return;
 	}
@@ -57,9 +57,8 @@ namespace HepMC {
 	// check the state of m_file is good, and that it is in output mode
 	if ( !evt || !m_file ) return;
 	if ( !(m_mode&std::ios::out) ) {
-            m_error_type = IO_Exception::WrongFileType;
-	    m_error_message = "HepMC::IO_Ascii::write_event attempt to write to input file.";
-	    std::cerr << m_error_message << std::endl;
+	    std::cerr << "HepMC::IO_Ascii::write_event "
+		      << " attempt to write to input file." << std::endl;
 	    return;
 	}
 	//
@@ -104,23 +103,18 @@ namespace HepMC {
     bool IO_Ascii::fill_next_event( GenEvent* evt ){
 	//
 	//
-	// reset error type
-        m_error_type = IO_Exception::OK;
-	//
-	//
 	// test that evt pointer is not null
 	if ( !evt ) {
-            m_error_type = IO_Exception::NullEvent;
-	    m_error_message = "IO_Ascii::fill_next_event error - passed null event.";
-	    std::cerr << m_error_message << std::endl;
+	    std::cerr 
+		<< "IO_Ascii::fill_next_event error - passed null event." 
+		<< std::endl;
 	    return false;
 	}
 	// check the state of m_file is good, and that it is in input mode
 	if ( !m_file ) return false;
 	if ( !(m_mode&std::ios::in) ) {
-            m_error_type = IO_Exception::WrongFileType;
-	    m_error_message = "HepMC::IO_Ascii::fill_next_event attempt to read from output file.";
-	    std::cerr << m_error_message << std::endl;
+	    std::cerr << "HepMC::IO_Ascii::fill_next_event "
+		      << " attempt to read from output file." << std::endl;
 	    return false;
 	}
 	//
@@ -132,9 +126,8 @@ namespace HepMC {
 	    m_file.seekg( 0 ); // go to position zero in the file.
 	    iotype = m_common_io.find_file_type(m_file);
 	    if( iotype != ascii ) {
-                m_error_type = IO_Exception::MissingStartKey;
-		m_error_message = "IO_Ascii::fill_next_event start key not found setting badbit.";
-		std::cerr << m_error_message << std::endl;
+		std::cerr << "IO_Ascii::fill_next_event start key not found "
+			  << "setting badbit." << std::endl;
 		m_file.clear(std::ios::badbit); 
 		return false;
 	    }
@@ -143,9 +136,8 @@ namespace HepMC {
 	//
 	// test to be sure the next entry is of type "E" then ignore it
 	if ( !m_file ) { 
-                m_error_type = IO_Exception::EndOfStream;
-		m_error_message = "IO_Ascii::fill_next_event end of stream found setting badbit.";
-		std::cerr << m_error_message << std::endl;
+		std::cerr << "IO_Ascii::fill_next_event end of stream found "
+			  << "setting badbit." << std::endl;
 		m_file.clear(std::ios::badbit); 
 		return false;
 	}
@@ -160,37 +152,23 @@ namespace HepMC {
 		    return false;
 		}
 	    } else {
-                m_error_type = IO_Exception::MissingEndKey;
-		m_error_message = "IO_Ascii::fill_next_event end key not found setting badbit.";
-		std::cerr << m_error_message << std::endl;
+		std::cerr << "IO_Ascii::fill_next_event end key not found "
+			  << "setting badbit." << std::endl;
 		m_file.clear(std::ios::badbit); 
 		return false;
 	    }
 	} 
-	// try/catch block deals with invalid data
-	bool ok = false;
-	try {
-	    m_file.ignore();
-	    // call the read method
-	    ok = m_common_io.read_io_ascii(&m_file, evt); 
-	}
-	// check for exceptions
-	catch (IO_Exception& e) {
-            m_error_type = IO_Exception::InvalidData;
-	    m_error_message = e.what();
-	    evt->clear();
-	    ok = false;
-	}
-	return ok;
-   }
+	m_file.ignore();
+	// call the read method
+	return m_common_io.read_io_ascii(&m_file, evt);
+    }
 
     void IO_Ascii::write_comment( const std::string comment ) {
 	// check the state of m_file is good, and that it is in output mode
 	if ( !m_file ) return;
 	if ( !(m_mode&std::ios::out) ) {
-            m_error_type = IO_Exception::WrongFileType;
-	    m_error_message = "HepMC::IO_Ascii::write_comment attempt to write to input file.";
-	    std::cerr << m_error_message << std::endl;
+	    std::cerr << "HepMC::IO_Ascii::write_particle_data_table "
+		      << " attempt to write to input file." << std::endl;
 	    return;
 	}
 	// write end of event listing key if events have already been written
@@ -205,9 +183,8 @@ namespace HepMC {
 	// check the state of m_file is good, and that it is in output mode
 	if ( !m_file ) return;
 	if ( !(m_mode&std::ios::out) ) {
-            m_error_type = IO_Exception::WrongFileType;
-	    m_error_message = "HepMC::IO_Ascii::write_particle_data_table attempt to write to input file.";
-	    std::cerr << m_error_message << std::endl;
+	    std::cerr << "HepMC::IO_Ascii::write_particle_data_table "
+		      << " attempt to write to input file." << std::endl;
 	    return;
 	}
 	// write end of event listing key if events have already been written
@@ -234,9 +211,8 @@ namespace HepMC {
 	// check the state of m_file is good, and that it is in input mode
 	if ( !m_file ) return false;
 	if ( !m_mode&std::ios::in ) {
-            m_error_type = IO_Exception::WrongFileType;
-	    m_error_message = "HepMC::IO_Ascii::fill_particle_data_table attempt to read from output file.";
-	    std::cerr << m_error_message << std::endl;
+	    std::cerr << "HepMC::IO_Ascii::fill_particle_data_table "
+		      << " attempt to read from output file." << std::endl;
 	    return false;
 	}
 	// position to beginning of file
@@ -248,9 +224,8 @@ namespace HepMC {
 	iotype = m_common_io.find_file_type(m_file);
 	if( iotype != ascii_pdt ) {
 	    m_file.seekg( initial_file_position );
-            m_error_type = IO_Exception::MissingStartKey;
-	    m_error_message = "IO_Ascii::fill_particle_data_table start key not found setting badbit.";
-	    std::cerr << m_error_message << std::endl;
+	    std::cerr << "IO_Ascii::fill_particle_data_table start key not  "
+		      << "found setting badbit." << std::endl;
 	    m_file.clear(std::ios::badbit); 
 	    return false;
 	}
@@ -261,9 +236,8 @@ namespace HepMC {
 	// check for the end event listing key
 	iotype =  m_common_io.find_end_key(m_file);
 	if( iotype != ascii_pdt ) {
-            m_error_type = IO_Exception::MissingEndKey;
-	    m_error_message = "IO_Ascii::fill_particle_data_table end key not found setting badbit.";
-	    std::cerr << m_error_message << std::endl;
+	    std::cerr << "IO_Ascii::fill_particle_data_table end key not  "
+		      << "found setting badbit." << std::endl;
 	    m_file.clear(std::ios::badbit);
 	}
 	// put the file back into its original state and position
@@ -275,8 +249,6 @@ namespace HepMC {
     void IO_Ascii::write_vertex( GenVertex* v ) {
 	// assumes mode has already been checked
 	if ( !v || !m_file ) {
-            m_error_type = IO_Exception::BadOutputStream;
-	    m_error_message = "IO_Ascii::write_vertex !v||!(*m_ostr), setting badbit";
 	    std::cerr << "IO_Ascii::write_vertex !v||!m_file, "
 		      << "v="<< v << " setting badbit" << std::endl;
 	    m_file.clear(std::ios::badbit); 
@@ -323,8 +295,6 @@ namespace HepMC {
     void IO_Ascii::write_particle( GenParticle* p ) {
 	// assumes mode has already been checked
 	if ( !p || !m_file ) {
-            m_error_type = IO_Exception::BadOutputStream;
-	    m_error_message = "IO_Ascii::write_particle !p||!(*m_ostr), setting badbit";
 	    std::cerr << "IO_Ascii::write_particle !p||!m_file, "
 		      << "p="<< p << " setting badbit" << std::endl;
 	    m_file.clear(std::ios::badbit); 
@@ -349,9 +319,7 @@ namespace HepMC {
     void IO_Ascii::write_particle_data( const ParticleData* pdata ) {
 	// assumes mode has already been checked
 	if ( !pdata || !m_file ) {
-            m_error_type = IO_Exception::BadOutputStream;
-	    m_error_message = "IO_Ascii::write_particle_data !pdata||!(*m_ostr, setting badbit";
-	    std::cerr << "IO_Ascii::write_vertex !pdata||!m_file, "
+	    std::cerr << "IO_Ascii::write_particle_data !pdata||!m_file, "
 		      << "pdata="<< pdata << " setting badbit" << std::endl;
 	    m_file.clear(std::ios::badbit); 
 	    return;

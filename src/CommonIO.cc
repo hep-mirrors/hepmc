@@ -11,7 +11,6 @@
 #include "HepMC/PdfInfo.h"
 #include "HepMC/TempParticleMap.h"
 #include "HepMC/ParticleDataTable.h"
-#include "HepMC/IO_Exception.h"
 
 namespace HepMC {
 
@@ -348,10 +347,7 @@ GenVertex* CommonIO::read_vertex( std::istream* is, TempParticleMap& particle_to
         num_particles_out = 0, weights_size = 0;
     double x = 0., y = 0., z = 0., t = 0.; 
     *is >> identifier >> id ;
-    x = read_double(is);
-    y = read_double(is);
-    z = read_double(is);
-    t = read_double(is);
+    *is >> x >> y >> z >> t;
     *is >> num_orphans_in >> num_particles_out >> weights_size;
     WeightContainer weights(weights_size);
     for ( int i1 = 0; i1 < weights_size; ++i1 ) *is >> weights[i1];
@@ -389,14 +385,10 @@ GenParticle* CommonIO::read_particle(std::istream* is,
     double px = 0., py = 0., pz = 0., e = 0., m = 0., theta = 0., phi = 0.;
     int bar_code = 0, id = 0, status = 0, end_vtx_code = 0, flow_size = 0;
     *is >> bar_code >> id; 
-    px = read_double(is);
-    py = read_double(is);
-    pz = read_double(is);
-    e = read_double(is);
-    if( m_io_type != ascii ) { m = read_double(is); }
+    *is >> px >> py >> pz >> e ;
+    if( m_io_type != ascii ) { *is >> m; }
     *is >> status ;
-    theta = read_double(is);
-    phi   = read_double(is);
+    *is >> theta >> phi ;
     *is >> end_vtx_code >> flow_size;
     //
     // read flow patterns if any exist
@@ -444,40 +436,6 @@ ParticleData* CommonIO::read_particle_data( std::istream* is, ParticleDataTable*
 					    double(its_spin)/2.);
     pdt->insert(pdata);
     return pdata;
-}
-
-double CommonIO::read_double( std::istream* is ) {
-    // need to keep reading if we find a NaN
-    double xx = 0;
-    *is >> xx;
-    // clear the state and read to the end of the event
-    if( !(*is) ) {
-	is->clear();
-	// read the remainder of this line
-	char badline[250]; 
-	is->getline( badline, 250, '\n' );
-	// formulate error message
-	std::string msg = 
-	     std::string("CommonIO::read_double encountered invalid data: ") 
-	     + badline;
-	// now read to the end of this event
-	find_event_end( is );
-	// throw after we finish reading the event
-	throw IO_Exception(msg);
-    }
-    return xx;
-}
-
-void CommonIO::find_event_end( std::istream* is ) {
-    // since there is no end of event flag, 
-    // peek at one character at time until we find the next event or end of the event block
-    while ( (*is) && is->peek()!='E' ) { 
-        // some other line - read the whole line
-        char line[300]; 
-	is->getline( line, 300, '\n' );
-    }
-    // either the stream is bad or we found the next event
-    return;
 }
 
 }	// end namespace HepMC
