@@ -106,50 +106,67 @@ bool simpleIter( HepMC::GenEvent* evt, std::ofstream& os )
 bool findW( HepMC::GenEvent* evt, std::ofstream& os )
 {
     int num_W=0;
-	// use GenEvent::particle_iterator to find all W's in the event,
-	// then 
-	// (1) for each W user the GenVertex::particle_iterator with a range of
-	//     parents to return and print the immediate mothers of these W's.
-	// (2) for each W user the GenVertex::particle_iterator with a range of
-	//     descendants to return and print all descendants of these W's.
-	for ( HepMC::GenEvent::particle_iterator p = evt->particles_begin();
-	      p != evt->particles_end(); ++p ) {
-	    if ( IsWBoson(*p) ) {
-	        ++num_W;
-		os << "A W boson has been found in event: " << evt->event_number() << std::endl;
-		(*p)->print( os );
-		// return all parents
-		// we do this by pointing to the production vertex of the W 
-		// particle and asking for all particle parents of that vertex
-		os << "\t Its parents are: " << std::endl;
-		if ( (*p)->production_vertex() ) {
-		    for ( HepMC::GenVertex::particle_iterator mother 
-			      = (*p)->production_vertex()->
-			      particles_begin(HepMC::parents);
-			  mother != (*p)->production_vertex()->
-			      particles_end(HepMC::parents); 
-			  ++mother ) {
-			os << "\t";
-			(*mother)->print( os );
-		    }
-		}
-		// return all descendants
-		// we do this by pointing to the end vertex of the W 
-		// particle and asking for all particle descendants of that vertex
-		os << "\t\t Its descendants are: " << std::endl;
-		if ( (*p)->end_vertex() ) {
-		    for ( HepMC::GenVertex::particle_iterator des 
-			      =(*p)->end_vertex()->
-			      particles_begin(HepMC::descendants);
-			  des != (*p)->end_vertex()->
-			      particles_end(HepMC::descendants);
-			  ++des ) {
-			os << "\t\t";
-			(*des)->print( os );
-		    }
+    // use GenEvent::particle_iterator to find all W's in the event,
+    // then 
+    // (1) for each W user the GenVertex::particle_iterator with a range of
+    //     parents to return and print the immediate mothers of these W's.
+    // (2) for each W user the GenVertex::particle_iterator with a range of
+    //     descendants to return and print all descendants of these W's.
+    for ( HepMC::GenEvent::particle_iterator p = evt->particles_begin();
+	  p != evt->particles_end(); ++p ) {
+	if ( IsWBoson(*p) ) {
+	    ++num_W;
+	    os << "A W boson has been found in event: " << evt->event_number() << std::endl;
+	    (*p)->print( os );
+	    // return all parents
+	    // we do this by pointing to the production vertex of the W 
+	    // particle and asking for all particle parents of that vertex
+	    os << "\t" << "Its parents are: " << std::endl;
+	    if ( (*p)->production_vertex() ) {
+		for ( HepMC::GenVertex::particle_iterator mother 
+			  = (*p)->production_vertex()->
+			  particles_begin(HepMC::parents);
+		      mother != (*p)->production_vertex()->
+			  particles_end(HepMC::parents); 
+		      ++mother ) {
+		    os << "\t";
+		    (*mother)->print( os );
 		}
 	    }
-	}
-	return true;
-}
 
+	    // return immediate children
+	    os << "\t\t" << "Its children are: " << std::endl;
+	    if ( (*p)->end_vertex() ) {
+		for ( HepMC::GenVertex::particle_iterator child = 
+        	      (*p)->end_vertex()->particles_begin(HepMC::children); 
+		      child != (*p)->end_vertex()->particles_end(HepMC::children); 
+		      ++child ) {
+		    // make a copy
+		    HepMC::GenVertex::particle_iterator cp = child;
+		    // use the copy and the original
+		    os << "\t\t\t (id,barcode,status) " 
+		       << (*cp)->pdg_id() << " " 
+        	       << (*child)->barcode() << " "
+        	       << (*cp)->status() << std::endl;
+		}
+	    }
+
+	    // return all descendants
+	    // we do this by pointing to the end vertex of the W 
+	    // particle and asking for all particle descendants of that vertex
+	    os << "\t\t" << "Its descendants are: " << std::endl;
+	    if ( (*p)->end_vertex() ) {
+		for ( HepMC::GenVertex::particle_iterator des 
+			  =(*p)->end_vertex()->
+			  particles_begin(HepMC::descendants);
+		      des != (*p)->end_vertex()->
+			  particles_end(HepMC::descendants);
+		      ++des ) {
+		    os << "\t\t";
+		    (*des)->print( os );
+		}
+	    }
+	}	// if IsWBoson
+    }	// end particle loop
+    return true;
+}
