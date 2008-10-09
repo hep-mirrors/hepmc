@@ -25,9 +25,7 @@ namespace HepMC {
 	     << " trust_both_mothers_and_daughters = "
 	     << m_trust_both_mothers_and_daughters
 	     << ", print_inconsistency_errors = " 
-	     << m_print_inconsistency_errors
-	     << ", trust_beam_particles = " 
-	     << m_trust_beam_particles << std::endl;
+	     << m_print_inconsistency_errors << std::endl;
     }
 
     bool IO_HEPEVT::fill_next_event( GenEvent* evt ) {
@@ -50,7 +48,7 @@ namespace HepMC {
 	    std::cerr 
 		<< "IO_HEPEVT::fill_next_event error - passed null event." 
 		<< std::endl;
-	    return false;
+	    return 0;
 	}
 	evt->set_event_number( HEPEVT_Wrapper::event_number() );
 	//
@@ -69,7 +67,7 @@ namespace HepMC {
 	// Here we assume that the first two particles in the list 
 	// are the incoming beam particles.
 	if( trust_beam_particles() ) {
-	    evt->set_beam_particles( hepevt_particle[1], hepevt_particle[2] );
+	evt->set_beam_particles( hepevt_particle[1], hepevt_particle[2] );
 	}
 	//
 	// 3.+4. loop over HEPEVT particles AGAIN, this time creating vertices
@@ -106,7 +104,7 @@ namespace HepMC {
 		evt->add_vertex( prod_vtx );
 	    }
 	}
-	return true;
+	return 1;
     }
 
     void IO_HEPEVT::write_event( const GenEvent* evt ) {
