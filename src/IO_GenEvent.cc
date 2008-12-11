@@ -406,7 +406,7 @@ namespace HepMC {
 	// assumes mode has already been checked
 	if ( !p || !(*m_ostr) ) {
 	    std::cerr << "IO_GenEvent::write_particle !p||!(*m_ostr), "
-		      << "v="<< p << " setting badbit" << std::endl;
+		      << "p="<< p << " setting badbit" << std::endl;
 	    m_ostr->clear(std::ios::badbit); 
 	    return;
 	}

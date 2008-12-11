@@ -295,8 +295,8 @@ namespace HepMC {
     void IO_Ascii::write_particle( GenParticle* p ) {
 	// assumes mode has already been checked
 	if ( !p || !m_file ) {
-	    std::cerr << "IO_Ascii::write_vertex !p||!m_file, "
-		      << "v="<< p << " setting badbit" << std::endl;
+	    std::cerr << "IO_Ascii::write_particle !p||!m_file, "
+		      << "p="<< p << " setting badbit" << std::endl;
 	    m_file.clear(std::ios::badbit); 
 	    return;
 	}
