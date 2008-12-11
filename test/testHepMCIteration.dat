@@ -7,6 +7,8 @@ GenParticle: 8 ID:-24 (P,E)=36.3222,9.30234,-331.044,343.109 Stat:3 PV:-5 EV:-7 
 	 Its parents are: 
 	GenParticle: 5 ID:-2 (P,E)=0.216419,2.15858,6.72107,7.06251 Stat:3 PV:-3 EV:-5 Pol:(0,0) F:0
 	GenParticle: 6 ID:1 (P,E)=0.258424,1.02092,-721.608,721.609 Stat:3 PV:-4 EV:-5 Pol:(0,0) F:0
+		Its children are: 
+			 (id,barcode,status) -24 10 2
 		 Its descendants are: 
 		GenParticle: 348 ID:-211 (P,E)=6.93515,-9.95716,-54.4707,55.8061 Stat:1 PV:-23 EV:0 Pol:(0,0) F:0
 		GenParticle: 349 ID:211 (P,E)=1.18151,-1.97831,-11.941,12.1621 Stat:1 PV:-23 EV:0 Pol:(0,0) F:0
@@ -79,6 +81,13 @@ A W boson has been found in event: 9
 GenParticle: 10 ID:-24 (P,E)=36.3222,9.30234,-331.044,343.109 Stat:2 PV:-7 EV:-8 Pol:(0,0) F:0
 	 Its parents are: 
 	GenParticle: 8 ID:-24 (P,E)=36.3222,9.30234,-331.044,343.109 Stat:3 PV:-5 EV:-7 Pol:(0,0) F:0
+		Its children are: 
+			 (id,barcode,status) 3 13 2
+			 (id,barcode,status) 21 14 2
+			 (id,barcode,status) 21 15 2
+			 (id,barcode,status) 21 16 2
+			 (id,barcode,status) 21 17 2
+			 (id,barcode,status) -4 18 2
 		 Its descendants are: 
 		GenParticle: 348 ID:-211 (P,E)=6.93515,-9.95716,-54.4707,55.8061 Stat:1 PV:-23 EV:0 Pol:(0,0) F:0
 		GenParticle: 349 ID:211 (P,E)=1.18151,-1.97831,-11.941,12.1621 Stat:1 PV:-23 EV:0 Pol:(0,0) F:0
@@ -155,6 +164,8 @@ GenParticle: 8 ID:24 (P,E)=-22.4676,-32.3496,651.024,657.947 Stat:3 PV:-5 EV:-7 
 	 Its parents are: 
 	GenParticle: 5 ID:2 (P,E)=-0.3102,4.06731,705.033,705.044 Stat:3 PV:-3 EV:-5 Pol:(0,0) F:0
 	GenParticle: 6 ID:-1 (P,E)=1.62851,-1.90715,-11.9913,12.2508 Stat:3 PV:-4 EV:-5 Pol:(0,0) F:0
+		Its children are: 
+			 (id,barcode,status) 24 10 2
 		 Its descendants are: 
 		GenParticle: 524 ID:22 (P,E)=0.289314,0.55118,8.87858,8.90038 Stat:1 PV:-142 EV:0 Pol:(0,0) F:0
 		GenParticle: 525 ID:22 (P,E)=1.08563,2.28815,32.6894,32.7874 Stat:1 PV:-142 EV:0 Pol:(0,0) F:0
@@ -169,6 +180,9 @@ A W boson has been found in event: 18
 GenParticle: 10 ID:24 (P,E)=-22.4676,-32.3496,651.024,657.947 Stat:2 PV:-7 EV:-8 Pol:(0,0) F:0
 	 Its parents are: 
 	GenParticle: 8 ID:24 (P,E)=-22.4676,-32.3496,651.024,657.947 Stat:3 PV:-5 EV:-7 Pol:(0,0) F:0
+		Its children are: 
+			 (id,barcode,status) -15 11 2
+			 (id,barcode,status) 16 12 1
 		 Its descendants are: 
 		GenParticle: 524 ID:22 (P,E)=0.289314,0.55118,8.87858,8.90038 Stat:1 PV:-142 EV:0 Pol:(0,0) F:0
 		GenParticle: 525 ID:22 (P,E)=1.08563,2.28815,32.6894,32.7874 Stat:1 PV:-142 EV:0 Pol:(0,0) F:0
@@ -187,6 +201,8 @@ GenParticle: 8 ID:-24 (P,E)=3.24583,59.0393,-1247.75,1252.04 Stat:3 PV:-5 EV:-7 
 	 Its parents are: 
 	GenParticle: 5 ID:-2 (P,E)=10.0036,-1.02577,-3.08057,10.5173 Stat:3 PV:-3 EV:-5 Pol:(0,0) F:0
 	GenParticle: 6 ID:1 (P,E)=1.16537,2.67523,-1775.65,1775.65 Stat:3 PV:-4 EV:-5 Pol:(0,0) F:0
+		Its children are: 
+			 (id,barcode,status) -24 10 2
 		 Its descendants are: 
 		GenParticle: 11 ID:11 (P,E)=38.8894,9.95748,-643.488,644.739 Stat:1 PV:-8 EV:0 Pol:(0,0) F:0
 		GenParticle: 12 ID:-12 (P,E)=-35.6436,49.0818,-604.26,607.297 Stat:1 PV:-8 EV:0 Pol:(0,0) F:0
@@ -195,6 +211,9 @@ A W boson has been found in event: 56
 GenParticle: 10 ID:-24 (P,E)=3.24583,59.0393,-1247.75,1252.04 Stat:2 PV:-7 EV:-8 Pol:(0,0) F:0
 	 Its parents are: 
 	GenParticle: 8 ID:-24 (P,E)=3.24583,59.0393,-1247.75,1252.04 Stat:3 PV:-5 EV:-7 Pol:(0,0) F:0
+		Its children are: 
+			 (id,barcode,status) 11 11 1
+			 (id,barcode,status) -12 12 1
 		 Its descendants are: 
 		GenParticle: 11 ID:11 (P,E)=38.8894,9.95748,-643.488,644.739 Stat:1 PV:-8 EV:0 Pol:(0,0) F:0
 		GenParticle: 12 ID:-12 (P,E)=-35.6436,49.0818,-604.26,607.297 Stat:1 PV:-8 EV:0 Pol:(0,0) F:0

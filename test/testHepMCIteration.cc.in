@@ -133,6 +133,24 @@ bool findW( HepMC::GenEvent* evt, std::ofstream& os )
 			(*mother)->print( os );
 		    }
 		}
+
+		// return immediate children
+		os << "\t\t" << "Its children are: " << std::endl;
+		if ( (*p)->end_vertex() ) {
+		    for ( HepMC::GenVertex::particle_iterator child = 
+        		  (*p)->end_vertex()->particles_begin(HepMC::children); 
+			  child != (*p)->end_vertex()->particles_end(HepMC::children); 
+			  ++child ) {
+			// make a copy
+			HepMC::GenVertex::particle_iterator cp = child;
+			// use the copy and the original
+			os << "\t\t\t (id,barcode,status) " 
+			   << (*cp)->pdg_id() << " " 
+        		   << (*child)->barcode() << " "
+        		   << (*cp)->status() << std::endl;
+		    }
+		}
+
 		// return all descendants
 		// we do this by pointing to the end vertex of the W 
 		// particle and asking for all particle descendants of that vertex
@@ -148,8 +166,8 @@ bool findW( HepMC::GenEvent* evt, std::ofstream& os )
 			(*des)->print( os );
 		    }
 		}
-	    }
-	}
+	    }	// if IsWBoson
+	}	// end particle loop
 	return true;
 }
 
