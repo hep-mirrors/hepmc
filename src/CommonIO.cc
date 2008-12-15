@@ -296,7 +296,7 @@ bool CommonIO::read_io_particle_data_table( std::istream* is, ParticleDataTable*
 {
     // 
     // read Individual GenParticle data entries
-    while ( read_particle_data( is, pdt ) );
+    while ( read_particle_data( is, pdt ) ) ;
     return true;
 }
 
