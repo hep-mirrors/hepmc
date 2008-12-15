@@ -1,3 +1,16 @@
+  --------------------------  HepMC-2.04.01  --------------------------
+
+2008-12-15  Lynn Garren
+	
+	* src/CommonIO.cc: add space requested by -Wextra 
+	The -Wextra flag is not a default compiler flag, request it with
+	configure ... CXXFLAGS="-Wextra"
+
+2008-12-11  Lynn Garren
+
+	* test/testHepMCIteration.cc.in: add loop over children to the test
+	
+	* src/IO_Ascii.cc, IO_GenEvent.cc: fix error messages
 
 2008-06-24  Lynn Garren
 
