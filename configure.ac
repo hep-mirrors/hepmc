@@ -159,14 +159,12 @@ AC_CONFIG_FILES([Makefile
                  test/testMass.cc
                  test/testHepMCIteration.cc
                  test/testMultipleCopies.cc
-                 test/testDeprecated.cc
                  examples/GNUmakefile.example])
 
 AC_CONFIG_FILES([test/testHepMC.sh], [chmod +x test/testHepMC.sh])
 AC_CONFIG_FILES([test/testMass.sh], [chmod +x test/testMass.sh])
 AC_CONFIG_FILES([test/testHepMCIteration.sh], [chmod +x test/testHepMCIteration.sh])
 AC_CONFIG_FILES([test/testPrintBug.sh], [chmod +x test/testPrintBug.sh])
-AC_CONFIG_FILES([test/testDeprecated.sh], [chmod +x test/testDeprecated.sh])
 
 # ----------------------------------------------------------------------
 # Finish up:

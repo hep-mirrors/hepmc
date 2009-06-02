@@ -9,7 +9,6 @@ libHepMC_la_SOURCES = \
 	GenEvent.cc	\
 	GenParticle.cc	\
 	GenVertex.cc	\
-	IO_Ascii.cc	\
 	IO_AsciiParticles.cc	\
 	IO_PDG_ParticleDataTable.cc	\
 	IO_GenEvent.cc	\

@@ -3,13 +3,6 @@ basic IO_GenEvent input and output
 Processing Event Number 1 its # 1
 3 out of 34 processed events passed the cuts. Finished.
 
-read file written with IO_Ascii
--------------------------------------------------------
-Use of HepMC/IO_Ascii is deprecated
--------------------------------------------------------
-Processing Event Number 1 its # 1
-36 events processed. Finished.
-
 process varied input
 Processing Event Number 1 its # 1
  Momenutm units:     GEV     Position units:      MM

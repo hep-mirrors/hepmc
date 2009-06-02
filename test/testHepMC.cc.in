@@ -13,21 +13,18 @@
 
 #include "HepMC/GenEvent.h"
 #include "HepMC/IO_GenEvent.h"
-#include "HepMC/IO_Ascii.h"
 #include "HepMC/IO_AsciiParticles.h"
 
 // define methods and classes used by this test
 #include "IsGoodEvent.h"
 
 void read_testIOGenEvent();
-void read_testAscii();
 void read_variousFormats();
 
 double findPiZero( HepMC::GenEvent* );
 
 int main() { 
     read_testIOGenEvent();
-    read_testAscii();
     read_variousFormats();
     return 0;
 }
@@ -68,44 +65,6 @@ void read_testIOGenEvent()
     //........................................PRINT RESULT
     std::cout << num_good_events << " out of " << icount 
 	      << " processed events passed the cuts. Finished." << std::endl;
-}
-
-void read_testAscii()
-{
-    std::cout << std::endl;
-    std::cout << "read file written with IO_Ascii" << std::endl;
-    // declare an input strategy to read the data produced with the 
-    // example_MyPythia - units are GeV and mm
-    HepMC::IO_GenEvent ascii_in("@srcdir@/testAscii.input",std::ios::in);
-    ascii_in.use_input_units( HepMC::Units::GEV, HepMC::Units::MM );
-    if ( ascii_in.rdstate() == std::ios::failbit ) {
-	std::cerr << "ERROR input file @srcdir@/testAscii.input is needed "
-		  << "and does not exist.  Exit." << std::endl;
-	return;
-    }
-    // use IO_Ascii because we are checking against the original input file 
-    HepMC::IO_Ascii ascii_out("testIOAscii.dat",std::ios::out);
-    if ( ascii_out.rdstate() == std::ios::failbit ) {
-	std::cerr << "ERROR opening output file testAscii.dat.  Exit."
-	          << std::endl;
-	return;
-    }
-    //........................................EVENT LOOP
-    int icount=0;
-    HepMC::GenEvent* evt = ascii_in.read_next_event();
-    while ( evt ) {
-	icount++;
-	if ( icount%50==1 ) std::cout << "Processing Event Number " << icount
-				      << " its # " << evt->event_number() 
-				      << std::endl;
-	ascii_out << evt;
-
-	// clean up and get next event
-	delete evt;
-	ascii_in >> evt;
-    }
-    //........................................PRINT RESULT
-    std::cout << icount << " events processed. Finished." << std::endl;
 }
 
 void read_variousFormats()

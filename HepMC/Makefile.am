@@ -14,7 +14,6 @@ pkginclude_HEADERS = \
 	HEPEVT_Wrapper.h	\
 	HerwigWrapper6_4.h	\
 	HerwigWrapper.h	\
-	IO_Ascii.h	\
 	IO_AsciiParticles.h	\
 	IO_BaseClass.h	\
 	IO_GenEvent.h	\
@@ -37,7 +36,6 @@ pkginclude_HEADERS = \
 	SimpleVector.icc	\
 	enable_if.h	\
 	is_arithmetic.h	\
-	HepMC_CLHEP20.h	\
 	TempParticleMap.h	\
 	Units.h	\
 	Version.h	\

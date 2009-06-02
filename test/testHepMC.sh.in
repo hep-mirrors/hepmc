@@ -15,8 +15,6 @@ CYGWIN*)
   cmd1=`sed 's/e+0/e+/g' testHepMC.out   | \
        sed 's/e-0/e-/g' -   | \
 	@DIFF_Q@ - @srcdir@/testHepMC.dat`
-  cmd3=`sed 's/e+0/e+/g' testIOAscii.dat | sed 's/e-0/e-/g' -  | \
-       grep -v Version | @DIFF_Q@ - @srcdir@/testAscii.input`
   #don't compare these on Windows (hopelessly different default output)
   cmd2=
   ;;
@@ -26,15 +24,11 @@ Darwin*)
   cmd1=`@DIFF_Q@ testHepMC.out @srcdir@/testHepMC.dat`
   cmd2=`sed 's/e-00/e+00/g'  @srcdir@/testHepMCParticle.output | \
 	@DIFF_Q@ - testHepMCParticle.out`
-  cmd3=`cat testIOAscii.dat | grep -v Version | \
-        @DIFF_Q@ - @srcdir@/testAscii.input`
   ;;
 *)
   cmd=`@DIFF_Q@ testHepMC.cout @srcdir@/testHepMC.output`
   cmd1=`@DIFF_Q@ testHepMC.out @srcdir@/testHepMC.dat`
   cmd2=`@DIFF_Q@ testHepMCParticle.out @srcdir@/testHepMCParticle.output`
-  cmd3=`cat testIOAscii.dat | grep -v Version | \
-        @DIFF_Q@ - @srcdir@/testAscii.input`
 esac
 
 if [ -n "$cmd" ]; then
@@ -51,12 +45,6 @@ fi
 if [ -n "$cmd2" ]
 then
   echo $cmd2
-  exit 1;
-fi
-
-if [ -n "$cmd3" ]
-then
-  echo $cmd3
   exit 1;
 fi
 

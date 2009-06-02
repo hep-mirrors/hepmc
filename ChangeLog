@@ -2,7 +2,13 @@
 2009-01-29  Lynn Garren
 
 	* HepMC/SimpleVector: remove FourVector::mag() and ThreeVector::mag()
-	Change test/testSimpleVector.cc to reflect this.
+	Change test/testSimpleVector.cc and test/testMass.cc to reflect this.
+
+2009-01-28  Lynn Garren
+
+	* remove HepMC/IO_Ascii.h and test/testDeprecated
+
+	* remove HepMC/HepMC_CLHEP20.h
 
   --------------------------  HepMC-2.04.01  --------------------------
 

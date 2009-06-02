@@ -7,15 +7,15 @@ LDADD = $(top_builddir)/src/libHepMC.la
 # Identify executables needed during testing:
 check_PROGRAMS = testSimpleVector testUnits testPrintBug \
                  testHepMC testHepMCIteration testMass \
-                 testMultipleCopies testDeprecated
+                 testMultipleCopies
 
 check_SCRIPTS = testHepMC.sh testHepMCIteration.sh testPrintBug.sh \
-                testMass.sh testDeprecated.sh
+                testMass.sh
 
 # Identify test(s) to run when 'make check' is requested:
 TESTS = testSimpleVector testUnits \
         testHepMC.sh testHepMCIteration.sh testMass.sh \
-        testPrintBug.sh testMultipleCopies testDeprecated.sh
+        testPrintBug.sh testMultipleCopies
 
 # Identify the test(s) for which failure is the intended outcome:
 XFAIL_TESTS = 
@@ -28,7 +28,6 @@ testMass_SOURCES           = testMass.cc
 testHepMCIteration_SOURCES = testHepMCIteration.cc
 testMultipleCopies_SOURCES = testMultipleCopies.cc
 testPrintBug_SOURCES       = testPrintBug.cc
-testDeprecated_SOURCES     = testDeprecated.cc
 
 # Identify input data file(s) and prototype output file(s):
 EXTRA_DIST = testHepMC.input testHepMC.output testHepMCParticle.output \
@@ -41,7 +40,7 @@ CLEANFILES = testHepMC.out testHepMCParticle.out \
              testPrintBug.out testMass.out \
 	     testAscii.dat testHepMCIteration.out \
              testHepMCIteration.dat testMass1.dat testMass2.dat \
-             testDeprecated.cout testHepMC.cout testHepMCIteration.cout \
+             testHepMC.cout testHepMCIteration.cout \
 	     testMultipleCopies.out testHepMCVarious.out testIOAscii.dat \
 	     testMultipleCopies1.dat testMultipleCopies2.dat \
 	     testMultipleOriginals.dat testUnits.out
