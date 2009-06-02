@@ -1,12 +1,13 @@
-//////////////////////////////////////////////////////////////////////////
+//-------------------------------------------------------------------
 // testMass.cc.in
 //
 // garren@fnal.gov, March 2006
 // Read events written by example_MyPythia.cc
 // Select events containing a photon of pT > 25 GeV 
 // Add arbitrary PDF information to one of the good events
+// Add arbitrary HeavyIon information to one of the good events
 // Write the selected events and read them back in using an istream
-//////////////////////////////////////////////////////////////////////////
+//-------------------------------------------------------------------
 
 #include <cmath>	// for min()
 
@@ -17,7 +18,7 @@
 // define methods and classes used by this test
 #include "IsGoodEvent.h"
 
-void massInfo( const HepMC::GenEvent* );
+void   massInfo( const HepMC::GenEvent* );
 
 int main() { 
     // read and process the input file
@@ -27,7 +28,7 @@ int main() {
         HepMC::IO_GenEvent ascii_in("@srcdir@/testIOGenEvent.input",std::ios::in);
         ascii_in.use_input_units( HepMC::Units::GEV, HepMC::Units::MM );
 	// declare another IO_GenEvent for output
-	HepMC::IO_GenEvent ascii_out("testMass1.dat",std::ios::out);
+	HepMC::IO_GenEvent ascii_out("testMass1.out",std::ios::out);
 	// declare an instance of the event selection predicate
 	IsGoodEvent is_good_event;
 	// send version to standard output
@@ -51,8 +52,8 @@ int main() {
 		    // use beam momentum
 		    if( evt->valid_beam_particles() ) {
 		        HepMC::GenParticle* bp1 = evt->beam_particles().first;
-			xf1 = x1*bp1->momentum().mag();
-			xf2 = x2*bp1->momentum().mag();
+			xf1 = x1*bp1->momentum().rho();
+			xf2 = x2*bp1->momentum().rho();
 		    } else {
 			xf1 = x1*0.34;
 			xf2 = x2*0.34;
@@ -61,6 +62,9 @@ int main() {
 		    // (two ints at the end of the constructor)
 		    HepMC::PdfInfo pdf( 2, 3, x1, x2, q, xf1, xf2, 230, 230);
 		    evt->set_pdf_info(pdf);
+		    // add some arbitrary HeavyIon information
+	            HepMC::HeavyIon ion(23,11,12,15,3,5,0,0,0,0.0145);
+	            evt->set_heavy_ion( ion );
 		}
 		ascii_out << evt;
 		++num_good_events;
@@ -77,7 +81,7 @@ int main() {
     // now read the file we just created
     {
 	// declare an input strategy 
-	const char infile[] = "testMass1.dat";
+	const char infile[] = "testMass1.out";
 	std::ifstream istr( infile );
 	if( !istr ) {
 	  std::cerr << "testMass: cannot open " << infile << std::endl;
@@ -85,7 +89,7 @@ int main() {
 	}
 	HepMC::IO_GenEvent xin(istr);
 	// declare another IO_GenEvent for output
-	HepMC::IO_GenEvent xout("testMass2.dat",std::ios::out);
+	HepMC::IO_GenEvent xout("testMass2.out",std::ios::out);
 	//........................................EVENT LOOP
 	int ixin=0;
 	HepMC::GenEvent* evt = xin.read_next_event();
