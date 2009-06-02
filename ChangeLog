@@ -4,6 +4,14 @@
 	* HepMC/SimpleVector: remove FourVector::mag() and ThreeVector::mag()
 	Change test/testSimpleVector.cc and test/testMass.cc to reflect this.
 
+	* HepMC/HepMCDefs.h: New header containing HEPMC_HAS_UNITS and 
+	similar macros so users can check for various code features.  
+	HepMC/GenEvent.h includes HepMCDefs.h.
+	* HepMC/Version.h: Use new HEPMC_VERSION macro.
+	
+	* HepMC/GenParticle: add is_undecayed(), has_decayed(), and is_beam_particle() 
+	convenience methods.  Test these methods in test/testHepMC.
+
 2009-01-28  Lynn Garren
 
 	* remove HepMC/IO_Ascii.h and test/testDeprecated

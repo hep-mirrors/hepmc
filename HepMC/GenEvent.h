@@ -126,6 +126,7 @@ namespace HepMC {
 #include "HepMC/HeavyIon.h"
 #include "HepMC/PdfInfo.h"
 #include "HepMC/Units.h"
+#include "HepMC/HepMCDefs.h"
 #include <map>
 #include <string>
 #include <vector>

@@ -121,6 +121,15 @@ namespace HepMC {
 	///  event has a unique barcode. Particle barcodes are positive numbers,
 	///  vertex barcodes are negative numbers.
 	int                  barcode() const; //!< particle barcode
+	
+	/// Convenience method.  Returns true if status==1
+	bool                 is_undecayed() const;
+	/// Convenience method.  Returns true if status==2
+	bool                 has_decayed() const;
+	/// Convenience method.  Returns true if status==4
+	/// Note that using status 4 for beam particles is a new convention which
+	/// may not have been implemented by the code originating this GenEvent.
+	bool                 is_beam() const;
 
 	/////////////////////
 	// mutator methods //
@@ -223,6 +232,16 @@ namespace HepMC {
     inline int  GenParticle::barcode() const { return m_barcode; }
 
     inline void GenParticle::set_barcode_( int bc ) { m_barcode = bc; }
+
+    inline bool GenParticle::is_undecayed() const {
+        return ( m_status==1 ) ?  true : false;
+    }
+    inline bool GenParticle::has_decayed() const {
+        return ( m_status==2 ) ?  true : false;
+    }
+    inline bool GenParticle::is_beam() const {
+        return ( m_status==4 ) ?  true : false;
+    }
 
 } // HepMC
 

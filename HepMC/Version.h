@@ -11,6 +11,7 @@
 
 #include <string>
 #include <iostream>
+#include "HepMC/HepMCDefs.h"
 
 namespace HepMC {
 
@@ -20,7 +21,7 @@ std::string versionName( );	//!< return HepMC version
 
 inline std::string versionName( )
 {
-    return "2.04.01";
+    return HEPMC_VERSION;
 }
 
 inline void version( )

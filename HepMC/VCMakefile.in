@@ -71,7 +71,7 @@ pkginclude_HEADERS = \
 	TempParticleMap.h	\
 	Units.h	\
 	Version.h	\
-	defs.h
+	HepMCDefs.h
 
 all: defs.h
 	$(MAKE) $(AM_MAKEFLAGS) all-am
