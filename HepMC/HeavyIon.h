@@ -111,6 +111,9 @@ public:
     /// nucleon-nucleon inelastic (including diffractive) cross-section
     float sigma_inel_NN()                const { return m_sigma_inel_NN; }
 
+    /// verify that the instance contains non-zero information
+    bool  is_valid()                     const;
+
   // ---  mutators:
     /// set number of hard scatterings
     void   set_Ncoll_hard(const int &i)              { m_Ncoll_hard=i; }
@@ -156,6 +159,13 @@ private: // data members
     float m_sigma_inel_NN;
 
 };
+
+// Free Functions
+
+/// Write the contents of HeavyIon to an output stream.
+std::ostream & operator << (std::ostream &, HeavyIon const *);
+/// Read the contents of HeavyIon from an input stream.
+std::istream & operator >> (std::istream &, HeavyIon *);
 
 // inline operators
   /// Required members are
@@ -245,6 +255,24 @@ inline bool    HeavyIon::operator!=( const HeavyIon& a ) const
 {
     /// any nonmatching member generates inequality
     return !( a == *this );
+}
+
+inline bool  HeavyIon::is_valid() const
+{
+    if( m_Ncoll_hard != 0 ) return true;
+    if( m_Npart_proj != 0 ) return true;
+    if( m_Npart_targ != 0 ) return true;
+    if( m_Ncoll != 0 ) return true;
+    if( m_spectator_neutrons != 0 ) return true;
+    if( m_spectator_protons != 0 ) return true;
+    if( m_N_Nwounded_collisions != 0 ) return true;
+    if( m_Nwounded_N_collisions != 0 ) return true;
+    if( m_Nwounded_Nwounded_collisions != 0 ) return true;
+    if( m_impact_parameter != 0 ) return true;
+    if( m_event_plane_angle != 0 ) return true;
+    if( m_eccentricity != 0 ) return true;
+    if( m_sigma_inel_NN != 0 ) return true;
+    return false;
 }
 
 } // HepMC

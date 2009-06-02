@@ -1,6 +1,9 @@
 
 basic IO_GenEvent input and output
 Processing Event Number 1 its # 1
+Event 9 has 929 particles, 409 decayed particles, 512 undecayed particles, and 0 beam particles 
+Event 18 has 674 particles, 288 decayed particles, 378 undecayed particles, and 0 beam particles 
+Event 56 has 809 particles, 354 decayed particles, 447 undecayed particles, and 0 beam particles 
 3 out of 34 processed events passed the cuts. Finished.
 
 process varied input
@@ -40,3 +43,29 @@ Processing Event Number 5 its # 3
  Momenutm units:     MEV     Position units:      MM
  pizero mass: 134.98 MEV
 5 events processed. Finished.
+---------------------------------------- 
+Begin NaN test 
+read_nan: Processing Event Number 1 its # 1
+read_nan: Processing Event Number 2 its # 1
+read_nan: Processing Event Number 3 its # 1
+read_nan: Processing Event Number 4 its # 2
+read_nan: Processing Event Number 5 its # 3
+INPUT ERROR: input stream encountered invalid data
+read_nan: Processing Event Number 6 its # 101
+read_nan: Processing Event Number 7 its # 1011
+INPUT ERROR: input stream encountered invalid data
+INPUT ERROR: input stream encountered invalid data
+INPUT ERROR: input stream encountered invalid data
+INPUT ERROR: input stream encountered invalid data
+read_nan: Processing Event Number 8 its # 1016
+read_nan: Processing Event Number 9 its # 1
+read_nan: Processing Event Number 10 its # 39
+10 events processed and 5 events ignored. Finished.
+End NaN test 
+---------------------------------------- 
+writeWithCrossSection: Processing Event Number 1 its # 1
+writeWithCrossSection: Processing Event Number 21 its # 39
+writeWithCrossSection processed 34 events. Finished.
+readWithCrossSection: Processing Event Number 1 its # 1
+readWithCrossSection: Processing Event Number 2 its # 39
+readWithCrossSection processed 2 events. Finished.

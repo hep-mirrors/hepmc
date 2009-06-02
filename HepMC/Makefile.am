@@ -4,18 +4,19 @@ includedir = $(prefix)/include
 COPY_P = @COPY_P@
 
 pkginclude_HEADERS = \
-	CommonIO.h	\
 	CompareGenEvent.h	\
 	Flow.h		\
 	GenEvent.h	\
 	GenParticle.h	\
 	GenVertex.h	\
+	GenCrossSection.h	\
 	HeavyIon.h	\
 	HEPEVT_Wrapper.h	\
 	HerwigWrapper6_4.h	\
 	HerwigWrapper.h	\
 	IO_AsciiParticles.h	\
 	IO_BaseClass.h	\
+	IO_Exception.h	\
 	IO_GenEvent.h	\
 	IO_HEPEVT.h	\
 	IO_HERWIG.h	\
@@ -34,6 +35,8 @@ pkginclude_HEADERS = \
 	SearchVector.h	\
 	SimpleVector.h	\
 	SimpleVector.icc	\
+	StreamHelpers.h	\
+	StreamInfo.h	\
 	enable_if.h	\
 	is_arithmetic.h	\
 	TempParticleMap.h	\

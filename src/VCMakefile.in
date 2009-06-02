@@ -53,32 +53,42 @@ mkinstalldirs = $(install_sh) -d
 am__strip_dir = `echo $$p | sed -e 's|^.*/||'`;
 am__installdirs = "$(DESTDIR)$(libdir)"
 
-SOURCES = CommonIO.cc \
-	  CompareGenEvent.cc \
+SOURCES = CompareGenEvent.cc \
 	  Flow.cc \
 	  GenEvent.cc \
+   	  GenEventStreamIO.cc	\
 	  GenParticle.cc \
+	  GenCrossSection.cc	\
 	  GenVertex.cc \
+	  HeavyIon.cc	\
 	  IO_AsciiParticles.cc \
-	  IO_GenEvent.cc \
 	  IO_PDG_ParticleDataTable.cc \
+	  IO_GenEvent.cc \
 	  ParticleData.cc \
+	  PdfInfo.cc	\
 	  Polarization.cc \
 	  SearchVector.cc \
+	  StreamHelpers.cc	\
+	  StreamInfo.cc	\
           Units.cc
 
-OBJ = CommonIO.obj \
-      CompareGenEvent.obj \
+OBJ = CompareGenEvent.obj \
       Flow.obj \
       GenEvent.obj \
+      GenEventStreamIO.obj	\
       GenParticle.obj \
+      GenCrossSection.obj \
       GenVertex.obj \
+      HeavyIon.obj	\
       IO_AsciiParticles.obj \
-      IO_GenEvent.obj \
+      IO_GenEvent.obj	\
       IO_PDG_ParticleDataTable.obj \
       ParticleData.obj \
+      PdfInfo.obj	\
       Polarization.obj \
       SearchVector.obj \
+      StreamHelpers.obj	\
+      StreamInfo.obj	\
       Units.obj
 
 

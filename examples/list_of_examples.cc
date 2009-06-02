@@ -27,6 +27,10 @@
 	/// This example shows low to use the particle and vertex iterators
 	/// \example example_UsingIterators.cc
 	 
+	/// This example generates Pythia events and fills
+	/// cross section information from pyint5.
+	/// The example uses streaming I/O to write a file and then read it.
+	/// \example example_PythiaStreamIO.cc
 	 
         /// Multiple events in memory at the same time
 	/// \example testHerwigCopies.cc

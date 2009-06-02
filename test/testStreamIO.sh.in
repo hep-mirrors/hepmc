@@ -1,0 +1,96 @@
+#! /bin/bash
+# @configure_input@
+
+# cleanup any old output files first
+rm -f testStreamIO.out
+rm -f testStreamIO2.out
+rm -f testStreamIOParticle.out
+rm -f testStreamIOVarious.out
+
+./testStreamIO@EXEEXT@ >& testStreamIO.cout
+
+OS=`uname`
+case "$OS" in
+CYGWIN*)
+  cmd=`@DIFF_Q@ testStreamIO.cout @srcdir@/testStreamIO.output`
+  cmd1=`sed 's/e-0/e-/g' testStreamIO.out | \
+        sed 's/e+0/e+/g' - | \
+         @DIFF_Q@ - @srcdir@/testHepMC.dat`
+  cmd2=`sed 's/e-0/e-/g' testStreamIO2.out | \
+        sed 's/e+0/e+/g' - | \
+         @DIFF_Q@ - @srcdir@/testHepMC.dat`
+  #don't compare IOParticle on Windows (hopelessly different default output)
+  cmd3=
+  cmd4=`@DIFF_Q@ testStreamIOVarious.out testNaN.out`
+  cmd5=`sed 's/e-0/e-/g' testStreamIO3.out | \
+        sed 's/e+0/e+/g' - | \
+         @DIFF_Q@ - @srcdir@/testHepMC.dat`
+  cmd6=`sed 's/e-0/e-/g' testStreamIO4.out | \
+        sed 's/e+0/e+/g' - | \
+         @DIFF_Q@ - @srcdir@/testHepMC.dat`
+  ;;
+Darwin*)
+  # MacOSX fix
+  cmd=`@DIFF_Q@ testStreamIO.cout @srcdir@/testStreamIO.output`
+  cmd1=`@DIFF_Q@ testStreamIO.out @srcdir@/testHepMC.dat`
+  cmd2=`@DIFF_Q@ testStreamIO2.out @srcdir@/testHepMC.dat`
+  cmd3=`sed 's/e-00/e+00/g'  @srcdir@/testHepMCParticle.output | \
+	@DIFF_Q@ - testStreamIOParticle.out`
+  cmd4=`@DIFF_Q@ testStreamIOVarious.out testNaN.out`
+  cmd5=`@DIFF_Q@ testStreamIO3.out @srcdir@/testHepMC.dat`
+  cmd6=`@DIFF_Q@ testStreamIO4.out @srcdir@/testHepMC.dat`
+  ;;
+*)
+  cmd=`@DIFF_Q@ testStreamIO.cout @srcdir@/testStreamIO.output`
+  cmd1=`@DIFF_Q@ testStreamIO.out @srcdir@/testHepMC.dat`
+  cmd2=`@DIFF_Q@ testStreamIO2.out @srcdir@/testHepMC.dat`
+  cmd3=`@DIFF_Q@ testStreamIOParticle.out @srcdir@/testHepMCParticle.output`
+  cmd4=`@DIFF_Q@ testStreamIOVarious.out testNaN.out`
+  cmd5=`@DIFF_Q@ testStreamIO3.out @srcdir@/testHepMC.dat`
+  cmd6=`@DIFF_Q@ testStreamIO4.out @srcdir@/testHepMC.dat`
+esac
+
+if [ -n "$cmd" ]; then
+  echo $cmd
+  exit 1;
+fi
+
+if [ -n "$cmd1" ]
+then
+  echo $cmd1
+  exit 1;
+fi
+
+if [ -n "$cmd2" ]
+then
+  echo $cmd2
+  exit 1;
+fi
+
+if [ -n "$cmd3" ]
+then
+  echo $cmd3
+  exit 1;
+fi
+
+if [ -n "$cmd4" ]
+then
+  echo $cmd4
+  exit 1;
+fi
+
+if [ -n "$cmd5" ]
+then
+  echo $cmd5
+  exit 1;
+fi
+
+if [ -n "$cmd6" ]
+then
+  echo $cmd6
+  exit 1;
+fi
+
+exit 0;
+
+

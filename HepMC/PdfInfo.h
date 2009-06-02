@@ -90,6 +90,9 @@ public:
     /// PDF (id2, x2, Q) - x*f(x)
     double pdf2()                 const { return m_pdf2; }
 
+    /// verify that the instance contains non-zero information
+    bool  is_valid()                     const;
+
   // ---  mutators:
     /// set flavour code of first parton
     void   set_id1(const int &i)              { m_id1=i; }
@@ -122,6 +125,12 @@ private: // data members
     double m_pdf2;
 
 };
+
+// Free Functions
+
+// IO
+std::ostream & operator << (std::ostream &, PdfInfo const *);
+std::istream & operator >> (std::istream &, PdfInfo *);
 
 // inline operators
 inline PdfInfo::PdfInfo( int i1, int i2, double x1, double x2,
@@ -188,6 +197,20 @@ inline bool    PdfInfo::operator!=( const PdfInfo& a ) const
 {
     /// any nonmatching member generates inequality
     return !( a == *this );
+}
+
+inline bool  PdfInfo::is_valid() const
+{
+    if( m_id1 != 0 ) return true;
+    if( m_id2 != 0 ) return true;
+    if( m_pdf_id1 != 0 ) return true;
+    if( m_pdf_id2 != 0 ) return true;
+    if( m_x1 != 0 ) return true;
+    if( m_x2 != 0 ) return true;
+    if( m_scalePDF != 0 ) return true;
+    if( m_pdf1 != 0 ) return true;
+    if( m_pdf2 != 0 ) return true;
+    return false;
 }
 
 } // HepMC

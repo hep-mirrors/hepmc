@@ -4,10 +4,10 @@
 # ----------------------------------------------------------------------
 
 AC_PREREQ(2.59)
-AC_INIT([HepMC],[2.04.01],[https://savannah.cern.ch/projects/hepmc/],[HepMC])
+AC_INIT([HepMC],[2.05.00],[https://savannah.cern.ch/projects/hepmc/],[HepMC])
 AC_CANONICAL_TARGET
 AM_INIT_AUTOMAKE(1.9 foreign)
-AC_CONFIG_SRCDIR([src/CommonIO.cc])
+AC_CONFIG_SRCDIR([src/GenEvent.cc])
 AC_CONFIG_HEADER([HepMC/defs.h])
 
 # ----------------------------------------------------------------------
@@ -15,7 +15,7 @@ AC_CONFIG_HEADER([HepMC/defs.h])
 # for various reasons, this cannot match the HepMC version
 # ----------------------------------------------------------------------
 
-LIBRARY_VERSION="-version-info 2:0:0"
+LIBRARY_VERSION="-version-info 3:0:0"
 AC_SUBST(LIBRARY_VERSION)
 
 # ----------------------------------------------------------------------
@@ -159,12 +159,14 @@ AC_CONFIG_FILES([Makefile
                  test/testMass.cc
                  test/testHepMCIteration.cc
                  test/testMultipleCopies.cc
+                 test/testStreamIO.cc
                  examples/GNUmakefile.example])
 
 AC_CONFIG_FILES([test/testHepMC.sh], [chmod +x test/testHepMC.sh])
 AC_CONFIG_FILES([test/testMass.sh], [chmod +x test/testMass.sh])
 AC_CONFIG_FILES([test/testHepMCIteration.sh], [chmod +x test/testHepMCIteration.sh])
 AC_CONFIG_FILES([test/testPrintBug.sh], [chmod +x test/testPrintBug.sh])
+AC_CONFIG_FILES([test/testStreamIO.sh], [chmod +x test/testStreamIO.sh])
 
 # ----------------------------------------------------------------------
 # Finish up:

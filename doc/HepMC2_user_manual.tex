@@ -87,8 +87,8 @@
 
 \vspace{1cm}
 
-{\Large User Manual Version 2.04} \\
-June 9, 2008
+{\Large User Manual Version 2.05} \\
+May 21, 2009
 
 \vspace{2cm}
 
@@ -264,10 +264,13 @@ of the event record.
 \item ability to store an arbitrary number of event weights
 \item ability to store parton distribution function information
 \item ability to store heavy ion information 
+\item ability to store generated cross section information on
+      an event by event basis
 \item strategies for conversion to/from HEPEVT (Ref.~\cite{Boos:2001cv}) 
   which are easily extendible to support other event records
 \item strategies for input/output to/from Ascii files which
   are easily extendible to support other forms of persistency
+\item support for standard streaming I/O
 \end{itemize}
 
 %
@@ -295,7 +298,8 @@ represents a change to the code and a version number change in \emph{yy}
 represents a bug fix.
 
 There have also been continuing requests for other features.
-Changes to HepMC must be approved by the LCG simulation project.  
+Changes to HepMC must be approved by the LCG simulation project 
+(Ref.~\cite{lcgsim}).  
 
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -305,7 +309,8 @@ Changes to HepMC must be approved by the LCG simulation project.
 
 See the HepMC ChangeLog~\cite{changelog} for a complete listing.
 
-GenEvent now contains pointers to a heavy ion class and a PDF information class.
+GenEvent now contains pointers to a heavy ion class, a PDF information class,
+and a generated cross section class.
 The pointers are null by default.  
 In addition, GenEvent now has the capability to declare which
 momentum and position units are used.
@@ -334,12 +339,17 @@ and stored in GenParticle.
 The IO\_AsciiParticles class provides output in the Pythia style.
 This output is intended for ease of reading event output, not for persistency.
 
-The IO\_Ascii output class is deprecated in favor of IO\_GenEvent, 
+The IO\_Ascii output class has been replaced with of IO\_GenEvent, 
 described in Section~\ref{iogenevent}.  
 IO\_GenEvent persists all information in the updated GenEvent object and
 uses iostreams for greater flexibility.  IO\_GenEvent also has a 
 constructor taking a file name and mode type for backwards compatibility. 
 Output remains in Ascii format.
+
+Streaming I/O of GenEvent objects may also be done without using IO\_GenEvent.
+
+The new HepMCDefs.h header allows users to query which features are 
+enabled.
 
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -376,8 +386,7 @@ Template Library (STL) style.
 \end{figure}
 \clearpage
 
-The event record class relationships and the particle
-data class relationships are shown in Figure~\ref{UML_diagrams}.
+The event record class relationships are shown in Figure~\ref{UML_diagrams}.
 
 Several input/output strategies are provided. The interface for these
 strategies is defined by an abstract base class, IO\_BaseClass.  These
@@ -508,6 +517,8 @@ to determine which units are being used.
   \myitem{barcode\_to\_vertex}{ returns a pointer to the vertex
   	associated with the integer barcode argument }
   \myitem{use\_units}{set both momentum and position units, and scale FourVectors if necessary}
+  \myitem{read}{read ascii input directly from an istream}
+  \myitem{write}{write ascii output directly to an ostream}
 \end{myitemize}
 \begin{myitemize}{Relevant Data Members}
   \myitem{signal\_process\_id}{an integer ID uniquely specifying the
@@ -535,8 +546,14 @@ to determine which units are being used.
                       (zero by default)}
   \myitem{pdf\_info}{(optional) a pointer to a PdfInfo object 
                      (zero by default)}
+  \myitem{cross\_section}{(optional) a pointer to a GenCrossSection object 
+                     (zero by default)}
   \myitem{momentum\_unit}{momentum units (MEV or GEV)}
   \myitem{length\_unit}{position units (MM or CM)}
+\end{myitemize}
+\begin{myitemize}{Important Free Functions}
+  \myitem{operator $>>$}{read ascii input directly from an istream}
+  \myitem{operator $<<$}{write ascii output directly to an ostream}
 \end{myitemize}
 \begin{myitemize}{Notes and Conventions}
   \item if hit and miss Monte Carlo integration is to be performed
@@ -556,7 +573,8 @@ A listing of all vertices is maintained with the event, giving fast
 access to vertex information. GenParticles are accessed by means of the
 vertices.
 
-Extended event features (weights, random\_states, heavy\_ion, pdf\_info) 
+Extended event features 
+(weights, random\_states, heavy\_ion, pdf\_info, cross\_section) 
 have been implemented such that if left empty/unused performance and memory
 usage will be similar to that of an event without these features.
 
@@ -638,6 +656,22 @@ Creation and use of this information is optional.
 
 HeavyIon provides additional information storage in GenEvent for Heavy Ion
 generators.  Creation and use of this information is optional. 
+
+
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+
+\subsubsection{HepMC::GenCrossSection}
+\begin{myitemize}{Relevant Data Members}
+  \myitem{cross\_section}{cross section in pb}
+  \myitem{cross\_section\_error}{error associated with this cross section in pb}
+\end{myitemize}
+
+GenCrossSection provides additional storage in GenEvent for an event by event 
+snapshot of the cross section while events are being generated.
+It is expected that the final cross section will be stored elsewhere.
+Creation and use of this information is optional. 
 
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -759,23 +793,8 @@ information about differential cross sections.
 \begin{myitemize}{Notes and Conventions}
   \item the particle ID should be specified according to the 
     PDG standard~\cite{Yao:2006tx}
-  \item status codes are as defined for HEPEVT~\cite{stdhep5.05}\newline
-     {\footnotesize
-      For convenience the HEPEVT standard status codes are enumerated:
-      \begin{tabbing}
-        0 \hspace{1cm} \= null entry \\
-        1 \> existing entry - not decayed or fragmented, represents
-        the final state as given by the generator \\
-        2 \> decayed or fragmented entry \\
-        3 \> documentation line \\
-        4-10 \> undefined, reserved for future standards \\
-        11-200 \> at the disposal of each model builder - equivalent
-        to a null line \\
-        201- \> at the disposal of the user, in particular for event
-        tracking in the detector
-      \end{tabbing}
-      }
-
+  \item the status code should be specified according to the clarified  
+     HEPEVT status codes
 \end{myitemize}
 
 The particle is the basic unit within the event record. The GenParticle
@@ -799,6 +818,34 @@ second momentum vector is included to facilitate tracking through
 material). If this is desirable, one can simply add a decay vertex
 with the same particle type going out. This is intuitive, since a
 change in momentum cannot occur without an interaction (vertex).
+
+After some discussion, the authors in MCnet~\cite{mcnet} have agreed to a 
+clarification of the HEPEVT~\cite{stdhep5.05} status codes. 
+The Fortran Monte Carlo generators will not change their behaviour, 
+but Sherpa, Pythia8, and Herwig++ will go to the newer usage.\newline
+These are the accepted status code definitions:
+\begin{myitemize}{}
+ \myitem{0     }{an empty entry with no meaningful information 
+		    and therefore to be skipped unconditionally}
+ \myitem{1     }{a final-state particle, i.e. a particle that is not decayed 
+ further by the generator (may also include unstable particles
+ that are to be decayed later, as part of the detector simulation).
+ Such particles must always be labelled '1'.}
+ \myitem{2     }{decayed Standard Model hadron or tau or mu lepton, 
+ excepting virtual intermediate states thereof (i.e. the
+ particle must undergo a normal decay, not e.g. a 
+ shower branching). Such particles must always be labelled '2'. 
+ No other particles can be labelled '2'.}
+ \myitem{3     }{a documentation entry}
+ \myitem{4     }{an incoming beam particle}
+ \myitem{5-10  }{undefined, reserved for future standards}
+ \myitem{11-200}{an intermediate (decayed/branched/...) particle that 
+       does not fulfill the criteria of status code 2, 
+       with a generator-dependent classification of its nature.}
+ \myitem{201-  }{at the disposal of the user, in particular for event
+ tracking in the detector}
+\end{myitemize}
+
 
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -903,7 +950,6 @@ Several IO strategies are supplied:
     Events may be contained within the same file together with
     an unlimited number of comments. 
     The examples (Section~\ref{examples}) make use of this class.
-  \item {\bf IO\_Ascii} is deprecated (Section~\ref{deprecated}).
   \item {\bf IO\_AsciiParticles} writes events in a format similar to 
      Pythia 6 output.  This is intended for human readability.
   \item {\bf IO\_HEPEVT} reads and writes events to/from the Fortran HEPEVT
@@ -933,6 +979,9 @@ Several IO strategies are supplied:
     from Pythia into HepMC is given in \verb!example_MyPythia.cc! 
     (Section~\ref{examples}).
 \end{itemize}
+
+Note that as of HepMC 2.05 it is possible to read and write events directly
+with streaming I/O operators instead of using IO\_GenEvent.  
 
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -1098,7 +1147,14 @@ number of vertices specified in the general event information.
 Each vertex line specifies how many particle lines are associated 
 with the vertex.
 
-We describe the format of IO\_GenEvent here, which persists all information
+As of HepMC 2.05, it is possible to read and write events directly
+with the streaming I/O operators $>>$ and $<<$ instead of using IO\_GenEvent.  
+However, the HepMC event block header and footer will not be written 
+automatically if this method is used.  The user must call 
+write\_HepMC\_IO\_block\_begin and write\_HepMC\_IO\_block\_end explicitly.
+IO\_GenEvent uses these operators internally.
+
+We describe the Ascii output here, which persists all information
 contained in a HepMC GenEvent.
 
 %
@@ -1114,6 +1170,8 @@ contained in a HepMC GenEvent.
 \begin{myitemize}{Line Keys}
   \myitem{E}{general GenEvent information} 
   \myitem{U}{momentum and position units} 
+  \myitem{C}{GenCrossSection information:
+             This line will appear ONLY if GenCrossSection is defined.} 
   \myitem{H}{HeavyIon information:  
              This line will contain zeros if there is no associated HeavyIon object.} 
   \myitem{F}{PdfInfo information: 
@@ -1122,7 +1180,7 @@ contained in a HepMC GenEvent.
   \myitem{P}{GenParticle information} 
 \end{myitemize}
 
-Note that the E, U, H, and F lines contain event header information.
+Note that the E, U, C, H, and F lines contain event header information.
 There will be one and only one of these lines per event. 
 The header information is followed immediately by a V (vertex) line.
 Each vertex line is immediately followed by the P (particle) lines 
@@ -1158,7 +1216,8 @@ P 116 2203 -2.7745239600449745e-01 1.8469236508822412e-01 -1.8910900158159372e+0
   \end{center}
   \caption[Example of ascii format]
           {\label{ascii_format} Example of the format written to a file.  
-           Only the first few lines are shown. }
+           Only the first few lines are shown. 
+	   Notice that this event has no GenCrossSection information. }
 \end{figure}
 
 %
@@ -1186,6 +1245,10 @@ P 116 2203 -2.7745239600449745e-01 1.8469236508822412e-01 -1.8910900158159372e+0
 \begin{myitemize}{U - momentum and position units} 
   \myitem{std::string}{momentum units (MEV or GEV)}
   \myitem{std::string}{length units (MM or CM)}
+\end{myitemize}
+\begin{myitemize}{C - GenCrossSection information} 
+  \myitem{double}{cross section in pb}
+  \myitem{double}{error associated with this cross section in pb}
 \end{myitemize}
 \begin{myitemize}{H - HeavyIon information} 
   \myitem{int}{Number of hard scatterings}
@@ -1293,14 +1356,15 @@ Examples are provided in the examples directory of the package
 and are installed in the installation directory under examples/HepMC.
 Tests, found in the test directory of the package, also provide useful examples.
 The tests are not installed.
-All examples use IO\_GenEvent instead of the deprecated IO\_Ascii.
+Most examples use IO\_GenEvent.
+However, example\_PythiaStreamIO.cc illustrates explicit use of the 
+streaming I/O operators.
 
 \begin{itemize}\setlength{\itemsep}{0pt}
   \item{\bf Using the HepMC vertex and particle iterators:}
        {example\_UsingIterators.cc} 
   \item{\bf Using HepMC with Pythia (Fortran):}
-      {example\_MyPythia.cc and
-       example\_MyPythiaOnlyToHepMC.cc}
+      {example\_MyPythia.cc and example\_MyPythiaOnlyToHepMC.cc}
   \item{\bf An Event Selection with Pythia Events:}
       {example\_MyPythia.cc}
   \item{\bf Event Selection and Ascii IO}
@@ -1309,54 +1373,106 @@ All examples use IO\_GenEvent instead of the deprecated IO\_Ascii.
      {example\_MyHerwig.cc}
  \item{\bf Write an event file and then read it:}
      {example\_MyPythia.cc}
+ \item{\bf Write an event file and then read it with the streaming I/O operators:}
+     {example\_PythiaStreamIO.cc}
   \item{\bf Building an Event from Scratch in the HepMC Framework:}
      {example\_BuildEventFromScratch.cc}
   \item{\bf Verify that copying generated events behaves as expected:}
      {testHerwigCopies.cc and testPythiaCopies.cc}
 \end{itemize}
 
-IO examples are shown in Figures \ref{read_ascii} and \ref{write_ascii}.
+I/O examples are shown in Figures 
+\ref{read_ascii}, \ref{write_ascii}.
+\ref{read_stream}, and \ref{write_stream}.
 
 \begin{figure}[h]
-\caption[IO\_GenEvent exmple]{\label{read_ascii} Reading HepMC events from a file. }
+\caption[IO\_GenEvent example]{\label{read_ascii} 
+         Reading HepMC events from a file. }
+    {\small \begin{verbatim}
+    // specify an input file
+    HepMC::IO_GenEvent ascii_in("example.dat",std::ios::in);
+    // get the first event
+    HepMC::GenEvent* evt =  ascii_in.read_next_event();
+    // loop until we run out of events
+    while ( evt ) {
+        // analyze the event
+        ...
+        // delete the created event from memory
+        delete evt;
+        // read the next event
+        ascii_in >> evt;
+    }
+    \end{verbatim}}
+\end{figure}
+
+\begin{figure}[h]
+\caption[Streaming input example]{\label{read_stream} 
+           Reading HepMC events from an input stream. }
 {\small \begin{verbatim}
-// specify an input file
-HepMC::IO_GenEvent ascii_in("example.dat",std::ios::in);
-// get the first event
-HepMC::GenEvent* evt =  ascii_in.read_next_event();
-// loop until we run out of events
-while ( evt ) {
-    // analyze the event
-    ...
-    // delete the created event from memory
-    delete evt;
-    // read the next event
-    ascii_in >> evt;
-}
+    // specify an input stream
+    std::ifstream is( "example_PythiaStreamIO_write.dat" );
+    // create an empty event
+    HepMC::GenEvent evt;
+    // loop over the input stream
+    while ( is ) {
+        // read the event
+        evt.read( is );
+        // make sure we have a valid event
+        if( evt.is_valid() ) {
+            // analyze the event
+            ...
+        }
+    }
 \end{verbatim}}
 \end{figure}
 
 \begin{figure}[h]
-\caption[IO\_HEPEVT and IO\_GenEvent exmple]
+\caption[IO\_HEPEVT and IO\_GenEvent example]
 {\label{write_ascii} Convert events from the HEPEVT common block 
           to HepMC format and write them to a file. }
 {\small \begin{verbatim}
-// common block conversion methods
-HepMC::IO_HEPEVT hepevtio;
-// specify an output file
-HepMC::IO_GenEvent ascii_out("example.dat",std::ios::out);
-for ( int i = 1; i <= maxEvents; i++ ) {
-    // convert an event
-    HepMC::GenEvent* evt = hepevtio.read_next_event();
-    // analyze the event
-    ...
-    // write the HepMC event
-    ascii_out << evt;
-    // delete the created event from memory
-    delete evt;
-}
+    // common block conversion methods
+    HepMC::IO_HEPEVT hepevtio;
+    // specify an output file
+    HepMC::IO_GenEvent ascii_out("example.dat",std::ios::out);
+    for ( int i = 1; i <= maxEvents; i++ ) {
+        // convert an event
+        HepMC::GenEvent* evt = hepevtio.read_next_event();
+        // analyze the event
+        ...
+        // write the HepMC event
+        ascii_out << evt;
+        // delete the created event from memory
+        delete evt;
+    }
+    \end{verbatim}}
+\end{figure}
+
+\begin{figure}[h]
+\caption[IO\_HEPEVT and streaming output example]
+{\label{write_stream} Convert events from the HEPEVT common block 
+          to HepMC format and write them to streaming output. }
+    {\small \begin{verbatim}
+    // common block conversion methods
+    HepMC::IO_HEPEVT hepevtio;
+    // specify an output stream
+    std::ofstream os( "example_PythiaStreamIO_write.dat" );
+    for ( int i = 1; i <= maxEvents; i++ ) {
+        // generate the event with Pythia, Herwig, etc.
+        ...
+        // convert an event
+        HepMC::GenEvent* evt = hepevtio.read_next_event();
+        // analyze the event
+        ...
+        // write the HepMC event
+        evt->write(os);
+        // delete the created event from memory
+        delete evt;
+    }
 \end{verbatim}}
 \end{figure}
+
+\clearpage
 
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -1366,7 +1482,8 @@ for ( int i = 1; i <= maxEvents; i++ ) {
 \label{deprecated}
 
 Two major classes have been deprecated: IO\_Ascii and ParticleData.
-IO\_Ascii is replaced by IO\_GenEvent, which uses iostreams instead of files.
+IO\_Ascii has been removed and is replaced by IO\_GenEvent, 
+which uses iostreams instead of files.
 
 The ParticleData classes had become outmoded and would need a lot of
 work.  Instead, we recommend using packages already developed for this
@@ -1374,23 +1491,8 @@ purpose, such as HepPDT~\cite{heppdt}.
 
 IO\_ExtendedAscii, introduced in 1.28.00, has been deprecated and removed.
 
-IO\_GenEvent reads files written by IO\_Ascii and IO\_ExtendedAscii.
-
-%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%
-
-\subsection{HepMC::IO\_Ascii (deprecated)}
-
-\begin{myitemize}{Notes and Conventions}
- \item {\bf IO\_Ascii} reads and writes events and particle data
-    tables to files in machine readable Ascii, thereby providing a
-    form of persistency for the event record. Events and particle data
-    tables may be contained within the same file (recommend to write
-    the particle data table first to save access time) together with
-    an unlimited number of comments. 
-   IO\_GenEvent will read files written by IO\_Ascii.
-\end{myitemize}
+IO\_GenEvent and the streaming input operator read files written by 
+IO\_Ascii and IO\_ExtendedAscii.
 
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -1526,6 +1628,12 @@ arXiv:hep-ph/0109068.
   {http://wwwasd.web.cern.ch/wwwasd/lhc++/clhep/}
   {http://wwwasd.web.cern.ch/wwwasd/lhc++/clhep/}.
 
+\bibitem{lcgsim}
+   Generator Services Subproject information available at 
+   \htmladdnormallink
+  {http://lcgapp.cern.ch/project/simu/generator/}
+  {http://lcgapp.cern.ch/project/simu/generator/}.
+
 \bibitem{changelog}
   Latest HepMC ChangeLog available at  \htmladdnormallink
   {http://simu.cvs.cern.ch/cgi-bin/simu.cgi/simu/HepMC/ChangeLog?view=markup}
@@ -1586,6 +1694,11 @@ arXiv:hep-ph/0109068.
   HepPDT is available at \htmladdnormallink
   {http://savannah.cern.ch/projects/heppdt/}
   {http://savannah.cern.ch/projects/heppdt/}.
+
+\bibitem{mcnet}
+  MCnet is available at \htmladdnormallink
+  {http://www.montecarlonet.org/}
+  {http://www.montecarlonet.org/}.
 
 \end{thebibliography}
 

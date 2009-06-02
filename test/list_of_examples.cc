@@ -1,15 +1,12 @@
 /// The HepMC tests can also serve as useful examples
 
-	/// This program checks the deprecated IO_Ascii class.
-	/// IO_Ascii is slated for removal in the 2.05 release.
-	/// \example testDeprecated.cc.in
-
 	/// based on example_EventSelection
 	/// Apply an event selection to the events in testHepMC.input
 	/// Events containing a photon of pT > 25 GeV pass the selection and are
 	/// written to "testHepMC.out"
 	/// Add arbitrary PDF information to the good events
 	/// Also write events using IO_AsciiParticles 
+	/// Test the new GenCrossSection class
 	/// \example testHepMC.cc.in
 
 	/// Use Matt's example_EventSelection along with example_UsingIterators 
@@ -34,6 +31,9 @@
 
         /// Exercise all the vector methods
 	/// \example testSimpleVector.cc
+
+        /// Use streaming IO to read and write a file
+	/// \example testStreamIO.cc.in
 
 	/// Test MomentumUnits and PositionUnits
 	/// Make sure set and change methods work as expected.

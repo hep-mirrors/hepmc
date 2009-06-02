@@ -1,3 +1,57 @@
+  --------------------------  HepMC-2.05.00  --------------------------
+
+2009-05-19  Lynn Garren
+
+	* HepMC/GenCrossSection: new class to contain the generated 
+	cross section and cross section error.  This information is
+	considered temporary and could change on an event by event basis.
+	* write GenCrossSection information with GenEvent whenever the 
+	cross section has been set.  
+	* GenEvent.h: add pointer to a CrossSection (null by default).
+
+	* examples: add example_PythiaStreamIO.cc,
+	which uses streaming I/O and GenCrossSection.
+
+2009-05-07  Lynn Garren
+
+	* GenEvent: add streaming input and output methods:
+	std::ostream& write(std::ostream&);
+	std::istream& read(std::istream&);
+	Add some private methods used by streaming I/O.
+
+2009-04-17  Lynn Garren
+
+	* GenEvent.h, GenVertex.h: explicitly disallow -- iterator operators.
+
+	* IO_GenEvent uses the GenEvent streaming input and output operators.
+	Many of the protected methods are no longer useful and have been removed.
+	
+	* IO_Exception class added for use when throwing errors.
+	If invalid data is encountered when reading an event, input will
+	read to the end of the event instead of failing and return an 
+	empty GenEvent or null pointer.
+	
+	* StreamHelpers.h: Define functions used by streaming I/O.
+	All are in the detail namespace.
+	
+	* StreamInfo: Special class containing extra information needed 
+	to process HepMC ascii I/O.  This class is initialized by a call 
+	to a custom iomanip when any I/O stream is initialized and deleted
+	by the stream destructor.  Each stream has a separate instance.
+
+	* CommonIO is no longer necessary and has been removed.
+
+	* GenEvent:  Add streaming input and output operators.
+	Add free functions to be used with streaming I/O: set_input_units,
+	write_HepMC_IO_block_begin, and write_HepMC_IO_block_end.
+
+2009-03-02  Lynn Garren
+	
+	* HeavyIon:  Add streaming input and output operators.
+	Add is_valid() method.
+
+	* PdfInfo:  Add streaming input and output operators.
+	Add is_valid() method.
 
 2009-01-29  Lynn Garren
 
@@ -9,8 +63,9 @@
 	HepMC/GenEvent.h includes HepMCDefs.h.
 	* HepMC/Version.h: Use new HEPMC_VERSION macro.
 	
-	* HepMC/GenParticle: add is_undecayed(), has_decayed(), and is_beam_particle() 
-	convenience methods.  Test these methods in test/testHepMC.
+	* HepMC/GenParticle: add is_undecayed(), has_decayed(), 
+	and is_beam_particle() convenience methods.  
+	Test these methods in test/testHepMC.
 
 2009-01-28  Lynn Garren
 

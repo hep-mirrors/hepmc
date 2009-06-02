@@ -19,17 +19,18 @@ NORMAL_UNINSTALL = :
 check_PROGRAMS = testSimpleVector$(EXEEXT) testUnits$(EXEEXT) \
 	testPrintBug$(EXEEXT) testHepMC$(EXEEXT) \
 	testHepMCIteration$(EXEEXT) testMass$(EXEEXT) \
-	testMultipleCopies$(EXEEXT)
+	testMultipleCopies$(EXEEXT) testStreamIO$(EXEEXT)
 TESTS = testSimpleVector$(EXEEXT) testUnits$(EXEEXT) testHepMC.sh \
-	testHepMCIteration.sh testMass.sh testPrintBug.sh \
+	testHepMCIteration.sh testMass.sh testStreamIO.sh testPrintBug.sh \
 	testMultipleCopies$(EXEEXT)
 XFAIL_TESTS =
 subdir = test
 DIST_COMMON = $(srcdir)/Makefile.am $(srcdir)/Makefile.in \
 	$(srcdir)/testHepMC.cc.in $(srcdir)/testHepMC.sh.in \
-	$(srcdir)/testHepMCIteration.cc.in \
-	$(srcdir)/testHepMCIteration.sh.in $(srcdir)/testMass.cc.in \
-	$(srcdir)/testMass.sh.in $(srcdir)/testMultipleCopies.cc.in \
+	$(srcdir)/testHepMCIteration.cc.in $(srcdir)/testHepMCIteration.sh.in \
+	$(srcdir)/testMass.cc.in $(srcdir)/testMass.sh.in \
+	$(srcdir)/testStreamIO.cc.in $(srcdir)/testStreamIO.sh.in \
+	$(srcdir)/testMultipleCopies.cc.in \
 	$(srcdir)/testPrintBug.sh.in
 
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
@@ -38,9 +39,10 @@ am__configure_deps = $(am__aclocal_m4_deps) $(CONFIGURE_DEPENDENCIES) \
 	$(ACLOCAL_M4)
 mkinstalldirs = $(install_sh) -d
 CONFIG_CLEAN_FILES = testHepMC.cc testMass.cc testHepMCIteration.cc \
-	testMultipleCopies.cc testHepMC.sh \
-	testMass.sh testHepMCIteration.sh testPrintBug.sh
-am_testHepMC_OBJECTS = testHepMC.$(OBJEXT)
+	testMultipleCopies.cc testStreamIO.cc \
+	testHepMC.sh testMass.sh testHepMCIteration.sh testPrintBug.sh \
+	testStreamIO.sh
+am_testHepMC_OBJECTS = testHepMC.$(OBJEXT) testHepMCMethods.$(OBJEXT)
 testHepMC_OBJECTS = $(am_testHepMC_OBJECTS)
 testHepMC_DEPENDENCIES = $(top_builddir)/src/HepMC.lib
 am_testHepMCIteration_OBJECTS = testHepMCIteration.$(OBJEXT)
@@ -49,6 +51,9 @@ testHepMCIteration_DEPENDENCIES = $(top_builddir)/src/HepMC.lib
 am_testMass_OBJECTS = testMass.$(OBJEXT)
 testMass_OBJECTS = $(am_testMass_OBJECTS)
 testMass_DEPENDENCIES = $(top_builddir)/src/HepMC.lib
+am_testStreamIO_OBJECTS = testStreamIO.$(OBJEXT) testHepMCMethods.$(OBJEXT)
+testStreamIO_OBJECTS = $(am_testStreamIO_OBJECTS)
+testStreamIO_DEPENDENCIES = $(top_builddir)/src/HepMC.lib
 am_testMultipleCopies_OBJECTS = testMultipleCopies.$(OBJEXT)
 testMultipleCopies_OBJECTS = $(am_testMultipleCopies_OBJECTS)
 testMultipleCopies_DEPENDENCIES = $(top_builddir)/src/HepMC.lib
@@ -71,10 +76,12 @@ CXXLINK = $(CXXLD) $(AM_CXXFLAGS) $(CXXFLAGS) $(LDFLAGS) /Fe$@
 SOURCES = $(testHepMC_SOURCES) \
 	$(testHepMCIteration_SOURCES) $(testMass_SOURCES) \
 	$(testMultipleCopies_SOURCES) $(testPrintBug_SOURCES) \
+	$(testStreamIO_SOURCES) \
 	$(testSimpleVector_SOURCES) $(testUnits_SOURCES)
 DIST_SOURCES = $(testHepMC_SOURCES) \
 	$(testHepMCIteration_SOURCES) $(testMass_SOURCES) \
 	$(testMultipleCopies_SOURCES) $(testPrintBug_SOURCES) \
+	$(testStreamIO_SOURCES) \
 	$(testSimpleVector_SOURCES) $(testUnits_SOURCES)
 ETAGS = etags
 CTAGS = ctags
@@ -144,14 +151,15 @@ LDADD = $(top_builddir)/src/HepMC.lib \
 # how to specify output file
 OUTFLAG = /Fo$@
 check_SCRIPTS = testHepMC.sh testHepMCIteration.sh testPrintBug.sh \
-                testMass.sh
+                testMass.sh testStreamIO.sh
 
 
 # Identify the dependencies on a per-test basis:
 testSimpleVector_SOURCES = testSimpleVector.cc
 testUnits_SOURCES = testUnits.cc
-testHepMC_SOURCES = testHepMC.cc
+testHepMC_SOURCES = testHepMC.cc testHepMCMethods.cc
 testMass_SOURCES = testMass.cc
+testStreamIO_SOURCES = testStreamIO.cc testHepMCMethods.cc
 testHepMCIteration_SOURCES = testHepMCIteration.cc
 testMultipleCopies_SOURCES = testMultipleCopies.cc
 testPrintBug_SOURCES = testPrintBug.cc
@@ -161,33 +169,37 @@ testSimpleVector_LDADD = $(top_builddir)/src/HepMC.lib
 testUnits_LDADD = $(top_builddir)/src/HepMC.lib
 testHepMC_LDADD = $(top_builddir)/src/HepMC.lib
 testMass_LDADD = $(top_builddir)/src/HepMC.lib
+testStreamIO_LDADD = $(top_builddir)/src/HepMC.lib
 testHepMCIteration_LDADD = $(top_builddir)/src/HepMC.lib
 testMultipleCopies_LDADD = $(top_builddir)/src/HepMC.lib
 testPrintBug_LDADD = $(top_builddir)/src/HepMC.lib
 
-#testHepMC_LDFLAGS          = -Wl,--rpath -Wl,$(top_builddir)/src/.libs \
-#                             -Wl,--rpath -Wl,$(top_builddir)/fio/.libs
-#testMass_LDFLAGS           = -Wl,$(top_builddir)/fio/.libs
-#testHepMCIteration_LDFLAGS = -Wl,$(top_builddir)/fio/.libs
-#testMultipleCopies_LDFLAGS = -Wl,$(top_builddir)/fio/.libs
-
 # Identify input data file(s) and prototype output file(s):
-EXTRA_DIST = testHepMC.input testHepMC.output testHepMCParticle.output \
-             testPrintBug.output testHepMCExtended.dat \
-	     testHepMCIteration.output testHepMCIterationExtended.output \
-	     testAscii.input testAscii.dat
+EXTRA_DIST = testIOGenEvent.input \
+             testHepMCVarious.input \
+             testHepMC.output \
+	     testHepMCParticle.output \
+             testPrintBug.output \
+	     testStreamIO.output \
+	     testHepMC.dat \
+	     testHepMCIteration.dat \
+	     testMass1.dat \
+	     testStreamIOVarious.dat
 
 
 # Identify generated file(s) to be removed when 'make clean' is requested:
-CLEANFILES = testHepMC.out testHepMCParticle.out testHepMCExtended.out \
-             testPrintBug.out testHepMCIterationExtended.out testMass.out \
-	     testAscii.dat testHepMCExtended.dat testHepMCIteration.out \
-             testHepMCIteration.dat testMass1.dat testMass2.dat \
-             testHepMC.cout testHepMCIteration.cout \
-	     testMultipleCopies.out testHepMCVarious.out testIOAscii.dat \
-	     testMultipleCopies1.dat testMultipleCopies2.dat \
-	     testMultipleOriginals.dat testIOHepMCExtended.dat \
-	     testUnits.out
+CLEANFILES = testHepMC.cout testStreamIO.cout \
+             testHepMCIteration.cout \
+             testHepMC.out testHepMCParticle.out \
+             testPrintBug.out testMass.out \
+	     testAscii.out testHepMCIteration.out testHepMCprecision.out \
+             testHepMCIteration.out testMass1.out testMass2.out \
+	     testMultipleCopies.out testHepMCVarious.out testIOAscii.out \
+	     testMultipleCopies1.out testMultipleCopies2.out \
+	     testMultipleOriginals.out testUnits.out \
+	     testCrossSection.out testCrossSection2.out \
+	     testStreamIO.out testStreamIOParticle.out testStreamIOVarious.out \
+	     testStreamIO2.out testStreamIOprecision.out testStreamIO.cout
 
 all: all-am
 
@@ -214,6 +226,8 @@ testHepMC.cc: $(top_builddir)/config.status $(srcdir)/testHepMC.cc.in
 	cd $(top_builddir) && $(SHELL) ./config.status $(subdir)/$@
 testMass.cc: $(top_builddir)/config.status $(srcdir)/testMass.cc.in
 	cd $(top_builddir) && $(SHELL) ./config.status $(subdir)/$@
+testStreamIO.cc: $(top_builddir)/config.status $(srcdir)/testStreamIO.cc.in
+	cd $(top_builddir) && $(SHELL) ./config.status $(subdir)/$@
 testHepMCIteration.cc: $(top_builddir)/config.status $(srcdir)/testHepMCIteration.cc.in
 	cd $(top_builddir) && $(SHELL) ./config.status $(subdir)/$@
 testMultipleCopies.cc: $(top_builddir)/config.status $(srcdir)/testMultipleCopies.cc.in
@@ -221,6 +235,8 @@ testMultipleCopies.cc: $(top_builddir)/config.status $(srcdir)/testMultipleCopie
 testHepMC.sh: $(top_builddir)/config.status $(srcdir)/testHepMC.sh.in
 	cd $(top_builddir) && $(SHELL) ./config.status $(subdir)/$@
 testMass.sh: $(top_builddir)/config.status $(srcdir)/testMass.sh.in
+	cd $(top_builddir) && $(SHELL) ./config.status $(subdir)/$@
+testStreamIO.sh: $(top_builddir)/config.status $(srcdir)/testStreamIO.sh.in
 	cd $(top_builddir) && $(SHELL) ./config.status $(subdir)/$@
 testHepMCIteration.sh: $(top_builddir)/config.status $(srcdir)/testHepMCIteration.sh.in
 	cd $(top_builddir) && $(SHELL) ./config.status $(subdir)/$@
@@ -242,6 +258,9 @@ testHepMCIteration$(EXEEXT): $(testHepMCIteration_OBJECTS) $(testHepMCIteration_
 testMass$(EXEEXT): $(testMass_OBJECTS) $(testMass_DEPENDENCIES) 
 	@rm -f testMass$(EXEEXT)
 	$(CXXLINK) $(testMass_OBJECTS) $(testMass_LDADD) $(LIBS)
+testStreamIO$(EXEEXT): $(testStreamIO_OBJECTS) $(testStreamIO_DEPENDENCIES) 
+	@rm -f testStreamIO$(EXEEXT)
+	$(CXXLINK) $(testStreamIO_OBJECTS) $(testStreamIO_LDADD) $(LIBS)
 testMultipleCopies$(EXEEXT): $(testMultipleCopies_OBJECTS) $(testMultipleCopies_DEPENDENCIES) 
 	@rm -f testMultipleCopies$(EXEEXT)
 	$(CXXLINK) $(testMultipleCopies_OBJECTS) $(testMultipleCopies_LDADD) $(LIBS)
@@ -263,10 +282,12 @@ distclean-compile:
 
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/testHepMC.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/testHepMCIteration.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/testHepMCMethods.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/testMass.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/testMultipleCopies.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/testPrintBug.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/testSimpleVector.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/testStreamIO.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/testUnits.Po@am__quote@
 
 .cc.obj:

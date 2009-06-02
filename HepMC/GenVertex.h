@@ -197,6 +197,11 @@ namespace HepMC {
 	    /// root vertex of this iteration
 	    const GenVertex*  vertex_root() const;
 	private:
+	    /// Pre-fix increment -- is not allowed
+	    edge_iterator& operator--(void);
+	    /// Post-fix increment -- is not allowed
+	    edge_iterator  operator--(int);
+	private:
 	    const GenVertex*  m_vertex;
 	    IteratorRange  m_range;
 	    std::vector<HepMC::GenParticle*>::const_iterator m_set_iter;
@@ -273,6 +278,12 @@ namespace HepMC {
 	    /// copy recursive iterator
 	    void    copy_recursive_iterator_( const vertex_iterator* 
 					      recursive_v_iter );
+	private:
+	    /// Pre-fix increment -- is not allowed 
+	    vertex_iterator&    operator--(void);
+	    /// Post-fix increment -- is not allowed 
+	    vertex_iterator     operator--(int);
+
 	private:
 	    GenVertex*       m_vertex;   // the vertex associated to this iter
 	    IteratorRange    m_range;

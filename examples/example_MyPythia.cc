@@ -49,7 +49,6 @@
 #include "HepMC/PythiaWrapper.h"
 #include "HepMC/IO_HEPEVT.h"
 #include "HepMC/IO_GenEvent.h"
-#include "HepMC/IO_Ascii.h"
 #include "HepMC/IO_AsciiParticles.h"
 #include "HepMC/GenEvent.h"
 #include "PythiaHelper.h"

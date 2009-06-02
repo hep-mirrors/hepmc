@@ -34,6 +34,7 @@ EXTRA_DIST = \
     example_PythiaParticle.cc	\
     example_ReadMyPythia.cc	\
     example_UsingIterators.cc \
+    example_PythiaStreamIO.cc \
     testHerwigCopies.cc	\
     testPythiaCopies.cc	\
     initPythia.cc \

@@ -23,10 +23,10 @@ int main() {
 	// declare an input strategy
 	HepMC::IO_GenEvent ascii_in("@srcdir@/testIOGenEvent.input",std::ios::in);
 	// declare another input strategy 
-	HepMC::IO_GenEvent ascii_in2("@srcdir@/testAscii.input",std::ios::in);
-	std::ofstream out1( "testMultipleOriginals.dat" );
-	std::ofstream out2( "testMultipleCopies1.dat" );
-	std::ofstream out3( "testMultipleCopies2.dat" );
+	HepMC::IO_GenEvent ascii_in2("@srcdir@/testHepMCVarious.input",std::ios::in);
+	std::ofstream out1( "testMultipleOriginals.out" );
+	std::ofstream out2( "testMultipleCopies1.out" );
+	std::ofstream out3( "testMultipleCopies2.out" );
 	// declare an instance of the event selection predicate
 	IsGoodEvent is_good_event;
 

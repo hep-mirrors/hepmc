@@ -123,6 +123,7 @@ namespace HepMC {
 #include "HepMC/GenVertex.h"
 #include "HepMC/GenParticle.h"
 #include "HepMC/WeightContainer.h"
+#include "HepMC/GenCrossSection.h"
 #include "HepMC/HeavyIon.h"
 #include "HepMC/PdfInfo.h"
 #include "HepMC/Units.h"
@@ -146,7 +147,7 @@ namespace HepMC {
 	friend class GenParticle;
 	friend class GenVertex;  
     public:
-        /// default constructor creates null pointers to HeavyIon and PdfInfo
+        /// default constructor creates null pointers to HeavyIon, PdfInfo, and GenCrossSection
 	GenEvent( int signal_process_id = 0, int event_number = 0,
 		  GenVertex* signal_vertex = 0,
 		  const WeightContainer& weights = std::vector<double>(),
@@ -202,6 +203,9 @@ namespace HepMC {
 	bool valid_beam_particles() const;
 	/// pair of pointers to the two incoming beam particles
 	std::pair<HepMC::GenParticle*,HepMC::GenParticle*> beam_particles() const;
+	/// check GenEvent for validity
+	/// A GenEvent is presumed valid if it has particles and/or vertices.
+	bool is_valid() const;
 
 	/// direct access to the weights container is allowed. 
 	/// Thus you can use myevt.weights()[2];
@@ -211,11 +215,14 @@ namespace HepMC {
 	WeightContainer&        weights(); //!< direct access to WeightContainer
 	const WeightContainer&  weights() const; //!< direct access to WeightContainer
 
+	/// access the GenCrossSection container if it exists
+	GenCrossSection const *     cross_section() const;
+	GenCrossSection*            cross_section();
 	/// access the HeavyIon container if it exists
-	HeavyIon const *          heavy_ion() const;
+	HeavyIon const *         heavy_ion() const;
 	HeavyIon*                heavy_ion();
 	/// access the PdfInfo container if it exists
-	PdfInfo const *           pdf_info() const;
+	PdfInfo const *          pdf_info() const;
 	PdfInfo*                 pdf_info();
 
 	/// vector of integers containing information about the random state
@@ -236,6 +243,9 @@ namespace HepMC {
 	Units::MomentumUnit momentum_unit() const;
 	/// Units used by the GenVertex position FourVector.
 	Units::LengthUnit   length_unit()   const;
+	
+	std::ostream& write(std::ostream&);
+	std::istream& read(std::istream&);
 
 	/////////////////////
 	// mutator methods //
@@ -261,6 +271,8 @@ namespace HepMC {
 	/// provide random state information
 	void set_random_states( const std::vector<long>& randomstates );
 
+	/// provide a pointer to the GenCrossSection container
+	void set_cross_section( const GenCrossSection& );
 	/// provide a pointer to the HeavyIon container
 	void set_heavy_ion( const HeavyIon& ion );
 	/// provide a pointer to the PdfInfo container
@@ -320,6 +332,11 @@ namespace HepMC {
 	    /// const iterator to a vertex map
 	    std::map<int,HepMC::GenVertex*,std::greater<int> >::const_iterator 
 	                                                        m_map_iterator;
+	private:
+	    /// Pre-fix increment -- is not allowed
+	    vertex_const_iterator&  operator--(void);
+	    /// Post-fix increment -- is not allowed
+	    vertex_const_iterator   operator--(int);
 	};
 	friend class vertex_const_iterator;
 	/// begin vertex iteration
@@ -377,6 +394,12 @@ namespace HepMC {
 	    /// iterator to the vertex map
 	    std::map<int,HepMC::GenVertex*,std::greater<int> >::iterator 
 	                                                       m_map_iterator;
+	private:
+	    /// Pre-fix increment
+	    vertex_iterator&  operator--(void);
+	    /// Post-fix increment
+	    vertex_iterator   operator--(int);
+
 	};
 	friend class vertex_iterator;
 	/// begin vertex iteration
@@ -439,6 +462,11 @@ namespace HepMC {
 	protected:
 	    /// const iterator to the GenParticle map
 	    std::map<int,HepMC::GenParticle*>::const_iterator m_map_iterator;
+	private:
+	    /// Pre-fix increment
+	    particle_const_iterator&  operator--(void);
+	    /// Post-fix increment
+	    particle_const_iterator   operator--(int);
 	};	
 	friend class particle_const_iterator;
 	/// begin particle iteration
@@ -492,6 +520,11 @@ namespace HepMC {
 	protected:
 	    /// iterator for GenParticle map
 	    std::map<int,HepMC::GenParticle*>::iterator m_map_iterator;
+	private:
+            /// Pre-fix increment
+	    particle_iterator&  operator--(void);
+            /// Post-fix increment
+	    particle_iterator   operator--(int);
 	};
 	friend class particle_iterator;
 	/// begin particle iteration
@@ -526,6 +559,22 @@ namespace HepMC {
         /// internal method used when converting length units
 	bool use_length_unit( Units::LengthUnit );
 	bool use_length_unit( std::string& );
+	
+	// the following internal methods are used by read() and write()
+
+	/// send the beam particles to ASCII output
+	std::ostream & write_beam_particles( std::ostream &, 
+                	     std::pair<HepMC::GenParticle *,HepMC::GenParticle *> );
+	/// send a GenVertex to ASCII output
+	std::ostream & write_vertex( std::ostream &, GenVertex const * );
+	/// send a GenParticle to ASCII output
+	std::ostream & write_particle( std::ostream&, GenParticle const * );
+	/// find the file type
+	std::istream & find_file_type( std::istream & );
+	/// find the key at the end of the block
+	std::istream & find_end_key( std::istream &, int & );
+        /// get unit information from ASCII input
+        std::istream & read_units( std::istream & );
 
     private: // data members
 	int                   m_signal_process_id;
@@ -544,13 +593,30 @@ namespace HepMC {
 
 	std::map< int,HepMC::GenVertex*,std::greater<int> >   m_vertex_barcodes;
 	std::map< int,HepMC::GenParticle*,std::less<int> >    m_particle_barcodes;
+	GenCrossSection*         m_cross_section; 	      // undefined by default
 	HeavyIon*             m_heavy_ion; 	      // undefined by default
 	PdfInfo*              m_pdf_info; 	      // undefined by default
 	Units::MomentumUnit   m_momentum_unit;    // default value set by configure switch
 	Units::LengthUnit     m_position_unit;    // default value set by configure switch
 
-	//static unsigned int   s_counter;
     };
+
+
+    ///////////////////////////
+    // IO Free Functions     //
+    ///////////////////////////
+  
+    /// standard streaming IO output operator
+    std::ostream & operator << (std::ostream &, GenEvent &);
+    /// standard streaming IO input operator
+    std::istream & operator >> (std::istream &, GenEvent &);
+    /// set the units for this input stream
+    std::istream & set_input_units(std::istream &, 
+                                   Units::MomentumUnit, Units::LengthUnit);
+    /// Explicitly write the begin block lines that IO_GenEvent uses
+    std::ostream & write_HepMC_IO_block_begin(std::ostream & );
+    /// Explicitly write the end block line that IO_GenEvent uses
+    std::ostream & write_HepMC_IO_block_end(std::ostream & );
 
 
     ///////////////////////////
@@ -597,6 +663,12 @@ namespace HepMC {
     inline const WeightContainer& GenEvent::weights() const 
     { return m_weights; }
 
+    inline GenCrossSection const * GenEvent::cross_section() const 
+    { return m_cross_section; }
+
+    inline GenCrossSection*  GenEvent::cross_section()  
+    { return m_cross_section; }
+
     inline HeavyIon const * GenEvent::heavy_ion() const 
     { return m_heavy_ion; }
 
@@ -639,11 +711,23 @@ namespace HepMC {
 	if ( m_signal_process_vertex ) add_vertex( m_signal_process_vertex );
     }
 
+    inline void GenEvent::set_cross_section( const GenCrossSection& xs )
+    { 
+        delete m_cross_section;
+        m_cross_section = new GenCrossSection(xs); 
+    }
+
     inline void GenEvent::set_heavy_ion( const HeavyIon& ion )
-    { m_heavy_ion = new HeavyIon(ion); }
+    { 
+        delete m_heavy_ion;
+        m_heavy_ion = new HeavyIon(ion); 
+    }
 
     inline void GenEvent::set_pdf_info( const PdfInfo& p )
-    { m_pdf_info = new PdfInfo(p); }
+    { 
+        delete m_pdf_info;
+        m_pdf_info = new PdfInfo(p); 
+    }
 
     inline void GenEvent::set_random_states( const std::vector<long>&
 					     randomstates )

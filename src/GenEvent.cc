@@ -13,7 +13,9 @@
 #include <iomanip>
 
 #include "HepMC/GenEvent.h"
+#include "HepMC/GenCrossSection.h"
 #include "HepMC/Version.h"
+#include "HepMC/StreamHelpers.h"
 
 namespace HepMC {
 
@@ -37,6 +39,7 @@ namespace HepMC {
 	m_random_states(random_states),
 	m_vertex_barcodes(),
 	m_particle_barcodes(),
+	m_cross_section(0), 
 	m_heavy_ion(0), 
 	m_pdf_info(0),
 	m_momentum_unit(mom),
@@ -70,6 +73,7 @@ namespace HepMC {
 	m_random_states(random_states), 
 	m_vertex_barcodes(),
 	m_particle_barcodes(),
+	m_cross_section(0), 
 	m_heavy_ion( new HeavyIon(ion) ), 
 	m_pdf_info( new PdfInfo(pdf) ),
 	m_momentum_unit(mom),
@@ -101,6 +105,7 @@ namespace HepMC {
 	m_random_states(random_states),
 	m_vertex_barcodes(),
 	m_particle_barcodes(),
+	m_cross_section(0), 
 	m_heavy_ion(0), 
 	m_pdf_info(0),
 	m_momentum_unit(mom),
@@ -135,6 +140,7 @@ namespace HepMC {
 	m_random_states(random_states), 
 	m_vertex_barcodes(),
 	m_particle_barcodes(),
+	m_cross_section(0), 
 	m_heavy_ion( new HeavyIon(ion) ), 
 	m_pdf_info( new PdfInfo(pdf) ),
 	m_momentum_unit(mom),
@@ -161,13 +167,13 @@ namespace HepMC {
 	m_random_states        ( /* inevent.m_random_states */ ),
 	m_vertex_barcodes      ( /* inevent.m_vertex_barcodes */ ),
 	m_particle_barcodes    ( /* inevent.m_particle_barcodes */ ),
+	m_cross_section        ( inevent.cross_section() ? new GenCrossSection(*inevent.cross_section()) : 0 ),
 	m_heavy_ion            ( inevent.heavy_ion() ? new HeavyIon(*inevent.heavy_ion()) : 0 ),
 	m_pdf_info             ( inevent.pdf_info() ? new PdfInfo(*inevent.pdf_info()) : 0 ),
 	m_momentum_unit        ( inevent.momentum_unit() ),
 	m_position_unit        ( inevent.length_unit() )
     {
 	/// deep copy - makes a copy of all vertices!
-	//++s_counter;
 	//
 
 	// 1. create a NEW copy of all vertices from inevent
@@ -233,6 +239,7 @@ namespace HepMC {
 	m_random_states.swap(     other.m_random_states  );
 	m_vertex_barcodes.swap(   other.m_vertex_barcodes );
 	m_particle_barcodes.swap( other.m_particle_barcodes );
+	std::swap(m_cross_section        , other.m_cross_section        );
 	std::swap(m_heavy_ion            , other.m_heavy_ion            );
 	std::swap(m_pdf_info             , other.m_pdf_info             );
 	std::swap(m_momentum_unit       , other.m_momentum_unit       );
@@ -251,12 +258,12 @@ namespace HepMC {
     GenEvent::~GenEvent() 
     {
 	/// Deep destructor.
-	/// deletes all vertices/particles in this evt
-	///
+	/// deletes all vertices/particles in this GenEvent
+	/// deletes the associated HeavyIon and PdfInfo
 	delete_all_vertices();
+	delete m_cross_section;
 	delete m_heavy_ion;
 	delete m_pdf_info;
-	//--s_counter;
     }
 
     GenEvent& GenEvent::operator=( const GenEvent& inevent ) 
@@ -280,10 +287,6 @@ namespace HepMC {
 	     << ( signal_process_vertex() ? signal_process_vertex()->barcode()
 		  : 0 )
 	     << "\n";
-	//ostr << " Current Memory Usage: " 
-	//     << GenEvent::counter() << " events, "
-	//     << GenVertex::counter() << " vertices, "
-	//     << GenParticle::counter() << " particles.\n"; 
 	write_units( ostr );
 	ostr << " Entries this event: " << vertices_size() << " vertices, "
 	     << particles_size() << " particles.\n"; 
@@ -366,19 +369,26 @@ namespace HepMC {
 	/// deletes all vertices/particles in this evt
 	///
 	delete_all_vertices();
+	// remove existing objects and set pointers to null
+	delete m_cross_section;
+	m_cross_section = 0;
 	delete m_heavy_ion;
+	m_heavy_ion = 0;
 	delete m_pdf_info;
+	m_pdf_info = 0;
 	m_signal_process_id = 0;
         m_beam_particle_1 = 0;
 	m_beam_particle_2 = 0;
 	m_event_number = 0;
+	m_mpi = -1;
 	m_event_scale = -1;
 	m_alphaQCD = -1;
 	m_alphaQED = -1;
 	m_weights = std::vector<double>();
 	m_random_states = std::vector<long>();
-	//m_momentum_unit = ;
-	//m_position_unit = ;
+	// resetting unit information
+	m_momentum_unit = Units::default_momentum_unit();
+	m_position_unit = Units::default_length_unit();
         // error check just to be safe
 	if ( m_vertex_barcodes.size() != 0 
 	     || m_particle_barcodes.size() != 0 ) {
@@ -387,10 +397,6 @@ namespace HepMC {
             std::cerr << "Number vtx,particle the event after deleting = "
                       << m_vertex_barcodes.size() << "  " 
 		      << m_particle_barcodes.size() << std::endl;
-            //std::cerr << "Total Number vtx,particle in memory "
-             //         << "after method called = "
-             //         << GenVertex::counter() << "\t"
-		//      << GenParticle::counter() << std::endl;
         }
 	return;
     }
@@ -419,10 +425,6 @@ namespace HepMC {
             std::cerr << "Number vtx,particle the event after deleting = "
                       << m_vertex_barcodes.size() << "  " 
 		      << m_particle_barcodes.size() << std::endl;
-            //std::cerr << "Total Number vtx,particle in memory "
-            //          << "after method called = "
-            //          << GenVertex::counter() << "\t"
-		//      << GenParticle::counter() << std::endl;
 	}
     }
     
@@ -649,5 +651,108 @@ namespace HepMC {
 	else std::cerr << "GenEvent::use_length_unit ERROR: use either MEV or GEV\n";
 	return false;
     }  
+
+    bool GenEvent::is_valid() const {
+        /// A GenEvent is presumed valid if it has both associated
+	/// particles and vertices.   No other information is checked.
+        if ( vertices_empty() ) return false;
+	if ( particles_empty() ) return false;
+	return true;
+    }
+
+    std::ostream & GenEvent::write_beam_particles(std::ostream & os, 
+                	 std::pair<HepMC::GenParticle *,HepMC::GenParticle *> pr )
+    {
+	GenParticle* p = pr.first;
+	if(!p) {
+	   detail::output( os, 0 );
+	} else {
+	   detail::output( os, p->barcode() );
+	}
+	p = pr.second;
+	if(!p) {
+	   detail::output( os, 0 );
+	} else {
+	   detail::output( os, p->barcode() );
+	}
+
+	return os;
+    }
+
+    std::ostream & GenEvent::write_vertex(std::ostream & os, GenVertex const * v)
+    {
+	if ( !v || !os ) {
+	    std::cerr << "GenEvent::write_vertex !v||!os, "
+		      << "v="<< v << " setting badbit" << std::endl;
+	    os.clear(std::ios::badbit); 
+	    return os;
+	}
+	// First collect info we need
+	// count the number of orphan particles going into v
+	int num_orphans_in = 0;
+	for ( GenVertex::particles_in_const_iterator p1
+		  = v->particles_in_const_begin();
+	      p1 != v->particles_in_const_end(); ++p1 ) {
+	    if ( !(*p1)->production_vertex() ) ++num_orphans_in;
+	}
+	//
+	os << 'V';
+	detail::output( os, v->barcode() ); // v's unique identifier
+	detail::output( os, v->id() );
+	detail::output( os, v->position().x() );
+	detail::output( os, v->position().y() );
+	detail::output( os, v->position().z() );
+	detail::output( os, v->position().t() );
+	detail::output( os, num_orphans_in );
+	detail::output( os, (int)v->particles_out_size() );
+	detail::output( os, (int)v->weights().size() );
+	for ( WeightContainer::const_iterator w = v->weights().begin(); 
+	      w != v->weights().end(); ++w ) {
+	    detail::output( os, *w );
+	}
+	detail::output( os,'\n');
+	// incoming particles
+	for ( GenVertex::particles_in_const_iterator p2 
+		  = v->particles_in_const_begin();
+	      p2 != v->particles_in_const_end(); ++p2 ) {
+	    if ( !(*p2)->production_vertex() ) {
+		write_particle( os, *p2 );
+	    }
+	}
+	// outgoing particles
+	for ( GenVertex::particles_out_const_iterator p3 
+		  = v->particles_out_const_begin();
+	      p3 != v->particles_out_const_end(); ++p3 ) {
+	    write_particle( os, *p3 );
+	}
+	return os;
+    }
+
+    std::ostream & GenEvent::write_particle( std::ostream & os, GenParticle const * p )
+    {
+	if ( !p || !os ) {
+	    std::cerr << "GenEvent::write_particle !p||!os, "
+		      << "p="<< p << " setting badbit" << std::endl;
+	    os.clear(std::ios::badbit); 
+	    return os;
+	}
+	os << 'P';
+	detail::output( os, p->barcode() );
+	detail::output( os, p->pdg_id() );
+	detail::output( os, p->momentum().px() );
+	detail::output( os, p->momentum().py() );
+	detail::output( os, p->momentum().pz() );
+	detail::output( os, p->momentum().e() );
+	detail::output( os, p->generated_mass() );
+	detail::output( os, p->status() );
+	detail::output( os, p->polarization().theta() );
+	detail::output( os, p->polarization().phi() );
+	// since end_vertex is oftentimes null, this CREATES a null vertex
+	// in the map
+	detail::output( os,   ( p->end_vertex() ? p->end_vertex()->barcode() : 0 )  );
+	os << ' ' << p->flow() << "\n";
+
+	return os;
+    }
 
 } // HepMC

@@ -10,6 +10,7 @@ EXTRA_DIST = \
     example_MyPythia.cc \
     example_MyPythiaOnlyToHepMC.cc \
     example_UsingIterators.cc \
+    example_PythiaStreamIO.cc \
     testHerwigCopies.cc	\
     testPythiaCopies.cc	\
     initPythia.cc \

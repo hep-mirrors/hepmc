@@ -7,14 +7,14 @@ LDADD = $(top_builddir)/src/libHepMC.la
 # Identify executables needed during testing:
 check_PROGRAMS = testSimpleVector testUnits testPrintBug \
                  testHepMC testHepMCIteration testMass \
-                 testMultipleCopies
+                 testMultipleCopies testStreamIO
 
 check_SCRIPTS = testHepMC.sh testHepMCIteration.sh testPrintBug.sh \
-                testMass.sh
+                testMass.sh testStreamIO.sh
 
 # Identify test(s) to run when 'make check' is requested:
 TESTS = testSimpleVector testUnits \
-        testHepMC.sh testHepMCIteration.sh testMass.sh \
+        testHepMC.sh testHepMCIteration.sh testMass.sh testStreamIO.sh \
         testPrintBug.sh testMultipleCopies
 
 # Identify the test(s) for which failure is the intended outcome:
@@ -23,24 +23,35 @@ XFAIL_TESTS =
 # Identify the dependencies on a per-test basis:
 testSimpleVector_SOURCES   = testSimpleVector.cc
 testUnits_SOURCES          = testUnits.cc
-testHepMC_SOURCES          = testHepMC.cc
+testHepMC_SOURCES          = testHepMC.cc testHepMCMethods.cc
 testMass_SOURCES           = testMass.cc
+testStreamIO_SOURCES       = testStreamIO.cc testHepMCMethods.cc
 testHepMCIteration_SOURCES = testHepMCIteration.cc
 testMultipleCopies_SOURCES = testMultipleCopies.cc
 testPrintBug_SOURCES       = testPrintBug.cc
 
 # Identify input data file(s) and prototype output file(s):
-EXTRA_DIST = testHepMC.input testHepMC.output testHepMCParticle.output \
+EXTRA_DIST = testIOGenEvent.input \
+             testHepMCVarious.input \
+             testHepMC.output \
+	     testHepMCParticle.output \
              testPrintBug.output \
-	     testHepMCIteration.output \
-	     testAscii.input testAscii.dat
+	     testStreamIO.output \
+	     testHepMC.dat \
+	     testHepMCIteration.dat \
+	     testMass1.dat \
+	     testStreamIOVarious.dat
 
 # Identify generated file(s) to be removed when 'make clean' is requested:
-CLEANFILES = testHepMC.out testHepMCParticle.out \
+CLEANFILES = testHepMC.cout testStreamIO.cout \
+             testHepMCIteration.cout \
+             testHepMC.out testHepMCParticle.out \
              testPrintBug.out testMass.out \
-	     testAscii.dat testHepMCIteration.out \
-             testHepMCIteration.dat testMass1.dat testMass2.dat \
-             testHepMC.cout testHepMCIteration.cout \
-	     testMultipleCopies.out testHepMCVarious.out testIOAscii.dat \
-	     testMultipleCopies1.dat testMultipleCopies2.dat \
-	     testMultipleOriginals.dat testUnits.out
+	     testAscii.out testHepMCIteration.out testHepMCprecision.out \
+             testHepMCIteration.out testMass1.out testMass2.out \
+	     testMultipleCopies.out testHepMCVarious.out testIOAscii.out \
+	     testMultipleCopies1.out testMultipleCopies2.out \
+	     testMultipleOriginals.out testUnits.out \
+	     testCrossSection.out testCrossSection2.out \
+	     testStreamIO.out testStreamIOParticle.out testStreamIOVarious.out \
+	     testStreamIO2.out testStreamIOprecision.out testStreamIO.cout

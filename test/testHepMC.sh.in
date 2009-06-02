@@ -12,11 +12,15 @@ OS=`uname`
 case "$OS" in
 CYGWIN*)
   cmd=`@DIFF_Q@ testHepMC.cout @srcdir@/testHepMC.output`
-  cmd1=`sed 's/e+0/e+/g' testHepMC.out   | \
-       sed 's/e-0/e-/g' -   | \
-	@DIFF_Q@ - @srcdir@/testHepMC.dat`
+  cmd1=`sed 's/e-0/e-/g' testHepMC.out | \
+        sed 's/e+0/e+/g' - | \
+        @DIFF_Q@ - @srcdir@/testHepMC.dat`
   #don't compare these on Windows (hopelessly different default output)
   cmd2=
+  cmd3=`sed 's/e-0/e-/g' testCrossSection.out | \
+        sed 's/e+0/e+/g' - | \
+        @DIFF_Q@ - @srcdir@/testCrossSection.dat`
+  cmd4=`@DIFF_Q@ testCrossSection2.out testCrossSection.out`
   ;;
 Darwin*)
   # MacOSX fix
@@ -24,11 +28,15 @@ Darwin*)
   cmd1=`@DIFF_Q@ testHepMC.out @srcdir@/testHepMC.dat`
   cmd2=`sed 's/e-00/e+00/g'  @srcdir@/testHepMCParticle.output | \
 	@DIFF_Q@ - testHepMCParticle.out`
+  cmd3=`@DIFF_Q@ testCrossSection.out @srcdir@/testCrossSection.dat`
+  cmd4=`@DIFF_Q@ testCrossSection2.out testCrossSection.out`
   ;;
 *)
   cmd=`@DIFF_Q@ testHepMC.cout @srcdir@/testHepMC.output`
   cmd1=`@DIFF_Q@ testHepMC.out @srcdir@/testHepMC.dat`
   cmd2=`@DIFF_Q@ testHepMCParticle.out @srcdir@/testHepMCParticle.output`
+  cmd3=`@DIFF_Q@ testCrossSection.out @srcdir@/testCrossSection.dat`
+  cmd4=`@DIFF_Q@ testCrossSection2.out testCrossSection.out`
 esac
 
 if [ -n "$cmd" ]; then
@@ -48,4 +56,17 @@ then
   exit 1;
 fi
 
+if [ -n "$cmd3" ]
+then
+  echo $cmd3
+  exit 1;
+fi
+
+if [ -n "$cmd4" ]
+then
+  echo $cmd4
+  exit 1;
+fi
+
 exit 0;
+

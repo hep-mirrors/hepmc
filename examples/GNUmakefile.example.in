@@ -52,6 +52,7 @@ endif
 		  example_MyPythia.cc	\
 		  example_MyPythiaOnlyToHepMC.cc	\
 		  example_UsingIterators.cc	\
+		  example_PythiaStreamIO.cc	\
 		  testPythiaCopies.cc	\
 		  testHerwigCopies.cc	\
 		  initPythia.cc		\
@@ -63,6 +64,7 @@ endif
 		  example_MyPythia.exe	\
 		  example_MyPythiaOnlyToHepMC.exe	\
 		  example_UsingIterators.exe	\
+		  example_PythiaStreamIO.exe	\
 		  testPythiaCopies.exe	\
 		  testHerwigCopies.exe
 
@@ -137,6 +139,12 @@ example_MyPythia.exe: $(initpydata_OBJ) $(pythia_OBJ) example_MyPythia.o
 example_MyPythiaOnlyToHepMC.exe: $(initpydata_OBJ) $(pythia_OBJ) example_MyPythiaOnlyToHepMC.o
 	@echo "Building $@ ..."
 	$(CXX) $(FLAGS) $(pythia_OBJ) example_MyPythiaOnlyToHepMC.o \
+		$(HepMClib) $(HepMCfiolib) \
+	        $(Pythia_LIB) $(LINK_LIBS) -o $@
+
+example_PythiaStreamIO.exe: $(initpydata_OBJ) $(pythia_OBJ) example_PythiaStreamIO.o
+	@echo "Building $@ ..."
+	$(CXX) $(FLAGS) $(pythia_OBJ) example_PythiaStreamIO.o \
 		$(HepMClib) $(HepMCfiolib) \
 	        $(Pythia_LIB) $(LINK_LIBS) -o $@
 
