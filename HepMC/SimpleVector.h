@@ -82,7 +82,6 @@ public:
 
   double perp2() const;  //!< Transverse component of the spatial vector squared.
   double perp() const;   //!< Transverse component of the spatial vector (R in cylindrical system).
-  double mag() const;    //!< Magnitude of the spatial vector
 
   // Get spatial vector components in spherical coordinate system.
   double theta() const;  //!< The polar angle.
@@ -166,10 +165,8 @@ public:
   double theta() const;  //!< The polar angle.
   double r()     const;  //!< The magnitude
 
-  double mag() const;  //!< The magnitude (r in spherical coordinate system).
-
-  void setPhi(double);  //!< Set phi keeping mag and theta constant (BaBar).
-  void setTheta(double);  //!< Set theta keeping mag and phi constant (BaBar).
+  void setPhi(double);  //!< Set phi keeping magnitude and theta constant (BaBar).
+  void setTheta(double);  //!< Set theta keeping magnitude and phi constant (BaBar).
 
   double perp2() const;  //!< The transverse component squared (rho^2 in cylindrical coordinate system).
   double perp() const;  //!< The transverse component (rho in cylindrical coordinate system).

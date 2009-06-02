@@ -14,6 +14,7 @@ int main()
   
   HepMC::ThreeVector v3copy( v3 );
    
+  double eps = 1.e-15; // allowed differnce between doubles
   int numbad = 0;
  
   double x = v3.x();
@@ -21,10 +22,11 @@ int main()
   double z = v3.z();
   double p2 = v3.perp2();
   double pt = v3.perp();
-  double l = v3.mag();
   double r = v3.r();
   double th = v3.theta();
   double ph = v3.phi();
+  double mag = std::sqrt(x*x + y*y + z*z);
+  double pperp = std::sqrt(x*x + y*y);
 
   vx.set(1., 2., 3.);
   vx.setX(1.1);
@@ -34,6 +36,17 @@ int main()
   vx.setTheta(0.54);
   
   vector3 = v3;
+
+  if( fabs( mag - r ) > eps ) { 
+     std::cout << "different ThreeVector magnitude: " << mag << " " << r << std::endl;
+     std::cout << "difference is : " << ( mag - r ) << std::endl;
+     ++numbad;
+  }
+  if( fabs( pperp - pt ) > eps ) { 
+     std::cout << "different ThreeVector Pt: " << pperp << " " << pt << std::endl;
+     std::cout << "difference is : " << ( pperp - pt ) << std::endl;
+     ++numbad;
+  }
 
   if( v3 == vector3 ) {
   } else {
@@ -64,7 +77,6 @@ int main()
   
    p2 = v4.perp2();
    pt = v4.perp();
-   l = v4.mag();
    th = v4.theta();
    ph = v4.phi();
    r = v4.rho();
@@ -87,6 +99,19 @@ int main()
   vt.setPz(-1.1);
   vt.setE(5.4);
 
+  mag = std::sqrt(x*x + y*y + z*z);
+  pperp = std::sqrt(x*x + y*y);
+  if( fabs( mag - r ) > eps ) { 
+     std::cout << "different FourVector magnitude: " << mag << " " << r << std::endl;
+     std::cout << "difference is : " << ( mag - r ) << std::endl;
+     ++numbad;
+  }
+  if( fabs( pperp - pt ) > eps ) { 
+     std::cout << "different FourVector Pt: " << pperp << " " << pt << std::endl;
+     std::cout << "difference is : " << ( pperp - pt ) << std::endl;
+     ++numbad;
+  }
+
   if( px != x ) { 
      std::cout << "different X values: " << px << " " << x << std::endl;
      ++numbad;
@@ -103,20 +128,24 @@ int main()
      std::cout << "different E values: " << e << " " << t << std::endl;
      ++numbad;
   }
-  if( masssq1 != masssq2 ) { 
+  if( fabs( masssq1 - masssq2 ) > eps ) { 
      std::cout << "different mass sq values: " << masssq1 << " " << masssq2 << std::endl;
+     std::cout << "difference is : " << ( masssq1 - masssq2 ) << std::endl;
      ++numbad;
   }
-  if( mass1 != mass2 ) { 
+  if( fabs( mass1 - mass2 ) > eps ) { 
      std::cout << "different mass values: " << mass1 << " " << mass2 << std::endl;
+     std::cout << "difference is : " << ( mass1 - mass2 ) << std::endl;
      ++numbad;
   }
-  if( pr1 != pr2 ) { 
-     std::cout << "different pr values: " << pr1 << " " << pr2 << std::endl;
+  if( fabs( pr1 - pr2 ) > eps ) { 
+     std::cout << "different pseudorapidity values: " << pr1 << " " << pr2 << std::endl;
+     std::cout << "difference is : " << ( pr1 - pr2 ) << std::endl;
      ++numbad;
   }
-  if( eta1 != eta2 ) { 
+  if( fabs( eta1 - eta2 ) > eps ) { 
      std::cout << "different eta values: " << eta1 << " " << eta2 << std::endl;
+     std::cout << "difference is : " << ( eta1 - eta2 ) << std::endl;
      ++numbad;
   }
   if( v4 == vector ) {

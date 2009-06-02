@@ -48,10 +48,6 @@ inline double FourVector::m() const {
   return mm < 0.0 ? -std::sqrt(-mm) : std::sqrt(mm);
 }
 
-inline double  FourVector::mag() const { 
-return std::sqrt( m_x*m_x + m_y*m_y + m_z*m_z );
-}
-
 inline double FourVector::perp2() const { return m_x*m_x + m_y*m_y; }
 
 inline double FourVector::perp() const { return std::sqrt(perp2()); }
@@ -77,7 +73,7 @@ inline bool FourVector::operator != (const FourVector & v) const {
 }
 
 inline double FourVector::pseudoRapidity() const {
-  double m = mag();
+  double m = std::sqrt( m_x*m_x + m_y*m_y + m_z*m_z );
   if ( m==  0   ) return  0.0;   
   if ( m==  z() ) return  1.0E72;
   if ( m== -z() ) return -1.0E72;
@@ -105,11 +101,9 @@ inline double ThreeVector::phi() const {
   return m_x == 0.0 && m_y == 0.0 ? 0.0 : std::atan2(m_y,m_x);
 }
 
-inline double  ThreeVector::mag() const { 
+inline double ThreeVector::r()    const { 
 return std::sqrt( m_x*m_x + m_y*m_y + m_z*m_z );
 }
-
-inline double ThreeVector::r()    const { return mag(); }
 
 inline void ThreeVector::set(double x, double y, double z) {
   m_x = x;
@@ -124,7 +118,7 @@ inline void ThreeVector::setPhi(double ph) {
 }
 
 inline void ThreeVector::setTheta(double th) { 
-  double ma   = mag();
+  double ma   = r();
   double ph   = phi();
   setX(ma*std::sin(th)*std::cos(ph));
   setY(ma*std::sin(th)*std::sin(ph));
