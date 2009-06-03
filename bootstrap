@@ -16,6 +16,14 @@ autoconf
 
 # To avoid confusing people with failures in the documentation build, 
 # build documents during the bootstrap process.
-cd doc; ./buildDoc.sh
+OS=`uname`
+if [ $OS = "Darwin" ]; then
+  OSname=`uname -s`
+else
+  OSname=`uname -o`
+fi
+if [ $OSname != "Cygwin" ]; then
+  cd doc; ./buildDoc.sh
+fi
 
 # ready to make a source code distribution tarball
