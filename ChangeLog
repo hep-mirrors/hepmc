@@ -1,7 +1,15 @@
 
+2009-06-03  Lynn Garren
+
+	* src/CommonIO.cc: add the capability to process IO_GenEvent ascii
+	output produced by HepMC 2.04 and 2.05. (Extra information is ignored.)
+
 2008-10-08  Lynn Garren
 
 	* test/testHepMCIteration.cc.in: add loop over children to the test
+	
+	* src/IO_Ascii.cc, IO_ExtendedAscii.cc, IO_GenEvent.cc:
+	fix error messages
 
   --------------------------  HepMC-2.03.09  --------------------------
 

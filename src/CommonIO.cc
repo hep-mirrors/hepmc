@@ -4,6 +4,7 @@
 // Author:  Lynn Garren
 //
 // ----------------------------------------------------------------------
+#include <sstream>
 
 #include "HepMC/CommonIO.h"
 #include "HepMC/GenEvent.h"
@@ -232,6 +233,18 @@ bool CommonIO::read_io_genevent( std::istream* is, GenEvent* evt )
     evt->set_event_scale( eventScale );
     evt->set_alphaQCD( alpha_qcd );
     evt->set_alphaQED( alpha_qed );
+    // check to see if we have a Units or GenCrossSection line
+    // ignore these lines if they exist
+    // Units are available in HepMC 2.04
+    // GenCrossSection is available in HepMC 2.05
+    if ( is->peek()=='U' ) { 
+        std::string line;
+	getline( *is, line);
+    }
+    if ( is->peek()=='C' ) { 
+        std::string line;
+	getline( *is, line);
+    }
     // get HeavyIon and PdfInfo
     HeavyIon* ion = read_heavy_ion(is);
     if(ion) evt->set_heavy_ion( *ion );
@@ -313,18 +326,31 @@ PdfInfo* CommonIO::read_pdf_info(std::istream* is)
 {
     // assumes mode has already been checked
     //
-    // test to be sure the next entry is of type "F" then ignore it
-    if ( !(*is) || is->peek() !='F') {
+    // make sure the stream is valid
+    if ( !(*is) ) {
 	std::cerr << "CommonIO::read_pdf_info setting badbit." << std::endl;
 	is->clear(std::ios::badbit); 
 	return false;
     } 
-    is->ignore();
+    //
+    // get the PdfInfo line
+    std::string line;
+    std::getline(*is,line);
+    std::istringstream iline(line);
+    std::string firstc;
+    iline >> firstc;
+    // test to be sure the next entry is of type "F" then ignore it
+    if ( firstc != "F" ) {
+	std::cerr << "CommonIO::read_pdf_info invalid line type: " 
+	          << firstc << std::endl;
+	std::cerr << "CommonIO::read_pdf_info setting badbit." << std::endl;
+	is->clear(std::ios::badbit); 
+	return false;
+    } 
     // read values into temp variables, then create a new PdfInfo object
     int id1 =0, id2 =0;
     double  x1 = 0., x2 = 0., scale = 0., pdf1 = 0., pdf2 = 0.; 
-    *is >> id1 >> id2 >> x1 >> x2 >> scale >> pdf1 >> pdf2;
-    is->ignore(2,'\n');
+    iline >> id1 >> id2 >> x1 >> x2 >> scale >> pdf1 >> pdf2;
     if( id1 == 0 ) return false;
     PdfInfo* pdf = new PdfInfo( id1, id2, x1, x2, scale, pdf1, pdf2);
     //

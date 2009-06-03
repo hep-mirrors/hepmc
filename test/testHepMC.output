@@ -1,3 +1,11 @@
 Processing Event Number 1 its # 1
-Processing Event Number 51 its # 51
-2 out of 100 processed events passed the cuts. Finished.
+3 out of 34 processed events passed the cuts. Finished.
+-------------------------------------------------------
+Use of HepMC/IO_Ascii is deprecated
+-------------------------------------------------------
+Processing Event Number 1 its # 1
+36 events processed. Finished.
+Processing Event Number 1 its # 1
+37 events processed. Finished.
+Processing Event Number 1 its # 1
+7 events processed. Finished.
