@@ -319,7 +319,7 @@ namespace HepMC {
     void IO_Ascii::write_particle_data( const ParticleData* pdata ) {
 	// assumes mode has already been checked
 	if ( !pdata || !m_file ) {
-	    std::cerr << "IO_Ascii::write_vertex !pdata||!m_file, "
+	    std::cerr << "IO_Ascii::write_particle_data !pdata||!m_file, "
 		      << "pdata="<< pdata << " setting badbit" << std::endl;
 	    m_file.clear(std::ios::badbit); 
 	    return;

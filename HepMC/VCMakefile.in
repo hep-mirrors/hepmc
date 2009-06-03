@@ -18,7 +18,8 @@ top_builddir = ..
 subdir = HepMC
 
 DIST_COMMON = $(pkginclude_HEADERS) $(srcdir)/Makefile.am \
-	$(srcdir)/Makefile.in $(srcdir)/VCMakefile.in $(srcdir)/defs.h.in
+	$(srcdir)/Makefile.in $(srcdir)/VCMakefile.in \
+        $(srcdir)/defs.h.in $(srcdir)/HepMCDefs.h.in
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps = $(top_srcdir)/configure.ac
 am__configure_deps = $(am__aclocal_m4_deps) $(CONFIGURE_DEPENDENCIES) \
@@ -73,7 +74,7 @@ pkginclude_HEADERS = \
 	TempParticleMap.h	\
 	Units.h	\
 	Version.h	\
-	defs.h
+	HepMCDefs.h
 
 all: defs.h
 	$(MAKE) $(AM_MAKEFLAGS) all-am

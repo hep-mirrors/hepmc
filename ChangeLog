@@ -1,3 +1,16 @@
+
+2009-06-03  Lynn Garren
+
+	* HepMC/HepMCDefs.h: New header containing HEPMC_HAS_UNITS and 
+	similar macros so users can check for various code features.  
+	HepMC/GenEvent.h includes HepMCDefs.h.
+	* HepMC/Version.h: Use new HEPMC_VERSION macro.
+
+	* src/CommonIO.cc: add the capability to process IO_GenEvent ascii
+	output produced by HepMC 2.05. (Extra information is ignored.)
+	
+	* src/IO_Ascii.cc: fix error message in write_particle_data
+
   --------------------------  HepMC-2.04.01  --------------------------
 
 2008-12-15  Lynn Garren

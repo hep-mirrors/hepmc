@@ -41,4 +41,4 @@ pkginclude_HEADERS = \
 	TempParticleMap.h	\
 	Units.h	\
 	Version.h	\
-	defs.h
+	HepMCDefs.h

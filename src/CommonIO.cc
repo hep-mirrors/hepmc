@@ -249,6 +249,13 @@ bool CommonIO::read_io_genevent( std::istream* is, GenEvent* evt )
     evt->set_alphaQED( alpha_qed );
     // get unit information if it exists
     read_units( is, evt );
+    // check to see if we have a GenCrossSection line
+    // ignore this line if it exists
+    // GenCrossSection is available in HepMC 2.05
+    if ( is->peek()=='C' ) { 
+        std::string line;
+	getline( *is, line);
+    }
     // get HeavyIon and PdfInfo
     HeavyIon* ion = read_heavy_ion(is);
     if(ion) evt->set_heavy_ion( *ion );
