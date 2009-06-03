@@ -23,8 +23,10 @@
 
 	* GenEvent.h, GenVertex.h: explicitly disallow -- iterator operators.
 
-	* IO_GenEvent uses the GenEvent streaming input and output operators.
+	* IO_GenEvent: add precision() to set output precision (default is 16).
+	IO_GenEvent uses the GenEvent streaming input and output operators.
 	Many of the protected methods are no longer useful and have been removed.
+	
 	
 	* IO_Exception class added for use when throwing errors.
 	If invalid data is encountered when reading an event, input will
