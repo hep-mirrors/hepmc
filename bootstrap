@@ -13,8 +13,10 @@ rm -f ltmain.sh
 OS=`uname`
 if [ $OS = "Darwin" ]; then
   glibtoolize --copy
+  OSname=`uname -s`
 else
   libtoolize --copy
+  OSname=`uname -o`
 fi
 aclocal 
 m4dir=`aclocal --print-ac-dir`
@@ -27,6 +29,8 @@ autoconf
 
 # To avoid confusing people with failures in the documentation build, 
 # build documents during the bootstrap process.
-cd doc; ./buildDoc.sh
+if [ $OSname != "Cygwin" ]; then
+  cd doc; ./buildDoc.sh
+fi
 
 # ready to make a source code distribution tarball
