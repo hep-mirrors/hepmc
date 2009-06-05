@@ -30,9 +30,6 @@ EXTRA_DIST = \
     example_MyPythia.cc \
     example_MyPythiaRead.cc \
     example_MyPythiaOnlyToHepMC.cc \
-    example_MyPythiaWithEventSelection.cc \
-    example_PythiaParticle.cc	\
-    example_ReadMyPythia.cc	\
     example_UsingIterators.cc \
     example_PythiaStreamIO.cc \
     testHerwigCopies.cc	\
