@@ -371,6 +371,11 @@ The event is the container class for all (possibly
 inter-connected) vertices in the event and contains process id, event
 number, unit information, weight, and random number state information.
 
+Please note that the barcodes are intended for internal use within HepMC 
+as a unique identifier for the particles and vertices.
+Using the barcode to encode extra information is an abuse of 
+the barcode data member and causes confusion among users. 
+
 Iterators are provided as methods of the vertex and event classes
 which allow easy directed access to information in the C++ Standard
 Template Library (STL) style.

@@ -118,8 +118,14 @@ namespace HepMC {
 
 	///
 	/// The barcode is the particle's reference number, every vertex in the
-	///  event has a unique barcode. Particle barcodes are positive numbers,
-	///  vertex barcodes are negative numbers.
+	/// event has a unique barcode. Particle barcodes are positive numbers,
+	/// vertex barcodes are negative numbers.
+	/// 
+	/// Please note that the barcodes are intended for internal use within 
+	/// HepMC as a unique identifier for the particles and vertices.
+	/// Using the barcode to encode extra information is an abuse of 
+	/// the barcode data member and causes confusion among users. 
+	/// 
 	int                  barcode() const; //!< particle barcode
 	
 	/// Convenience method.  Returns true if status==1

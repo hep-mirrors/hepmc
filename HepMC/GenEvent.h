@@ -118,6 +118,10 @@ namespace HepMC {
 // - You can tell when a particle or vertex is owned, because its 
 //   parent_event() return value will return a pointer to the event which owns
 //   it (or null if its an orphan).
+// - Please note that the barcodes are intended for internal use within HepMC 
+//   as a unique identifier for the particles and vertices.
+//   Using the barcode to encode extra information is an abuse of 
+//   the barcode data member and causes confusion among users. 
 // 
 
 #include "HepMC/GenVertex.h"
@@ -752,6 +756,11 @@ namespace HepMC {
     /// Particle barcodes are always positive integers.
     /// The barcodes are chosen and set automatically when a vertex or particle
     /// comes under the ownership of an event (i.e. it is contained in an event).
+    /// 
+    /// Please note that the barcodes are intended for internal use within 
+    /// HepMC as a unique identifier for the particles and vertices.
+    /// Using the barcode to encode extra information is an abuse of 
+    /// the barcode data member and causes confusion among users. 
     inline GenParticle* GenEvent::barcode_to_particle( int barCode ) const
     { 
 	std::map<int,HepMC::GenParticle*>::const_iterator i 
@@ -772,6 +781,11 @@ namespace HepMC {
     /// Vertex barcodes are always negative integers.
     /// The barcodes are chosen and set automatically when a vertex or particle
     /// comes under the ownership of an event (i.e. it is contained in an event).
+    /// 
+    /// Please note that the barcodes are intended for internal use within 
+    /// HepMC as a unique identifier for the particles and vertices.
+    /// Using the barcode to encode extra information is an abuse of 
+    /// the barcode data member and causes confusion among users. 
     inline GenVertex* GenEvent::barcode_to_vertex( int barCode ) const
     {
 	std::map<int,GenVertex*,std::greater<int> >::const_iterator i 
