@@ -1,3 +1,12 @@
+
+2009-06-23  Lynn Garren
+
+	* HepMC/Flow.h: improve the syntax of the erase() method
+	* test/testFlow.cc: adding a test of the Flow class
+	see https://savannah.cern.ch/bugs/index.php?52240
+	
+	* HepMC/HepMCDefs.h: add this but do NOT include it in GenEvent
+
   --------------------------  HepMC-2.03.10  --------------------------
 
 2009-06-03  Lynn Garren

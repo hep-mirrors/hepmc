@@ -61,4 +61,5 @@ CLEANFILES = testHepMC.out testHepMCParticle.out testHepMCExtended.out \
              testDeprecated.cout testHepMC.cout testHepMCIteration.cout \
 	     testMultipleCopies.out testHepMCVarious.out testIOAscii.dat \
 	     testMultipleCopies1.dat testMultipleCopies2.dat \
-	     testMultipleOriginals.dat testIOHepMCExtended.dat testFlow.out
+	     testMultipleOriginals.dat testIOHepMCExtended.dat \
+	     testFlow.out testFlow.out1 testFlow.out2 testFlow.out3

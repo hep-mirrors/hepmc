@@ -10,6 +10,7 @@
 #include <vector>
 
 #include "HepMC/GenEvent.h"
+#include "HepMC/IO_GenEvent.h"
 
 typedef std::vector<HepMC::GenParticle*> FlowVec;
 
@@ -35,11 +36,15 @@ int main() {
       std::cerr << "cannot open " << outfile << std::endl;
       exit(-1);
     }
+    // declare several IO_GenEvent instances for comparison
+    HepMC::IO_GenEvent xout1("testFlow.out1",std::ios::out);
+    HepMC::IO_GenEvent xout2("testFlow.out2",std::ios::out);
+    HepMC::IO_GenEvent xout3("testFlow.out3",std::ios::out);
    
     int numbad = 0;
 
 
-    // now we build the graph, which will look like
+    // build the graph, which will look like
     //                       p7                   #
     // p1                   /                     #
     //   \v1__p3      p5---v4                     #
@@ -144,15 +149,29 @@ int main() {
       os.width(8);
       os << (*it)->pdg_id() << " " << (*it)->flow(1)  << std::endl;
     }
+	    xout1 << evt;
 
     // try changing and erasing flow
     p2->set_flow(2,345);
+	    xout2 << evt;
     FlowVec result5 = p2->flow().connected_partners( p2->flow().icode(1) );
     if ( result4 != result5 ) {
         std::cerr << "ERROR: list of partners has changed after adding flow" << std::endl;
         ++numbad;
     }
-    p2->flow().erase(2);
+    // the flow method returns a copy,
+    // so we must set the flow again to change it
+    HepMC::Flow f2 = p2->flow();
+    if( f2.erase(2) ) {
+	p2->set_flow( f2 );
+    } else {
+        std::cerr << "ERROR: first erase was NOT successful" << std::endl;
+        ++numbad;
+    }
+    if( p2->flow().erase(2) ) {
+        std::cerr << "ERROR: second erase was successful" << std::endl;
+    }
+	    xout3 << evt;
     FlowVec result6 = p2->flow().connected_partners( p2->flow().icode(1) );
     if ( result4 != result6 ) {
         std::cerr << "ERROR: list of partners has changed after removing flow" << std::endl;
@@ -165,6 +184,8 @@ int main() {
     // deleting the event deletes all contained vertices, and all particles
     // contained in those vertices
     delete evt;
+    
+    if( numbad > 0 ) std::cerr << numbad << " errors in testFlow" << std::endl;
 
     return numbad;
 }
