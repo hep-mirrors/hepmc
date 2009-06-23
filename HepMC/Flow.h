@@ -178,7 +178,8 @@ namespace HepMC {
     inline int Flow::size() const { return (int)m_icode.size(); }
     inline void Flow::clear() { m_icode.clear(); }
     inline bool Flow::erase( int code_index ) {
-	return (bool)m_icode.erase( code_index );
+	// this will return true if the number of elements removed is nonzero
+	return m_icode.erase( code_index )==0 ? false : true ;
     }
     inline Flow::iterator Flow::begin() { return m_icode.begin(); }
     inline Flow::iterator Flow::end() { return m_icode.end(); }
