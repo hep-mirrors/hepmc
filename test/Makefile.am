@@ -25,13 +25,13 @@ endif
 # Identify executables needed during testing:
 check_PROGRAMS = testHepMC testHepMCIteration testMass \
                  testPrintBug testSimpleVector testMultipleCopies \
-		 testDeprecated
+		 testDeprecated testFlow
 
 check_SCRIPTS = testHepMC.sh testHepMCIteration.sh testPrintBug.sh \
-                testMass.sh testDeprecated.sh
+                testMass.sh testDeprecated.sh testFlow.sh
 
 # Identify test(s) to run when 'make check' is requested:
-TESTS = testHepMC.sh testHepMCIteration.sh testMass.sh \
+TESTS = testHepMC.sh testHepMCIteration.sh testMass.sh testFlow.sh \
         testPrintBug.sh testSimpleVector testMultipleCopies testDeprecated.sh
 
 # Identify the test(s) for which failure is the intended outcome:
@@ -39,6 +39,7 @@ XFAIL_TESTS =
 
 # Identify the dependencies on a per-test basis:
 testHepMC_SOURCES          = testHepMC.cc
+testFlow_SOURCES           = testFlow.cc
 testMass_SOURCES           = testMass.cc
 testHepMCIteration_SOURCES = testHepMCIteration.cc
 testMultipleCopies_SOURCES = testMultipleCopies.cc
@@ -50,7 +51,7 @@ testDeprecated_SOURCES     = testDeprecated.cc
 EXTRA_DIST = testHepMC.input testHepMC.output testHepMCParticle.output \
              testPrintBug.output testHepMCExtended.dat \
 	     testHepMCIteration.output testHepMCIterationExtended.output \
-	     testAscii.input testAscii.dat
+	     testAscii.input testAscii.dat testFlow.output
 
 # Identify generated file(s) to be removed when 'make clean' is requested:
 CLEANFILES = testHepMC.out testHepMCParticle.out testHepMCExtended.out \
@@ -60,4 +61,4 @@ CLEANFILES = testHepMC.out testHepMCParticle.out testHepMCExtended.out \
              testDeprecated.cout testHepMC.cout testHepMCIteration.cout \
 	     testMultipleCopies.out testHepMCVarious.out testIOAscii.dat \
 	     testMultipleCopies1.dat testMultipleCopies2.dat \
-	     testMultipleOriginals.dat testIOHepMCExtended.dat
+	     testMultipleOriginals.dat testIOHepMCExtended.dat testFlow.out
