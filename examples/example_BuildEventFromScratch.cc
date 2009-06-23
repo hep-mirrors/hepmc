@@ -53,15 +53,15 @@ int main() {
     pdt.print();
 
     // now we build the graph, which will look like
-    //                       p7
-    // p1                   /
-    //   \v1__p3      p5---v4
-    //         \_v3_/       \ 
-    //         /    \        p8
-    //    v2__p4     \ 
-    //   /            p6
-    // p2
-    //
+    //                       p7                         #
+    // p1                   /                           #
+    //   \v1__p3      p5---v4                           #
+    //         \_v3_/       \                           #
+    //         /    \        p8                         #
+    //    v2__p4     \                                  #
+    //   /            p6                                #
+    // p2                                               #
+    //                                                  #
 
     // First create the event container, with Signal Process 20, event number 1
     //
