@@ -92,6 +92,7 @@ namespace HepMC {
 	/// HEPEVT decay status
 	int                  status() const;
 	/// particle flow
+	      Flow &         flow() ;
 	const Flow &         flow() const;
 	/// particle flow index
 	int                  flow( int code_index ) const;
@@ -190,6 +191,8 @@ namespace HepMC {
     { return m_production_vertex; }
 
     inline GenVertex* GenParticle::end_vertex() const { return m_end_vertex; }
+
+    inline  Flow & GenParticle::flow()  { return m_flow; }
 
     inline const Flow & GenParticle::flow() const { return m_flow; }
 
