@@ -87,7 +87,7 @@
 \vspace{1cm}
 
 {\Large User Manual Version 2.03} \\
-February 4, 2008
+July 3, 2009
 
 \vspace{2cm}
 
@@ -179,7 +179,7 @@ information content of Ref.~\cite{Boos:2001cv} (run
 information---pertaining to a collection of events---is also specified
 in that document and is not addressed in HepMC).  }
 
-\begin{figure}[h]
+\begin{figure}[ht]
   \begin{center}
     \Ovalbox{\begin{minipage}{5in}\begin{small}
         \begin{tabular}{rcl}
@@ -202,7 +202,7 @@ in that document and is not addressed in HepMC).  }
             \mbox{\color{magenta}ATLfast}}$ \\
         \end{tabular}\end{small}
       \end{minipage}}\end{center}
-  \caption{\label{modularisation} 
+  \caption[Modularised event generation]{\label{modularisation} 
     HepMC supports the concept of modularised event generation
     (illustrated above) by containing sufficient information within the
     event record to act as a messenger between two modular steps in
@@ -228,7 +228,7 @@ and its descendants) may be examined or modified without having to
 interpret complex parent/child relationship codes or re-shuffle the rest 
 of the event record.
 
-\begin{figure}[h]
+\begin{figure}[ht]
   \begin{center}
      \parbox[c]{55mm}{\includegraphics[height=45mm,clip=]
        {physicist_visualization.eps}}
@@ -236,7 +236,8 @@ of the event record.
      \parbox[c]{45mm}{\includegraphics[height=45mm,clip=]
        {graph_interpretation.eps}}
   \end{center}
-  \caption{\label{graph_structure} Events in HepMC are stored in a graph
+  \caption[Event visualization]
+   {\label{graph_structure} Events in HepMC are stored in a graph
     structure (right), similar to a physicist's visualisation of a
     collision event (left).}
 \end{figure}
@@ -257,9 +258,11 @@ of the event record.
 \item ability to store the state of random number generators (as
   integers)
 \item ability to store an arbitrary number of event weights
-\item strategies for conversion to/from HEPEVT\ref{Boos:2001cv} which
-  are easily extendible to support other event records
-\item strategies for input/output to/from ascii files which
+\item ability to store parton distribution function information
+\item ability to store heavy ion information 
+\item strategies for conversion to/from HEPEVT (Ref.~\cite{Boos:2001cv}) 
+  which are easily extendible to support other event records
+\item strategies for input/output to/from Ascii files which
   are easily extendible to support other forms of persistency
 \end{itemize}
 
@@ -282,7 +285,7 @@ there was concern about allowing dependencies on any external package.
 Therefore, the decision was made to replace the CLHEP Lorentz vectors with
 a minimal vector representation within HepMC.  
 
-Because this is a major change, the versioning is changed 
+Because this is a major change, the versioning was changed 
 from 1.xx.yy to 2.xx.yy.  Normally, a version number change in \emph{xx} 
 represents a change to the code and a version number change in \emph{yy}
 represents a bug fix.
@@ -325,11 +328,12 @@ and stored in GenParticle.
 The IO\_AsciiParticles class provides output in the Pythia style.
 This output is intended for ease of reading event output, not for persistency.
 
-The IO\_Ascii output class is deprecated in favor of IO\_GenEvent.  
+The IO\_Ascii output class is deprecated in favor of IO\_GenEvent, 
+described in Section~\ref{iogenevent}.  
 IO\_GenEvent persists all information in the updated GenEvent object and
 uses iostreams for greater flexibility.  IO\_GenEvent also has a 
 constructor taking a file name and mode type for backwards compatibility. 
-Output remains in ascii format.
+Output remains in Ascii format.
 
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -355,17 +359,19 @@ Iterators are provided as methods of the vertex and event classes
 which allow easy directed access to information in the C++ Standard
 Template Library (STL) style.
 
-The event record class relationships and the particle
-data class relationships are shown in Figure~\ref{UML_diagrams}.
-
-\begin{figure}[h]
+\begin{figure}[!ht]
   \begin{center}
     \includegraphics[width=\textwidth,clip=]{HepMC_basic_properties.eps}
   \end{center}
-  \caption{\label{UML_diagrams} Class diagrams for the event record
+  \caption[HepMC class diagrams]
+    {\label{UML_diagrams} Class diagrams for the event record
     classes (GenEvent, GenVertex, and GenParticle) and the IO strategies
     are shown in the UML notation.}
 \end{figure}
+\clearpage
+
+The event record class relationships and the particle
+data class relationships are shown in Figure~\ref{UML_diagrams}.
 
 Several input/output strategies are provided. The interface for these
 strategies is defined by an abstract base class, IO\_BaseClass.  These
@@ -385,9 +391,10 @@ Template Library~\cite{stl} (STL).
 
 The HepMC 1 package dependencies were limited to STL 
 and the vector classes from the
-Class Library for High Energy Physics~\cite{clhep} (CLHEP).  Simple
-wrappers for the Fortran versions of Pythia~\cite{Sjostrand:2001yb} 
-and Herwig are supplied with the
+Class Library for High Energy Physics~\cite{clhep} (CLHEP).  
+
+Simple wrappers for the Fortran versions of Pythia~\cite{Sjostrand:2001yb} 
+and Herwig~\cite{herwig} are supplied with the
 package to allow the inclusion of event generation examples.
 
 \subsection{Namespace}
@@ -419,13 +426,13 @@ Pythia &           &          & 29 sec & \\
 && 48.2 Mbytes \\ \hline
 \end{tabular}
 \end{center}
-\caption{\label{benchmarks} 
+\caption[Performance]{\label{benchmarks} 
   CPU time performance and file size using a dedicated 450 MHz Pentium~III.}
 \end{table}
 
-The time to write HepMC events as ascii files using the IO\_Ascii
+The time to write HepMC events as Ascii files using the IO\_Ascii
 strategy was compared to \verb!LCWRITE!, a simple Fortran routine used
-in NLC studies to write the HEPEVT common block in formatted ascii to file.
+in NLC studies to write the HEPEVT common block in formatted Ascii to file.
 Generating the events with Pythia, transferring them to HepMC, and
 writing them to file took 64~seconds and produced a 60.5~Mbyte file.
 Generating the events with Pythia and writing them to file using the
@@ -453,8 +460,10 @@ HepMC does not define which units are used for the information stored
 in the event record.
 The HEPEVT standard uses GeV/mm, and so the output from most Fortran
 generators will normally be in these units.
-CLHEP uses MeV/mm, and some collaborations such as ATLAS
+CLHEP and Geant4 use MeV/mm, and some collaborations such as ATLAS
 have adopted these units for their simulation.
+We also note that Fluka uses cm.
+
 Due to this ambiguity all mention of units has been removed from 
 the HepMC documentation.  
 HepMC users should refer to the code that fills the event record 
@@ -564,8 +573,14 @@ event record.
   \myitem{x1}{fraction of beam momentum carried by first parton ("beam side")}
   \myitem{x2}{fraction of beam momentum carried by second parton ("target side")}
   \myitem{scalePDF}{Q-scale used in evaluation of PDF's (in GeV)}
-  \myitem{pdf1}{PDF (id1, x1, Q)}
-  \myitem{pdf2}{PDF (id2, x2, Q)}
+  \myitem{pdf1}{PDF (id1, x1, Q)  This should be of the form x*f(x)}
+  \myitem{pdf2}{PDF (id2, x2, Q)  This should be of the form x*f(x)}
+\end{myitemize}
+\begin{myitemize}{Notes and Conventions}
+  \item IMPORTANT: The contents of pdf1 and pdf2 are expected to be x*f(x), 
+        which is the quantity returned by LHAPDF.
+  \item IMPORTANT: Input parton flavour codes id1 and id2 are expected to 
+        obey the PDG code conventions, especially g = 21. 
 \end{myitemize}
 
 PdfInfo stores additional PDF information for a GenEvent.
@@ -697,8 +712,8 @@ information about differential cross sections.
 \begin{myitemize}{Notes and Conventions}
   \item the particle ID should be specified according to the 
     PDG standard~\cite{Yao:2006tx}
-  \item status codes are as defined for
-    HEPEVT~\cite{stdhep5.05}\footnote{
+  \item status codes are as defined for HEPEVT~\cite{stdhep5.05}\newline
+     {\footnotesize
       For convenience the HEPEVT standard status codes are enumerated:
       \begin{tabbing}
         0 \hspace{1cm} \= null entry \\
@@ -845,7 +860,7 @@ Several IO strategies are supplied:
     Events may be contained within the same file together with
     an unlimited number of comments. 
     The examples (Section~\ref{examples}) make use of this class.
-  \item {\bf IO\_Ascii} is deprecated.
+  \item {\bf IO\_Ascii} is deprecated (Section~\ref{deprecated}).
   \item {\bf IO\_AsciiParticles} writes events in a format similar to 
      Pythia 6 output.  This is intended for human readability.
   \item {\bf IO\_HEPEVT} reads and writes events to/from the Fortran HEPEVT
@@ -854,7 +869,7 @@ Several IO strategies are supplied:
     (which is defined in the header file HEPEVT\_Wrapper.h\footnote{
       Different conventions exist for the fortran HEPEVT common
       block. 4 or 8-byte floating point numbers may be used, and the
-      number of entries is often taken as 2000 or 4000. To account for
+      number of entries is often taken as 4000 or 10000. To account for
       all possibilities the precision (float or double) and number of
       entries can be set for the wrapper at run time,
       \begin{tabbing}
@@ -999,8 +1014,8 @@ the particle\_iterator relative to a vertex (point in the graph) - thus
 the starting point (root) is still a vertex, and the range is defined
 relative to this root.  The extension to particles can be made by
 using the particle's production or end vertex as the root.  Possible
-ranges are defined by an enumeration called HepMC::IteratorRange and
-the possibilities are:
+ranges are defined by an enumeration called HepMC::IteratorRange.
+The possibilities are:
 \begin{itemize}\setlength{\itemsep}{0pt}
   \myitem{parents}{walks over all particles incoming to the root}
   \myitem{children}{walks over all particles outgoing from the root}
@@ -1019,6 +1034,169 @@ the possibilities are:
 The class is composed of a GenVertex::vertex\_iterator - 
 and the same considerations apply.
 
+
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+
+\section{Ascii Output}
+\label{iogenevent}
+
+Ascii output uses begin and end keys to denote blocks of events.
+The HepMC version is written immediately before the begin key, but 
+is not part of the event block.
+
+Within a block of events, each line of information begins with a 
+single character key denoting the information found on the line.
+
+General GenEvent information is followed by a list of vertices 
+and associated particles.  The count of vertices is expected to match the 
+number of vertices specified in the general event information.
+Each vertex line specifies how many particle lines are associated 
+with the vertex.
+
+We describe the format of IO\_GenEvent here, which persists all information
+contained in a HepMC GenEvent.
+
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+
+\subsection{Basic IO\_GenEvent Structure}
+
+\begin{myitemize}{Block Keys}
+  \myitem{begin event block}{HepMC::IO\_GenEvent-START\_EVENT\_LISTING} 
+  \myitem{end event block}{HepMC::IO\_GenEvent-END\_EVENT\_LISTING} 
+\end{myitemize}
+\begin{myitemize}{Line Keys}
+  \myitem{E}{general GenEvent information} 
+  \myitem{H}{HeavyIon information:  
+             This line will contain zeros if there is no associated HeavyIon object.} 
+  \myitem{F}{PdfInfo information: 
+             This line will contain zeros if there is no associated PdfInfo object.} 
+  \myitem{V}{GenVertex information} 
+  \myitem{P}{GenParticle information} 
+\end{myitemize}
+
+Note that the E, H, and F lines contain event header information.
+There will be one and only one of these lines per event. 
+The header information is followed immediately by a V (vertex) line.
+Each vertex line is immediately followed by the P (particle) lines 
+for particles associated with that vertex.  
+For purposes of IO, particles are associated with a vertex if they
+are in the list of outgoing particles.
+In addition, if an incoming particle is not an outgoing particle of 
+some other vertex, then it is classified as an "orphan" incoming particle
+and associated with the vertex IO.
+In this way, each particle appears only once in the Ascii listing.
+An example of the format written to a file is shown in Figure~\ref{ascii_format}.
+
+\begin{figure}[ht]
+  \begin{center}
+{\tiny \begin{verbatim}
+HepMC::Version 2.03.11
+HepMC::IO_GenEvent-START_EVENT_LISTING
+E 9 51 -1.0000000000000000e+00 -1.0000000000000000e+00 -1.0000000000000000e+00 20 0 309 1 2 0 0
+H 0 0 0 0 0 0 0 0 0 0 0 0 0
+F 11 12 5.0000000000000000e-01 6.5000000000000002e-01 5.9999999999999998e-02 1.1000000000000000e-01 3.4000000000000002e-01
+V -1 0 0 0 0 0 1 3 0
+P 1 2212 0 0 6.9999999371178146e+03 7.0000000000000000e+03 9.3827000000000005e-01 3 0 0 -1 0
+P 3 21 -9.5802904850995474e-01 3.4892974578914365e-01 1.5677975928920182e+01 1.5711094833049845e+01 0 3 0 0 -3 0
+P 12 2101 2.5787537037233477e-01 -1.1110299643709216e-01 1.2403958218239170e+03
+1.2403959888942973e+03 5.7933000000000001e-01 2 0 0 -9 0
+P 25 2 7.0015367813761997e-01 -2.3782674935205150e-01 2.3333682308044050e+00 2.4698753078332274e+00 3.3000000000000002e-01 2 0 0 -15 0
+V -2 0 0 0 0 0 1 2 0
+P 2 2212 0 0 -6.9999999371178146e+03 7.0000000000000000e+03 9.3827000000000005e-01 3 0 0 -2 0
+P 4 1 2.7745239600449745e-01 -1.8469236508822412e-01 -1.2668437617555701e+03 1.2668438056011901e+03 0 3 0 0 -4 0
+P 116 2203 -2.7745239600449745e-01 1.8469236508822412e-01 -1.8910900158159372e+03 1.8910902024916190e+03 7.7132999999999996e-01 2 0 0 -15 0
+\end{verbatim}}
+  \end{center}
+  \caption[Example of ascii format]
+          {\label{ascii_format} Example of the format written to a file.  
+           Only the first few lines are shown. }
+\end{figure}
+
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+
+\subsection{General Event Information}
+
+\begin{myitemize}{E - general GenEvent information} 
+  \myitem{int}{event number} 
+  \myitem{int}{number of multi paricle interactions} 
+  \myitem{double}{event scale} 
+  \myitem{double}{alpha QCD} 
+  \myitem{double}{alpha QED} 
+  \myitem{int}{signal process id} 
+  \myitem{int}{barcode for signal process vertex} 
+  \myitem{int}{number of vertices in this event} 
+  \myitem{int}{barcode for beam particle 1} 
+  \myitem{int}{barcode for beam particle 2} 
+  \myitem{int}{number of entries in random state list (may be zero)} 
+  \myitem{long}{optional list of random state integers} 
+  \myitem{int}{number of entries in weight list (may be zero)} 
+  \myitem{double}{optional list of weights} 
+\end{myitemize}
+\begin{myitemize}{H - HeavyIon information} 
+  \myitem{int}{Number of hard scatterings}
+  \myitem{int}{Number of projectile participants}
+  \myitem{int}{Number of target participants}
+  \myitem{int}{Number of NN (nucleon-nucleon) collisions}
+  \myitem{int}{Number of spectator neutrons}
+  \myitem{int}{Number of spectator protons}
+  \myitem{int}{Number of N-Nwounded collisions}
+  \myitem{int}{Number of Nwounded-N collisons}
+  \myitem{int}{Number of Nwounded-Nwounded collisions}
+  \myitem{float}{Impact Parameter(fm) of collision}
+  \myitem{float}{Azimuthal angle of event plane}
+  \myitem{float}{eccentricity of participating nucleons in the transverse plane}
+  \myitem{float}{nucleon-nucleon inelastic cross-section}
+\end{myitemize}
+\begin{myitemize}{F - PdfInfo information} 
+  \myitem{int}{flavour code of first parton}
+  \myitem{int}{flavour code of second parton}
+  \myitem{double}{fraction of beam momentum carried by first parton}
+  \myitem{double}{fraction of beam momentum carried by second parton}
+  \myitem{double}{Q-scale used in evaluation of PDF's (in GeV)}
+  \myitem{double}{x*f(x) for id1, x1, Q}
+  \myitem{double}{x*f(x) for id2, x2, Q}
+\end{myitemize}
+
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+
+\subsection{Vertices and Particles}
+
+\begin{myitemize}{V - GenVertex information} 
+  \myitem{int}{barcode}
+  \myitem{int}{id}
+  \myitem{double}{x}
+  \myitem{double}{y}
+  \myitem{double}{z}
+  \myitem{double}{ctau}
+  \myitem{int}{number of "orphan" incoming particles}
+  \myitem{int}{number of outgoing particles}
+  \myitem{int}{number of entries in weight list (may be zero)} 
+  \myitem{double}{optional list of weights} 
+\end{myitemize}
+\begin{myitemize}{P - GenParticle information} 
+  \myitem{int}{barcode}
+  \myitem{int}{PDG id}
+  \myitem{double}{px}
+  \myitem{double}{py}
+  \myitem{double}{pz}
+  \myitem{double}{energy}
+  \myitem{double}{generated mass}
+  \myitem{int}{status code}
+  \myitem{double}{Polarization theta}
+  \myitem{double}{Polarization phi}
+  \myitem{int}{barcode for vertex that has this particle as an incoming particle}
+  \myitem{int}{number of entries in flow list (may be zero)}
+  \myitem{int, int}{optional code\_index and code for each entry in the flow list}
+\end{myitemize}
+
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
@@ -1035,10 +1213,11 @@ Source code tarballs are on the download page:
 \htmladdnormallink
 {http://lcgapp.cern.ch/project/simu/HepMC/download/}
 {http://lcgapp.cern.ch/project/simu/HepMC/download/}.
+Binary downloads are available for some releases.
+The following recipe is a guideline and should be modified according to taste.
 
 \vspace{0.5cm}
-\begin{myitemize}
- {The following recipe is a guideline and should be modified according to taste.}
+\begin{myitemize}{}
   \myitem{download source code tarball}{}
   \myitem{mkdir cleanDIR}{Make a new directory to work in.}
   \myitem{cd cleanDIR}{}
@@ -1052,8 +1231,6 @@ Source code tarballs are on the download page:
   \myitem{make check}{Run the tests.  This is optional but strongly recommended.}
   \myitem{make install}{Install everything in your specified directory. }
 \end{myitemize}
-
-Binary downloads are available for some releases.
 
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -1095,6 +1272,7 @@ All examples use IO\_GenEvent instead of the deprecated IO\_Ascii.
 %
 
 \section{Deprecated Classes}
+\label{deprecated}
 
 Two major classes have been deprecated: IO\_Ascii and ParticleData.
 IO\_Ascii is replaced by IO\_GenEvent, which uses iostreams instead of files.
@@ -1102,6 +1280,8 @@ IO\_Ascii is replaced by IO\_GenEvent, which uses iostreams instead of files.
 The ParticleData classes had become outmoded and would need a lot of
 work.  Instead, we recommend using packages already developed for this
 purpose, such as HepPDT~\cite{heppdt}.
+
+IO\_GenEvent reads files written by IO\_Ascii and IO\_ExtendedAscii.
 
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -1111,7 +1291,7 @@ purpose, such as HepPDT~\cite{heppdt}.
 
 \begin{myitemize}{Notes and Conventions}
  \item {\bf IO\_Ascii} reads and writes events and particle data
-    tables to files in machine readable ascii, thereby providing a
+    tables to files in machine readable Ascii, thereby providing a
     form of persistency for the event record. Events and particle data
     tables may be contained within the same file (recommend to write
     the particle data table first to save access time) together with
@@ -1126,7 +1306,7 @@ purpose, such as HepPDT~\cite{heppdt}.
 \subsection{HepMC::ParticleData (deprecated)}
 
 \begin{myitemize}{Relevant Data Members}
-  \myitem{name}{std::string giving an ascii description of the
+  \myitem{name}{std::string giving an Ascii description of the
     particle type}
   \myitem{pdg\_id}{unique ID integer denoting the particle type 
     as defined by the PDG}
@@ -1184,7 +1364,7 @@ respectively.
     specified output stream}
 \end{myitemize}
 \begin{myitemize}{Relevant Data Members}
-  \myitem{description}{ascii description of the table stored as
+  \myitem{description}{Ascii description of the table stored as
     std::string} 
   \myitem{data\_table}{container of pointers to ParticleData instances
     mapped onto their associated pdg\_id's}
@@ -1270,6 +1450,12 @@ arXiv:hep-ph/0109068.
   T.~Sjostrand {\it et al.}, 
   ``High-energy physics event generation with PYTHIA 6.1,''
   Comput.\ Phys.\ Commun.\  {\bf 135}, 238 (2001).
+
+\bibitem{herwig}
+   G. Corcella {\it et al.}, 
+  ``Herwig 6: an event generator for Hadron Emission Reactions
+  With Interfering Gluons (including supersymmetric processes)''
+  JHEP {\bf 0101}, 010 (2001) [hep-ph/0011363]; hep-ph/0210213.
 
 \bibitem{evtgen}
   A.~Ryd, D.~Lange,
