@@ -7,14 +7,14 @@ LDADD = $(top_builddir)/src/libHepMC.la
 # Identify executables needed during testing:
 check_PROGRAMS = testSimpleVector testUnits testPrintBug \
                  testHepMC testHepMCIteration testMass \
-                 testMultipleCopies testDeprecated
+                 testMultipleCopies testDeprecated testFlow
 
 check_SCRIPTS = testHepMC.sh testHepMCIteration.sh testPrintBug.sh \
-                testMass.sh testDeprecated.sh
+                testMass.sh testDeprecated.sh testFlow.sh
 
 # Identify test(s) to run when 'make check' is requested:
 TESTS = testSimpleVector testUnits \
-        testHepMC.sh testHepMCIteration.sh testMass.sh \
+        testHepMC.sh testHepMCIteration.sh testMass.sh testFlow.sh \
         testPrintBug.sh testMultipleCopies testDeprecated.sh
 
 # Identify the test(s) for which failure is the intended outcome:
@@ -23,6 +23,7 @@ XFAIL_TESTS =
 # Identify the dependencies on a per-test basis:
 testSimpleVector_SOURCES   = testSimpleVector.cc
 testUnits_SOURCES          = testUnits.cc
+testFlow_SOURCES           = testFlow.cc
 testHepMC_SOURCES          = testHepMC.cc
 testMass_SOURCES           = testMass.cc
 testHepMCIteration_SOURCES = testHepMCIteration.cc
@@ -34,7 +35,7 @@ testDeprecated_SOURCES     = testDeprecated.cc
 EXTRA_DIST = testHepMC.input testHepMC.output testHepMCParticle.output \
              testPrintBug.output \
 	     testHepMCIteration.output \
-	     testAscii.input testAscii.dat
+	     testAscii.input testAscii.dat testFlow.output
 
 # Identify generated file(s) to be removed when 'make clean' is requested:
 CLEANFILES = testHepMC.out testHepMCParticle.out \
@@ -44,4 +45,5 @@ CLEANFILES = testHepMC.out testHepMCParticle.out \
              testDeprecated.cout testHepMC.cout testHepMCIteration.cout \
 	     testMultipleCopies.out testHepMCVarious.out testIOAscii.dat \
 	     testMultipleCopies1.dat testMultipleCopies2.dat \
-	     testMultipleOriginals.dat testUnits.out
+	     testMultipleOriginals.dat testUnits.out \
+	     testFlow.out testFlow.out1 testFlow.out2 testFlow.out3

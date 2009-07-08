@@ -39,5 +39,8 @@
 	/// Make sure set and change methods work as expected.
 	/// \example testUnits.cc
 
+	/// Use a modified example_BuildEventFromScratch to test Flow
+	/// \example testFlow.cc
+
 
 // This file is used by Doxygen when generating the documentation.

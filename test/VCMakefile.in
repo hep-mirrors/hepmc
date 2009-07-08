@@ -19,10 +19,10 @@ NORMAL_UNINSTALL = :
 check_PROGRAMS = testSimpleVector$(EXEEXT) testUnits$(EXEEXT) \
 	testPrintBug$(EXEEXT) testHepMC$(EXEEXT) \
 	testHepMCIteration$(EXEEXT) testMass$(EXEEXT) \
-	testMultipleCopies$(EXEEXT) testDeprecated$(EXEEXT)
+	testMultipleCopies$(EXEEXT) testDeprecated$(EXEEXT) testFlow$(EXEEXT)
 TESTS = testSimpleVector$(EXEEXT) testUnits$(EXEEXT) testHepMC.sh \
 	testHepMCIteration.sh testMass.sh testPrintBug.sh \
-	testMultipleCopies$(EXEEXT) testDeprecated.sh
+	testMultipleCopies$(EXEEXT) testDeprecated.sh testFlow.sh
 XFAIL_TESTS =
 subdir = test
 DIST_COMMON = $(srcdir)/Makefile.am $(srcdir)/Makefile.in \
@@ -31,7 +31,7 @@ DIST_COMMON = $(srcdir)/Makefile.am $(srcdir)/Makefile.in \
 	$(srcdir)/testHepMCIteration.cc.in \
 	$(srcdir)/testHepMCIteration.sh.in $(srcdir)/testMass.cc.in \
 	$(srcdir)/testMass.sh.in $(srcdir)/testMultipleCopies.cc.in \
-	$(srcdir)/testPrintBug.sh.in
+	$(srcdir)/testPrintBug.sh.in $(srcdir)/testFlow.sh.in
 
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps = $(top_srcdir)/configure.ac
@@ -41,7 +41,7 @@ mkinstalldirs = $(install_sh) -d
 CONFIG_CLEAN_FILES = testHepMC.cc testMass.cc testHepMCIteration.cc \
 	testMultipleCopies.cc testDeprecated.cc testHepMC.sh \
 	testMass.sh testHepMCIteration.sh testPrintBug.sh \
-	testDeprecated.sh
+	testDeprecated.sh testFlow.sh
 am_testDeprecated_OBJECTS = testDeprecated.$(OBJEXT)
 testDeprecated_OBJECTS = $(am_testDeprecated_OBJECTS)
 testDeprecated_DEPENDENCIES = $(top_builddir)/src/HepMC.lib
@@ -51,6 +51,9 @@ testHepMC_DEPENDENCIES = $(top_builddir)/src/HepMC.lib
 am_testHepMCIteration_OBJECTS = testHepMCIteration.$(OBJEXT)
 testHepMCIteration_OBJECTS = $(am_testHepMCIteration_OBJECTS)
 testHepMCIteration_DEPENDENCIES = $(top_builddir)/src/HepMC.lib
+am_testFlow_OBJECTS = testFlow.$(OBJEXT)
+testFlow_OBJECTS = $(am_testFlow_OBJECTS)
+testFlow_DEPENDENCIES = $(top_builddir)/src/HepMC.lib
 am_testMass_OBJECTS = testMass.$(OBJEXT)
 testMass_OBJECTS = $(am_testMass_OBJECTS)
 testMass_DEPENDENCIES = $(top_builddir)/src/HepMC.lib
@@ -76,11 +79,13 @@ CXXLINK = $(CXXLD) $(AM_CXXFLAGS) $(CXXFLAGS) $(LDFLAGS) /Fe$@
 SOURCES = $(testDeprecated_SOURCES) $(testHepMC_SOURCES) \
 	$(testHepMCIteration_SOURCES) $(testMass_SOURCES) \
 	$(testMultipleCopies_SOURCES) $(testPrintBug_SOURCES) \
-	$(testSimpleVector_SOURCES) $(testUnits_SOURCES)
+	$(testSimpleVector_SOURCES) $(testUnits_SOURCES) \
+	$(testFlow_SOURCES)
 DIST_SOURCES = $(testDeprecated_SOURCES) $(testHepMC_SOURCES) \
 	$(testHepMCIteration_SOURCES) $(testMass_SOURCES) \
 	$(testMultipleCopies_SOURCES) $(testPrintBug_SOURCES) \
-	$(testSimpleVector_SOURCES) $(testUnits_SOURCES)
+	$(testSimpleVector_SOURCES) $(testUnits_SOURCES) \
+	$(testFlow_SOURCES)
 ETAGS = etags
 CTAGS = ctags
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(EXTRA_DIST)
@@ -149,13 +154,14 @@ LDADD = $(top_builddir)/src/HepMC.lib \
 # how to specify output file
 OUTFLAG = /Fo$@
 check_SCRIPTS = testHepMC.sh testHepMCIteration.sh testPrintBug.sh \
-                testMass.sh testDeprecated.sh
+                testMass.sh testDeprecated.sh testFlow.sh
 
 
 # Identify the dependencies on a per-test basis:
 testSimpleVector_SOURCES = testSimpleVector.cc
 testUnits_SOURCES = testUnits.cc
 testHepMC_SOURCES = testHepMC.cc
+testFlow_SOURCES = testFlow.cc
 testMass_SOURCES = testMass.cc
 testHepMCIteration_SOURCES = testHepMCIteration.cc
 testMultipleCopies_SOURCES = testMultipleCopies.cc
@@ -166,6 +172,7 @@ testDeprecated_SOURCES = testDeprecated.cc
 testSimpleVector_LDADD = $(top_builddir)/src/HepMC.lib
 testUnits_LDADD = $(top_builddir)/src/HepMC.lib
 testHepMC_LDADD = $(top_builddir)/src/HepMC.lib
+testFlow_LDADD = $(top_builddir)/src/HepMC.lib
 testMass_LDADD = $(top_builddir)/src/HepMC.lib
 testHepMCIteration_LDADD = $(top_builddir)/src/HepMC.lib
 testMultipleCopies_LDADD = $(top_builddir)/src/HepMC.lib
@@ -183,7 +190,7 @@ testDeprecated_LDADD = $(top_builddir)/src/HepMC.lib
 EXTRA_DIST = testHepMC.input testHepMC.output testHepMCParticle.output \
              testPrintBug.output testHepMCExtended.dat \
 	     testHepMCIteration.output testHepMCIterationExtended.output \
-	     testAscii.input testAscii.dat
+	     testAscii.input testAscii.dat testFlow.output
 
 
 # Identify generated file(s) to be removed when 'make clean' is requested:
@@ -195,6 +202,7 @@ CLEANFILES = testHepMC.out testHepMCParticle.out testHepMCExtended.out \
 	     testMultipleCopies.out testHepMCVarious.out testIOAscii.dat \
 	     testMultipleCopies1.dat testMultipleCopies2.dat \
 	     testMultipleOriginals.dat testIOHepMCExtended.dat \
+	     testFlow.out testFlow.out1 testFlow.out2 testFlow.out3 \
 	     testUnits.out
 
 all: all-am
@@ -230,6 +238,8 @@ testDeprecated.cc: $(top_builddir)/config.status $(srcdir)/testDeprecated.cc.in
 	cd $(top_builddir) && $(SHELL) ./config.status $(subdir)/$@
 testHepMC.sh: $(top_builddir)/config.status $(srcdir)/testHepMC.sh.in
 	cd $(top_builddir) && $(SHELL) ./config.status $(subdir)/$@
+testFlow.sh: $(top_builddir)/config.status $(srcdir)/testFlow.sh.in
+	cd $(top_builddir) && $(SHELL) ./config.status $(subdir)/$@
 testMass.sh: $(top_builddir)/config.status $(srcdir)/testMass.sh.in
 	cd $(top_builddir) && $(SHELL) ./config.status $(subdir)/$@
 testHepMCIteration.sh: $(top_builddir)/config.status $(srcdir)/testHepMCIteration.sh.in
@@ -254,6 +264,9 @@ testHepMC$(EXEEXT): $(testHepMC_OBJECTS) $(testHepMC_DEPENDENCIES)
 testHepMCIteration$(EXEEXT): $(testHepMCIteration_OBJECTS) $(testHepMCIteration_DEPENDENCIES) 
 	@rm -f testHepMCIteration$(EXEEXT)
 	$(CXXLINK) $(testHepMCIteration_OBJECTS) $(testHepMCIteration_LDADD) $(LIBS)
+testFlow$(EXEEXT): $(testFlow_OBJECTS) $(testFlow_DEPENDENCIES) 
+	@rm -f testFlow$(EXEEXT)
+	$(CXXLINK) $(testFlow_OBJECTS) $(testFlow_LDADD) $(LIBS)
 testMass$(EXEEXT): $(testMass_OBJECTS) $(testMass_DEPENDENCIES) 
 	@rm -f testMass$(EXEEXT)
 	$(CXXLINK) $(testMass_OBJECTS) $(testMass_LDADD) $(LIBS)
@@ -279,6 +292,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/testDeprecated.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/testHepMC.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/testHepMCIteration.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/testFlow.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/testMass.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/testMultipleCopies.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/testPrintBug.Po@am__quote@
