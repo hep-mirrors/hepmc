@@ -1,4 +1,8 @@
 
+2009-12-28  Lynn Garren
+
+       * examples/VectorConversion.h: inline the functions
+
 2009-07-08  Lynn Garren
 
 	* HepMC/Flow.h: improve the syntax of the erase() method
