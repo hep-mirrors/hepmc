@@ -241,7 +241,13 @@ namespace HepMC {
         /// return true if there are no vertex barcodes
 	bool    vertices_empty() const;
 
+	/// Write the unit information to an output stream.  
+	/// If the output stream is not defined, use std::cout.
         void write_units( std::ostream & os = std::cout ) const; 
+	/// If the cross section is defined,
+	/// write the cross section information to an output stream.  
+	/// If the output stream is not defined, use std::cout.
+	void write_cross_section( std::ostream& ostr = std::cout ) const;
 
 	/// Units used by the GenParticle momentum FourVector.
 	Units::MomentumUnit momentum_unit() const;

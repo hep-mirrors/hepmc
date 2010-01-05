@@ -288,6 +288,7 @@ namespace HepMC {
 		  : 0 )
 	     << "\n";
 	write_units( ostr );
+        write_cross_section(ostr);
 	ostr << " Entries this event: " << vertices_size() << " vertices, "
 	     << particles_size() << " particles.\n"; 
 	if( m_beam_particle_1 && m_beam_particle_2 ) {
@@ -601,6 +602,17 @@ namespace HepMC {
 	os << " Momenutm units:" << std::setw(8) << name(momentum_unit());
 	os << "     Position units:" << std::setw(8) << name(length_unit());
 	os << std::endl;
+    }
+
+    void GenEvent::write_cross_section( std::ostream& os ) const
+    {
+	// write the GenCrossSection information if the cross section was set
+	if( !cross_section() ) return;
+	if( cross_section()->is_set() ) {
+	    os << " Cross Section: " << cross_section()->cross_section() ;
+	    os << " +/- " << cross_section()->cross_section_error() ;
+	    os << std::endl;
+	}
     }
 
    bool GenEvent::use_momentum_unit( Units::MomentumUnit newunit ) { 
