@@ -34,14 +34,16 @@ testPrintBug_SOURCES       = testPrintBug.cc
 # Identify input data file(s) and prototype output file(s):
 EXTRA_DIST = testIOGenEvent.input \
              testHepMCVarious.input \
+	     testCrossSection.output \
+	     testFlow.output \
              testHepMC.output \
 	     testHepMCParticle.output \
              testPrintBug.output \
 	     testStreamIO.output \
+	     testCrossSection.dat \
 	     testHepMC.dat \
 	     testHepMCIteration.dat \
 	     testMass1.dat \
-	     testFlow.output \
 	     testStreamIOVarious.dat
 
 # Identify generated file(s) to be removed when 'make clean' is requested:
@@ -54,7 +56,7 @@ CLEANFILES = testHepMC.cout testStreamIO.cout \
 	     testMultipleCopies.out testHepMCVarious.out testIOAscii.out \
 	     testMultipleCopies1.out testMultipleCopies2.out \
 	     testMultipleOriginals.out testUnits.out \
-	     testCrossSection.out testCrossSection2.out \
+	     testCrossSection.out testCrossSection2.out testCrossSection.cout \
 	     testStreamIO.out testStreamIOParticle.out testStreamIOVarious.out \
 	     testStreamIO2.out testStreamIOprecision.out testStreamIO.cout \
 	     testFlow.out testFlow.out1 testFlow.out2 testFlow.out3

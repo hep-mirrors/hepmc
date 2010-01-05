@@ -21,6 +21,7 @@ CYGWIN*)
         sed 's/e+0/e+/g' - | \
         @DIFF_Q@ - @srcdir@/testCrossSection.dat`
   cmd4=`@DIFF_Q@ testCrossSection2.out testCrossSection.out`
+  cmd5=`@DIFF_Q@ testCrossSection.cout @srcdir@/testCrossSection.output`
   ;;
 Darwin*)
   # MacOSX fix
@@ -30,6 +31,7 @@ Darwin*)
 	@DIFF_Q@ - testHepMCParticle.out`
   cmd3=`@DIFF_Q@ testCrossSection.out @srcdir@/testCrossSection.dat`
   cmd4=`@DIFF_Q@ testCrossSection2.out testCrossSection.out`
+  cmd5=`@DIFF_Q@ testCrossSection.cout @srcdir@/testCrossSection.output`
   ;;
 *)
   cmd=`@DIFF_Q@ testHepMC.cout @srcdir@/testHepMC.output`
@@ -37,6 +39,7 @@ Darwin*)
   cmd2=`@DIFF_Q@ testHepMCParticle.out @srcdir@/testHepMCParticle.output`
   cmd3=`@DIFF_Q@ testCrossSection.out @srcdir@/testCrossSection.dat`
   cmd4=`@DIFF_Q@ testCrossSection2.out testCrossSection.out`
+  cmd5=`@DIFF_Q@ testCrossSection.cout @srcdir@/testCrossSection.output`
 esac
 
 if [ -n "$cmd" ]; then
@@ -65,6 +68,12 @@ fi
 if [ -n "$cmd4" ]
 then
   echo $cmd4
+  exit 1;
+fi
+
+if [ -n "$cmd5" ]
+then
+  echo $cmd5
   exit 1;
 fi
 
