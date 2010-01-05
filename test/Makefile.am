@@ -50,7 +50,7 @@ EXTRA_DIST = testIOGenEvent.input \
 CLEANFILES = testHepMC.cout testStreamIO.cout \
              testHepMCIteration.cout \
              testHepMC.out testHepMCParticle.out \
-             testPrintBug.out testMass.out \
+             testPrintBug.out testMass.out testNaN.out \
 	     testAscii.out testHepMCIteration.out testHepMCprecision.out \
              testHepMCIteration.out testMass1.out testMass2.out \
 	     testMultipleCopies.out testHepMCVarious.out testIOAscii.out \
@@ -58,5 +58,6 @@ CLEANFILES = testHepMC.cout testStreamIO.cout \
 	     testMultipleOriginals.out testUnits.out \
 	     testCrossSection.out testCrossSection2.out testCrossSection.cout \
 	     testStreamIO.out testStreamIOParticle.out testStreamIOVarious.out \
-	     testStreamIO2.out testStreamIOprecision.out testStreamIO.cout \
+	     testStreamIO2.out testStreamIO3.out testStreamIO4.out \
+	     testStreamIOprecision.out testStreamIO.cout \
 	     testFlow.out testFlow.out1 testFlow.out2 testFlow.out3

@@ -1,4 +1,15 @@
 
+2010-01-04  Lynn Garren
+
+      * HepMC/GenEvent.h: add write_cross_section(std::ostream&)
+      * src/GenEvent.cc: output the cross section (if it exists) when printing an event
+      * src/GenVertex.cc, GenParticle.cc: save and restore output stream state
+        when calling print methods
+	
+      * examples: Calculate Pythia and Herwig cross sections.
+        Set the units explicitly.
+      * test/testHepMC.cc.in: call write_cross_section()
+
 2009-12-28  Lynn Garren
 
        * examples/VectorConversion.h: inline the functions

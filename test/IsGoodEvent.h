@@ -6,6 +6,8 @@
 // Events containing a photon of pT > 25 GeV are considered good
 //////////////////////////////////////////////////////////////////////////
 
+//! used in the tests
+
 /// \class  IsGoodEvent
 /// event selection predicate. returns true if the event contains
 /// a photon with pT > 50 GeV

@@ -18,6 +18,13 @@
  
 namespace HepMC {
 
+//! IO exception handling
+
+///
+/// \class  IO_Exception
+/// IO_GenEvent, etc. catch the throw and set data members with the error type and message 
+/// Some of the messages are constructed with transient information 
+///      (e.g., contents of a bad GenParticle)
 class IO_Exception : public std::runtime_error {
 public:
   IO_Exception(const std::string & msg) 
