@@ -187,6 +187,9 @@ namespace HepMC {
 
     /// Dump this particle's full info to ostr
     std::ostream& operator<<( std::ostream& ostr, const GenParticle& part ) {
+        // find the current stream state
+	std::ios_base::fmtflags orig = ostr.flags();
+ 	std::streamsize prec = ostr.precision();
 	ostr << " ";
 	ostr.width(9);
 	ostr << part.barcode();
@@ -198,13 +201,10 @@ namespace HepMC {
 	ostr.setf(std::ios_base::showpos);
 	ostr << part.momentum().px() << ",";
 	ostr.width(9);
-        ostr.precision(2);
 	ostr << part.momentum().py() << ",";
 	ostr.width(9);
-        ostr.precision(2);
 	ostr << part.momentum().pz() << ",";
 	ostr.width(9);
-        ostr.precision(2);
 	ostr << part.momentum().e() << " ";
         ostr.setf(std::ios::fmtflags(0), std::ios::floatfield);
 	ostr.unsetf(std::ios_base::showpos);
@@ -226,6 +226,9 @@ namespace HepMC {
 	    ostr.width(9);
 	    ostr << (void*)part.end_vertex();
 	}
+        // restore the stream state
+        ostr.flags(orig);
+        ostr.precision(prec);
 	return ostr;
     }
 

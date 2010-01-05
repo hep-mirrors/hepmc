@@ -143,6 +143,9 @@ namespace HepMC {
     }  
 
     void GenVertex::print( std::ostream& ostr ) const {
+        // find the current stream state
+	std::ios_base::fmtflags orig = ostr.flags();
+ 	std::streamsize prec = ostr.precision();
 	if ( barcode()!=0 ) {
 	    if ( position() != FourVector(0,0,0,0) ) {
 	        ostr << "Vertex:";
@@ -158,13 +161,10 @@ namespace HepMC {
 		ostr.setf(std::ios_base::showpos);
 		ostr << position().x() << ",";
 		ostr.width(9);
-                ostr.precision(2);
 		ostr << position().y() << ",";
 		ostr.width(9);
-                ostr.precision(2);
 		ostr << position().z() << ",";
 		ostr.width(9);
-                ostr.precision(2);
 		ostr << position().t();
                 ostr.setf(std::ios::fmtflags(0), std::ios::floatfield);
 		ostr.unsetf(std::ios_base::showpos);
@@ -197,13 +197,10 @@ namespace HepMC {
 		ostr.setf(std::ios_base::showpos);
 		ostr << position().x();
 		ostr.width(9);
-                ostr.precision(2);
 		ostr << position().y();
 		ostr.width(9);
-                ostr.precision(2);
 		ostr << position().z();
 		ostr.width(9);
-                ostr.precision(2);
 		ostr << position().t();
                 ostr.setf(std::ios::fmtflags(0), std::ios::floatfield);
 		ostr.unsetf(std::ios_base::showpos);
@@ -248,6 +245,9 @@ namespace HepMC {
 	    //(*part2)->print( ostr ); // uncomment for long debugging printout
 	    ostr << **part2 << std::endl;
 	}
+        // restore the stream state
+        ostr.flags(orig);
+        ostr.precision(prec);
     }
 
     double GenVertex::check_momentum_conservation() const {
