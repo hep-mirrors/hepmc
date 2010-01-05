@@ -17,6 +17,7 @@
 #include <iostream>
 #include "HepMC/HerwigWrapper.h"
 #include "HepMC/IO_HERWIG.h"
+#include "HepMC/IO_GenEvent.h"
 #include "HepMC/GenEvent.h"
 #include "HepMC/HEPEVT_Wrapper.h"
 
@@ -52,6 +53,11 @@ int main() {
     // Instantiate an IO strategy for reading from HEPEVT.
     HepMC::IO_HERWIG hepevtio;
     //
+    HepMC::GenCrossSection xs;
+    double xsecval, xsecerr;
+    // Instantiate an IO strategy to write the data to file 
+    HepMC::IO_GenEvent ascii_io("example_MyHerwig.dat",std::ios::out);
+    //
     //........................................EVENT LOOP
     for ( int i = 1; i <= hwproc.MAXEV; i++ ) {
 	if ( i%50==1 ) std::cout << "Processing Event Number " 
@@ -77,6 +83,13 @@ int main() {
 	// finish event
 	hwufne();
 	HepMC::GenEvent* evt = hepevtio.read_next_event();
+	// define the units (Herwig uses GeV and mm)
+	evt->use_units(HepMC::Units::GEV, HepMC::Units::MM);
+	// set cross section information
+	xsecval = hwevnt.AVWGT * 1000.0;
+	xsecerr = xsecval / std::sqrt(i);  // statistical error
+	xs.set_cross_section(xsecval, xsecerr);
+	evt->set_cross_section(xs);
 	// add some information to the event
 	evt->set_event_number(i);
 	evt->set_signal_process_id(20);
@@ -86,6 +99,8 @@ int main() {
 	    HepMC::HEPEVT_Wrapper::print_hepevt();
 	    evt->print();
 	}
+	// write the event to the ascii file
+	ascii_io << evt;
 
 	// we also need to delete the created event from memory
 	delete evt;

@@ -120,6 +120,8 @@ void pythia_out()
 	// Instantiate an IO strategy to write the data to file 
 	HepMC::IO_GenEvent ascii_io("example_MyPythia.dat",std::ios::out);
 	//
+	HepMC::GenCrossSection xs;
+	//
 	//........................................EVENT LOOP
 	for ( int i = 1; i <= 100; i++ ) {
 	    if ( i%50==1 ) std::cout << "Processing Event Number " 
@@ -128,11 +130,16 @@ void pythia_out()
 	    // pythia pyhepc routine converts common PYJETS in common HEPEVT
 	    call_pyhepc( 1 );
 	    HepMC::GenEvent* evt = hepevtio.read_next_event();
+	    // define the units (Pythia uses GeV and mm)
+	    evt->use_units(HepMC::Units::GEV, HepMC::Units::MM);
 	    // add some information to the event
 	    evt->set_event_number(i);
 	    evt->set_signal_process_id(20);
 	    // set number of multi parton interactions
 	    evt->set_mpi( pypars.msti[31-1] );
+	    // set cross section information
+	    xs.set_cross_section( pyint5.xsec[2][0] );
+	    evt->set_cross_section( xs );
 	    // write the event out to the ascii files
 	    ascii_io << evt;
 	    // we also need to delete the created event from memory
@@ -163,6 +170,8 @@ void event_selection()
     //........................................HepMC INITIALIZATIONS
     // Instantiate an IO strategy for reading from HEPEVT.
     HepMC::IO_HEPEVT hepevtio;
+    //
+    HepMC::GenCrossSection xs;
     // declare an instance of the event selection predicate
     IsGoodEventMyPythia is_good_event;
     //........................................EVENT LOOP
@@ -176,8 +185,13 @@ void event_selection()
 	// pythia pyhepc routine convert common PYJETS in common HEPEVT
 	call_pyhepc( 1 );
 	HepMC::GenEvent* evt = hepevtio.read_next_event();
+	// define the units (Pythia uses GeV and mm)
+	evt->use_units(HepMC::Units::GEV, HepMC::Units::MM);
 	// set number of multi parton interactions
 	evt->set_mpi( pypars.msti[31-1] );
+	// set cross section information
+	xs.set_cross_section( pyint5.xsec[2][0] );
+	evt->set_cross_section( xs );
 	// do event selection
 	if ( is_good_event(evt) ) {
 	    std::cout << "Good Event Number " << i << std::endl;
@@ -248,6 +262,8 @@ void pythia_in_out()
     // Instantiate an IO strategy for reading from HEPEVT.
     HepMC::IO_HEPEVT hepevtio;
     //
+    HepMC::GenCrossSection xs;
+    //
     //........................................define the output scope
     {
 	// Instantial an IO strategy to write the data to file - it uses the 
@@ -262,6 +278,11 @@ void pythia_in_out()
 	    // pythia pyhepc routine converts common PYJETS in common HEPEVT
 	    call_pyhepc( 1 );
 	    HepMC::GenEvent* evt = hepevtio.read_next_event();
+	    // define the units (Pythia uses GeV and mm)
+	    evt->use_units(HepMC::Units::GEV, HepMC::Units::MM);
+	    // set cross section information
+	    xs.set_cross_section( pyint5.xsec[2][0] );
+	    evt->set_cross_section( xs );
 	    // add some information to the event
 	    evt->set_event_number(i);
 	    evt->set_signal_process_id(20);
@@ -317,6 +338,8 @@ void pythia_particle_out()
     // Instantiate an IO strategy for reading from HEPEVT.
     HepMC::IO_HEPEVT hepevtio;
     //
+    HepMC::GenCrossSection xs;
+    //
     { // begin scope of ascii_io
 	// Instantiate an IO strategy to write the data to file 
 	HepMC::IO_AsciiParticles ascii_io("example_PythiaParticle.dat",std::ios::out);
@@ -329,6 +352,11 @@ void pythia_particle_out()
 	    // pythia pyhepc routine converts common PYJETS in common HEPEVT
 	    call_pyhepc( 1 );
 	    HepMC::GenEvent* evt = hepevtio.read_next_event();
+	    // define the units (Pythia uses GeV and mm)
+	    evt->use_units(HepMC::Units::GEV, HepMC::Units::MM);
+	    // set cross section information
+	    xs.set_cross_section( pyint5.xsec[2][0] );
+	    evt->set_cross_section( xs );
 	    // add some information to the event
 	    evt->set_event_number(i);
 	    evt->set_signal_process_id(20);

@@ -31,6 +31,8 @@ int main() {
     // Instantiate an IO strategy for reading from HEPEVT.
     HepMC::IO_HEPEVT hepevtio;
     //
+    HepMC::GenCrossSection xs;
+    //
     // open some output files
     std::ofstream out1( "testPythiaOriginals.dat" );
     std::ofstream out2( "testPythiaCopies1.dat" );
@@ -48,6 +50,9 @@ int main() {
 	evt->use_units( HepMC::Units::GEV, HepMC::Units::MM);
 	// set number of multi parton interactions
 	evt->set_mpi( pypars.msti[31-1] );
+	// set cross section information
+	xs.set_cross_section( pyint5.xsec[2][0] );
+	evt->set_cross_section( xs );
 	//
 	//.......................make some copies
 	evt->print(out1);

@@ -38,6 +38,8 @@ int main() {
     // Instantiate an IO strategy for reading from HEPEVT.
     HepMC::IO_HEPEVT hepevtio;
     //
+    HepMC::GenCrossSection xs;
+    //
     //........................................EVENT LOOP
     for ( int i = 1; i <= 100; i++ ) {
 	if ( i%50==1 ) std::cout << "Processing Event Number " 
@@ -46,8 +48,13 @@ int main() {
 	// pythia pyhepc routine convert common PYJETS in common HEPEVT
 	call_pyhepc( 1 );
 	HepMC::GenEvent* evt = hepevtio.read_next_event();
+	// define the units (Pythia uses GeV and mm)
+	evt->use_units(HepMC::Units::GEV, HepMC::Units::MM);
 	// set number of multi parton interactions
 	evt->set_mpi( pypars.msti[31-1] );
+	// set cross section information
+	xs.set_cross_section( pyint5.xsec[2][0] );
+	evt->set_cross_section( xs );
 	//
 	//.......................USER WOULD PROCESS EVENT HERE
 	//

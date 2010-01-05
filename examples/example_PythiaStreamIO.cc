@@ -80,6 +80,8 @@ void writePythiaStreamIO() {
 	    // pythia pyhepc routine converts common PYJETS in common HEPEVT
 	    call_pyhepc( 1 );
 	    HepMC::GenEvent* evt = hepevtio.read_next_event();
+	    // define the units (Pythia uses GeV and mm)
+	    evt->use_units(HepMC::Units::GEV, HepMC::Units::MM);
 	    // add some information to the event
 	    evt->set_event_number(i);
 	    evt->set_signal_process_id(20);
