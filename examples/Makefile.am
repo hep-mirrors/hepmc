@@ -15,6 +15,7 @@ EXTRA_DIST = \
     testPythiaCopies.cc	\
     initPythia.cc \
     PythiaHelper.h \
+    HerwigHelper.h \
     initpydata.f \
     VectorConversion.h \
     example_UsingIterators.txt

@@ -12,6 +12,7 @@
 #include "HepMC/GenEvent.h"
 #include "HepMC/CompareGenEvent.h"
 #include "HepMC/HEPEVT_Wrapper.h"
+#include "HerwigHelper.h"
 
 int main() { 
     //
@@ -44,9 +45,6 @@ int main() {
     //
     // Instantiate an IO strategy for reading from HEPEVT.
     HepMC::IO_HERWIG hepevtio;
-    //
-    HepMC::GenCrossSection xs;
-    double xsecval, xsecerr;
     //
     // open some output files
     std::ofstream out1( "testHerwigOriginals.dat" );
@@ -81,10 +79,7 @@ int main() {
 	// herwig uses GeV and mm 
 	evt->use_units( HepMC::Units::GEV, HepMC::Units::MM);
 	// set cross section information
-	xsecval = hwevnt.AVWGT * 1000.0;
-	xsecerr = xsecval / std::sqrt(i);  // statistical error
-	xs.set_cross_section(xsecval, xsecerr);
-	evt->set_cross_section(xs);
+	evt->set_cross_section( getHerwigCrossSection(i) );
 	// add some information to the event
 	evt->set_event_number(i);
 	evt->set_signal_process_id(20);
