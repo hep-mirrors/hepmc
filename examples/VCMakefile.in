@@ -28,7 +28,6 @@ EXTRA_DIST = \
     example_EventSelection.cc \
     example_MyHerwig.cc \
     example_MyPythia.cc \
-    example_MyPythiaRead.cc \
     example_MyPythiaOnlyToHepMC.cc \
     example_UsingIterators.cc \
     example_PythiaStreamIO.cc \
@@ -36,6 +35,7 @@ EXTRA_DIST = \
     testPythiaCopies.cc	\
     initPythia.cc \
     PythiaHelper.h \
+    HerwigHelper.h \
     initpydata.f \
     VectorConversion.h \
     example_UsingIterators.txt
