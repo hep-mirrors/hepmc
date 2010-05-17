@@ -88,7 +88,7 @@
 \vspace{1cm}
 
 {\Large User Manual Version 2.06} \\
-April 5, 2010
+May 17, 2010
 
 \vspace{2cm}
 
@@ -1247,8 +1247,9 @@ contained in a HepMC GenEvent.
 Note that the E, N, U, C, H, and F lines contain event header information.
 There will be one and only one of these lines per event.
 Other lines with keys not specified above may be interspersed with the header 
-information, EXCEPT the named weight line (N) must immediately follow the 
-general GenEvent information line (E).
+information.
+The N, U, C, H, and F lines must lie between the E line and the first V line
+for each event.  N, U, C, H, and F lines can appear in any order.
 The header information is followed immediately by a V (vertex) line.
 Each vertex line is immediately followed by the P (particle) lines 
 for particles associated with that vertex.  
@@ -1265,19 +1266,19 @@ Figure~\ref{ascii_cross} for an example with GenCrossSection information.
 \begin{figure}[h]
   \begin{center}
 {\tiny \begin{verbatim}
-HepMC::Version 2.04.00 
-HepMC::IO_GenEvent-START_EVENT_LISTING 
-E 9 51 -1.0000000000000000e+00 -1.0000000000000000e+00 -1.0000000000000000e+00 20 0 309 1 2 0 0
-U GEV MM 
-H 0 0 0 0 0 0 0 0 0 0 0 0 0 
+HepMC::Version 2.06.00
+HepMC::IO_GenEvent-START_EVENT_LISTING
+E 9 51 -1.0000000000000000e+00 -1.0000000000000000e+00 -1.0000000000000000e+00 20 0 309 1 2 0 4 2.3000000000000001e-01 3.4000000000000002e-01 1.1000000000000000e-01 6.5000000000000002e-02
+N 4 "0" "1" "2" "3" 
+U GEV MM
+H 23 11 12 15 3 5 0 0 0 1.4499999582767487e-02 0 0 0
 F 2 3 3.5000000000000003e-01 6.4999999999999991e-01 8.4499999999999993e+00 2.4499999779912355e+03 4.5499999591265787e+03 230 230
-V -1 0 0 0 0 0 1 3 0 
+V -1 0 0 0 0 0 1 3 0
 P 1 2212 0 0 6.9999999371178146e+03 7.0000000000000000e+03 9.3827000000000005e-01 3 0 0 -1 0
 P 3 21 -9.5802904850995474e-01 3.4892974578914365e-01 1.5677975928920182e+01 1.5711094833049845e+01 0 3 0 0 -3 0
-P 12 2101 2.5787537037233477e-01 -1.1110299643709216e-01 1.2403958218239170e+03
-1.2403959888942973e+03 5.7933000000000001e-01 2 0 0 -9 0
+P 12 2101 2.5787537037233477e-01 -1.1110299643709216e-01 1.2403958218239170e+03 1.2403959888942973e+03 5.7933000000000001e-01 2 0 0 -9 0
 P 25 2 7.0015367813761997e-01 -2.3782674935205150e-01 2.3333682308044050e+00 2.4698753078332274e+00 3.3000000000000002e-01 2 0 0 -15 0
-V -2 0 0 0 0 0 1 2 0 
+V -2 0 0 0 0 0 1 2 0
 P 2 2212 0 0 -6.9999999371178146e+03 7.0000000000000000e+03 9.3827000000000005e-01 3 0 0 -2 0
 P 4 1 2.7745239600449745e-01 -1.8469236508822412e-01 -1.2668437617555701e+03 1.2668438056011901e+03 0 3 0 0 -4 0
 P 116 2203 -2.7745239600449745e-01 1.8469236508822412e-01 -1.8910900158159372e+03 1.8910902024916190e+03 7.7132999999999996e-01 2 0 0 -15 0
@@ -1292,13 +1293,12 @@ P 116 2203 -2.7745239600449745e-01 1.8469236508822412e-01 -1.8910900158159372e+0
 \begin{figure}[h]
   \begin{center}
 {\tiny \begin{verbatim}
-HepMC::Version 2.06.00.b01
+HepMC::Version 2.06.00
 HepMC::IO_GenEvent-START_EVENT_LISTING
 E 1 65 -1.0000000000000000e+00 -1.0000000000000000e+00 -1.0000000000000000e+00 20 0 357 1 2 0 3 3.4560000000000002e-01 9.8595999999999995e-01 9.8563000000000001e-01
 N 3 "0" "second weight name" "weightName" 
 U GEV MM
 C 3.3260000000000000e-03 1.0000000000000000e-04
-F 2 3 3.5000000000000003e-01 6.4999999999999991e-01 8.4499999999999993e+00 2.4499999779912355e+03 4.5499999591265787e+03 230 230
 V -1 0 0 0 0 0 1 3 0
 P 1 2212 0 0 6.9999999371178146e+03 7.0000000000000000e+03 9.3827000000000005e-01 3 0 0 -1 0
 P 3 -1 7.2521029125687850e-02 4.0916270130125820e-01 2.3327360517627892e+02 2.3327397528518750e+02 0 3 0 0 -3 0
@@ -1314,7 +1314,7 @@ P 95 2103 -7.8470425410496383e-02 -3.2223590540096692e-01 -3.0233822815549665e+0
           {\label{ascii_cross} Example of the format written to a file
 	   when GenCrossSection and named weights are used.
            Only the first few lines are shown. 
-	   Notice that HeavyIon line was not written because it contained
+	   Notice that the HeavyIon line was not written because it contained
 	   no information. }
 \end{figure}
 
@@ -1323,7 +1323,6 @@ P 95 2103 -7.8470425410496383e-02 -3.2223590540096692e-01 -3.0233822815549665e+0
 {\tiny \begin{verbatim}
 E 1 65 -1.0000000000000000e+00 -1.0000000000000000e+00 -1.0000000000000000e+00 20 0 357 1 2 0 0
 U GEV MM
-H 0 0 0 0 0 0 0 0 0 0 0 0 0
 F 2 3 3.5000000000000003e-01 6.4999999999999991e-01 8.4499999999999993e+00 2.4499999779912355e+03 4.5499999591265787e+03 230 230
 V -1 0 0 0 0 0 1 3 0
 P 1 2212 0 0 6.9999999371178146e+03 7.0000000000000000e+03 9.3827000000000005e-01 3 0 0 -1 0
@@ -1372,7 +1371,10 @@ P 5 -1 4.5914398456298945e-02 2.5904843777716324e-01 1.4768981337590043e+02 1.47
   \myitem{double}{optional list of weights} 
 \end{myitemize}
 \begin{myitemize}{N - weight names} 
-  \myitem{std::string}{list of weight names}
+  \myitem{int}{number of entries in weight name list.  
+               Note that the number of entries here and on the E line are
+	       required to be exactly the same and in the same order.} 
+  \myitem{std::string}{list of weight names enclosed in quotes}
 \end{myitemize}
 \begin{myitemize}{U - momentum and position units} 
   \myitem{std::string}{momentum units (MEV or GEV)}
