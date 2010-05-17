@@ -15,7 +15,7 @@ AC_CONFIG_HEADER([HepMC/defs.h])
 # for various reasons, this cannot match the HepMC version
 # ----------------------------------------------------------------------
 
-LIBRARY_VERSION="-version-info 3:0:0"
+LIBRARY_VERSION="-version-info 4:0:0"
 AC_SUBST(LIBRARY_VERSION)
 
 # ----------------------------------------------------------------------
