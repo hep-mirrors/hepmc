@@ -87,8 +87,8 @@
 
 \vspace{1cm}
 
-{\Large User Manual Version 2.05} \\
-June 2, 2009
+{\Large User Manual Version 2.06} \\
+April 5, 2010
 
 \vspace{2cm}
 
@@ -253,6 +253,7 @@ of the event record.
 
 \begin{itemize}\setlength{\itemsep}{0pt}
 \item simple - easy access to information provided by iterators
+      and range methods
 \item minimum dependencies
 \item information is stored in a graph structure, 
   physically similar to a collision event
@@ -378,7 +379,11 @@ the barcode data member and causes confusion among users.
 
 Iterators are provided as methods of the vertex and event classes
 which allow easy directed access to information in the C++ Standard
-Template Library (STL) style.
+Template Library (STL) style.   
+In addition, the GenRanges header contains several iterator 
+classes which explicity provide begin() and end() methods for the various
+public iterator types, allowing the user to easily use such utilities as
+Boost foreach.
 
 \begin{figure}[!ht]
   \begin{center}
@@ -515,6 +520,10 @@ to determine which units are being used.
   \myitem{vertex\_const\_iterator}{constant version of the vertex\_iterator}
   \myitem{particle\_const\_iterator}{constant version of 
 	the particle\_iterator}
+  \myitem{vertex\_range}{provides begin() and end() for ease of use with 
+          external fuctions, such as for\_each}
+  \myitem{particle\_range}{provides begin() and end() for ease of use with 
+          external fuctions, such as for\_each}
   \myitem{print}{gives a formatted printout of the event to the
     specified output stream}
   \myitem{barcode\_to\_particle}{ returns a pointer to the particle
@@ -543,7 +552,7 @@ to determine which units are being used.
   \myitem{beam\_particle\_1}{(optional) pointer to the first incoming beam particle }
   \myitem{beam\_particle\_2}{(optional) pointer to the second incoming beam particle }
   \myitem{weights}{a container of an arbitrary number of 8 byte 
-    floating point event weights}
+    floating point event weights and their associated names}
   \myitem{random\_states}{a container of an arbitrary number of 4 byte
     integers which define the random number generator state just
     before the event generation}
@@ -597,6 +606,7 @@ and would clutter the HepMC package. Implementing a predicate is
 simple (about 4 lines of code).
 Examples are given in the GenEvent header file and in
 \verb!example_UsingIterators.cc! (Section~\ref{examples}).
+Useful examples can also be found in testHepMCIteration.cc.
 
 The signal\_process\_id is packaged with each event (rather than being
 associated with a run class for example) to handle the possibility of
@@ -716,6 +726,12 @@ Default units are set at compile time by the configure switches
     given a specified range - described in the iterator section}
   \myitem{particle\_iterator}{iterates over particles in the graph,
     given a specified range - described in the iterator section}
+  \myitem{particles}{provides begin() and end() for ease of use with 
+          external fuctions, such as for\_each}
+  \myitem{particles\_in}{provides begin() and end() for ease of use with 
+          external fuctions, such as for\_each}
+  \myitem{particles\_out}{provides begin() and end() for ease of use with 
+          external fuctions, such as for\_each}
 \end{myitemize}
 \begin{myitemize}{Relevant Data Members}
   \myitem{position}{$\vec{x},ct$ stored as FourVector}
@@ -754,16 +770,17 @@ package~\cite{evtgen} requirements.
 \subsection{HepMC::WeightContainer}
 \begin{myitemize}{Relevant Data Members}
   \myitem{weights}{a vector of 8-byte floating point weights}
+  \myitem{names}{a map of strings associated with a position in the weights vector}
 \end{myitemize}
 \begin{myitemize}{Notes and Conventions}
 \item methods are coded and names chosen in the spirit of the
   STL vector class
 \end{myitemize}
 
-The WeightContainer is just a storage area for double precision
-weights used in GenEvent and GenVertex. It is essentially an interface
-to the STL vector class, and its member functions are chosen in that
-spirit.  
+The WeightContainer is a storage area for double precision
+weights used in GenEvent and GenVertex and their associated names. 
+WeightContainer mimics both a map class and the STL vector class, 
+and its member functions are chosen in that spirit.  
 You might, for instance, use the GenEvent weights to include
 information about differential cross sections.
 
@@ -777,6 +794,10 @@ information about differential cross sections.
     resolves the particle as a 4-vector according to its momentum}
   \myitem{generatedMass}{generated mass}
   \myitem{momentum().m()}{calculates mass from momentum}
+  \myitem{particles\_in}{provides begin() and end() for ease of use with 
+          external fuctions, such as for\_each}
+  \myitem{particles\_out}{provides begin() and end() for ease of use with 
+          external fuctions, such as for\_each}
 \end{myitemize}
 \begin{myitemize}{Data Members}
   \myitem{momentum}{$\vec{p},cE$ stored as FourVector}
@@ -895,6 +916,11 @@ example is given at the top of the Flow header file.
 %
 
 \subsubsection{HepMC::Polarization}
+\begin{myitemize}{Important Public Methods}
+  \myitem{is\_defined}{returns true if the Polarization has been defined}
+  \myitem{set\_undefined}{set this to undefined, resetting theta and phi 
+          to their default values}
+\end{myitemize}
 \begin{myitemize}{Relevant Data Members}
   \myitem{theta}{$\theta$ angle in radians $0\leq\theta\leq\pi$}
   \myitem{phi}{$\phi$ angle in radians $0\leq\phi<2\pi$}
@@ -996,7 +1022,11 @@ with streaming I/O operators instead of using IO\_GenEvent.
 \label{iterators}
 
 Examples of using the particle/vertex iterators are provided in
-\verb!example_UsingIterators.cc! (Section~\ref{examples}).
+\verb!example_UsingIterators.cc! (Section~\ref{examples}).  
+Useful examples can also be found in testHepMCIteration.cc.
+
+As of HepMC 2.06.00, iterator range classes and methods are 
+available for improved functionality.
 
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -1012,6 +1042,10 @@ event. For each event,
 vertices\_begin() and vertices\_end() define the beginning and
 one-past-the-end of the particle iterator respectively.
 
+GenEventVertexRange( GenEvent\& ) is a wrapper for 
+GenEvent::vertex\_iterator which provides begin() and end() for
+ease of use with external fuctions, such as Boost foreach.
+GenEvent::vertex\_range() also provides this functionality.
 
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -1020,6 +1054,8 @@ one-past-the-end of the particle iterator respectively.
 \subsection{HepMC::GenEvent::vertex\_const\_iterator}
 
 A constant version of HepMC::GenEvent::vertex\_iterator, otherwise identical.
+
+ConstGenEventVertexRange is the constant version of GenEventVertexRange.
 
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -1035,6 +1071,10 @@ to loop over all particles in the event. For each event,
 particles\_begin() and particles\_end() define the beginning and
 one-past-the-end of the particle iterator respectively.
 
+GenEventParticleRange( GenEvent\& ) is a wrapper for
+GenEvent::particle\_iterator which provides begin() and end() for
+ease of use with external fuctions, such as Boost foreach.
+GenEvent::particle\_range() also provides this functionality.
 
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -1044,6 +1084,8 @@ one-past-the-end of the particle iterator respectively.
 
 A constant version of HepMC::GenEvent::particle\_iterator, otherwise
 identical.
+
+ConstGenEventParticleRange is the constant version of GenEventParticleRange.
 
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -1132,6 +1174,22 @@ The possibilities are:
 The class is composed of a GenVertex::vertex\_iterator - 
 and the same considerations apply.
 
+GenVertexParticleRange( GenVertex\&, IteratorRange ) is a wrapper for
+GenVertex::particle\_iterator which provides begin() and end() for
+ease of use with external fuctions, such as Boost foreach.
+If the HepMC::IteratorRange is unspecified, it defaults to "relatives".
+GenVertex::particles( IteratorRange ) also provides this functionality.
+
+Also provided, are GenParticleProductionRange( GenParticle\&, IteratorRange )
+and GenParticleEndRange( GenParticle\&, IteratorRange ), 
+which iterate over the GenParticle's production or end vertex.  
+If the vertex is undefined, begin() and end() will throw a std::range\_error.
+If the HepMC::IteratorRange is unspecified, it defaults to "relatives".
+GenVertex::particles\_in( GenParticle\&, IteratorRange ),
+GenVertex::particles\_out( GenParticle\&, IteratorRange ),
+GenParticle::particles\_in( IteratorRange ), and
+GenParticle::particles\_out( IteratorRange ) also provide this functionality.
+
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
@@ -1174,6 +1232,7 @@ contained in a HepMC GenEvent.
 \end{myitemize}
 \begin{myitemize}{Line Keys}
   \myitem{E}{general GenEvent information} 
+  \myitem{N}{named weights} 
   \myitem{U}{momentum and position units} 
   \myitem{C}{GenCrossSection information:
              This line will appear ONLY if GenCrossSection is defined.} 
@@ -1185,8 +1244,11 @@ contained in a HepMC GenEvent.
   \myitem{P}{GenParticle information} 
 \end{myitemize}
 
-Note that the E, U, C, H, and F lines contain event header information.
-There will be one and only one of these lines per event. 
+Note that the E, N, U, C, H, and F lines contain event header information.
+There will be one and only one of these lines per event.
+Other lines with keys not specified above may be interspersed with the header 
+information, EXCEPT the named weight line (N) must immediately follow the 
+general GenEvent information line (E).
 The header information is followed immediately by a V (vertex) line.
 Each vertex line is immediately followed by the P (particle) lines 
 for particles associated with that vertex.  
@@ -1230,12 +1292,12 @@ P 116 2203 -2.7745239600449745e-01 1.8469236508822412e-01 -1.8910900158159372e+0
 \begin{figure}[h]
   \begin{center}
 {\tiny \begin{verbatim}
-HepMC::Version 2.05.00
+HepMC::Version 2.06.00.b01
 HepMC::IO_GenEvent-START_EVENT_LISTING
-E 1 65 -1.0000000000000000e+00 -1.0000000000000000e+00 -1.0000000000000000e+00 20 0 357 1 2 0 0
+E 1 65 -1.0000000000000000e+00 -1.0000000000000000e+00 -1.0000000000000000e+00 20 0 357 1 2 0 3 3.4560000000000002e-01 9.8595999999999995e-01 9.8563000000000001e-01
+N 3 "0" "second weight name" "weightName" 
 U GEV MM
-C 1.0660000000000000e-01 1.0000000000000000e-02
-H 0 0 0 0 0 0 0 0 0 0 0 0 0
+C 3.3260000000000000e-03 1.0000000000000000e-04
 F 2 3 3.5000000000000003e-01 6.4999999999999991e-01 8.4499999999999993e+00 2.4499999779912355e+03 4.5499999591265787e+03 230 230
 V -1 0 0 0 0 0 1 3 0
 P 1 2212 0 0 6.9999999371178146e+03 7.0000000000000000e+03 9.3827000000000005e-01 3 0 0 -1 0
@@ -1243,12 +1305,17 @@ P 3 -1 7.2521029125687850e-02 4.0916270130125820e-01 2.3327360517627892e+02 2.33
 P 11 2214 -1.1686660480579378e-01 -8.5929732056936881e-03 6.3364496390829606e+02 6.3364619182056367e+02 1.2419302372801875e+00 2 0 0 -25 0
 P 91 1 4.4345575680105935e-02 -4.0056972809556451e-01 6.4508531915990204e+02 6.4508552945967551e+02 3.3000000000000002e-01 2 0 0 -26 0
 V -2 0 0 0 0 0 1 2 0
+P 2 2212 0 0 -6.9999999371178146e+03 7.0000000000000000e+03 9.3827000000000005e-01 3 0 0 -2 0
+P 4 2 7.8470425410496383e-02 3.2223590540096692e-01 -1.4955117837986219e+01 1.4958794842314219e+01 0 3 0 0 -4 0
+P 95 2103 -7.8470425410496383e-02 -3.2223590540096692e-01 -3.0233822815549665e+03 3.0233823981369064e+03 7.7132999999999996e-01 2 0 0 -28 0
 \end{verbatim}}
   \end{center}
   \caption[Example of ascii format]
           {\label{ascii_cross} Example of the format written to a file
-	   when GenCrossSection is used.
-           Only the first few lines are shown. }
+	   when GenCrossSection and named weights are used.
+           Only the first few lines are shown. 
+	   Notice that HeavyIon line was not written because it contained
+	   no information. }
 \end{figure}
 
 \begin{figure}[h]
@@ -1303,6 +1370,9 @@ P 5 -1 4.5914398456298945e-02 2.5904843777716324e-01 1.4768981337590043e+02 1.47
   \myitem{long}{optional list of random state integers} 
   \myitem{int}{number of entries in weight list (may be zero)} 
   \myitem{double}{optional list of weights} 
+\end{myitemize}
+\begin{myitemize}{N - weight names} 
+  \myitem{std::string}{list of weight names}
 \end{myitemize}
 \begin{myitemize}{U - momentum and position units} 
   \myitem{std::string}{momentum units (MEV or GEV)}
@@ -1441,6 +1511,8 @@ streaming I/O operators.
      {example\_BuildEventFromScratch.cc}
   \item{\bf Verify that copying generated events behaves as expected:}
      {testHerwigCopies.cc and testPythiaCopies.cc}
+  \item{\bf Using the iterator range classes and methods:}
+     {HepMC/test/testHepMCIteration.cc}
 \end{itemize}
 
 I/O examples are shown in Figures 
@@ -1550,6 +1622,7 @@ which uses iostreams instead of files.
 
 The ParticleData classes, deprecated since HepMC 2.02.00, 
 had become outmoded and would need a lot of work.  
+The ParticleData classes were removed as of HepMC 2.06.00.
 Instead, we recommend using packages already developed for this
 purpose, such as HepPDT~\cite{heppdt}.
 
@@ -1559,85 +1632,6 @@ and removed as of HepMC 2.04.00.
 IO\_GenEvent and the streaming input operator can read old files written by 
 either IO\_Ascii or IO\_ExtendedAscii.
 
-%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%
-
-\subsection{HepMC::ParticleData (deprecated since HepMC 2.02.00)}
-
-\begin{myitemize}{Relevant Data Members}
-  \myitem{name}{std::string giving an Ascii description of the
-    particle type}
-  \myitem{pdg\_id}{unique ID integer denoting the particle type 
-    as defined by the PDG}
-  \myitem{charge}{in fraction of proton charge}
-  \myitem{mass}{in energy units}
-  \myitem{c$\times$lifetime}{particle lifetime in [mm]}
-  \myitem{spin}{}
-\end{myitemize}
-\begin{myitemize}{Notes and Conventions}
-  \item the lifetime can be set by specifying either 
-    the lifetime or the width
-  \item c$\times$lifetime=-1 specifies a stable particle (zero width)
-\end{myitemize}
-
-Data for each particle type (mass, lifetime, charge, etc.) can be
-stored as particle data objects for which a particle data table
-container is provided. There are no dependencies between the particle
-data objects and the other elements of the event - the relationship
-exists only by means of the particle id which is used to lookup
-information from within a particle data table. As such the data table
-and event record are separate modular entities which need not be used
-in conjunction (a user may choose to employ the event record while
-using his own particle data classes).
-
-ParticleData class stores information about a particular particle
-type. It is intended that a different ParticleData object is created 
-for each particle and each anti-particle - necessary for CP violation
-cases. The charge and spin are stored internally as integers representing
-$\frac{\mbox{proton charge}}{3}$ and $\frac{\mbox{photon spin}}{2}$
-respectively. 
-
-%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%
-
-\subsection{HepMC::ParticleDataTable (deprecated since HepMC 2.02.00)}
-\begin{myitemize}{Important Public Methods}
-  \myitem{find}{returns the ParticleData instance with the specified
-    pdg\_id}
-  \myitem{operator[]}{equivalent to find}
-  \myitem{insert}{includes the specifed ParticleData instance in the
-    table}
-  \myitem{erase}{removes the specified ParticleData instance from the
-    table but does not delete it}
-  \myitem{iterator/const\_iterator}{iterates over all entries in the
-    table} 
-  \myitem{make\_antiparticles\_from\_particles}{for each charged entry
-    in the table, makes an equivalent entry with opposite charge and
-    pdg\_id.} 
-  \myitem{delete\_all}{removes all ParticleData instances from the
-    table and deletes them}
-  \myitem{merge\_table}{merges the entries from the specified
-    ParticleDataTable if they are not already in the current table}
-  \myitem{print}{gives a formatted printout of the table to the
-    specified output stream}
-\end{myitemize}
-\begin{myitemize}{Relevant Data Members}
-  \myitem{description}{Ascii description of the table stored as
-    std::string} 
-  \myitem{data\_table}{container of pointers to ParticleData instances
-    mapped onto their associated pdg\_id's}
-\end{myitemize}
-
-ParticleDataTable is a container for ParticleData instances - it is
-basically just an interface to an STL map, and STL naming conventions
-are employed. A ParticleData instance may belong to any number of
-ParticleDataTables. The ParticleDataTable is not the owner of the
-ParticleData instances and is not responsible for deleting them
-(though a delete\_all method is provided). Two ParticleData instances
-with identical pdg\_id's are forbidden from entering the same
-ParticleDataTable. 
 
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

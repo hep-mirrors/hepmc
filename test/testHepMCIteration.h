@@ -19,8 +19,6 @@ bool IsWBoson( const HepMC::GenParticle* p ) {
     return false;
 }
 
-//! test class
-
 /// \class  IsFinalState
 /// this predicate returns true if the input has no decay vertex
 class IsFinalState {
@@ -32,4 +30,62 @@ public:
     }
 };
 
+/// \class  PrintPhoton
+/// prints the particle if it is a photon
+class PrintPhoton {
+public:
+    PrintPhoton( std::ostream & os ) : m_out( os ) {}
+    void operator()( const HepMC::GenParticle* p ) { 
+	if ( IsPhoton(p) ) p->print( m_out );
+    }
+private:
+   std::ostream & m_out;
+};
 
+/// \class  PrintParticle
+/// prints the particle
+class PrintParticle {
+public:
+    PrintParticle( std::ostream & os ) : m_out( os ) {}
+    void operator()( const HepMC::GenParticle* p ) { 
+	m_out << "\t";
+	p->print( m_out );
+    }
+private:
+   std::ostream & m_out;
+};
+
+//! test class
+
+/// \class  PrintChildren
+/// prints the particle
+class PrintChildren {
+public:
+    PrintChildren( std::ostream & os ) : m_out( os ) {}
+    void operator()( HepMC::GenParticle* p ) { 
+	// make a copy
+	HepMC::GenParticle* cp = p;
+	// use the copy and the original
+	m_out << "\t\t\t (id,barcode,status) " 
+	      << cp->pdg_id() << " " 
+              << p->barcode() << " "
+              << cp->status() << std::endl;
+    }
+private:
+   std::ostream & m_out;
+};
+
+//! test class
+
+/// \class  PrintDescendants
+/// prints the particle
+class PrintDescendants {
+public:
+    PrintDescendants( std::ostream & os ) : m_out( os ) {}
+    void operator()( const HepMC::GenParticle* p ) { 
+	m_out << "\t\t";
+	p->print( m_out );
+    }
+private:
+   std::ostream & m_out;
+};

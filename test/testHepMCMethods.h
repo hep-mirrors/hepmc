@@ -11,6 +11,9 @@
 #include "HepMC/GenEvent.h"
 
 double findPiZero( HepMC::GenEvent * );
-void   particleTypes( HepMC::GenEvent * );
+void   particleTypes( HepMC::GenEvent *, std::ostream & os=std::cout );
+void   repairUnits(HepMC::GenEvent*, 
+                   HepMC::Units::MomentumUnit, 
+		   HepMC::Units::MomentumUnit  );
 
 #endif

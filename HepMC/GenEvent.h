@@ -140,6 +140,11 @@ namespace HepMC {
 
 namespace HepMC {
 
+    class GenEventVertexRange;
+    class ConstGenEventVertexRange;
+    class GenEventParticleRange;
+    class ConstGenEventParticleRange;
+
     //! The GenEvent class is the core of HepMC
 
     ///
@@ -293,6 +298,15 @@ namespace HepMC {
 	/// set the units using strings
 	/// the string must match the enum exactly
         void use_units( std::string&, std::string& );
+	
+	/// vertex range
+	GenEventVertexRange vertex_range();
+	/// vertex range
+	ConstGenEventVertexRange vertex_range() const;
+	/// particle range
+	GenEventParticleRange particle_range();
+	/// particle range
+	ConstGenEventParticleRange particle_range() const;
 
     public:
 	///////////////////////////////
@@ -585,6 +599,10 @@ namespace HepMC {
 	std::istream & find_end_key( std::istream &, int & );
         /// get unit information from ASCII input
         std::istream & read_units( std::istream & );
+	/// get weight names from ASCII input
+        std::istream & read_weight_names( std::istream & );
+	/// read the event header line
+        std::istream & process_event_line( std::istream &, int &, int &, int &, int & );
 
     private: // data members
 	int                   m_signal_process_id;

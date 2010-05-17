@@ -90,20 +90,9 @@ bool compareBeamParticles( GenEvent* e1, GenEvent* e2 ) {
 }
 
 bool compareWeights( GenEvent* e1, GenEvent* e2 ) {
-   WeightContainer w1 = e1->weights();
-   WeightContainer w2 = e2->weights();
-   if( w1.size() != w2.size() ) { 
-       std::cerr << "compareWeights: size of weight container differs " << std::endl;
-       return false; 
-   }
-   for( int i=0; i<w1.size(); ++i ) {
-       if( w1[i] != w2[i] ) {
-	   std::cerr << "compareWeights: weight container entry " 
-	             << i << " differs" << std::endl;
-	   return false; 
-       }
-   }
-   return true;
+   if( e1->weights() == e2->weights() ) return true;
+   std::cerr << "compareWeights: weight containers differ " << std::endl;
+   return false;
 }
 
 bool compareParticles( GenEvent* e1, GenEvent* e2 ) {

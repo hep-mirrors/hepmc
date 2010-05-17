@@ -10,7 +10,6 @@
 
 #include "HepMC/IO_AsciiParticles.h"
 #include "HepMC/GenEvent.h"
-#include "HepMC/ParticleDataTable.h"
 #include "HepMC/Version.h"
 
 namespace HepMC {

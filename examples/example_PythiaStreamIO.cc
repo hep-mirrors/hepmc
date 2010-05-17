@@ -86,7 +86,7 @@ void writePythiaStreamIO() {
 	    // set number of multi parton interactions
 	    evt->set_mpi( pypars.msti[31-1] );
 	    // set cross section information
-	    evt->set_cross_section( getPythiaCrossSection() );
+	    evt->set_cross_section( HepMC::getPythiaCrossSection() );
 	    // write the event out to the ascii files
 	    ascii_io << (*evt);;
 	    // we also need to delete the created event from memory

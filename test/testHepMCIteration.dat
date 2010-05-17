@@ -2,6 +2,7 @@ Event 9 is good
 photons in event 9:
 GenParticle: 7 ID:22 (P,E)=-35.8473,-6.12284,-383.843,385.562 Stat:3 PV:-5 EV:-6 Pol:(0,0) F:0
 GenParticle: 9 ID:22 (P,E)=-35.8473,-6.12284,-383.843,385.562 Stat:1 PV:-6 EV:0 Pol:(0,0) F:0
+
 A W boson has been found in event: 9
 GenParticle: 8 ID:-24 (P,E)=36.3222,9.30234,-331.044,343.109 Stat:3 PV:-5 EV:-7 Pol:(0,0) F:0
 	 Its parents are: 
@@ -77,6 +78,7 @@ GenParticle: 8 ID:-24 (P,E)=36.3222,9.30234,-331.044,343.109 Stat:3 PV:-5 EV:-7 
 		GenParticle: 17 ID:21 (P,E)=0.0795054,2.07871,-5.14705,5.55153 Stat:2 PV:-8 EV:-11 Pol:(0,0) F:0
 		GenParticle: 18 ID:-4 (P,E)=10.1134,40.5323,-128.016,134.668 Stat:2 PV:-8 EV:-11 Pol:(0,0) F:0
 		GenParticle: 10 ID:-24 (P,E)=36.3222,9.30234,-331.044,343.109 Stat:2 PV:-7 EV:-8 Pol:(0,0) F:0
+
 A W boson has been found in event: 9
 GenParticle: 10 ID:-24 (P,E)=36.3222,9.30234,-331.044,343.109 Stat:2 PV:-7 EV:-8 Pol:(0,0) F:0
 	 Its parents are: 
@@ -159,6 +161,7 @@ Event 18 is good
 photons in event 18:
 GenParticle: 7 ID:22 (P,E)=23.7859,34.5098,42.0174,59.3478 Stat:3 PV:-5 EV:-6 Pol:(0,0) F:0
 GenParticle: 9 ID:22 (P,E)=23.7859,34.5098,42.0174,59.3478 Stat:1 PV:-6 EV:0 Pol:(0,0) F:0
+
 A W boson has been found in event: 18
 GenParticle: 8 ID:24 (P,E)=-22.4676,-32.3496,651.024,657.947 Stat:3 PV:-5 EV:-7 Pol:(0,0) F:0
 	 Its parents are: 
@@ -176,6 +179,7 @@ GenParticle: 8 ID:24 (P,E)=-22.4676,-32.3496,651.024,657.947 Stat:3 PV:-5 EV:-7 
 		GenParticle: 11 ID:-15 (P,E)=10.8505,22.9874,296.045,297.139 Stat:2 PV:-8 EV:-9 Pol:(0,0) F:0
 		GenParticle: 12 ID:16 (P,E)=-33.3181,-55.337,354.979,360.808 Stat:1 PV:-8 EV:0 Pol:(0,0) F:0
 		GenParticle: 10 ID:24 (P,E)=-22.4676,-32.3496,651.024,657.947 Stat:2 PV:-7 EV:-8 Pol:(0,0) F:0
+
 A W boson has been found in event: 18
 GenParticle: 10 ID:24 (P,E)=-22.4676,-32.3496,651.024,657.947 Stat:2 PV:-7 EV:-8 Pol:(0,0) F:0
 	 Its parents are: 
@@ -196,6 +200,7 @@ Event 56 is good
 photons in event 56:
 GenParticle: 7 ID:22 (P,E)=7.92316,-57.3898,-530.978,534.129 Stat:3 PV:-5 EV:-6 Pol:(0,0) F:0
 GenParticle: 9 ID:22 (P,E)=7.92316,-57.3898,-530.978,534.129 Stat:1 PV:-6 EV:0 Pol:(0,0) F:0
+
 A W boson has been found in event: 56
 GenParticle: 8 ID:-24 (P,E)=3.24583,59.0393,-1247.75,1252.04 Stat:3 PV:-5 EV:-7 Pol:(0,0) F:0
 	 Its parents are: 
@@ -207,6 +212,7 @@ GenParticle: 8 ID:-24 (P,E)=3.24583,59.0393,-1247.75,1252.04 Stat:3 PV:-5 EV:-7 
 		GenParticle: 11 ID:11 (P,E)=38.8894,9.95748,-643.488,644.739 Stat:1 PV:-8 EV:0 Pol:(0,0) F:0
 		GenParticle: 12 ID:-12 (P,E)=-35.6436,49.0818,-604.26,607.297 Stat:1 PV:-8 EV:0 Pol:(0,0) F:0
 		GenParticle: 10 ID:-24 (P,E)=3.24583,59.0393,-1247.75,1252.04 Stat:2 PV:-7 EV:-8 Pol:(0,0) F:0
+
 A W boson has been found in event: 56
 GenParticle: 10 ID:-24 (P,E)=3.24583,59.0393,-1247.75,1252.04 Stat:2 PV:-7 EV:-8 Pol:(0,0) F:0
 	 Its parents are: 

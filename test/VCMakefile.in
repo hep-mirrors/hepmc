@@ -19,10 +19,11 @@ NORMAL_UNINSTALL = :
 check_PROGRAMS = testSimpleVector$(EXEEXT) testUnits$(EXEEXT) \
 	testPrintBug$(EXEEXT) testHepMC$(EXEEXT) \
 	testHepMCIteration$(EXEEXT) testMass$(EXEEXT) \
-	testMultipleCopies$(EXEEXT) testStreamIO$(EXEEXT) testFlow$(EXEEXT)
+	testMultipleCopies$(EXEEXT) testStreamIO$(EXEEXT) \
+	testFlow$(EXEEXT) testWeights$(EXEEXT)
 TESTS = testSimpleVector$(EXEEXT) testUnits$(EXEEXT) testHepMC.sh \
 	testHepMCIteration.sh testMass.sh testStreamIO.sh testPrintBug.sh \
-	testMultipleCopies$(EXEEXT) testFlow.sh
+	testMultipleCopies$(EXEEXT) testFlow.sh testWeights$(EXEEXT)
 XFAIL_TESTS =
 subdir = test
 DIST_COMMON = $(srcdir)/Makefile.am $(srcdir)/Makefile.in \
@@ -51,6 +52,9 @@ testHepMCIteration_DEPENDENCIES = $(top_builddir)/src/HepMC.lib
 am_testFlow_OBJECTS = testFlow.$(OBJEXT)
 testFlow_OBJECTS = $(am_testFlow_OBJECTS)
 testFlow_DEPENDENCIES = $(top_builddir)/src/HepMC.lib
+am_testWeights_OBJECTS = testWeights.$(OBJEXT)
+testWeights_OBJECTS = $(am_testWeights_OBJECTS)
+testWeights_DEPENDENCIES = $(top_builddir)/src/HepMC.lib
 am_testMass_OBJECTS = testMass.$(OBJEXT)
 testMass_OBJECTS = $(am_testMass_OBJECTS)
 testMass_DEPENDENCIES = $(top_builddir)/src/HepMC.lib
@@ -81,13 +85,13 @@ SOURCES = $(testHepMC_SOURCES) \
 	$(testMultipleCopies_SOURCES) $(testPrintBug_SOURCES) \
 	$(testStreamIO_SOURCES) \
 	$(testSimpleVector_SOURCES) $(testUnits_SOURCES) \
-	$(testFlow_SOURCES)
+	$(testFlow_SOURCES) $(testWeights_SOURCES)
 DIST_SOURCES = $(testHepMC_SOURCES) \
 	$(testHepMCIteration_SOURCES) $(testMass_SOURCES) \
 	$(testMultipleCopies_SOURCES) $(testPrintBug_SOURCES) \
 	$(testStreamIO_SOURCES) \
 	$(testSimpleVector_SOURCES) $(testUnits_SOURCES) \
-	$(testFlow_SOURCES)
+	$(testFlow_SOURCES) $(testWeights_SOURCES)
 ETAGS = etags
 CTAGS = ctags
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(EXTRA_DIST)
@@ -169,6 +173,7 @@ testStreamIO_SOURCES = testStreamIO.cc testHepMCMethods.cc
 testHepMCIteration_SOURCES = testHepMCIteration.cc
 testMultipleCopies_SOURCES = testMultipleCopies.cc
 testPrintBug_SOURCES = testPrintBug.cc
+testWeights_SOURCES = testWeights.cc
 
 # Identify the link libraries and flags on a per-test basis:
 testSimpleVector_LDADD = $(top_builddir)/src/HepMC.lib
@@ -180,6 +185,7 @@ testStreamIO_LDADD = $(top_builddir)/src/HepMC.lib
 testHepMCIteration_LDADD = $(top_builddir)/src/HepMC.lib
 testMultipleCopies_LDADD = $(top_builddir)/src/HepMC.lib
 testPrintBug_LDADD = $(top_builddir)/src/HepMC.lib
+testWeights_LDADD = $(top_builddir)/src/HepMC.lib
 
 # Identify input data file(s) and prototype output file(s):
 EXTRA_DIST = testIOGenEvent.input \
@@ -198,17 +204,21 @@ EXTRA_DIST = testIOGenEvent.input \
 # Identify generated file(s) to be removed when 'make clean' is requested:
 CLEANFILES = testHepMC.cout testStreamIO.cout \
              testHepMCIteration.cout \
+	     testHepMCIteration.out testHepMCIteration2.out testHepMCIteration3.out \
              testHepMC.out testHepMCParticle.out \
-             testPrintBug.out testMass.out \
-	     testAscii.out testHepMCIteration.out testHepMCprecision.out \
-             testHepMCIteration.out testMass1.out testMass2.out \
-	     testMultipleCopies.out testHepMCVarious.out testIOAscii.out \
+             testPrintBug.out testMass.out testNaN.out \
+	     testAscii.out testHepMCprecision.out \
+             testMass.cout testMass1.out testMass2.out \
+	     testHepMCVarious.cout testHepMCVarious.out testIOAscii.out \
+	     testMultipleCopies.out \
 	     testMultipleCopies1.out testMultipleCopies2.out \
 	     testMultipleOriginals.out testUnits.out \
-	     testCrossSection.out testCrossSection2.out \
+	     testCrossSection.out testCrossSection2.out testCrossSection.cout \
 	     testStreamIO.out testStreamIOParticle.out testStreamIOVarious.out \
-	     testStreamIO2.out testStreamIOprecision.out testStreamIO.cout \
-	     testFlow.out testFlow.out1 testFlow.out2 testFlow.out3 
+	     testStreamIO2.out testStreamIO3.out testStreamIO4.out \
+	     testStreamIOprecision.out testStreamIO.cout testStreamIOVarious.cout \
+	     testFlow.out testFlow.out1 testFlow.out2 testFlow.out3 \
+	     testWithWeight.cout testWithWeight.out testWithWeight2.out
 
 all: all-am
 
@@ -287,6 +297,9 @@ testSimpleVector$(EXEEXT): $(testSimpleVector_OBJECTS) $(testSimpleVector_DEPEND
 testUnits$(EXEEXT): $(testUnits_OBJECTS) $(testUnits_DEPENDENCIES) 
 	@rm -f testUnits$(EXEEXT)
 	$(CXXLINK) $(testUnits_OBJECTS) $(testUnits_LDADD) $(LIBS)
+testWeights$(EXEEXT): $(testWeights_OBJECTS) $(testWeights_DEPENDENCIES) 
+	@rm -f testWeights$(EXEEXT)
+	$(CXXLINK) $(testWeights_OBJECTS) $(testWeights_LDADD) $(LIBS)
 
 mostlyclean-compile:
 	-rm -f *.$(OBJEXT)
@@ -304,6 +317,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/testSimpleVector.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/testStreamIO.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/testUnits.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/testWeights.Po@am__quote@
 
 .cc.obj:
 	source='$<' object='$@' libtool=no \

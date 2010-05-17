@@ -20,6 +20,11 @@
 #define HEPMC_IO_ASCII_REMOVED
 #endif
 
+// the ParticleData class is NOT available in HepMC   
+#ifndef HEPMC_PARTICLE_DATA_REMOVED
+#define HEPMC_PARTICLE_DATA_REMOVED
+#endif
+
 // the IO_GenEvent class is available in HepMC   
 #ifndef HEPMC_HAS_IO_GENEVENT
 #define HEPMC_HAS_IO_GENEVENT
@@ -45,9 +50,19 @@
 #define HEPMC_HAS_CROSS_SECTION
 #endif
 
+// the iterator range classes are available in HepMC  
+#ifndef HEPMC_HAS_ITERATOR_RANGES
+#define HEPMC_HAS_ITERATOR_RANGES
+#endif
+
+// the HepMC::WeightContainer class allows named weights
+#ifndef HEPMC_HAS_NAMED_WEIGHTS
+#define HEPMC_HAS_NAMED_WEIGHTS
+#endif
+
 // define the version of HepMC. 
 #ifndef HEPMC_VERSION
-#define HEPMC_VERSION "2.05.01"
+#define HEPMC_VERSION "2.06.00"
 #endif
 
 #endif  // HEPMC_DEFS_H

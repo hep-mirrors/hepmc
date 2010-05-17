@@ -5,7 +5,9 @@ INCLUDES = -I$(top_builddir) -I$(top_srcdir)
 libHepMCfio_la_SOURCES = \
 	HEPEVT_Wrapper.cc	\
 	IO_HEPEVT.cc	\
-	IO_HERWIG.cc
+	IO_HERWIG.cc	\
+	HerwigWrapper.cc	\
+	PythiaWrapper.cc
 
 lib_LTLIBRARIES = libHepMCfio.la
 

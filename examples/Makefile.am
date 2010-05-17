@@ -1,6 +1,6 @@
 # This makefile is used to copy files during the "make install" step
 
-INSTALLDIR = @prefix@/examples/@PACKAGE@
+INSTALLDIR = $(pkgdatadir)/examples
 
 # files to distribute
 EXTRA_DIST = \
@@ -14,9 +14,8 @@ EXTRA_DIST = \
     testHerwigCopies.cc	\
     testPythiaCopies.cc	\
     initPythia.cc \
-    PythiaHelper.h \
-    HerwigHelper.h \
     initpydata.f \
+    PythiaHelper.h \
     VectorConversion.h \
     example_UsingIterators.txt
 

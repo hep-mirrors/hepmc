@@ -51,7 +51,7 @@ int main() {
 	// set number of multi parton interactions
 	evt->set_mpi( pypars.msti[31-1] );
 	// set cross section information
-	evt->set_cross_section( getPythiaCrossSection() );
+	evt->set_cross_section( HepMC::getPythiaCrossSection() );
 	//
 	//.......................USER WOULD PROCESS EVENT HERE
 	//

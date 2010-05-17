@@ -10,17 +10,17 @@ libHepMC_la_SOURCES = \
 	GenParticle.cc	\
 	GenCrossSection.cc	\
 	GenVertex.cc	\
+	GenRanges.cc	\
 	HeavyIon.cc	\
 	IO_AsciiParticles.cc	\
-	IO_PDG_ParticleDataTable.cc	\
 	IO_GenEvent.cc	\
-	ParticleData.cc	\
 	PdfInfo.cc	\
 	Polarization.cc	\
 	SearchVector.cc	\
 	StreamHelpers.cc	\
 	StreamInfo.cc	\
-	Units.cc
+	Units.cc	\
+	WeightContainer.cc
 
 lib_LTLIBRARIES = libHepMC.la
 

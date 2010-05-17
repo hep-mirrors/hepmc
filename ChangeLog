@@ -1,4 +1,112 @@
-  --------------------------  HepMC-2.05.01  --------------------------
+  --------------------------  HepMC-2.06.00  --------------------------
+  --------------------------  HepMC-2.06.00.b02  --------------------------
+2010-05-13  Lynn Garren
+
+      * HepMC/Version.h: version() now takes an optional output stream
+
+      * HepMC/GenEvent.h: add helper method for reading weight names
+      * src/GenEventStreamIO.cc: use new helper method to read weight names
+      * testHepMCVarious.input: change order of some event info lines
+      * test/testIOGenEvent.input: add named weights for testing
+
+2010-05-12  Lynn Garren
+
+      * "make check" now works if momentum units are MEV
+
+2010-05-11  Lynn Garren
+
+      * rename HepMC/GenEventIterators.h to HepMC/GenRanges.h
+      
+      * src/GenEventStreamIO.cc: fix a bug reading unnamed (old style) weights
+      
+      * test/testHepMC: add more weight testing
+
+  --------------------------  HepMC-2.06.00.b01  --------------------------
+
+2010-04-05  Lynn Garren
+
+      * HepMC/StreamInfo.h: add reading_event_header flag for use by streaming input
+      * src/GenEventStreamIO.cc: Input no longer expects a fixed order of 
+        header lines and will ignore lines that are not of a known type.
+
+      * HepMC/HerwigWrapper.h: add hwbeam
+      * rename PythiaWrapper6_2.h to PythiaWrapper6_4.h 
+        Add structs for more common blocks.
+
+2010-04-02  Lynn Garren
+
+      * HepMC/IteratorRange.h: put the enum in its own header
+      * HepMC/GenEvent.h: add vertex_range() and particle_range()
+      * HepMC/GenParticle.h: add particles_in(range) and particles_out(range)
+      * HepMC/GenVertex.h: add particles(range), 
+        particles_in(GenParticle,range), and particles_out(GenParticle,range)
+      * test/testHepMCIteration.cc: use the new methods
+
+2010-03-20  Lynn Garren
+
+      * HepMC/GenEventIterators.h: add ConstGenVertexParticleRange,
+        ConstGenParticleProductionRange, and ConstGenParticleEndRange
+      * HepMC/WeightContainer.h: method to check for weight name is has_key()
+      * src/GenEventStreamIO.cc: use quotes to delineate weight names
+
+2010-02-08  Lynn Garren
+
+      * remove unused PythiaWrapper5_720.h, PythiaWrapper6_152.h, and PythiaWrapper6_152_WIN32.h
+      * combine HerwigWrapper6_4.h and HerwigWrapper.h in a single file
+      * HepMC/PythiaWrapper.h: add getPythiaCrossSection function
+      * HepMC/HerwigWrapper.h: add getHerwigCrossSection function
+      * fio/PythiaWrapper.cc: implement getPythiaCrossSection function
+      * fio/HerwigWrapper.cc: implement getHerwigCrossSection function
+      * remove redundant examples/HerwigHelper.h.
+
+2010-02-04  Lynn Garren
+
+      * doc/Makefile.am, examples/Makefile.am: use pkgdatadir to define the instation directory
+        The default installation directory is now ${prefix}/share/HepMC/doc
+        Override with --datadir=/some/directory/path
+
+      * HepMC/Polarization.h: add is_defined() and set_undefined()
+        is_defined returns false if the polarization is undefined
+	set_undefined unsets the defined flag and zeroes the Polarization
+
+2010-01-28  Lynn Garren
+
+      * HepMC/GenEventIterators.h: This new header defines a set of classes
+        which provide the appropriate iterators ranges.  They can be used to 
+	simplify code and also directly with such utilities as Boost foreach.
+	These new classes are 
+	GenEventVertexRange, ConstGenEventVertexRange, 
+	GenEventParticleRange, ConstGenEventParticleRange, 
+	GenVertexParticleRange, 
+	GenParticleProductionRange, and GenParticleEndRange
+      * test/testHepMCIteration.cc: use the new iterator clases and
+        also illustrate the use of std::for_each
+ 
+2010-01-26  Lynn Garren
+
+      * test/testHepMCIteration: illustrate use of std::for_each
+ 
+2010-01-25  Lynn Garren
+
+      * HepMC/WeightContainer.h: add map-like functionality, allowing users to
+        name weights, while retaining the original vector interface for 
+	complete backwards compatibility
+	If a name is not specified for a particular weight, the default
+	name is the weight's vector index.
+	Also add == and != operators.
+      * HepMC/GenEvent.h: add a private method used by the stream I/O
+      * src/GenEventStreamIO.cc: add a new line for weight names
+        The weight name line is optional when reading input and is 
+	written only if the event weights object is not empty.
+      * test/testWeights.cc: add tests for WeightContainer
+      * test/testHepMC: test I/O of named weights
+      * examples/testPythiaCopies.cc: set some arbitrary weights
+ 
+2010-01-09  Lynn Garren
+
+      * removed ParticleDataTable.h and all supporting references.
+
+ --------------------------  HepMC-2.05.01  --------------------------
 
 2010-01-04  Lynn Garren
 

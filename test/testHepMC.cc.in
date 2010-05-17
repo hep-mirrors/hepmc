@@ -24,25 +24,31 @@
 #include "IsGoodEvent.h"
 #include "testHepMCMethods.h"
 
-void read_testIOGenEvent();
-void read_variousFormats();
-void writeWithCrossSection();
-void readWithCrossSection();
-void read_nan();
+void read_testIOGenEvent(std::ostream & os);
+void read_variousFormats(std::ostream & os);
+void writeWithCrossSection(std::ostream & os);
+void readWithCrossSection(std::ostream & os);
+void writeWithWeight(std::ostream & os);
+void readWithWeight(std::ostream & os);
+void read_nan(std::ostream & os);
 
 int main() { 
-    read_testIOGenEvent();
-    read_variousFormats();
-    read_nan();
-    writeWithCrossSection();
-    readWithCrossSection();
+    std::ofstream os( "testHepMC.cout" );
+    std::ofstream osv( "testHepMCVarious.cout" );
+    read_testIOGenEvent(os);
+    read_variousFormats(osv);
+    read_nan(os);
+    writeWithCrossSection(os);
+    readWithCrossSection(os);
+    writeWithWeight(os);
+    readWithWeight(os);
     return 0;
 }
 
-void read_testIOGenEvent()
+void read_testIOGenEvent(std::ostream & os)
 {
-    std::cout << std::endl;
-    std::cout << "basic IO_GenEvent input and output" << std::endl;
+    os << std::endl;
+    os << "basic IO_GenEvent input and output" << std::endl;
     // declare an input strategy to read the data produced with the 
     // example_MyPythia - units are GeV and mm
     HepMC::IO_GenEvent ascii_in("@srcdir@/testIOGenEvent.input",std::ios::in);
@@ -62,11 +68,11 @@ void read_testIOGenEvent()
     HepMC::GenEvent* evt = ascii_in.read_next_event();
     while ( evt ) {
 	++icount;
-	if ( icount%50==1 ) std::cout << "Processing Event Number " << icount
+	if ( icount%50==1 ) os << "Processing Event Number " << icount
 				      << " its # " << evt->event_number() 
 				      << std::endl;
 	if ( is_good_event(evt) ) {
-	    particleTypes(evt);
+	    particleTypes(evt,os);
 	    ascii_out << evt;
 	    particle_out << evt;
 	    prec_out << evt;
@@ -78,14 +84,14 @@ void read_testIOGenEvent()
 	ascii_in >> evt;
     }
     //........................................PRINT RESULT
-    std::cout << num_good_events << " out of " << icount 
+    os << num_good_events << " out of " << icount 
 	      << " processed events passed the cuts. Finished." << std::endl;
 }
 
-void read_variousFormats()
+void read_variousFormats(std::ostream & os)
 {
-    std::cout << std::endl;
-    std::cout << "process varied input" << std::endl;
+    os << std::endl;
+    os << "process varied input" << std::endl;
     // declare an input strategy 
     HepMC::IO_GenEvent ascii_in("@srcdir@/testHepMCVarious.input",std::ios::in);
     ascii_in.use_input_units( HepMC::Units::GEV, HepMC::Units::MM );
@@ -97,35 +103,96 @@ void read_variousFormats()
     while ( evt ) {
 	icount++;
 	double pim;
-	std::cout << "Processing Event Number " << icount
+	os << "Processing Event Number " << icount
 		  << " its # " << evt->event_number() 
 		  << std::endl;
 	ascii_out << evt;
 	// units should be unknown
-	evt->write_units();
+	evt->write_units(os);
 	pim = findPiZero(evt);
-	std::cout << " pizero mass: " << pim << std::endl;
-	// set units to GeV and mm
-	evt->use_units(HepMC::Units::GEV, HepMC::Units::MM);
-	evt->write_units();
-	pim = findPiZero(evt);
-	std::cout << " pizero mass: " << pim 
-	          << " " << HepMC::Units::name( evt->momentum_unit() ) << std::endl;
-	// convert units to MeV
-	evt->use_units(HepMC::Units::MEV, HepMC::Units::MM);
-	evt->write_units();
-	pim = findPiZero(evt);
-	std::cout << " pizero mass: " << pim 
-	          << " " << HepMC::Units::name( evt->momentum_unit() ) << std::endl;
+	os << " pizero mass: " << pim << std::endl;
+	if( HepMC::Units::name( evt->momentum_unit() ) == "GEV" ) {
+	    os << " GenEvent units are GeV" << std::endl;
+	    if( pim > 1.0 ) {
+		// presume units are MEV and out of sync
+		os << " pizero units are MeV" << std::endl;
+		repairUnits(evt,HepMC::Units::MEV,HepMC::Units::GEV);
+		// set units to MeV and mm
+		evt->use_units(HepMC::Units::MEV, HepMC::Units::MM);
+		evt->write_units(os);
+		pim = findPiZero(evt);
+		os << " pizero mass: " << pim 
+	        	  << " " << HepMC::Units::name( evt->momentum_unit() ) << std::endl;
+		// convert units to MeV
+		evt->use_units(HepMC::Units::MEV, HepMC::Units::MM);
+		evt->write_units(os);
+		pim = findPiZero(evt);
+		os << " pizero mass: " << pim 
+	        	  << " " << HepMC::Units::name( evt->momentum_unit() ) << std::endl;
+	    } else if( pim > 0.1 ) {
+		// presume units are GEV
+		os << " pizero units are GeV" << std::endl;
+		// set units to GeV and mm
+		evt->use_units(HepMC::Units::GEV, HepMC::Units::MM);
+		evt->write_units(os);
+		pim = findPiZero(evt);
+		os << " pizero mass: " << pim 
+	        	  << " " << HepMC::Units::name( evt->momentum_unit() ) << std::endl;
+		// convert units to MeV
+		evt->use_units(HepMC::Units::MEV, HepMC::Units::MM);
+		evt->write_units(os);
+		pim = findPiZero(evt);
+		os << " pizero mass: " << pim 
+	        	  << " " << HepMC::Units::name( evt->momentum_unit() ) << std::endl;
+	    } else {
+		os << " pizero mass: " << pim 
+	        	  << " is inconsistent with allowed units " << std::endl;
+	    }
+	} else if( HepMC::Units::name( evt->momentum_unit() ) == "MEV" ) {
+	    os << " GenEvent units are MeV" << std::endl;
+	    if( pim > 1.0 ) {
+		// presume units are MEV
+		os << " pizero units are MeV" << std::endl;
+		// set units to MeV and mm
+		evt->use_units(HepMC::Units::MEV, HepMC::Units::MM);
+		evt->write_units(os);
+		pim = findPiZero(evt);
+		os << " pizero mass: " << pim 
+	        	  << " " << HepMC::Units::name( evt->momentum_unit() ) << std::endl;
+		// convert units to MeV
+		evt->use_units(HepMC::Units::MEV, HepMC::Units::MM);
+		evt->write_units(os);
+		pim = findPiZero(evt);
+		os << " pizero mass: " << pim 
+	        	  << " " << HepMC::Units::name( evt->momentum_unit() ) << std::endl;
+	    } else if( pim > 0.1 ) {
+		// presume units are GEV and out of sync
+		os << " pizero units are GeV" << std::endl;
+		repairUnits(evt,HepMC::Units::GEV,HepMC::Units::MEV);
+		evt->write_units(os);
+		pim = findPiZero(evt);
+		os << " pizero mass: " << pim 
+	        	  << " " << HepMC::Units::name( evt->momentum_unit() ) << std::endl;
+		// convert units to MeV
+		evt->use_units(HepMC::Units::MEV, HepMC::Units::MM);
+		evt->write_units(os);
+		pim = findPiZero(evt);
+		os << " pizero mass: " << pim 
+	        	  << " " << HepMC::Units::name( evt->momentum_unit() ) << std::endl;
+	    } else {
+		os << " pizero mass: " << pim 
+	        	  << " is inconsistent with allowed units " << std::endl;
+	    }
+	}
 	// clean up and get next event
 	delete evt;
 	ascii_in >> evt;
     }
     //........................................PRINT RESULT
-    std::cout << icount << " events processed. Finished." << std::endl;
+    os << icount << " events processed. Finished." << std::endl;
 }
 
-void writeWithCrossSection()
+void writeWithCrossSection(std::ostream & os)
 {
     // declare an input strategy to read input data 
     // units are GeV and mm
@@ -144,6 +211,7 @@ void writeWithCrossSection()
     const double xs2 = 33.234;
     const double xs3 = 459.345;
     double xserr = 0.0001;
+    double wgt1, wgt2;
     HepMC::GenEvent* evt = ascii_in.read_next_event();
     while ( evt ) {
 	icount++;
@@ -167,9 +235,15 @@ void writeWithCrossSection()
 	if ( icount == 30 ) xserr += 1.0;
 	// attach this cross section to the event
 	evt->set_cross_section( cross );
-	evt->write_cross_section();
+	evt->write_cross_section(os);
+	// add weights
+	wgt1 = 0.9853 + (double)icount * 0.00033;
+	wgt2 = 0.9853 + (double)(icount+1) * 0.00033;
+	evt->weights().push_back(0.3456);
+	evt->weights()["weightName"] = wgt1;
+	evt->weights()["second weight name"] = wgt2;
 	if ( icount%20==1 ) {
-	    std::cout << "writeWithCrossSection: Processing Event Number " << icount
+	    os << "writeWithCrossSection: Processing Event Number " << icount
 				      << " its # " << evt->event_number() 
 				      << std::endl;
 	    ascii_out << evt;
@@ -181,10 +255,10 @@ void writeWithCrossSection()
 	ascii_in >> evt;
     }
     //........................................PRINT RESULT
-    std::cout << "writeWithCrossSection processed " << icount << " events. Finished." << std::endl;
+    os << "writeWithCrossSection processed " << icount << " events. Finished." << std::endl;
 }
 
-void readWithCrossSection()
+void readWithCrossSection(std::ostream & os)
 {
     // read the file we just wrote
     HepMC::IO_GenEvent ascii_in("testCrossSection.out",std::ios::in);
@@ -195,11 +269,11 @@ void readWithCrossSection()
     HepMC::GenEvent* evt = ascii_in.read_next_event();
     while ( evt ) {
 	++icount;
-	std::cout << "readWithCrossSection: Processing Event Number " << icount
+	os << "readWithCrossSection: Processing Event Number " << icount
 				  << " its # " << evt->event_number() 
 				  << std::endl;
 	if (evt->cross_section()->cross_section() <= 0) {
-          std::cout << "testReadCrossSection: invalid cross-section!" << std::endl;
+          os << "testReadCrossSection: invalid cross-section!" << std::endl;
 	}
 	ascii_out << evt;
 	
@@ -208,10 +282,10 @@ void readWithCrossSection()
 	ascii_in >> evt;
     }
     //........................................PRINT RESULT
-    std::cout << "readWithCrossSection processed " << icount << " events. Finished." << std::endl;
+    os << "readWithCrossSection processed " << icount << " events. Finished." << std::endl;
 }
 
-void read_nan()
+void read_nan(std::ostream & os)
 {
     // Read an input file that has corrupt information (nan's)
     //
@@ -221,8 +295,8 @@ void read_nan()
     int icount=0;
     int invaliddata=0;
     bool ok = true;
-    std::cout << "---------------------------------------- " << std::endl;
-    std::cout << "Begin NaN test " << std::endl;
+    os << "---------------------------------------- " << std::endl;
+    os << "Begin NaN test " << std::endl;
     HepMC::GenEvent* evt = xin.read_next_event();
     //
     // To recover from corrupt input, replace "while(evt) {...}" 
@@ -231,7 +305,7 @@ void read_nan()
     while ( ok ) {
 	if( evt ) {
 	    ++icount;
-	    std::cout << "read_nan: Processing Event Number " << icount
+	    os << "read_nan: Processing Event Number " << icount
 		      << " its # " << evt->event_number() 
 		      << std::endl;
 	    xout << evt;
@@ -240,12 +314,12 @@ void read_nan()
 	    xin >> evt;
 	} else if (xin.error_type() == HepMC::IO_Exception::InvalidData ) {
 	    ++invaliddata;
-            std::cerr << "INPUT ERROR: " << xin.error_message() << std::endl;
+            os << "INPUT ERROR: " << xin.error_message() << std::endl;
 	    // clean up and get next event
 	    delete evt;
 	    xin >> evt;
 	} else if (invaliddata > 50 ) {
-            std::cerr << "INPUT ERROR: " << xin.error_message() << std::endl;
+            os << "INPUT ERROR: " << xin.error_message() << std::endl;
 	    ok = false;
 	} else {
 	    ok = false;
@@ -253,14 +327,78 @@ void read_nan()
     }
     // print status of input stream
     if ( xin.error_type() != 0 ) {
-        std::cout << "processing of @srcdir@/testHepMCVarious.input ended with error " 
+        os << "processing of @srcdir@/testHepMCVarious.input ended with error " 
 	          << xin.error_type() << std::endl;
-        std::cout << "  --- " << xin.error_message() << std::endl;
+        os << "  --- " << xin.error_message() << std::endl;
     }
-    std::cout << icount << " events processed and " 
+    os << icount << " events processed and " 
               << invaliddata << " events ignored. Finished." 
               << std::endl;
-    std::cout << "End NaN test " << std::endl;
-    std::cout << "---------------------------------------- " << std::endl;
+    os << "End NaN test " << std::endl;
+    os << "---------------------------------------- " << std::endl;
 }
 
+void writeWithWeight(std::ostream & os)
+{
+    // declare an input strategy to read input data 
+    // units are GeV and mm
+    HepMC::IO_GenEvent ascii_in("@srcdir@/testIOGenEvent.input",std::ios::in);
+    ascii_in.use_input_units( HepMC::Units::GEV, HepMC::Units::MM );
+    // declare another IO_GenEvent for writing out some events
+    HepMC::IO_GenEvent ascii_out("testWithWeight.out",std::ios::out);
+    // declare an output stream for printing events
+    std::ofstream xout( "testWithWeight.cout" );
+    //........................................EVENT LOOP
+    int icount=0;
+    double wgt1, wgt2;
+    HepMC::GenEvent* evt = ascii_in.read_next_event();
+    while ( evt ) {
+	icount++;
+	// add weights
+	wgt1 = 0.9853 + (double)icount * 0.00033;
+	wgt2 = 0.9853 + (double)(icount+1) * 0.00033;
+	evt->weights().push_back(0.3456);
+	evt->weights().push_back(wgt1);
+	evt->weights().push_back(wgt2);
+	if ( icount%20==1 ) {
+	    os << "writeWithWeight: Processing Event Number " << icount
+				      << " its # " << evt->event_number() 
+				      << std::endl;
+	    ascii_out << evt;
+	    evt->print(xout);
+	}
+	
+	// clean up and get next event
+	delete evt;
+	ascii_in >> evt;
+    }
+    //........................................PRINT RESULT
+    os << "writeWithWeight processed " << icount << " events. Finished." << std::endl;
+}
+
+void readWithWeight(std::ostream & os)
+{
+    // read the file we just wrote
+    HepMC::IO_GenEvent ascii_in("testWithWeight.out",std::ios::in);
+    // declare another IO_GenEvent for writing out some events
+    HepMC::IO_GenEvent ascii_out("testWithWeight2.out",std::ios::out);
+    //........................................EVENT LOOP
+    int icount=0;
+    HepMC::GenEvent* evt = ascii_in.read_next_event();
+    while ( evt ) {
+	++icount;
+	os << "readWithWeight: Processing Event Number " << icount
+				  << " its # " << evt->event_number() 
+				  << std::endl;
+	if ( !evt->cross_section() ) {
+          os << "testReadCrossSection: invalid cross-section!" << std::endl;
+	}
+	ascii_out << evt;
+	
+	// clean up and get next event
+	delete evt;
+	ascii_in >> evt;
+    }
+    //........................................PRINT RESULT
+    os << "readWithWeight processed " << icount << " events. Finished." << std::endl;
+}

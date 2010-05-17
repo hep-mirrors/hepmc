@@ -3,7 +3,7 @@
 # documents are already built - this is just used to install them
 
 doc_srcdir = $(top_srcdir)/doc
-doc_installdir = $(prefix)/doc/HepMC
+doc_installdir = $(pkgdatadir)/doc
 
 HEPMC2_DOCS  = HepMC2_user_manual.pdf
 HEPMC2_REF   = HepMC2_reference_manual.pdf

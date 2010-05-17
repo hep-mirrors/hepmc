@@ -136,7 +136,7 @@ void pythia_out()
 	    // set number of multi parton interactions
 	    evt->set_mpi( pypars.msti[31-1] );
 	    // set cross section information
-	    evt->set_cross_section( getPythiaCrossSection() );
+	    evt->set_cross_section( HepMC::getPythiaCrossSection() );
 	    // write the event out to the ascii files
 	    ascii_io << evt;
 	    // we also need to delete the created event from memory
@@ -185,7 +185,7 @@ void event_selection()
 	// set number of multi parton interactions
 	evt->set_mpi( pypars.msti[31-1] );
 	// set cross section information
-	evt->set_cross_section( getPythiaCrossSection() );
+	evt->set_cross_section( HepMC::getPythiaCrossSection() );
 	// do event selection
 	if ( is_good_event(evt) ) {
 	    std::cout << "Good Event Number " << i << std::endl;
@@ -258,8 +258,7 @@ void pythia_in_out()
     //
     //........................................define the output scope
     {
-	// Instantial an IO strategy to write the data to file - it uses the 
-	//  same ParticleDataTable
+	// Instantial an IO strategy to write the data to file
 	HepMC::IO_GenEvent ascii_io("example_MyPythiaRead.dat",std::ios::out);
 	//
 	//........................................EVENT LOOP
@@ -273,7 +272,7 @@ void pythia_in_out()
 	    // define the units (Pythia uses GeV and mm)
 	    evt->use_units(HepMC::Units::GEV, HepMC::Units::MM);
 	    // set cross section information
-	    evt->set_cross_section( getPythiaCrossSection() );
+	    evt->set_cross_section( HepMC::getPythiaCrossSection() );
 	    // add some information to the event
 	    evt->set_event_number(i);
 	    evt->set_signal_process_id(20);
@@ -344,7 +343,7 @@ void pythia_particle_out()
 	    // define the units (Pythia uses GeV and mm)
 	    evt->use_units(HepMC::Units::GEV, HepMC::Units::MM);
 	    // set cross section information
-	    evt->set_cross_section( getPythiaCrossSection() );
+	    evt->set_cross_section( HepMC::getPythiaCrossSection() );
 	    // add some information to the event
 	    evt->set_event_number(i);
 	    evt->set_signal_process_id(20);

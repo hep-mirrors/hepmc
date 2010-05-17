@@ -23,7 +23,6 @@ namespace HepMC {
 class GenEvent;
 class GenVertex;
 class GenParticle;
-class ParticleData;
 class HeavyIon;
 class PdfInfo;
 
@@ -76,10 +75,6 @@ public:
     void          write_event( const GenEvent* evt );
     /// get the next event
     bool          fill_next_event( GenEvent* evt );
-    /// write_particle_data_table is required by IO_BaseClass, but not used here
-    void          write_particle_data_table(const ParticleDataTable*);
-    /// fill_particle_data_table is required by IO_BaseClass, but not used here
-    bool          fill_particle_data_table( ParticleDataTable* );
     /// insert a comment directly into the output file --- normally you
     ///  only want to do this at the beginning or end of the file. All
     ///  comments are preceded with "HepMC::IO_GenEvent-COMMENT\n"
@@ -102,17 +97,9 @@ public:
     void precision( int );
 	
     /// integer (enum) associated with read error
-    const int           error_type()    const;
+    int           error_type()    const;
     /// the read error message string
     const std::string & error_message() const;
-
-protected: // for internal use only
-
-    /// read particle data table information
-    /// ParticleDataTable is deprecated.
-    /// We include this method for reading old files which may have ParticleData information.
-    ParticleData* read_particle_data( std::istream*, ParticleDataTable* );
-    bool          read_io_particle_data_table( std::istream*, ParticleDataTable* );
 
 private: // use of copy constructor is not allowed
     IO_GenEvent( const IO_GenEvent& ) : IO_BaseClass() {}
@@ -151,18 +138,13 @@ inline void IO_GenEvent::clear() {
     }
 }
 
-inline const int IO_GenEvent::error_type() const {
+inline int IO_GenEvent::error_type() const {
     return m_error_type;
 }
 
 inline const std::string & IO_GenEvent::error_message() const {
     return m_error_message;
 }
-
-// these are required by IO_BaseClass, but not used here
-inline void IO_GenEvent::write_particle_data_table(const ParticleDataTable*) {;}
-inline bool IO_GenEvent::fill_particle_data_table( ParticleDataTable* ) 
-{ return false;}
 
 } // HepMC
 

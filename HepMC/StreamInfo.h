@@ -87,6 +87,12 @@ public:
     /// (e.g., the default units are MeV, but the file was written with GeV)
     /// This method is not necessary if the units are written in the file
     void use_input_units( Units::MomentumUnit, Units::LengthUnit );
+    
+    /// reading_event_header will return true when streaming input is 
+    /// processing the GenEvent header information
+    bool reading_event_header();
+    /// set the reading_event_header flag
+    void set_reading_event_header(bool);
 
 private: // data members
     bool        m_finished_first_event_io;
@@ -111,6 +117,8 @@ private: // data members
     // used to keep identify the I/O stream
     unsigned int m_stream_id;
     static unsigned int m_stream_counter;
+    // used to keep track when reading event
+    bool m_reading_event_header;
 
 };
 

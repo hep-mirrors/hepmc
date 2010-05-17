@@ -19,7 +19,7 @@ double findPiZero( HepMC::GenEvent * evt )
     return 0.;
 }
 
-void particleTypes( HepMC::GenEvent * evt )
+void particleTypes( HepMC::GenEvent * evt, std::ostream & os )
 {
     int numDecayed = 0, numUndecayed = 0, numBeam = 0;
     int numDecayed2 = 0, numUndecayed2 = 0, numBeam2 = 0;
@@ -65,7 +65,7 @@ void particleTypes( HepMC::GenEvent * evt )
 	          << ndcy << " is greater than the number of particles in the event: " 
 		  << evt->particles_size() << std::endl;
     }
-    std::cout << "Event " << evt->event_number() 
+    os << "Event " << evt->event_number() 
 	      << " has " << evt->particles_size() 
 	      << " particles, " << numDecayed
 	      << " decayed particles, " << numUndecayed
@@ -73,4 +73,25 @@ void particleTypes( HepMC::GenEvent * evt )
 	      << " beam particles " 
 	      << std::endl;
     return;
+}
+
+void repairUnits(HepMC::GenEvent* evt, 
+                 HepMC::Units::MomentumUnit from, 
+		 HepMC::Units::MomentumUnit to )
+{
+    // 
+    const double factor = HepMC::Units::conversion_factor( from, to );
+    // multiply all momenta by 'factor',  
+    // loop is entered only if particle list is not empty
+    for ( HepMC::GenEvent::particle_iterator p = evt->particles_begin();
+                                      p != evt->particles_end(); ++p ) 
+    {
+	HepMC::FourVector mom = (*p)->momentum();
+	double gm = (*p)->generatedMass();
+	(*p)->set_momentum( HepMC::FourVector( factor*mom.px(),
+                                	       factor*mom.py(),
+                                	       factor*mom.pz(),
+                                	       factor*mom.e() ) );
+	if( gm > 0. ) (*p)->set_generated_mass( factor*gm );
+    }
 }

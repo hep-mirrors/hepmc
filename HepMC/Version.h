@@ -15,7 +15,7 @@
 
 namespace HepMC {
 
-void version( );			//!< print HepMC version
+void version( std::ostream & os = std::cout );			//!< print HepMC version
 void writeVersion( std::ostream & os );	//!< write HepMC version to os
 std::string versionName( );	//!< return HepMC version
 
@@ -24,10 +24,10 @@ inline std::string versionName( )
     return HEPMC_VERSION;
 }
 
-inline void version( )
+inline void version( std::ostream & os )
 {
-    std::cout << " --------------- HepMC Version " << versionName()
-              << " --------------- " << std::endl;
+    os << " --------------- HepMC Version " << versionName()
+       << " --------------- " << std::endl;
 }
 
 inline void writeVersion( std::ostream & os )

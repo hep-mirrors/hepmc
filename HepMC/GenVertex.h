@@ -23,6 +23,7 @@
 
 #include "HepMC/WeightContainer.h"
 #include "HepMC/SimpleVector.h"
+#include "HepMC/IteratorRange.h"
 #include <iostream>
 #include <iterator>
 #include <vector>
@@ -31,9 +32,13 @@
 
 namespace HepMC {
 
-    /// type of iteration
-    enum IteratorRange { parents, children, family, 
-			 ancestors, descendants, relatives };
+    class GenVertexParticleRange;
+    class ConstGenVertexParticleRange;
+    class GenParticleProductionRange;
+    class ConstGenParticleProductionRange;
+    class GenParticleEndRange;
+    class ConstGenParticleEndRange;
+
     class GenParticle;
     class GenEvent;
 
@@ -126,6 +131,19 @@ namespace HepMC {
 	WeightContainer&        weights();
 	/// const direct access to the weights container
 	const WeightContainer&  weights() const;
+
+	/// particle range
+	GenVertexParticleRange particles( IteratorRange range = relatives );
+	/// particle range
+	ConstGenVertexParticleRange particles( IteratorRange range = relatives ) const;
+	/// incoming particle range
+	GenParticleProductionRange particles_in( GenParticle&, IteratorRange range = relatives );
+	/// incoming particle range
+	ConstGenParticleProductionRange particles_in( GenParticle const &, IteratorRange range = relatives ) const;
+	/// outgoing particle range
+	GenParticleEndRange particles_out( GenParticle&, IteratorRange range = relatives );
+	/// outgoing particle range
+	ConstGenParticleEndRange particles_out( GenParticle const &, IteratorRange range = relatives ) const;
 
 	////////////////////
 	// Iterators      // users should use prefer to use particle_iterator

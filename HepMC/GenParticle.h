@@ -29,6 +29,7 @@
 #include "HepMC/Flow.h"
 #include "HepMC/Polarization.h"
 #include "HepMC/SimpleVector.h"
+#include "HepMC/IteratorRange.h"
 #include <iostream>
 #ifdef _WIN32
 #define hepmc_uint64_t  __int64
@@ -42,6 +43,10 @@ namespace HepMC {
     class GenVertex;
     class GenEvent; 
 
+    class GenParticleProductionRange;
+    class ConstGenParticleProductionRange;
+    class GenParticleEndRange;
+    class ConstGenParticleEndRange;
 
     //! The GenParticle class contains information about generated particles
 
@@ -136,6 +141,15 @@ namespace HepMC {
 	/// Note that using status 4 for beam particles is a new convention which
 	/// may not have been implemented by the code originating this GenEvent.
 	bool                 is_beam() const;
+
+	/// incoming particle range
+	GenParticleProductionRange particles_in( IteratorRange range = relatives );
+	/// incoming particle range
+	ConstGenParticleProductionRange particles_in( IteratorRange range = relatives ) const;
+	/// outgoing particle range
+	GenParticleEndRange particles_out( IteratorRange range = relatives );
+	/// outgoing particle range
+	ConstGenParticleEndRange particles_out( IteratorRange range = relatives ) const;
 
 	/////////////////////
 	// mutator methods //

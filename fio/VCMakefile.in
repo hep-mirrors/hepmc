@@ -55,11 +55,15 @@ am__installdirs = "$(DESTDIR)$(libdir)"
 
 SOURCES = HEPEVT_Wrapper.cc \
 	  IO_HEPEVT.cc \
-	  IO_HERWIG.cc
+	  IO_HERWIG.cc \
+	  HerwigWrapper.cc \
+	  PythiaWrapper.cc
 
 OBJ = HEPEVT_Wrapper.obj \
       IO_HEPEVT.obj \
-      IO_HERWIG.obj 
+      IO_HERWIG.obj \
+      HerwigWrapper.obj \
+      PythiaWrapper.obj
 
 lib_LIBRARIES = HepMCfio.lib
 LIBRARIES = $(lib_LIBRARIES)

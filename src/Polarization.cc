@@ -8,25 +8,35 @@
 
 namespace HepMC {
 
+    Polarization::Polarization( )
+    : m_theta( 0. ),
+      m_phi( 0. ),
+      m_defined( false )
+    { }
+
     Polarization::Polarization( double theta, double phi )
     : m_theta( valid_theta(theta) ),
-      m_phi  ( valid_phi(phi) )
+      m_phi  ( valid_phi(phi) ),
+      m_defined( true )
     { }
 
     Polarization::Polarization( const Polarization& inpolar )
     : m_theta( valid_theta( inpolar.theta() ) ),
-      m_phi  ( valid_phi(   inpolar.phi()   ) )
+      m_phi  ( valid_phi(   inpolar.phi()   ) ),
+      m_defined( inpolar.is_defined() )
     { }
 
     Polarization::Polarization( const ThreeVector& vec3in ) 
     : m_theta( valid_theta( vec3in.theta() ) ),
-      m_phi  ( valid_phi(   vec3in.phi()   ) )
+      m_phi  ( valid_phi(   vec3in.phi()   ) ),
+      m_defined( true )
     { }
 
     void Polarization::swap( Polarization & other)
     {
  	std::swap( m_theta, other.m_theta );
  	std::swap( m_phi,   other.m_phi   );
+	std::swap( m_defined, other.m_defined );
     }
 
     Polarization& Polarization::operator=( const Polarization& inpolar ) {
@@ -63,15 +73,27 @@ namespace HepMC {
 	/// if an out of range value is given, it is translated to this range.
 	return m_phi = valid_phi( phi );
     }
+    
+    bool Polarization::is_defined( ) const {
+        return m_defined;
+    }
+    
+    void Polarization::set_undefined() {
+        m_defined = false;
+	m_theta = 0.;
+	m_phi = 0.;
+    }
 
     void Polarization::set_theta_phi( double theta, double phi ) {
 	set_theta( theta );
 	set_phi( phi ) ;
+	m_defined = true;
     }
 
     ThreeVector Polarization::set_normal3d( const ThreeVector& vec3in ) {
 	set_theta( vec3in.theta() );
 	set_phi( vec3in.phi() );
+	m_defined = true;
 	return vec3in;
     }
 

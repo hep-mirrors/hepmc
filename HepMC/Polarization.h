@@ -33,7 +33,9 @@ namespace HepMC {
 
     public:
         /// default constructor
-	Polarization( double theta = 0, double phi = 0 );
+	Polarization( );
+	/// constructor requiring at least one value
+	Polarization( double theta, double phi = 0 );
 	/// construct from another polarization object
 	Polarization( const Polarization& inpolar );
 	/// construct using the polar and azimuthal angles from a ThreeVector
@@ -58,6 +60,7 @@ namespace HepMC {
 	double        theta() const;    //!< returns polar angle in radians
 	double        phi() const;      //!< returns azimuthal angle in radians
 	ThreeVector   normal3d() const; //!< unit 3 vector for easy manipulation
+	bool          is_defined() const;   //!< returns true if the Polarization has been defined
 
         /// set polar angle in radians 
 	double        set_theta( double theta );
@@ -67,6 +70,8 @@ namespace HepMC {
 	void          set_theta_phi( double theta, double phi );
 	/// sets polarization according to direction of 3 vec
 	ThreeVector   set_normal3d( const ThreeVector& vec3in ); 
+	/// declares the Polarization as undefined and zeros the values
+	void          set_undefined();
 
     private:
     	/// private method to return a polar angle in the correct range
@@ -77,6 +82,7 @@ namespace HepMC {
     private:
 	double m_theta; //polar angle of polarization in radians 0< theta <pi
 	double m_phi;   //azimuthal angle of polarization in rad. 0< phi <2pi
+	bool   m_defined; //used to flag if the Polarization has been defined
     };
 
     ///////////////////////////
@@ -92,7 +98,7 @@ namespace HepMC {
 
     inline bool Polarization::operator==( const Polarization& a ) const 
     {
-	return ( a.theta() == this->theta() && a.phi() == this->phi() );
+	return ( a.theta() == this->theta() && a.phi() == this->phi() && a.is_defined() == this->is_defined() );
     }
 
     inline bool Polarization::operator!=(const Polarization& a ) const 

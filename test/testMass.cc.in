@@ -10,6 +10,7 @@
 //-------------------------------------------------------------------
 
 #include <cmath>	// for min()
+#include <ostream>
 
 #include "HepMC/IO_GenEvent.h"
 #include "HepMC/GenEvent.h"
@@ -18,9 +19,11 @@
 // define methods and classes used by this test
 #include "IsGoodEvent.h"
 
-void   massInfo( const HepMC::GenEvent* );
+void   massInfo( const HepMC::GenEvent*, std::ostream& os );
 
 int main() { 
+    // output file
+    std::ofstream os( "testMass.cout" );
     // read and process the input file
     {
 	// declare an input strategy to read the data produced with the 
@@ -31,8 +34,8 @@ int main() {
 	HepMC::IO_GenEvent ascii_out("testMass1.out",std::ios::out);
 	// declare an instance of the event selection predicate
 	IsGoodEvent is_good_event;
-	// send version to standard output
-	HepMC::version();
+	// send version to output
+	HepMC::version(os);
 	//........................................EVENT LOOP
 	int icount=0;
 	int num_good_events=0;
@@ -40,9 +43,9 @@ int main() {
 	HepMC::GenEvent* evt = ascii_in.read_next_event();
 	while ( evt ) {
 	    icount++;
-	    if ( icount%50==1 ) std::cout << "Processing Event Number " << icount
-					  << " its # " << evt->event_number() 
-					  << std::endl;
+	    if ( icount%50==1 ) os << "Processing Event Number " << icount
+				   << " its # " << evt->event_number() 
+				   << std::endl;
 	    if ( is_good_event(evt) ) {
 		if (num_good_events == 0 ) {
 		    // add some arbitrary PDF information
@@ -66,6 +69,11 @@ int main() {
 	            HepMC::HeavyIon ion(23,11,12,15,3,5,0,0,0,0.0145);
 	            evt->set_heavy_ion( ion );
 		}
+	        os << "saving Event " << evt->event_number() << std::endl;
+		if( evt->weights().size() > 0 ) {
+		    os << "Weights: ";
+		    evt->weights().print(os);
+		}
 		ascii_out << evt;
 		++num_good_events;
 	    }
@@ -75,8 +83,8 @@ int main() {
 	    ascii_in >> evt;
 	}
 	//........................................PRINT RESULT
-	std::cout << num_good_events << " out of " << icount 
-		  << " processed events passed the cuts. Finished." << std::endl;
+	os << num_good_events << " out of " << icount 
+	   << " processed events passed the cuts. Finished." << std::endl;
     }
     // now read the file we just created
     {
@@ -95,22 +103,25 @@ int main() {
 	HepMC::GenEvent* evt = xin.read_next_event();
 	while ( evt ) {
 	    ixin++;
-	    std::cout << "reading Event " << ixin << std::endl;
+	    os << "reading Event " << evt->event_number() << std::endl;
+	    if( evt->weights().size() > 0 ) {
+		os << "Weights: ";
+		evt->weights().print(os);
+	    }
 	    xout << evt;
 	    // look at mass info
-	    massInfo(evt);
+	    massInfo(evt,os);
 
 	    // clean up and get next event
 	    delete evt;
 	    xin >> evt;
 	}
 	//........................................PRINT RESULT
-	std::cout << ixin 
-		  << " events in the second pass. Finished." << std::endl;
+	os << ixin << " events in the second pass. Finished." << std::endl;
     }
 }
 
-void massInfo( const HepMC::GenEvent* e )
+void massInfo( const HepMC::GenEvent* e, std::ostream& os )
 {
    double gm, m, d;
    for ( HepMC::GenEvent::particle_const_iterator p = e->particles_begin(); p != e->particles_end();
@@ -120,12 +131,12 @@ void massInfo( const HepMC::GenEvent* e )
        m = (*p)->momentum().m();
        d = fabs(m-gm);
        if( d > 1.0e-5 ) {
-	    std::cout << "Event " << e->event_number()
-	              << " Particle " << (*p)->barcode() 
-	              << " " << (*p)->pdg_id()
-        	      << " generated mass " << gm
-        	      << " mass from momentum " << m 
-		      << " difference " << d << std::endl;
+	    os << "Event " << e->event_number()
+	       << " Particle " << (*p)->barcode() 
+	       << " " << (*p)->pdg_id()
+               << " generated mass " << gm
+               << " mass from momentum " << m 
+	       << " difference " << d << std::endl;
        } 
    }   
 }

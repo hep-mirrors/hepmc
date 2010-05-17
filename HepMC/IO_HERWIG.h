@@ -45,7 +45,6 @@ namespace HepMC {
     class GenEvent;
     class GenVertex;
     class GenParticle;
-    class ParticleDataTable;
 
     //! IO_HERWIG is used to get Herwig information
 
@@ -121,9 +120,6 @@ namespace HepMC {
 
     private: // following are not implemented for Herwig
 	virtual void write_event( const GenEvent* ){}
-        virtual void write_particle_data_table( const ParticleDataTable* ){}
-        virtual bool fill_particle_data_table( ParticleDataTable* )
-	    { return false; }
 
     private: // use of copy constructor is not allowed
 	IO_HERWIG( const IO_HERWIG& ) : IO_BaseClass() {}

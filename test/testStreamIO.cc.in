@@ -21,25 +21,27 @@
 #include "IsGoodEvent.h"
 #include "testHepMCMethods.h"
 
-void read_testIOGenEvent();
-void read_variousFormats();
-void write_to_stream();
-void write_to_stream3();
-void read_from_stream4();
+void read_testIOGenEvent(std::ostream & os);
+void read_variousFormats(std::ostream & os);
+void write_to_stream(std::ostream & os);
+void write_to_stream3(std::ostream & os);
+void read_from_stream4(std::ostream & os);
 
 int main() { 
-    write_to_stream();
-    read_testIOGenEvent();
-    read_variousFormats();
-    write_to_stream3();
-    read_from_stream4();
+    std::ofstream os( "testStreamIO.cout" );
+    std::ofstream osv( "testStreamIOVarious.cout" );
+    write_to_stream(os);
+    read_testIOGenEvent(os);
+    read_variousFormats(osv);
+    write_to_stream3(os);
+    read_from_stream4(os);
     return 0;
 }
 
-void write_to_stream()
+void write_to_stream(std::ostream & os)
 {
-    std::cout << std::endl;
-    std::cout << "basic IO_GenEvent input with streaming output" << std::endl;
+    os << std::endl;
+    os << "basic IO_GenEvent input with streaming output" << std::endl;
     // declare an input strategy to read the data produced with the 
     // example_MyPythia - units are GeV and mm
     HepMC::IO_GenEvent ascii_in("@srcdir@/testIOGenEvent.input",std::ios::in);
@@ -61,12 +63,12 @@ void write_to_stream()
     HepMC::GenEvent* evt = ascii_in.read_next_event();
     while ( evt ) {
 	icount++;
-	if ( icount%50==1 ) std::cout << "Processing Event Number " << icount
+	if ( icount%50==1 ) os << "Processing Event Number " << icount
 				      << " its # " << evt->event_number() 
 				      << std::endl;
 	if ( is_good_event(evt) ) {
 	    ++num_good_events;
-	    particleTypes( evt );
+	    particleTypes( evt, os );
 	    ascii_out << (*evt);
 	}
 	
@@ -76,14 +78,14 @@ void write_to_stream()
     }
     HepMC::write_HepMC_IO_block_end( ascii_out );
     //........................................PRINT RESULT
-    std::cout << num_good_events << " out of " << icount 
+    os << num_good_events << " out of " << icount 
 	      << " processed events passed the cuts. Finished." << std::endl;
 }
 
-void read_testIOGenEvent()
+void read_testIOGenEvent(std::ostream & os)
 {
-    std::cout << std::endl;
-    std::cout << "streaming input and output" << std::endl;
+    os << std::endl;
+    os << "streaming input and output" << std::endl;
     // input units are GeV and mm
     const char infile[] = "@srcdir@/testIOGenEvent.input";
     std::ifstream is( infile );
@@ -122,12 +124,12 @@ void read_testIOGenEvent()
 	// make sure this is a valid event
 	if( evt.is_valid() ) {
 	    ++icount;
-	    if ( icount%50==1 ) std::cout << "Processing Event Number " << icount
+	    if ( icount%50==1 ) os << "Processing Event Number " << icount
 					  << " its # " << evt.event_number() 
 					  << std::endl;
 	    if ( is_good_event( &evt ) ) {
 		++num_good_events;
-		particleTypes(&evt);
+		particleTypes(&evt,os);
 		ascii_out << evt;
 		pout << evt;
 		// We must explicitly create the pointer if we want to use this event
@@ -139,14 +141,14 @@ void read_testIOGenEvent()
     }
     HepMC::write_HepMC_IO_block_end( ascii_out );
     //........................................PRINT RESULT
-    std::cout << num_good_events << " out of " << icount 
+    os << num_good_events << " out of " << icount 
 	      << " processed events passed the cuts. Finished." << std::endl;
 }
 
-void read_variousFormats()
+void read_variousFormats(std::ostream & os)
 {
-    std::cout << std::endl;
-    std::cout << "process varied input" << std::endl;
+    os << std::endl;
+    os << "process varied input" << std::endl;
     // declare an input stream 
     const char infile[] = "@srcdir@/testHepMCVarious.input";
     std::ifstream is( infile );
@@ -182,38 +184,38 @@ void read_variousFormats()
 	if( evt.is_valid() ) {
 	    icount++;
 	    double pim;
-	    std::cout << "Processing Event Number " << icount
+	    os << "Processing Event Number " << icount
 		      << " its # " << evt.event_number() 
 		      << std::endl;
 	    ascii_out << evt;
 	    // units should be unknown
-	    evt.write_units();
+	    evt.write_units(os);
 	    pim = findPiZero(&evt);
-	    std::cout << " pizero mass: " << pim << std::endl;
+	    os << " pizero mass: " << pim << std::endl;
 	    // set units to GeV and mm
 	    evt.use_units(HepMC::Units::GEV, HepMC::Units::MM);
-	    evt.write_units();
+	    evt.write_units(os);
 	    pim = findPiZero(&evt);
-	    std::cout << " pizero mass: " << pim 
+	    os << " pizero mass: " << pim 
 	              << " " << HepMC::Units::name( evt.momentum_unit() ) << std::endl;
 	    // convert units to MeV
 	    evt.use_units(HepMC::Units::MEV, HepMC::Units::MM);
-	    evt.write_units();
+	    evt.write_units(os);
 	    pim = findPiZero(&evt);
-	    std::cout << " pizero mass: " << pim 
+	    os << " pizero mass: " << pim 
 	              << " " << HepMC::Units::name( evt.momentum_unit() ) << std::endl;
         }
     }
     HepMC::write_HepMC_IO_block_end( ascii_out );
     //........................................PRINT RESULT
-    std::cout << icount << " valid events processed.  " ;
-    std::cout << ibad << " invalid events processed. Finished." << std::endl;
+    os << icount << " valid events processed.  " ;
+    os << ibad << " invalid events processed. Finished." << std::endl;
 }
 
-void write_to_stream3()
+void write_to_stream3(std::ostream & os)
 {
-    std::cout << std::endl;
-    std::cout << "basic IO_GenEvent input with streaming output using member function" << std::endl;
+    os << std::endl;
+    os << "basic IO_GenEvent input with streaming output using member function" << std::endl;
     // declare an input strategy to read the data produced with the 
     // example_MyPythia - units are GeV and mm
     HepMC::IO_GenEvent ascii_in("@srcdir@/testIOGenEvent.input",std::ios::in);
@@ -235,12 +237,12 @@ void write_to_stream3()
     HepMC::GenEvent* evt = ascii_in.read_next_event();
     while ( evt ) {
 	icount++;
-	if ( icount%50==1 ) std::cout << "Processing Event Number " << icount
+	if ( icount%50==1 ) os << "Processing Event Number " << icount
 				      << " its # " << evt->event_number() 
 				      << std::endl;
 	if ( is_good_event(evt) ) {
 	    ++num_good_events;
-	    particleTypes( evt );
+	    particleTypes( evt, os );
 	    evt->write(ascii_out);
 	}
 	
@@ -250,14 +252,14 @@ void write_to_stream3()
     }
     HepMC::write_HepMC_IO_block_end( ascii_out );
     //........................................PRINT RESULT
-    std::cout << num_good_events << " out of " << icount 
+    os << num_good_events << " out of " << icount 
 	      << " processed events passed the cuts. Finished." << std::endl;
 }
 
-void read_from_stream4()
+void read_from_stream4(std::ostream & os)
 {
-    std::cout << std::endl;
-    std::cout << "streaming input and output using member functions" << std::endl;
+    os << std::endl;
+    os << "streaming input and output using member functions" << std::endl;
     // input units are GeV and mm
     const char infile[] = "@srcdir@/testIOGenEvent.input";
     std::ifstream is( infile );
@@ -286,18 +288,18 @@ void read_from_stream4()
 	// make sure this is a valid event
 	if( evt.is_valid() ) {
 	    ++icount;
-	    if ( icount%50==1 ) std::cout << "Processing Event Number " << icount
+	    if ( icount%50==1 ) os << "Processing Event Number " << icount
 					  << " its # " << evt.event_number() 
 					  << std::endl;
 	    if ( is_good_event( &evt ) ) {
 		++num_good_events;
-		particleTypes(&evt);
+		particleTypes(&evt,os);
 		evt.write(ascii_out);
 	    }
 	}
     }
     HepMC::write_HepMC_IO_block_end( ascii_out );
     //........................................PRINT RESULT
-    std::cout << num_good_events << " out of " << icount 
+    os << num_good_events << " out of " << icount 
 	      << " processed events passed the cuts. Finished." << std::endl;
 }

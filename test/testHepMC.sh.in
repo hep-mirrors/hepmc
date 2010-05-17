@@ -2,48 +2,112 @@
 # @configure_input@
 
 # cleanup any old output files first
+rm -f testHepMC.cout
 rm -f testHepMC.out
 rm -f testHepMCParticle.out
 rm -f testIOAscii.dat
+rm -f testCrossSection.cout
+rm -f testCrossSection.out
+rm -f testCrossSection2.out
+rm -f testWithWeight.cout
+rm -f testWithWeight.out
+rm -f testWithWeight2.out
 
-./testHepMC@EXEEXT@ >& testHepMC.cout
+./testHepMC@EXEEXT@
 
 OS=`uname`
 case "$OS" in
 CYGWIN*)
-  cmd=`sed 's/e-0/e-/g' testHepMC.cout | \
-        sed 's/e+0/e+/g' - | \
-        @DIFF_Q@ - @srcdir@/testHepMC.output`
+if [ "@HEPMC_DEFAULT_MOM_UNIT@" = "MEV" ];then
+  cmd1=`sed 's/e-0/e-/g' testHepMC.out | \
+        sed 's/e+0/e+/g' - | sed 's/MEV/GEV/g' - | \
+        @DIFF_Q@ - @srcdir@/testHepMC.dat`
+  cmd3=`sed 's/e-0/e-/g' testCrossSection.out | \
+        sed 's/e+0/e+/g' - | sed 's/MEV/GEV/g' - | \
+        @DIFF_Q@ - @srcdir@/testCrossSection.dat`
+  cmd5=`sed 's/e-0/e-/g' testCrossSection.cout | \
+        sed 's/e+0/e+/g' - | sed 's/MEV/GEV/g' - | \
+        @DIFF_Q@ - @srcdir@/testCrossSection.output`
+  cmd6=`sed 's/e-0/e-/g' testWithWeight.out | \
+        sed 's/e+0/e+/g' - | sed 's/MEV/GEV/g' - | \
+        @DIFF_Q@ - @srcdir@/testWithWeight.dat`
+  cmd8=`sed 's/e-0/e-/g' testWithWeight.cout | \
+        sed 's/e+0/e+/g' - | sed 's/MEV/GEV/g' - | \
+        @DIFF_Q@ - @srcdir@/testWithWeight.output`
+else
   cmd1=`sed 's/e-0/e-/g' testHepMC.out | \
         sed 's/e+0/e+/g' - | \
         @DIFF_Q@ - @srcdir@/testHepMC.dat`
-  #don't compare these on Windows (hopelessly different default output)
-  cmd2=
   cmd3=`sed 's/e-0/e-/g' testCrossSection.out | \
         sed 's/e+0/e+/g' - | \
         @DIFF_Q@ - @srcdir@/testCrossSection.dat`
-  cmd4=`@DIFF_Q@ testCrossSection2.out testCrossSection.out`
   cmd5=`sed 's/e-0/e-/g' testCrossSection.cout | \
         sed 's/e+0/e+/g' - | \
         @DIFF_Q@ - @srcdir@/testCrossSection.output`
+  cmd6=`sed 's/e-0/e-/g' testWithWeight.out | \
+        sed 's/e+0/e+/g' - | \
+        @DIFF_Q@ - @srcdir@/testWithWeight.dat`
+  cmd8=`sed 's/e-0/e-/g' testWithWeight.cout | \
+        sed 's/e+0/e+/g' - | \
+        @DIFF_Q@ - @srcdir@/testWithWeight.output`
+  cmd9=`sed 's/e-0/e-/g' testHepMCVarious.cout | \
+        sed 's/e+0/e+/g' - | \
+        @DIFF_Q@ - @srcdir@/testHepMCVarious.output`
+fi
+  cmd=`sed 's/e-0/e-/g' testHepMC.cout | \
+        sed 's/e+0/e+/g' - | \
+        @DIFF_Q@ - @srcdir@/testHepMC.output`
+  #don't compare these on Windows (hopelessly different default output)
+  cmd2=
+  cmd4=`@DIFF_Q@ testCrossSection2.out testCrossSection.out`
+  cmd7=`@DIFF_Q@ testWithWeight2.out testWithWeight.out`
   ;;
 Darwin*)
   # MacOSX fix
-  cmd=`@DIFF_Q@ testHepMC.cout @srcdir@/testHepMC.output`
+if [ "@HEPMC_DEFAULT_MOM_UNIT@" = "MEV" ];then
+  cmd1=`sed 's/MEV/GEV/g' testHepMC.out | @DIFF_Q@ - @srcdir@/testHepMC.dat`
+  cmd3=`sed 's/MEV/GEV/g' testCrossSection.out | @DIFF_Q@ - @srcdir@/testCrossSection.dat`
+  cmd5=`sed 's/MEV/GEV/g' testCrossSection.cout | @DIFF_Q@ - @srcdir@/testCrossSection.output`
+  cmd6=`sed 's/MEV/GEV/g' testWithWeight.out | @DIFF_Q@ - @srcdir@/testWithWeight.dat`
+  cmd8=`sed 's/MEV/GEV/g' testWithWeight.cout | @DIFF_Q@ - @srcdir@/testWithWeight.output`
+else
   cmd1=`@DIFF_Q@ testHepMC.out @srcdir@/testHepMC.dat`
+  cmd3=`@DIFF_Q@ testCrossSection.out @srcdir@/testCrossSection.dat`
+  cmd5=`@DIFF_Q@ testCrossSection.cout @srcdir@/testCrossSection.output`
+  cmd6=`@DIFF_Q@ testWithWeight.out @srcdir@/testWithWeight.dat`
+  cmd8=`@DIFF_Q@ testWithWeight.cout @srcdir@/testWithWeight.output`
+  cmd9=`@DIFF_Q@ testHepMCVarious.cout @srcdir@/testHepMCVarious.output`
+fi
+  cmd=`@DIFF_Q@ testHepMC.cout @srcdir@/testHepMC.output`
   cmd2=`sed 's/e-00/e+00/g'  @srcdir@/testHepMCParticle.output | \
 	@DIFF_Q@ - testHepMCParticle.out`
-  cmd3=`@DIFF_Q@ testCrossSection.out @srcdir@/testCrossSection.dat`
   cmd4=`@DIFF_Q@ testCrossSection2.out testCrossSection.out`
-  cmd5=`@DIFF_Q@ testCrossSection.cout @srcdir@/testCrossSection.output`
+  cmd7=`@DIFF_Q@ testWithWeight2.out testWithWeight.out`
   ;;
 *)
-  cmd=`@DIFF_Q@ testHepMC.cout @srcdir@/testHepMC.output`
+
+if [ "@HEPMC_DEFAULT_MOM_UNIT@" = "MEV" ];then
+  cmd1=`sed 's/MEV/GEV/g' testHepMC.out | @DIFF_Q@ - @srcdir@/testHepMC.dat`
+  cmd3=`sed 's/MEV/GEV/g' testCrossSection.out | @DIFF_Q@ - @srcdir@/testCrossSection.dat`
+  cmd5=`sed 's/e-00/e+00/g' testCrossSection.cout | sed 's/MEV/GEV/g' - | \
+        @DIFF_Q@ - @srcdir@/testCrossSection.output`
+  cmd6=`sed 's/MEV/GEV/g' testWithWeight.out | @DIFF_Q@ - @srcdir@/testWithWeight.dat`
+  cmd8=`sed 's/e-00/e+00/g' testWithWeight.cout | sed 's/MEV/GEV/g' - | \
+        @DIFF_Q@ - @srcdir@/testWithWeight.output`
+else
   cmd1=`@DIFF_Q@ testHepMC.out @srcdir@/testHepMC.dat`
-  cmd2=`@DIFF_Q@ testHepMCParticle.out @srcdir@/testHepMCParticle.output`
   cmd3=`@DIFF_Q@ testCrossSection.out @srcdir@/testCrossSection.dat`
+  cmd5=`sed 's/e-00/e+00/g' testCrossSection.cout | \
+        @DIFF_Q@ - @srcdir@/testCrossSection.output`
+  cmd6=`@DIFF_Q@ testWithWeight.out @srcdir@/testWithWeight.dat`
+  cmd8=`sed 's/e-00/e+00/g' testWithWeight.cout | \
+        @DIFF_Q@ - @srcdir@/testWithWeight.output`
+  cmd9=`@DIFF_Q@ testHepMCVarious.cout @srcdir@/testHepMCVarious.output`
+fi
+  cmd=`@DIFF_Q@ testHepMC.cout @srcdir@/testHepMC.output`
+  cmd2=`@DIFF_Q@ testHepMCParticle.out @srcdir@/testHepMCParticle.output`
   cmd4=`@DIFF_Q@ testCrossSection2.out testCrossSection.out`
-  cmd5=`@DIFF_Q@ testCrossSection.cout @srcdir@/testCrossSection.output`
+  cmd7=`@DIFF_Q@ testWithWeight2.out testWithWeight.out`
 esac
 
 if [ -n "$cmd" ]; then
@@ -78,6 +142,30 @@ fi
 if [ -n "$cmd5" ]
 then
   echo $cmd5
+  exit 1;
+fi
+
+if [ -n "$cmd6" ]
+then
+  echo $cmd6
+  exit 1;
+fi
+
+if [ -n "$cmd7" ]
+then
+  echo $cmd7
+  exit 1;
+fi
+
+if [ -n "$cmd8" ]
+then
+  echo $cmd8
+  exit 1;
+fi
+
+if [ -n "$cmd9" ]
+then
+  echo $cmd9
   exit 1;
 fi
 

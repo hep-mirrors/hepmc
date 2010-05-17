@@ -60,17 +60,17 @@ SOURCES = CompareGenEvent.cc \
 	  GenParticle.cc \
 	  GenCrossSection.cc	\
 	  GenVertex.cc \
+	  GenRanges.cc \
 	  HeavyIon.cc	\
 	  IO_AsciiParticles.cc \
-	  IO_PDG_ParticleDataTable.cc \
 	  IO_GenEvent.cc \
-	  ParticleData.cc \
 	  PdfInfo.cc	\
 	  Polarization.cc \
 	  SearchVector.cc \
 	  StreamHelpers.cc	\
 	  StreamInfo.cc	\
-          Units.cc
+          Units.cc	\
+	  WeightContainer.cc
 
 OBJ = CompareGenEvent.obj \
       Flow.obj \
@@ -79,17 +79,17 @@ OBJ = CompareGenEvent.obj \
       GenParticle.obj \
       GenCrossSection.obj \
       GenVertex.obj \
+      GenRanges.obj \
       HeavyIon.obj	\
       IO_AsciiParticles.obj \
       IO_GenEvent.obj	\
-      IO_PDG_ParticleDataTable.obj \
-      ParticleData.obj \
       PdfInfo.obj	\
       Polarization.obj \
       SearchVector.obj \
       StreamHelpers.obj	\
       StreamInfo.obj	\
-      Units.obj
+      Units.obj	\
+      WeightContainer.obj
 
 
 lib_LIBRARIES = HepMC.lib

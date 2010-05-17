@@ -4,10 +4,9 @@
 @SET_MAKE@
 AM_MAKEFLAGS = @AM_MAKEFLAGS@
 
-INSTALLDIR = @prefix@/examples/@PACKAGE@
-
 srcdir = @srcdir@
 top_srcdir = @top_srcdir@
+pkgdatadir = $(datadir)/@PACKAGE@
 top_builddir = @top_builddir@
 prefix = @prefix@
 datadir = @datadir@
@@ -20,6 +19,8 @@ SET_MAKE = @SET_MAKE@
 mkinstalldirs = $(install_sh) -d
 DIST_COMMON = $(srcdir)/GNUmakefile.example.in $(srcdir)/VCMakefile.in 
 DISTFILES = $(DIST_COMMON) $(EXTRA_DIST)
+
+INSTALLDIR = $(pkgdatadir)/examples
 
 
 # files to distribute
@@ -34,14 +35,14 @@ EXTRA_DIST = \
     testHerwigCopies.cc	\
     testPythiaCopies.cc	\
     initPythia.cc \
-    PythiaHelper.h \
-    HerwigHelper.h \
     initpydata.f \
+    PythiaHelper.h \
     VectorConversion.h \
     example_UsingIterators.txt
 
 all: all-am
 all-am: VCMakefile GNUmakefile.example
+
 
 clean: clean-am
 clean-am: 
@@ -50,8 +51,11 @@ check: check-am
 check-am: all-am
 
 install: install-am
+install-exec: install-exec-am
 install-data: install-data-local
 uninstall: uninstall-am
+install-exec-am:
+
 
 install-am: 
 	@$(MAKE) $(AM_MAKEFLAGS) install-data

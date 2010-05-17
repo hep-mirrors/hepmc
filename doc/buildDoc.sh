@@ -1,6 +1,6 @@
 #! /bin/sh
 
-# this script builds the documents
+# this script builds the pdf documents
 # the bootstrap process executes this script
 
 set -x
@@ -17,7 +17,7 @@ if [ `whereis doxygen | wc -w` -gt 1 ]; then
       pdflatex refman.tex
       mv refman.pdf ../HepMC2_reference_manual.pdf
       cd ..
-      rm -rf latex
+      rm -rf latex html
    fi
 fi
 # now run latex

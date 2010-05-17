@@ -7,7 +7,7 @@
 #include "HepMC/GenEvent.h"
 #include "HepMC/SimpleVector.h"
 
-int main(int argc,char* argv[]) 
+int main() 
 {
   HepMC::GenEvent* p_event;
   

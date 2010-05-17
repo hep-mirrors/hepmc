@@ -9,7 +9,6 @@
 #include "HepMC/IO_GenEvent.h"
 #include "HepMC/IO_Exception.h"
 #include "HepMC/GenEvent.h"
-#include "HepMC/ParticleDataTable.h"
 #include "HepMC/StreamHelpers.h"
 
 namespace HepMC {
@@ -175,35 +174,5 @@ namespace HepMC {
 	*m_ostr << "\n" << "HepMC::IO_GenEvent-COMMENT\n";
 	*m_ostr << comment << std::endl;
     }
-
-bool IO_GenEvent::read_io_particle_data_table( std::istream* is, ParticleDataTable* pdt )
-{
-    // 
-    // read Individual GenParticle data entries
-    while ( read_particle_data( is, pdt ) ) ;
-    return true;
-}
-
-ParticleData* IO_GenEvent::read_particle_data( std::istream* is, ParticleDataTable* pdt ) {
-    // assumes mode has already been checked
-    //
-    // test to be sure the next entry is of type "D" then ignore it
-    if ( !(*is) || is->peek()!='D' ) return 0;
-    is->ignore();
-    //
-    // read values into temp variables then create new ParticleData object
-    char its_name[22];
-    int its_id = 0, its_spin = 0;  
-    double its_charge = 0, its_mass = 0, its_clifetime = 0;
-    *is >> its_id >> its_charge >> its_mass 
-	   >> its_clifetime >> its_spin;
-    is->ignore(1); // eat the " "
-    is->getline( its_name, 22, '\n' );
-    ParticleData* pdata = new ParticleData( its_name, its_id, its_charge, 
-					    its_mass, its_clifetime, 
-					    double(its_spin)/2.);
-    pdt->insert(pdata);
-    return pdata;
-}
 	
 } // HepMC

@@ -12,7 +12,6 @@
 
 #include "VectorConversion.h"
 #include "HepMC/GenEvent.h"
-#include "HepMC/ParticleDataTable.h"
 #include "CLHEP/Vector/LorentzVector.h"
 
 // in this example we use the HepMC namespace, so that we do not have to 
@@ -37,20 +36,6 @@ int main() {
     //  6  !gamma! 1     22    1,2   -3.813    0.113   -1.833    4.233    0.000
     //  7  !d!     1      1    5,5   -2.445   28.816    6.082   29.552    0.010
     //  8  !u~!    1     -2    5,5    3.962  -49.498  -26.687   56.373    0.006
-
-    // first we construct a ParticleDataTable with all the particles we need
-    ParticleDataTable pdt("my particle data table");
-    // create a particle data entry for the proton and add it to pdt at the
-    // same time
-    pdt.insert( new ParticleData( "p+", 2212,   +1, 0.938,  -1, .5 ) );
-    pdt.insert( new ParticleData( "d",  1,  -2./3., 0,      -1, .5 ) );
-    pdt.insert( new ParticleData( "u~", -2, -1./3., 0,      -1, .5 ) );
-    pdt.insert( new ParticleData( "W-", -24,    -1, 80.396,
-				  clifetime_from_width(2.06), 1 )    );
-    pdt.insert( new ParticleData( "gamma", 22,   0, 0,      -1, 1  ) );
-
-    // print out the GenParticle Data to the screen
-    pdt.print();
 
     // now we build the graph, which will look like
     //                       p7                         #
@@ -136,9 +121,6 @@ int main() {
     // deleting the event deletes all contained vertices, and all particles
     // contained in those vertices
     delete evt;
-
-    // delete all particle data objects in the particle data table pdt
-    pdt.delete_all();
 
     return 0;
 }

@@ -305,9 +305,7 @@ namespace HepMC {
 	ostr << "\n";
 	// Weights
 	ostr << " Wgts(" << weights().size() << ")=";
-	for ( WeightContainer::const_iterator wgt = weights().begin();
-	      wgt != weights().end(); ++wgt ) { ostr << *wgt << " "; }
-	ostr << "\n";
+	weights().print(ostr);
 	ostr << " EventScale " << event_scale() 
 	     << " [energy] \t alphaQCD=" << alphaQCD() 
 	     << "\t alphaQED=" << alphaQED() << std::endl;

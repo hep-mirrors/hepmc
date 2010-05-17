@@ -19,7 +19,6 @@
 //
 
 #include <iostream>
-#include "HepMC/ParticleDataTable.h"
 #include "HepMC/GenEvent.h"
 
 namespace HepMC {
@@ -40,19 +39,14 @@ namespace HepMC {
 	virtual void write_event( const GenEvent* ) =0;
 	/// fill this GenEvent
 	virtual bool fill_next_event( GenEvent* ) =0;
-	/// write this ParticleDataTable
-	virtual void write_particle_data_table( const ParticleDataTable* ) =0;
-	/// fill this ParticleDataTable
-	virtual bool fill_particle_data_table( ParticleDataTable* ) =0;
 	/// write output to ostr
 	virtual void print( std::ostream& ostr = std::cout ) const;
 	//
-	// the read_next_event() and read_particle_data_table() differ from
-	// the fill_***() methods in that they create a new event or pdt
+	// the read_next_event() differs from
+	// the fill_***() methods in that it creates a new event
 	// before calling the  corresponding fill_*** method
 	// (they are not intended to be over-ridden)
 	GenEvent*    read_next_event();  //!< do not over-ride
-	ParticleDataTable* read_particle_data_table();  //!< do not over-ride
 	//
 	// The overloaded stream operators >>,<< are identical to
 	//   read_next_event and write_event methods respectively.
@@ -71,13 +65,6 @@ namespace HepMC {
 	virtual const GenEvent*& operator<<( const GenEvent*& );
 	/// the same as write_event
 	virtual       GenEvent*& operator<<( GenEvent*& );
-	/// the same as read_particle_data_table
-	virtual       ParticleDataTable*& operator>>( ParticleDataTable*& );
-	/// the same as write_particle_data_table
-	virtual const ParticleDataTable*& operator<<( const 
-						      ParticleDataTable*& );
-	/// the same as write_particle_data_table
-	virtual       ParticleDataTable*& operator<<( ParticleDataTable*& );
     };
 
     //////////////
@@ -100,20 +87,6 @@ namespace HepMC {
 	return 0;
     }
 
-    inline ParticleDataTable* IO_BaseClass::read_particle_data_table() {
-	/// creates a new particle data table and fills it by calling 
-	/// the sister method read_particle_data_table( ParticleDataTable* )
-	//
-	// 1. create an empty pdt
-	ParticleDataTable* pdt = new ParticleDataTable();
-	// 2. fill the pdt container - if the read is successful, return the
-	//    pointer, otherwise return null and delete the evt
-	if ( fill_particle_data_table( pdt ) ) return pdt;
-	// next statement is only reached if read fails
-	delete pdt;
-	return 0;
-    }
-
     inline void IO_BaseClass::print( std::ostream& ostr ) const { 
 	ostr << "IO_BaseClass: abstract parent I/O class. " <<  std::endl;
     }
@@ -132,24 +105,6 @@ namespace HepMC {
     inline GenEvent*& IO_BaseClass::operator<<( GenEvent*& evt ) {
 	write_event( evt );
 	return evt;
-    }
-
-    inline ParticleDataTable*& IO_BaseClass::operator>>( 
-					   ParticleDataTable*& pdt ){
-	pdt = read_particle_data_table();
-	return pdt;
-    }
-
-    inline const ParticleDataTable*& IO_BaseClass::operator<<(
-					     const ParticleDataTable*& pdt ) {
-	write_particle_data_table( pdt );
-	return pdt;
-    }
-
-    inline ParticleDataTable*& IO_BaseClass::operator<<(
-	                                            ParticleDataTable*& pdt ) {
-	write_particle_data_table( pdt );
-	return pdt;
     }
 
 } // HepMC

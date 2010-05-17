@@ -20,7 +20,6 @@
 #include "HepMC/IO_GenEvent.h"
 #include "HepMC/GenEvent.h"
 #include "HepMC/HEPEVT_Wrapper.h"
-#include "HerwigHelper.h"
 
 int main() { 
     //
@@ -84,7 +83,7 @@ int main() {
 	// define the units (Herwig uses GeV and mm)
 	evt->use_units(HepMC::Units::GEV, HepMC::Units::MM);
 	// set cross section information
-	evt->set_cross_section( getHerwigCrossSection(i) );
+	evt->set_cross_section( HepMC::getHerwigCrossSection(i) );
 	// add some information to the event
 	evt->set_event_number(i);
 	evt->set_signal_process_id(20);

@@ -46,10 +46,13 @@ int main() {
 	HepMC::GenEvent* evt = hepevtio.read_next_event();
 	// pythia uses GeV and mm
 	evt->use_units( HepMC::Units::GEV, HepMC::Units::MM);
+	// set a couple of arbitrary weights
+	evt->weights().push_back(0.456);
+	evt->weights()["test2"] = 0.8956;
 	// set number of multi parton interactions
 	evt->set_mpi( pypars.msti[31-1] );
 	// set cross section information
-	evt->set_cross_section( getPythiaCrossSection() );
+	evt->set_cross_section( HepMC::getPythiaCrossSection() );
 	//
 	//.......................make some copies
 	evt->print(out1);

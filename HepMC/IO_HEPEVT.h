@@ -29,7 +29,6 @@ namespace HepMC {
     class GenEvent;
     class GenVertex;
     class GenParticle;
-    class ParticleDataTable;
 
     //! HEPEVT IO class
 
@@ -97,11 +96,6 @@ namespace HepMC {
         /// find this particle in the particle map
 	int  find_in_map( 
 	    const std::map<HepMC::GenParticle*,int>& m, GenParticle* p) const;
-
-    private: // following are not implemented for HEPEVT
-        virtual void write_particle_data_table( const ParticleDataTable* ){}
-        virtual bool fill_particle_data_table( ParticleDataTable* ) 
-	    { return false; }
 
     private: // use of copy constructor is not allowed
 	IO_HEPEVT( const IO_HEPEVT& ) : IO_BaseClass() {}

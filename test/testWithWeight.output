@@ -1,11 +1,10 @@
 ________________________________________________________________________________
 GenEvent: #1 ID=20 SignalProcessGenVertex Barcode: 0
  Momenutm units:     GEV     Position units:      MM
- Cross Section: 0.003326 +/- 0.0001
  Entries this event: 357 vertices, 1046 particles.
  Beam Particle barcodes: 1 2 
  RndmState(0)=
- Wgts(3)=(0,0.3456) (second weight name,0.98596) (weightName,0.98563) 
+ Wgts(3)=(0,0.3456) (1,0.98563) (2,0.98596) 
  EventScale -1 [energy] 	 alphaQCD=-1	 alphaQED=-1
                                     GenParticle Legend
         Barcode   PDG ID      ( Px,       Py,       Pz,     E ) Stat  DecayVtx
@@ -1779,11 +1778,10 @@ ________________________________________________________________________________
 ________________________________________________________________________________
 GenEvent: #39 ID=20 SignalProcessGenVertex Barcode: 0
  Momenutm units:     GEV     Position units:      MM
- Cross Section: 32.6858 +/- 0.409126
  Entries this event: 133 vertices, 382 particles.
  Beam Particle barcodes: 1 2 
  RndmState(0)=
- Wgts(3)=(0,0.3456) (second weight name,0.99256) (weightName,0.99223) 
+ Wgts(3)=(0,0.3456) (1,0.99223) (2,0.99256) 
  EventScale -1 [energy] 	 alphaQCD=-1	 alphaQED=-1
                                     GenParticle Legend
         Barcode   PDG ID      ( Px,       Py,       Pz,     E ) Stat  DecayVtx
