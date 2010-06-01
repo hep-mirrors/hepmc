@@ -33,7 +33,6 @@
 namespace HepMC {
 
     class GenVertexParticleRange;
-    class ConstGenVertexParticleRange;
     class GenParticleProductionRange;
     class ConstGenParticleProductionRange;
     class GenParticleEndRange;
@@ -134,8 +133,6 @@ namespace HepMC {
 
 	/// particle range
 	GenVertexParticleRange particles( IteratorRange range = relatives );
-	/// particle range
-	ConstGenVertexParticleRange particles( IteratorRange range = relatives ) const;
 	/// incoming particle range
 	GenParticleProductionRange particles_in( GenParticle&, IteratorRange range = relatives );
 	/// incoming particle range

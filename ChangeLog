@@ -1,3 +1,11 @@
+2010-06-01  Lynn Garren
+
+      * HepMC/GenRanges.h: remove ConstGenVertexParticleRange since 
+        there is no particle_const_iterator in GenVertex
+      * HepMC/GenVertex.h: remove unimplemented 
+        ConstGenVertexParticleRange particles()
+
+
   --------------------------  HepMC-2.06.00  --------------------------
   --------------------------  HepMC-2.06.00.b02  --------------------------
 2010-05-13  Lynn Garren

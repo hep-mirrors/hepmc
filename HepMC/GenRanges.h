@@ -159,28 +159,6 @@ private:
 
 };
 
-class ConstGenVertexParticleRange {
-
-public:
-
-  /// the constructor requires a GenVertex
-  ConstGenVertexParticleRange( GenVertex & v, IteratorRange range = relatives ) 
-  : m_vertex(v),m_range(range) {}
-  /// 
-  GenVertex::particle_iterator begin() { return m_vertex.particles_begin(m_range); }
-  GenVertex::particle_iterator end()   { return m_vertex.particles_end(m_range); }
-
-private:
-  /// Because the class contains a reference, assignments are not allowed.
-  /// However, we need the copy constructor for GenVertex::particles().
-  ConstGenVertexParticleRange& operator=( ConstGenVertexParticleRange & );
-
-private:
-  GenVertex     & m_vertex;
-  IteratorRange   m_range;
-
-};
-
 //! GenParticleProductionRange acts like a collection of particles
 
 ///

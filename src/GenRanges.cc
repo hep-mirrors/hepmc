@@ -38,13 +38,6 @@ GenVertexParticleRange GenVertex::particles( IteratorRange range )
     return GenVertexParticleRange(*this,range);
 }
 
-/*
-ConstGenVertexParticleRange GenVertex::particles( IteratorRange range ) const
-{
-    return ConstGenVertexParticleRange(*this,range);
-}
-*/
-
 GenParticleProductionRange GenVertex::particles_in( GenParticle& p, IteratorRange range )
 {
     return GenParticleProductionRange(p,range);
