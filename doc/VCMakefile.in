@@ -9,6 +9,7 @@ top_srcdir = @top_srcdir@
 pkgdatadir = $(datadir)/@PACKAGE@
 prefix = @prefix@
 datadir = @datadir@
+datarootdir = @datarootdir@
 install_sh = @install_sh@
 INSTALL = @INSTALL@
 INSTALL_DATA = @INSTALL_DATA@

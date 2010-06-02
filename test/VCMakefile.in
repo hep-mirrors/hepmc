@@ -144,6 +144,7 @@ bindir = @bindir@
 build = @build@
 builddir = @builddir@
 datadir = @datadir@
+datarootdir = @datarootdir@
 exec_prefix = @exec_prefix@
 includedir = @includedir@
 install_sh = @install_sh@

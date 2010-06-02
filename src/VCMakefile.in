@@ -11,6 +11,7 @@ libdir = @prefix@/lib
 includedir = @includedir@
 prefix = @prefix@
 datadir = @datadir@
+datarootdir = @datarootdir@
 install_sh = @install_sh@
 mkdir_p = @mkdir_p@
 

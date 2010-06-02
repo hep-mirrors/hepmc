@@ -8,6 +8,7 @@ top_srcdir = @top_srcdir@
 VPATH = @srcdir@
 pkgincludedir = $(includedir)/@PACKAGE@
 datadir = @datadir@
+datarootdir = @datarootdir@
 prefix = @prefix@
 install_sh = @install_sh@
 mkdir_p = @mkdir_p@

@@ -10,6 +10,7 @@ pkgdatadir = $(datadir)/@PACKAGE@
 top_builddir = @top_builddir@
 prefix = @prefix@
 datadir = @datadir@
+datarootdir = @datarootdir@
 install_sh = @install_sh@
 VPATH = @srcdir@
 INSTALL = @INSTALL@
