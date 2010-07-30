@@ -1,3 +1,8 @@
+2010-07-30  Lynn Garren & Andy Buckley
+
+      * src/GenEventStreamIO.cc: create GenCrossSection, PdfInfo, and HeavyIon
+        on the stack rather than the heap to fix a memory leak
+
   --------------------------  HepMC-2.06.01  --------------------------
 2010-06-01  Lynn Garren
 

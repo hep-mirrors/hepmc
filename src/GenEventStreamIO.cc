@@ -226,39 +226,33 @@ std::istream& GenEvent::read( std::istream& is )
 	    case 'C':
             {	// we have a GenCrossSection line
 		// create cross section
-		GenCrossSection* xs = new GenCrossSection();
+		GenCrossSection xs;
 		// check for invalid data
 		try {
 		    // read the line
-		    xs->read(is);
+		    xs.read(is);
 		}
 		catch (IO_Exception& e) {
         	    detail::find_event_end( is );
 		}
-		if(xs->is_set()) { 
-		    set_cross_section( *xs );
-		} else { 
-		    delete xs; 
-		    xs = 0;
+		if(xs.is_set()) { 
+		    set_cross_section( xs );
 		}
             } break;
 	    case 'H':
 	    {	// we have a HeavyIon line
 		if( info.io_type() == gen || info.io_type() == extascii ) {
 		    // get HeavyIon
-		    HeavyIon* ion = new HeavyIon();
+		    HeavyIon ion;
 		    // check for invalid data
 		    try {
-			is >> ion;
+			is >> &ion;
 		    }
 		    catch (IO_Exception& e) {
         		detail::find_event_end( is );
 		    }
-		    if(ion->is_valid()) { 
-			set_heavy_ion( *ion );
-		    } else { 
-			delete ion; 
-			ion = 0;
+		    if(ion.is_valid()) { 
+			set_heavy_ion( ion );
 		    }
 		}
 	    } break;
@@ -266,19 +260,16 @@ std::istream& GenEvent::read( std::istream& is )
 	    {	// we have a PdfInfo line
 		if( info.io_type() == gen || info.io_type() == extascii ) {
 		    // get PdfInfo
-		    PdfInfo* pdf = new PdfInfo();
+		    PdfInfo pdf;
 		    // check for invalid data
 		    try {
-			is >> pdf;
+			is >> &pdf;
 		    }
 		    catch (IO_Exception& e) {
         		detail::find_event_end( is );
 		    }
-		    if(pdf->is_valid()) { 
-			set_pdf_info( *pdf );
-		    } else { 
-			delete pdf; 
-			pdf = 0;
+		    if(pdf.is_valid()) { 
+			set_pdf_info( pdf );
 		    }
 		}
 	    } break;
