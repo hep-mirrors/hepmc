@@ -76,9 +76,9 @@ namespace HepMC {
             // empty the maps
             m_particle_order.erase( m_particle_order.begin() );
 	    m_particle_to_end_vertex.erase( p );
-	    // delete particles only if they are not already owned by the event
+	    // delete particles only if they are not already owned by a vertex
             if( p->production_vertex() ) {
-	    } else if( p->parent_event() ) {
+	    } else if( p->end_vertex() ) {
 	    } else {
 	         delete p;
  	    }

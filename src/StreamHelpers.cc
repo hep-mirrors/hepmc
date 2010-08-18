@@ -52,27 +52,27 @@ std::istream & read_vertex( std::istream & is,
         num_particles_out = 0, weights_size = 0;
     double x = 0., y = 0., z = 0., t = 0.; 
     iline >> identifier ;
-    if(!iline) { delete v; detail::find_event_end( is ); }
+    if(!iline) { throw IO_Exception("read_vertex input stream encounterd invalid data"); }
     iline >> id ;
-    if(!iline) { delete v; detail::find_event_end( is ); }
+    if(!iline) { throw IO_Exception("read_vertex input stream encounterd invalid data"); }
     iline >> x ;
-    if(!iline) { delete v; detail::find_event_end( is ); }
+    if(!iline) { throw IO_Exception("read_vertex input stream encounterd invalid data"); }
     iline >> y ;
-    if(!iline) { delete v; detail::find_event_end( is ); }
+    if(!iline) { throw IO_Exception("read_vertex input stream encounterd invalid data"); }
     iline >> z ;
-    if(!iline) { delete v; detail::find_event_end( is ); }
+    if(!iline) { throw IO_Exception("read_vertex input stream encounterd invalid data"); }
     iline >> t;
-    if(!iline) { delete v; detail::find_event_end( is ); }
+    if(!iline) { throw IO_Exception("read_vertex input stream encounterd invalid data"); }
     iline >> num_orphans_in ;
-    if(!iline) { delete v; detail::find_event_end( is ); }
+    if(!iline) { throw IO_Exception("read_vertex input stream encounterd invalid data"); }
     iline >> num_particles_out ;
-    if(!iline) { delete v; detail::find_event_end( is ); }
+    if(!iline) { throw IO_Exception("read_vertex input stream encounterd invalid data"); }
     iline >> weights_size;
-    if(!iline) { delete v; detail::find_event_end( is ); }
+    if(!iline) { throw IO_Exception("read_vertex input stream encounterd invalid data"); }
     WeightContainer weights(weights_size);
     for ( int i1 = 0; i1 < weights_size; ++i1 ) {
         iline >> weights[i1];
-        if(!iline) { delete v; detail::find_event_end( is ); }
+        if(!iline) { throw IO_Exception("read_vertex input stream encounterd invalid data"); }
     }
     v->set_position( FourVector(x,y,z,t) );
     v->set_id( id );

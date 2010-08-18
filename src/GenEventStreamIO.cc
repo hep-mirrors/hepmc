@@ -296,7 +296,14 @@ std::istream& GenEvent::read( std::istream& is )
     // read in the vertices
     for ( int iii = 1; iii <= num_vertices; ++iii ) {
 	GenVertex* v = new GenVertex();
-	detail::read_vertex(is,particle_to_end_vertex,v);
+	try {
+	    detail::read_vertex(is,particle_to_end_vertex,v);
+	}
+	catch (IO_Exception& e) {
+	    particle_to_end_vertex.clear_temp_map();
+	    delete v;
+            detail::find_event_end( is );
+	}
 	add_vertex( v );
     }
     // set the signal process vertex
@@ -682,44 +689,44 @@ std::istream & read_particle( std::istream & is,
     } 
     //
     StreamInfo & info = get_stream_info(is);
-    //
+    //testHepMC.cc
     // declare variables to be read in to, and read everything except flow
     double px = 0., py = 0., pz = 0., e = 0., m = 0., theta = 0., phi = 0.;
     int bar_code = 0, id = 0, status = 0, end_vtx_code = 0, flow_size = 0;
     // check that the input stream is still OK after reading item
     iline >> bar_code ;
-    if(!iline) {  delete p; particle_to_end_vertex.clear_temp_map(); detail::find_event_end( is ); }
+    if(!iline) {  delete p; throw IO_Exception("read_particle input stream encounterd invalid data"); }
     iline >> id ;
-    if(!iline) {  delete p; particle_to_end_vertex.clear_temp_map(); detail::find_event_end( is ); }
+    if(!iline) {  delete p; throw IO_Exception("read_particle input stream encounterd invalid data"); }
     iline >> px ;
-    if(!iline) {  delete p; particle_to_end_vertex.clear_temp_map(); detail::find_event_end( is ); }
+    if(!iline) {  delete p; throw IO_Exception("read_particle input stream encounterd invalid data"); }
     iline >> py ;
-    if(!iline) {  delete p; particle_to_end_vertex.clear_temp_map(); detail::find_event_end( is ); }
+    if(!iline) {  delete p; throw IO_Exception("read_particle input stream encounterd invalid data"); }
     iline >> pz ;
-    if(!iline) {  delete p; particle_to_end_vertex.clear_temp_map(); detail::find_event_end( is ); }
+    if(!iline) {  delete p; throw IO_Exception("read_particle input stream encounterd invalid data"); }
     iline >> e ;
-    if(!iline) {  delete p; particle_to_end_vertex.clear_temp_map(); detail::find_event_end( is ); }
+    if(!iline) {  delete p; throw IO_Exception("read_particle input stream encounterd invalid data"); }
     if( info.io_type() != ascii ) {
 	iline >> m ;
-        if(!iline) {  delete p; particle_to_end_vertex.clear_temp_map(); detail::find_event_end( is ); }
+        if(!iline) {  delete p; throw IO_Exception("read_particle input stream encounterd invalid data"); }
     }
     iline >> status ;
-    if(!iline) {  delete p; particle_to_end_vertex.clear_temp_map(); detail::find_event_end( is ); }
+    if(!iline) {  delete p; throw IO_Exception("read_particle input stream encounterd invalid data"); }
     iline >> theta ;
-    if(!iline) {  delete p; particle_to_end_vertex.clear_temp_map(); detail::find_event_end( is ); }
+    if(!iline) {  delete p; throw IO_Exception("read_particle input stream encounterd invalid data"); }
     iline >> phi ;
-    if(!iline) {  delete p; particle_to_end_vertex.clear_temp_map(); detail::find_event_end( is ); }
+    if(!iline) {  delete p; throw IO_Exception("read_particle input stream encounterd invalid data"); }
     iline >> end_vtx_code ;
-    if(!iline) {  delete p; particle_to_end_vertex.clear_temp_map(); detail::find_event_end( is ); }
+    if(!iline) {  delete p; throw IO_Exception("read_particle input stream encounterd invalid data"); }
     iline >> flow_size;
-    if(!iline) {  delete p; particle_to_end_vertex.clear_temp_map(); detail::find_event_end( is ); }
+    if(!iline) {  delete p; throw IO_Exception("read_particle input stream encounterd invalid data"); }
     //
     // read flow patterns if any exist
     Flow flow;
     int code_index, code;
     for ( int i = 1; i <= flow_size; ++i ) {
 	iline >> code_index >> code;
-        if(!iline) {  delete p; particle_to_end_vertex.clear_temp_map(); detail::find_event_end( is ); }
+        if(!iline) {  delete p; throw IO_Exception("read_particle input stream encounterd invalid data"); }
 	flow.set_icode( code_index,code);
     }
     p->set_momentum( FourVector(px,py,pz,e) );
