@@ -688,38 +688,38 @@ std::istream & read_particle( std::istream & is,
     int bar_code = 0, id = 0, status = 0, end_vtx_code = 0, flow_size = 0;
     // check that the input stream is still OK after reading item
     iline >> bar_code ;
-    if(!iline) detail::find_event_end( is );
+    if(!iline) {  delete p; detail::find_event_end( is ); }
     iline >> id ;
-    if(!iline) detail::find_event_end( is );
+    if(!iline) {  delete p; detail::find_event_end( is ); }
     iline >> px ;
-    if(!iline) detail::find_event_end( is );
+    if(!iline) {  delete p; detail::find_event_end( is ); }
     iline >> py ;
-    if(!iline) detail::find_event_end( is );
+    if(!iline) {  delete p; detail::find_event_end( is ); }
     iline >> pz ;
-    if(!iline) detail::find_event_end( is );
+    if(!iline) {  delete p; detail::find_event_end( is ); }
     iline >> e ;
-    if(!iline) detail::find_event_end( is );
+    if(!iline) {  delete p; detail::find_event_end( is ); }
     if( info.io_type() != ascii ) {
 	iline >> m ;
-        if(!iline) detail::find_event_end( is );
+        if(!iline) {  delete p; detail::find_event_end( is ); }
     }
     iline >> status ;
-    if(!iline) detail::find_event_end( is );
+    if(!iline) {  delete p; detail::find_event_end( is ); }
     iline >> theta ;
-    if(!iline) detail::find_event_end( is );
+    if(!iline) {  delete p; detail::find_event_end( is ); }
     iline >> phi ;
-    if(!iline) detail::find_event_end( is );
+    if(!iline) {  delete p; detail::find_event_end( is ); }
     iline >> end_vtx_code ;
-    if(!iline) detail::find_event_end( is );
+    if(!iline) {  delete p; detail::find_event_end( is ); }
     iline >> flow_size;
-    if(!iline) detail::find_event_end( is );
+    if(!iline) {  delete p; detail::find_event_end( is ); }
     //
     // read flow patterns if any exist
     Flow flow;
     int code_index, code;
     for ( int i = 1; i <= flow_size; ++i ) {
 	iline >> code_index >> code;
-        if(!iline) detail::find_event_end( is );
+        if(!iline) {  delete p; detail::find_event_end( is ); }
 	flow.set_icode( code_index,code);
     }
     p->set_momentum( FourVector(px,py,pz,e) );

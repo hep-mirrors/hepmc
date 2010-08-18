@@ -52,27 +52,27 @@ std::istream & read_vertex( std::istream & is,
         num_particles_out = 0, weights_size = 0;
     double x = 0., y = 0., z = 0., t = 0.; 
     iline >> identifier ;
-    if(!iline) detail::find_event_end( is );
+    if(!iline) { delete v; detail::find_event_end( is ); }
     iline >> id ;
-    if(!iline) detail::find_event_end( is );
+    if(!iline) { delete v; detail::find_event_end( is ); }
     iline >> x ;
-    if(!iline) detail::find_event_end( is );
+    if(!iline) { delete v; detail::find_event_end( is ); }
     iline >> y ;
-    if(!iline) detail::find_event_end( is );
+    if(!iline) { delete v; detail::find_event_end( is ); }
     iline >> z ;
-    if(!iline) detail::find_event_end( is );
+    if(!iline) { delete v; detail::find_event_end( is ); }
     iline >> t;
-    if(!iline) detail::find_event_end( is );
+    if(!iline) { delete v; detail::find_event_end( is ); }
     iline >> num_orphans_in ;
-    if(!iline) detail::find_event_end( is );
+    if(!iline) { delete v; detail::find_event_end( is ); }
     iline >> num_particles_out ;
-    if(!iline) detail::find_event_end( is );
+    if(!iline) { delete v; detail::find_event_end( is ); }
     iline >> weights_size;
-    if(!iline) detail::find_event_end( is );
+    if(!iline) { delete v; detail::find_event_end( is ); }
     WeightContainer weights(weights_size);
     for ( int i1 = 0; i1 < weights_size; ++i1 ) {
         iline >> weights[i1];
-        if(!iline) detail::find_event_end( is );
+        if(!iline) { delete v; detail::find_event_end( is ); }
     }
     v->set_position( FourVector(x,y,z,t) );
     v->set_id( id );
