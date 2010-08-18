@@ -37,10 +37,13 @@ namespace HepMC {
 	TempMapIterator end() { return m_particle_to_end_vertex.end(); }
 	orderIterator order_begin() { return m_particle_order.begin(); }
 	orderIterator order_end() { return m_particle_order.end(); }
+	bool empty() const;
 	
 	int end_vertex( GenParticle* );
 	
 	void addEndParticle( GenParticle*, int& );
+	
+	void clear_temp_map();
 	
     private:
         TempMap       m_particle_to_end_vertex;
@@ -60,6 +63,28 @@ namespace HepMC {
 	m_particle_order[p->barcode()] = p;
         m_particle_to_end_vertex[p] = end_vtx_code;
     }
+
+    inline bool TempParticleMap::empty() const {
+	return (bool)m_particle_to_end_vertex.empty();
+    }
+
+    inline void TempParticleMap::clear_temp_map() {
+        // this method is used if corrupt data is encountered when reading an event
+        // have to be careful, can't just call clear() on the map
+	while( !empty() ) {
+	    GenParticle* p = m_particle_order.begin()->second;
+            // empty the maps
+            m_particle_order.erase( m_particle_order.begin() );
+	    m_particle_to_end_vertex.erase( p );
+	    // delete particles only if they are not already owned by the event
+            if( p->production_vertex() ) {
+	    } else if( p->parent_event() ) {
+	    } else {
+	         delete p;
+ 	    }
+ 	}
+    }
+        
 
 } // HepMC
 
