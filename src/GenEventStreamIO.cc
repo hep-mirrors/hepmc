@@ -300,7 +300,16 @@ std::istream& GenEvent::read( std::istream& is )
 	    detail::read_vertex(is,particle_to_end_vertex,v);
 	}
 	catch (IO_Exception& e) {
-	    particle_to_end_vertex.clear_temp_map();
+	    for( TempParticleMap::orderIterator it = particle_to_end_vertex.order_begin(); 
+	         it != particle_to_end_vertex.order_end(); ++it ) {
+		GenParticle* p = it->second;
+		// delete particles only if they are not already owned by a vertex
+        	if( p->production_vertex() ) {
+		} else if( p->end_vertex() ) {
+		} else {
+	             delete p;
+ 		}
+ 	    }
 	    delete v;
             detail::find_event_end( is );
 	}
@@ -315,7 +324,7 @@ std::istream& GenEvent::read( std::istream& is )
     // last connect particles to their end vertices
     GenParticle* beam1(0);
     GenParticle* beam2(0);
-    for ( std::map<int,GenParticle*>::iterator pmap 
+    for ( TempParticleMap::orderIterator pmap 
 	      = particle_to_end_vertex.order_begin(); 
 	  pmap != particle_to_end_vertex.order_end(); ++pmap ) {
 	GenParticle* p =  pmap->second;
