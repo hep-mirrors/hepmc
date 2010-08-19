@@ -1,7 +1,7 @@
 2010-08-18  Lynn Garren
 
       * src/GenEventStreamIO.cc, StreamHelpers.cc: 
-        cleanup if corrupt data is found
+        cleanup unassociated event remnants if corrupt data is found
 
 2010-07-30  Lynn Garren & Andy Buckley
 
