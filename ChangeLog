@@ -1,3 +1,9 @@
+2010-10-20  Lynn Garren
+
+      * src/GenParticle.cc: copy flow when using the copy constructor
+      * test/testFlow.cc: add check to be sure flow is copied
+
+  --------------------------  HepMC-2.06.02  --------------------------
 2010-08-18  Lynn Garren
 
       * src/GenEventStreamIO.cc, StreamHelpers.cc: 
