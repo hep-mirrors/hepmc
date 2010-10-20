@@ -38,7 +38,7 @@ namespace HepMC {
         m_momentum( inparticle.momentum() ),
 	m_pdg_id( inparticle.pdg_id() ), 
 	m_status( inparticle.status() ), 
-	m_flow(this),
+	m_flow(inparticle.flow()),
 	m_polarization( inparticle.polarization() ),
 	m_production_vertex(0), 
 	m_end_vertex(0), 
