@@ -27,6 +27,7 @@ else
      sed 's/e-0/e-/g'  -  | \
 	@DIFF_Q@ - @srcdir@/testFlow.output`
 fi
+  cmd2=`@DIFF_Q@ testFlow.out4 testFlow.out5`
   ;;
 *)
 if [ "@HEPMC_DEFAULT_MOM_UNIT@" = "MEV" ];then
@@ -34,11 +35,18 @@ if [ "@HEPMC_DEFAULT_MOM_UNIT@" = "MEV" ];then
 else
   cmd1=`@DIFF_Q@ testFlow.out @srcdir@/testFlow.output`
 fi
+  cmd2=`@DIFF_Q@ testFlow.out4 testFlow.out5`
 esac
 
 if [ -n "$cmd1" ]
 then
   echo $cmd1
+  exit 1;
+fi
+
+if [ -n "$cmd2" ]
+then
+  echo $cmd2
   exit 1;
 fi
 

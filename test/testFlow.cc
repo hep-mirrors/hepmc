@@ -40,7 +40,10 @@ int main() {
     HepMC::IO_GenEvent xout1("testFlow.out1",std::ios::out);
     HepMC::IO_GenEvent xout2("testFlow.out2",std::ios::out);
     HepMC::IO_GenEvent xout3("testFlow.out3",std::ios::out);
-   
+    // output streams for copy test
+    std::ofstream xout4( "testFlow.out4" );
+    std::ofstream xout5( "testFlow.out5" );
+ 
     int numbad = 0;
 
 
@@ -149,7 +152,13 @@ int main() {
       os.width(8);
       os << (*it)->pdg_id() << " " << (*it)->flow(1)  << std::endl;
     }
-	    xout1 << evt;
+    // write event
+    xout1 << evt;
+    // testing bug #73987 - flow not copied
+    // call the write method directly
+    evt->write(xout4);
+    // make a copy and write it
+    HepMC::GenEvent(*evt).write(xout5);
 
     // try changing and erasing flow
     p2->set_flow(2,345);
