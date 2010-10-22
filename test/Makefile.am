@@ -8,15 +8,15 @@ LDADD = $(top_builddir)/src/libHepMC.la
 check_PROGRAMS = testSimpleVector testUnits testPrintBug \
                  testHepMC testHepMCIteration testMass \
                  testMultipleCopies testStreamIO testFlow \
-		 testWeights
+		 testPolarization testWeights
 
 check_SCRIPTS = testHepMC.sh testHepMCIteration.sh testPrintBug.sh \
-                testMass.sh testStreamIO.sh testFlow.sh
+                testMass.sh testStreamIO.sh testFlow.sh testPolarization.sh
 
 # Identify test(s) to run when 'make check' is requested:
 TESTS = testSimpleVector testUnits \
         testHepMC.sh testHepMCIteration.sh testMass.sh testFlow.sh testStreamIO.sh \
-        testPrintBug.sh testMultipleCopies testWeights
+        testPrintBug.sh testMultipleCopies testPolarization.sh testWeights
 
 # Identify the test(s) for which failure is the intended outcome:
 XFAIL_TESTS = 
@@ -25,6 +25,7 @@ XFAIL_TESTS =
 testSimpleVector_SOURCES   = testSimpleVector.cc
 testUnits_SOURCES          = testUnits.cc
 testFlow_SOURCES           = testFlow.cc
+testPolarization_SOURCES   = testPolarization.cc
 testWeights_SOURCES        = testWeights.cc
 testHepMC_SOURCES          = testHepMC.cc testHepMCMethods.cc
 testMass_SOURCES           = testMass.cc
@@ -38,6 +39,7 @@ EXTRA_DIST = testIOGenEvent.input \
              testHepMCVarious.input \
 	     testCrossSection.output \
 	     testFlow.output \
+	     testPolarization.output \
              testHepMC.output \
 	     testHepMCParticle.output \
              testPrintBug.output \
@@ -64,5 +66,7 @@ CLEANFILES = testHepMC.cout testStreamIO.cout \
 	     testStreamIO.out testStreamIOParticle.out testStreamIOVarious.out \
 	     testStreamIO2.out testStreamIO3.out testStreamIO4.out \
 	     testStreamIOprecision.out testStreamIO.cout testStreamIOVarious.cout \
-	     testFlow.out testFlow.out1 testFlow.out2 testFlow.out3 \
+	     testFlow.out testFlow.out1 testFlow.out2 testFlow.out3 testFlow.out4 testFlow.out5 \
+	     testPolarization.cout testPolarization1.dat testPolarization2.dat \
+	     testPolarization4.out testPolarization5.out \
 	     testWithWeight.cout testWithWeight.out testWithWeight2.out

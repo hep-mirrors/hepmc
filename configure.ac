@@ -166,6 +166,7 @@ AC_CONFIG_FILES([test/testHepMC.sh], [chmod +x test/testHepMC.sh])
 AC_CONFIG_FILES([test/testFlow.sh], [chmod +x test/testFlow.sh])
 AC_CONFIG_FILES([test/testMass.sh], [chmod +x test/testMass.sh])
 AC_CONFIG_FILES([test/testHepMCIteration.sh], [chmod +x test/testHepMCIteration.sh])
+AC_CONFIG_FILES([test/testPolarization.sh], [chmod +x test/testPolarization.sh])
 AC_CONFIG_FILES([test/testPrintBug.sh], [chmod +x test/testPrintBug.sh])
 AC_CONFIG_FILES([test/testStreamIO.sh], [chmod +x test/testStreamIO.sh])
 

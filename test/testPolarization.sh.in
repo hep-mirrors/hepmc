@@ -1,0 +1,60 @@
+#! /bin/bash
+# @configure_input@
+
+rm -f testPolarization.cout 
+./testPolarization@EXEEXT@
+
+if [ "$?" -ne 0 ]
+then
+  exit 1;
+fi
+
+if [ ! -e testPolarization.cout ]
+then
+   echo "ERROR: testPolarization.cout does not exist"
+   exit 1;
+fi
+
+OS=`uname`
+case "$OS" in
+CYGWIN*)
+if [ "@HEPMC_DEFAULT_MOM_UNIT@" = "MEV" ];then
+  cmd1=`sed 's/e+0/e+/g'  testPolarization.cout  | \
+     sed 's/e-0/e-/g'  -  | sed 's/MEV/GEV/g' - | \
+	@DIFF_Q@ - @srcdir@/testPolarization.output`
+else
+  cmd1=`sed 's/e+0/e+/g'  testPolarization.cout  | \
+     sed 's/e-0/e-/g'  -  | \
+	@DIFF_Q@ - @srcdir@/testPolarization.output`
+fi
+  cmd2=`@DIFF_Q@ testPolarization4.out testPolarization5.out`
+  ;;
+*)
+if [ "@HEPMC_DEFAULT_MOM_UNIT@" = "MEV" ];then
+  cmd1=`sed 's/MEV/GEV/g' testPolarization.cout | @DIFF_Q@ - @srcdir@/testPolarization.output`
+else
+  cmd1=`@DIFF_Q@ testPolarization.cout @srcdir@/testPolarization.output`
+fi
+  cmd2=`@DIFF_Q@ testPolarization4.out testPolarization5.out`
+  cmd3=`@DIFF_Q@ testPolarization1.dat testPolarization2.dat`
+esac
+
+if [ -n "$cmd1" ]
+then
+  echo $cmd1
+  exit 1;
+fi
+
+if [ -n "$cmd2" ]
+then
+  echo $cmd2
+  exit 1;
+fi
+
+if [ -z "$cmd3" ]
+then
+  echo "we expect testPolarization1.dat testPolarization2.dat to differ"
+  exit 1;
+fi
+
+exit 0;
