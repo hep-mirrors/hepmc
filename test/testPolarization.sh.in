@@ -18,32 +18,13 @@ fi
 OS=`uname`
 case "$OS" in
 CYGWIN*)
-if [ "@HEPMC_DEFAULT_MOM_UNIT@" = "MEV" ];then
-  cmd1=`sed 's/e+0/e+/g'  testPolarization.cout  | \
-     sed 's/e-0/e-/g'  -  | sed 's/MEV/GEV/g' - | \
-	@DIFF_Q@ - @srcdir@/testPolarization.output`
-else
-  cmd1=`sed 's/e+0/e+/g'  testPolarization.cout  | \
-     sed 's/e-0/e-/g'  -  | \
-	@DIFF_Q@ - @srcdir@/testPolarization.output`
-fi
   cmd2=`@DIFF_Q@ testPolarization4.out testPolarization5.out`
+  cmd3=`@DIFF_Q@ testPolarization1.dat testPolarization2.dat`
   ;;
 *)
-if [ "@HEPMC_DEFAULT_MOM_UNIT@" = "MEV" ];then
-  cmd1=`sed 's/MEV/GEV/g' testPolarization.cout | @DIFF_Q@ - @srcdir@/testPolarization.output`
-else
-  cmd1=`@DIFF_Q@ testPolarization.cout @srcdir@/testPolarization.output`
-fi
   cmd2=`@DIFF_Q@ testPolarization4.out testPolarization5.out`
   cmd3=`@DIFF_Q@ testPolarization1.dat testPolarization2.dat`
 esac
-
-if [ -n "$cmd1" ]
-then
-  echo $cmd1
-  exit 1;
-fi
 
 if [ -n "$cmd2" ]
 then

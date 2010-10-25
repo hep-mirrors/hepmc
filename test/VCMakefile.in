@@ -207,7 +207,6 @@ EXTRA_DIST = testIOGenEvent.input \
 	     testHepMCIteration.dat \
 	     testMass1.dat \
 	     testFlow.output \
-	     testPolarization.output \
 	     testStreamIOVarious.dat
 
 

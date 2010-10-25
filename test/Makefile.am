@@ -39,7 +39,6 @@ EXTRA_DIST = testIOGenEvent.input \
              testHepMCVarious.input \
 	     testCrossSection.output \
 	     testFlow.output \
-	     testPolarization.output \
              testHepMC.output \
 	     testHepMCParticle.output \
              testPrintBug.output \
