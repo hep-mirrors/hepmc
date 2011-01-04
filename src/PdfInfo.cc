@@ -75,9 +75,8 @@ std::istream & operator >> (std::istream & is, PdfInfo * pdf)
     if ( firstc != "F" ) {
 	std::cerr << "PdfInfo input stream invalid line type: " 
 	          << firstc << std::endl;
-	std::cerr << "PdfInfo input stream setting badbit." << std::endl;
-	is.clear(std::ios::badbit); 
-	return is;
+	// this is non-recoverable, so throw here 
+	throw IO_Exception("PdfInfo input stream encounterd invalid data");
     } 
     // read values into temp variables, then create a new PdfInfo object
     int id1 =0, id2 =0, pdf_id1=0, pdf_id2=0;

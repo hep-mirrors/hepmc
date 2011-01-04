@@ -206,6 +206,7 @@ void read_variousFormats(std::ostream & os)
 	              << " " << HepMC::Units::name( evt.momentum_unit() ) << std::endl;
         }
     }
+    std::cout << "testSteamIO: the HeavyIon and PdfInfo input stream errors are intentional" << std::endl;
     HepMC::write_HepMC_IO_block_end( ascii_out );
     //........................................PRINT RESULT
     os << icount << " valid events processed.  " ;

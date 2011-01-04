@@ -86,9 +86,8 @@ std::istream & operator >> (std::istream & is, HeavyIon * ion)
     if( firstc != "H" ) { 
 	std::cerr << "HeavyIon input stream invalid line type: " 
 	          << firstc << std::endl;
-	std::cerr << "HeavyIon input stream setting badbit." << std::endl;
-	is.clear(std::ios::badbit); 
-	return is;
+	// The most likely problem is that we have found a HepMC block line
+	throw IO_Exception("HeavyIon input stream encounterd invalid data");
     } 
     // read values into temp variables, then create a new HeavyIon object
     int nh =0, np =0, nt =0, nc =0, 

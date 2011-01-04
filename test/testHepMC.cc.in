@@ -188,6 +188,7 @@ void read_variousFormats(std::ostream & os)
 	delete evt;
 	ascii_in >> evt;
     }
+    std::cout << "testHepMC: the HeavyIon and PdfInfo input stream errors are intentional" << std::endl;
     //........................................PRINT RESULT
     os << icount << " events processed. Finished." << std::endl;
 }

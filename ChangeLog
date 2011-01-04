@@ -1,3 +1,9 @@
+2011-01-04  Lynn Garren
+
+      * src/HeavyIon.cc, src/PdfInfo.cc: throw if there is an invalid line type
+      * test/testHepMC.cc.in, test/testStreamIO.cc.in, test/testHepMCVarious.input: 
+        provoke a problem with HeavyIon  (see bug #76527)
+
   --------------------------  HepMC-2.06.03  --------------------------
 2010-10-22  Lynn Garren
 

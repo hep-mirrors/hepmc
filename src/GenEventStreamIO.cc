@@ -240,7 +240,7 @@ std::istream& GenEvent::read( std::istream& is )
 		}
             } break;
 	    case 'H':
-	    {	// we have a HeavyIon line
+	    {	// we have a HeavyIon line OR an unexpected HepMC... line
 		if( info.io_type() == gen || info.io_type() == extascii ) {
 		    // get HeavyIon
 		    HeavyIon ion;

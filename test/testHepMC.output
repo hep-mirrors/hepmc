@@ -22,7 +22,9 @@ INPUT ERROR: input stream encountered invalid data
 read_nan: Processing Event Number 8 its # 1016
 read_nan: Processing Event Number 9 its # 1
 read_nan: Processing Event Number 10 its # 39
-10 events processed and 5 events ignored. Finished.
+INPUT ERROR: input stream encountered invalid data
+INPUT ERROR: input stream encountered invalid data, stream is now corrupt
+10 events processed and 7 events ignored. Finished.
 End NaN test 
 ---------------------------------------- 
  Cross Section: 0.003326 +/- 0.0001
