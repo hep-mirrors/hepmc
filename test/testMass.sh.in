@@ -7,23 +7,17 @@
 OS=`uname`
 case "$OS" in
 CYGWIN*)
-if [ "@HEPMC_DEFAULT_MOM_UNIT@" = "MEV" ];then
   cmd1=`sed 's/e-0/e-/g' testMass1.out | \
         sed 's/e+0/e+/g' - | sed 's/MEV/GEV/g' - | \
+	sed 's/@HEPMC_DEFAULT_MOM_UNIT@/GEV/g' - | \
+        sed 's/@HEPMC_DEFAULT_LEN_UNIT@/MM/g' - | \
          @DIFF_Q@ - @srcdir@/testMass1.dat`
-else
-  cmd1=`sed 's/e-0/e-/g' testMass1.out | \
-        sed 's/e+0/e+/g' - | \
-         @DIFF_Q@ - @srcdir@/testMass1.dat`
-fi
   cmd2=`@DIFF_Q@ testMass2.out testMass1.out`
   ;;
 *)
-if [ "@HEPMC_DEFAULT_MOM_UNIT@" = "MEV" ];then
-  cmd1=`sed 's/MEV/GEV/g' testMass1.out | @DIFF_Q@ - @srcdir@/testMass1.dat`
-else
-  cmd1=`@DIFF_Q@ testMass1.out @srcdir@/testMass1.dat`
-fi
+  cmd1=`sed 's/@HEPMC_DEFAULT_MOM_UNIT@/GEV/g' testMass1.out | \
+        sed 's/@HEPMC_DEFAULT_LEN_UNIT@/MM/g' - | \
+        @DIFF_Q@ - @srcdir@/testMass1.dat`
   cmd2=`@DIFF_Q@ testMass2.out testMass1.out`
 esac
 
