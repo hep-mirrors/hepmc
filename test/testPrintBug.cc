@@ -12,6 +12,7 @@ int main()
   HepMC::GenEvent* p_event;
   
   p_event = new HepMC::GenEvent();
+  p_event->use_units(HepMC::Units::GEV, HepMC::Units::MM);
 
   // define an output stream
   std::ofstream os( "testPrintBug.out" );
