@@ -64,6 +64,7 @@ int main() {
     // First create the event container, with Signal Process 20, event number 1
     //
     HepMC::GenEvent* evt = new HepMC::GenEvent( 20, 1 );
+    evt->use_units(HepMC::Units::GEV, HepMC::Units::MM);
     //
     // create vertex 1 and vertex 2, together with their inparticles
     HepMC::GenVertex* v1 = new HepMC::GenVertex();
