@@ -1,3 +1,9 @@
+2011-04-15  Lynn Garren
+
+      * test/testFlow.cc, test/testPrintBug.cc: define units
+      * test/*.sh.in: make sure comparisons work for allowed
+        momentum and length combinations
+
   --------------------------  HepMC-2.06.04  --------------------------
 2011-01-04  Lynn Garren
 
