@@ -14,24 +14,24 @@ OS=`uname`
 case "$OS" in
 CYGWIN*)
   cmd1=`sed 's/e-0/e-/g' testStreamIO.out | \
-        sed 's/e+0/e+/g' - | \
-        sed 's/@HEPMC_DEFAULT_MOM_UNIT@/GEV/g' - | \
-        sed 's/@HEPMC_DEFAULT_LEN_UNIT@/MM/g' - | \
+        sed 's/e+0/e+/g' | \
+        sed 's/@HEPMC_DEFAULT_MOM_UNIT@/GEV/g' | \
+        sed 's/@HEPMC_DEFAULT_LEN_UNIT@/MM/g' | \
          @DIFF_Q@ - @srcdir@/testHepMC.dat`
   cmd2=`sed 's/e-0/e-/g' testStreamIO2.out | \
-        sed 's/e+0/e+/g' - | \
-        sed 's/@HEPMC_DEFAULT_MOM_UNIT@/GEV/g' - | \
-        sed 's/@HEPMC_DEFAULT_LEN_UNIT@/MM/g' - | \
+        sed 's/e+0/e+/g' | \
+        sed 's/@HEPMC_DEFAULT_MOM_UNIT@/GEV/g' | \
+        sed 's/@HEPMC_DEFAULT_LEN_UNIT@/MM/g' | \
          @DIFF_Q@ - @srcdir@/testHepMC.dat`
   cmd5=`sed 's/e-0/e-/g' testStreamIO3.out | \
-        sed 's/e+0/e+/g' - | \
-        sed 's/@HEPMC_DEFAULT_MOM_UNIT@/GEV/g' - | \
-        sed 's/@HEPMC_DEFAULT_LEN_UNIT@/MM/g' - | \
+        sed 's/e+0/e+/g' | \
+        sed 's/@HEPMC_DEFAULT_MOM_UNIT@/GEV/g' | \
+        sed 's/@HEPMC_DEFAULT_LEN_UNIT@/MM/g' | \
          @DIFF_Q@ - @srcdir@/testHepMC.dat`
   cmd6=`sed 's/e-0/e-/g' testStreamIO4.out | \
-        sed 's/e+0/e+/g' - | \
-        sed 's/@HEPMC_DEFAULT_MOM_UNIT@/GEV/g' - | \
-        sed 's/@HEPMC_DEFAULT_LEN_UNIT@/MM/g' - | \
+        sed 's/e+0/e+/g' | \
+        sed 's/@HEPMC_DEFAULT_MOM_UNIT@/GEV/g' | \
+        sed 's/@HEPMC_DEFAULT_LEN_UNIT@/MM/g' | \
          @DIFF_Q@ - @srcdir@/testHepMC.dat`
 if [ "@HEPMC_DEFAULT_MOM_UNIT@" = "GEV" ];then
   if [ "@HEPMC_DEFAULT_LEN_UNIT@" = "MM" ];then
@@ -46,16 +46,16 @@ fi
 Darwin*)
   # MacOSX fix
   cmd1=`sed 's/@HEPMC_DEFAULT_MOM_UNIT@/GEV/g' testStreamIO.out | \
-        sed 's/@HEPMC_DEFAULT_LEN_UNIT@/MM/g' - | \
+        sed 's/@HEPMC_DEFAULT_LEN_UNIT@/MM/g' | \
         @DIFF_Q@ - @srcdir@/testHepMC.dat`
   cmd2=`sed 's/@HEPMC_DEFAULT_MOM_UNIT@/GEV/g' testStreamIO2.out | \
-        sed 's/@HEPMC_DEFAULT_LEN_UNIT@/MM/g' - | \
+        sed 's/@HEPMC_DEFAULT_LEN_UNIT@/MM/g' | \
         @DIFF_Q@ - @srcdir@/testHepMC.dat`
   cmd5=`sed 's/@HEPMC_DEFAULT_MOM_UNIT@/GEV/g' testStreamIO3.out | \
-        sed 's/@HEPMC_DEFAULT_LEN_UNIT@/MM/g' - | \
+        sed 's/@HEPMC_DEFAULT_LEN_UNIT@/MM/g' | \
         @DIFF_Q@ - @srcdir@/testHepMC.dat`
   cmd6=`sed 's/@HEPMC_DEFAULT_MOM_UNIT@/GEV/g' testStreamIO4.out | \
-        sed 's/@HEPMC_DEFAULT_LEN_UNIT@/MM/g' - | \
+        sed 's/@HEPMC_DEFAULT_LEN_UNIT@/MM/g' | \
         @DIFF_Q@ - @srcdir@/testHepMC.dat`
 if [ "@HEPMC_DEFAULT_MOM_UNIT@" = "GEV" ];then
   if [ "@HEPMC_DEFAULT_LEN_UNIT@" = "MM" ];then
@@ -69,16 +69,16 @@ fi
   ;;
 *)
   cmd1=`sed 's/@HEPMC_DEFAULT_MOM_UNIT@/GEV/g' testStreamIO.out | \
-        sed 's/@HEPMC_DEFAULT_LEN_UNIT@/MM/g' - | \
+        sed 's/@HEPMC_DEFAULT_LEN_UNIT@/MM/g' | \
         @DIFF_Q@ - @srcdir@/testHepMC.dat`
   cmd2=`sed 's/@HEPMC_DEFAULT_MOM_UNIT@/GEV/g' testStreamIO2.out | \
-        sed 's/@HEPMC_DEFAULT_LEN_UNIT@/MM/g' - | \
+        sed 's/@HEPMC_DEFAULT_LEN_UNIT@/MM/g' | \
         @DIFF_Q@ - @srcdir@/testHepMC.dat`
   cmd5=`sed 's/@HEPMC_DEFAULT_MOM_UNIT@/GEV/g' testStreamIO3.out | \
-        sed 's/@HEPMC_DEFAULT_LEN_UNIT@/MM/g' - | \
+        sed 's/@HEPMC_DEFAULT_LEN_UNIT@/MM/g' | \
         @DIFF_Q@ - @srcdir@/testHepMC.dat`
   cmd6=`sed 's/@HEPMC_DEFAULT_MOM_UNIT@/GEV/g' testStreamIO4.out | \
-        sed 's/@HEPMC_DEFAULT_LEN_UNIT@/MM/g' - | \
+        sed 's/@HEPMC_DEFAULT_LEN_UNIT@/MM/g' | \
         @DIFF_Q@ - @srcdir@/testHepMC.dat`
 if [ "@HEPMC_DEFAULT_MOM_UNIT@" = "GEV" ];then
   if [ "@HEPMC_DEFAULT_LEN_UNIT@" = "MM" ];then

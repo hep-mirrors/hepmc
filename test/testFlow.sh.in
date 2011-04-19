@@ -19,7 +19,7 @@ OS=`uname`
 case "$OS" in
 CYGWIN*)
   cmd1=`sed 's/e+0/e+/g'  testFlow.out  | \
-     sed 's/e-0/e-/g'  -  | \
+     sed 's/e-0/e-/g' | \
 	@DIFF_Q@ - @srcdir@/testFlow.output`
   cmd2=`@DIFF_Q@ testFlow.out4 testFlow.out5`
   ;;

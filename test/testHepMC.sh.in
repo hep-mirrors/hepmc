@@ -19,39 +19,39 @@ OS=`uname`
 case "$OS" in
 CYGWIN*)
   cmd1=`sed 's/e-0/e-/g' testHepMC.out | \
-        sed 's/e+0/e+/g' - | \
-        sed 's/@HEPMC_DEFAULT_MOM_UNIT@/GEV/g' - | \
-        sed 's/@HEPMC_DEFAULT_LEN_UNIT@/MM/g' - | \
+        sed 's/e+0/e+/g' | \
+        sed 's/@HEPMC_DEFAULT_MOM_UNIT@/GEV/g' | \
+        sed 's/@HEPMC_DEFAULT_LEN_UNIT@/MM/g' | \
         @DIFF_Q@ - @srcdir@/testHepMC.dat`
   cmd3=`sed 's/e-0/e-/g' testCrossSection.out | \
-        sed 's/e+0/e+/g' - | \
-        sed 's/@HEPMC_DEFAULT_MOM_UNIT@/GEV/g' - | \
-        sed 's/@HEPMC_DEFAULT_LEN_UNIT@/MM/g' - | \
+        sed 's/e+0/e+/g' | \
+        sed 's/@HEPMC_DEFAULT_MOM_UNIT@/GEV/g' | \
+        sed 's/@HEPMC_DEFAULT_LEN_UNIT@/MM/g' | \
         @DIFF_Q@ - @srcdir@/testCrossSection.dat`
   cmd5=`sed 's/e-0/e-/g' testCrossSection.cout | \
-        sed 's/e+0/e+/g' - | \
-        sed 's/@HEPMC_DEFAULT_MOM_UNIT@/GEV/g' - | \
-        sed 's/@HEPMC_DEFAULT_LEN_UNIT@/MM/g' - | \
+        sed 's/e+0/e+/g' | \
+        sed 's/@HEPMC_DEFAULT_MOM_UNIT@/GEV/g' | \
+        sed 's/@HEPMC_DEFAULT_LEN_UNIT@/MM/g' | \
         @DIFF_Q@ - @srcdir@/testCrossSection.output`
   cmd6=`sed 's/e-0/e-/g' testWithWeight.out | \
-        sed 's/e+0/e+/g' - | \
-        sed 's/@HEPMC_DEFAULT_MOM_UNIT@/GEV/g' - | \
-        sed 's/@HEPMC_DEFAULT_LEN_UNIT@/MM/g' - | \
+        sed 's/e+0/e+/g' | \
+        sed 's/@HEPMC_DEFAULT_MOM_UNIT@/GEV/g' | \
+        sed 's/@HEPMC_DEFAULT_LEN_UNIT@/MM/g' | \
         @DIFF_Q@ - @srcdir@/testWithWeight.dat`
   cmd8=`sed 's/e-0/e-/g' testWithWeight.cout | \
-        sed 's/e+0/e+/g' - | \
-        sed 's/@HEPMC_DEFAULT_MOM_UNIT@/GEV/g' - | \
-        sed 's/@HEPMC_DEFAULT_LEN_UNIT@/MM/g' - | \
+        sed 's/e+0/e+/g' | \
+        sed 's/@HEPMC_DEFAULT_MOM_UNIT@/GEV/g' | \
+        sed 's/@HEPMC_DEFAULT_LEN_UNIT@/MM/g' | \
         @DIFF_Q@ - @srcdir@/testWithWeight.output`
 if [ "@HEPMC_DEFAULT_MOM_UNIT@" = "GEV" ];then
   if [ "@HEPMC_DEFAULT_LEN_UNIT@" = "MM" ];then
   cmd9=`sed 's/e-0/e-/g' testHepMCVarious.cout | \
-        sed 's/e+0/e+/g' - | \
+        sed 's/e+0/e+/g' | \
         @DIFF_Q@ - @srcdir@/testHepMCVarious.output`
   fi
 fi
   cmd=`sed 's/e-0/e-/g' testHepMC.cout | \
-        sed 's/e+0/e+/g' - | \
+        sed 's/e+0/e+/g' | \
         @DIFF_Q@ - @srcdir@/testHepMC.output`
   #don't compare these on Windows (hopelessly different default output)
   cmd2=
@@ -61,20 +61,20 @@ fi
 Darwin*)
   # MacOSX fix
   cmd1=`sed 's/@HEPMC_DEFAULT_MOM_UNIT@/GEV/g' testHepMC.out | \
-        sed 's/@HEPMC_DEFAULT_LEN_UNIT@/MM/g' - | \
+        sed 's/@HEPMC_DEFAULT_LEN_UNIT@/MM/g' | \
         @DIFF_Q@ - @srcdir@/testHepMC.dat`
   cmd3=`sed 's/@HEPMC_DEFAULT_MOM_UNIT@/GEV/g' testCrossSection.out | \
-        sed 's/@HEPMC_DEFAULT_LEN_UNIT@/MM/g' - | \
+        sed 's/@HEPMC_DEFAULT_LEN_UNIT@/MM/g' | \
         @DIFF_Q@ - @srcdir@/testCrossSection.dat`
   cmd5=`sed 's/e-00/e+00/g' testCrossSection.cout | \
-        sed 's/@HEPMC_DEFAULT_MOM_UNIT@/GEV/g' - | \
-        sed 's/@HEPMC_DEFAULT_LEN_UNIT@/MM/g' - | \
+        sed 's/@HEPMC_DEFAULT_MOM_UNIT@/GEV/g' | \
+        sed 's/@HEPMC_DEFAULT_LEN_UNIT@/MM/g' | \
         @DIFF_Q@ - @srcdir@/testCrossSection.output`
   cmd6=`sed 's/@HEPMC_DEFAULT_MOM_UNIT@/GEV/g' testWithWeight.out | \
-        sed 's/@HEPMC_DEFAULT_LEN_UNIT@/MM/g' - | \
+        sed 's/@HEPMC_DEFAULT_LEN_UNIT@/MM/g' | \
         @DIFF_Q@ - @srcdir@/testWithWeight.dat`
-  cmd8=`sed 's/@HEPMC_DEFAULT_MOM_UNIT@/GEV/g' - | \
-        sed 's/@HEPMC_DEFAULT_LEN_UNIT@/MM/g' - | \
+  cmd8=`sed 's/@HEPMC_DEFAULT_MOM_UNIT@/GEV/g' | \
+        sed 's/@HEPMC_DEFAULT_LEN_UNIT@/MM/g' | \
         @DIFF_Q@ - @srcdir@/testWithWeight.output`
 if [ "@HEPMC_DEFAULT_MOM_UNIT@" = "GEV" ];then
   if [ "@HEPMC_DEFAULT_LEN_UNIT@" = "MM" ];then
@@ -90,21 +90,21 @@ fi
 *)
 
   cmd1=`sed 's/@HEPMC_DEFAULT_MOM_UNIT@/GEV/g' testHepMC.out | \
-        sed 's/@HEPMC_DEFAULT_LEN_UNIT@/MM/g' - | \
+        sed 's/@HEPMC_DEFAULT_LEN_UNIT@/MM/g' | \
         @DIFF_Q@ - @srcdir@/testHepMC.dat`
   cmd3=`sed 's/@HEPMC_DEFAULT_MOM_UNIT@/GEV/g' testCrossSection.out | \
-        sed 's/@HEPMC_DEFAULT_LEN_UNIT@/MM/g' - | \
+        sed 's/@HEPMC_DEFAULT_LEN_UNIT@/MM/g' | \
         @DIFF_Q@ - @srcdir@/testCrossSection.dat`
   cmd5=`sed 's/e-00/e+00/g' testCrossSection.cout | \
-        sed 's/@HEPMC_DEFAULT_MOM_UNIT@/GEV/g' - | \
-        sed 's/@HEPMC_DEFAULT_LEN_UNIT@/MM/g' - | \
+        sed 's/@HEPMC_DEFAULT_MOM_UNIT@/GEV/g' | \
+        sed 's/@HEPMC_DEFAULT_LEN_UNIT@/MM/g' | \
         @DIFF_Q@ - @srcdir@/testCrossSection.output`
   cmd6=`sed 's/@HEPMC_DEFAULT_MOM_UNIT@/GEV/g' testWithWeight.out | \
-        sed 's/@HEPMC_DEFAULT_LEN_UNIT@/MM/g' - | \
+        sed 's/@HEPMC_DEFAULT_LEN_UNIT@/MM/g' | \
         @DIFF_Q@ - @srcdir@/testWithWeight.dat`
   cmd8=`sed 's/e-00/e+00/g' testWithWeight.cout | \
-        sed 's/@HEPMC_DEFAULT_MOM_UNIT@/GEV/g' - | \
-        sed 's/@HEPMC_DEFAULT_LEN_UNIT@/MM/g' - | \
+        sed 's/@HEPMC_DEFAULT_MOM_UNIT@/GEV/g' | \
+        sed 's/@HEPMC_DEFAULT_LEN_UNIT@/MM/g' | \
         @DIFF_Q@ - @srcdir@/testWithWeight.output`
 if [ "@HEPMC_DEFAULT_MOM_UNIT@" = "GEV" ];then
   if [ "@HEPMC_DEFAULT_LEN_UNIT@" = "MM" ];then
