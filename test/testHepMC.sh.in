@@ -73,7 +73,7 @@ Darwin*)
   cmd6=`sed 's/@HEPMC_DEFAULT_MOM_UNIT@/GEV/g' testWithWeight.out | \
         sed 's/@HEPMC_DEFAULT_LEN_UNIT@/MM/g' | \
         @DIFF_Q@ - @srcdir@/testWithWeight.dat`
-  cmd8=`sed 's/@HEPMC_DEFAULT_MOM_UNIT@/GEV/g' | \
+  cmd8=`sed 's/@HEPMC_DEFAULT_MOM_UNIT@/GEV/g' testWithWeight.cout | \
         sed 's/@HEPMC_DEFAULT_LEN_UNIT@/MM/g' | \
         @DIFF_Q@ - @srcdir@/testWithWeight.output`
 if [ "@HEPMC_DEFAULT_MOM_UNIT@" = "GEV" ];then
