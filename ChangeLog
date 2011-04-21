@@ -1,4 +1,8 @@
   --------------------------  HepMC-2.06.05  --------------------------
+2011-04-21  Lynn Garren
+
+      * HepMC/GenVertex.h: add #include <cstddef> for bug #80400
+
 2011-04-15  Lynn Garren
 
       * test/testFlow.cc, test/testPrintBug.cc: define units

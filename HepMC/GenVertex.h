@@ -29,6 +29,7 @@
 #include <vector>
 #include <set>
 #include <algorithm>
+#include <cstddef>
 
 namespace HepMC {
 
