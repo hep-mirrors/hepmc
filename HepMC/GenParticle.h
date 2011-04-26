@@ -181,6 +181,8 @@ namespace HepMC {
 	void   set_production_vertex_( GenVertex* productionvertex = 0);
         /// set decay vertex - for internal use only
 	void   set_end_vertex_( GenVertex* decayvertex = 0 );
+        /// set parent event - for internal use only
+	void   set_parent_event_( );
 	void   set_barcode_( int the_bar_code ); //!< for use by GenEvent only
 
         /// scale the momentum vector and generated mass 
@@ -188,15 +190,20 @@ namespace HepMC {
 	void convert_momentum( const double& );
 
     private:
+	// persistent data
 	FourVector       m_momentum;          // momentum vector
 	int              m_pdg_id;            // id according to PDG convention
 	int              m_status;            // As defined for HEPEVT
 	Flow             m_flow;
 	Polarization     m_polarization;
-	GenVertex*       m_production_vertex; // null if vacuum or beam
-	GenVertex*       m_end_vertex;        // null if not-decayed
+	size_t           m_production_vertex_index; // -1 if vacuum or beam
+	size_t           m_end_vertex_index;        // -1 if not-decayed
 	int              m_barcode;           // unique identifier in the event
         double           m_generated_mass;    // mass of this particle when it was generated
+	// transient data
+	GenVertex*       m_production_vertex; // null if vacuum or beam
+	GenVertex*       m_end_vertex;        // null if not-decayed
+	GenEvent*        m_parent_event;
 
 	//static unsigned int       s_counter;
     };  

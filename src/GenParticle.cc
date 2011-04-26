@@ -13,8 +13,10 @@ namespace HepMC {
 
     GenParticle::GenParticle( void ) :
 	m_momentum(0), m_pdg_id(0), m_status(0), m_flow(this),
-        m_polarization(0), m_production_vertex(0), m_end_vertex(0),
-        m_barcode(0), m_generated_mass(0.)
+        m_polarization(0), 
+	m_production_vertex_index(0), m_end_vertex_index(0),
+        m_barcode(0), m_generated_mass(0.),
+	m_production_vertex(0), m_end_vertex(0), m_parent_event(0)
     {}
     //{
 	//s_counter++;
@@ -25,8 +27,10 @@ namespace HepMC {
 			const Flow& itsflow,
 			const Polarization& polar ) : 
 	m_momentum(momentum), m_pdg_id(pdg_id), m_status(status), m_flow(this),
-	m_polarization(polar), m_production_vertex(0), m_end_vertex(0),
-        m_barcode(0), m_generated_mass(momentum.m())
+	m_polarization(polar), 
+	m_production_vertex_index(0), m_end_vertex_index(0),
+        m_barcode(0), m_generated_mass(momentum.m()),
+	m_production_vertex(0), m_end_vertex(0), m_parent_event(0)
     {
 	// Establishing *this as the owner of m_flow is done above,
 	// then we set it equal to the other flow pattern (subtle)
@@ -40,10 +44,13 @@ namespace HepMC {
 	m_status( inparticle.status() ), 
 	m_flow(inparticle.flow()),
 	m_polarization( inparticle.polarization() ),
-	m_production_vertex(0), 
-	m_end_vertex(0), 
+	m_production_vertex_index(0), 
+	m_end_vertex_index(0), 
 	m_barcode(0), 
-        m_generated_mass( inparticle.generated_mass() )
+        m_generated_mass( inparticle.generated_mass() ),
+	m_production_vertex(0), 
+	m_end_vertex(0),
+	m_parent_event(0)
     {
 	/// Shallow copy: does not copy the vertex pointers
 	/// (note - impossible to copy vertex pointers which having the vertex
@@ -68,10 +75,13 @@ namespace HepMC {
 	std::swap( m_status, other.m_status );
 	m_flow.swap( other.m_flow );
 	m_polarization.swap( other.m_polarization );
-	std::swap( m_production_vertex, other.m_production_vertex );
-	std::swap( m_end_vertex, other.m_end_vertex );
+	std::swap( m_production_vertex_index, other.m_production_vertex_index );
+	std::swap( m_end_vertex_index, other.m_end_vertex_index );
 	std::swap( m_barcode, other.m_barcode );
 	std::swap( m_generated_mass, other.m_generated_mass );
+	std::swap( m_production_vertex, other.m_production_vertex );
+	std::swap( m_end_vertex, other.m_end_vertex );
+	std::swap( m_parent_event, other.m_parent_event );
     }
 
     GenParticle& GenParticle::operator=( const GenParticle& inparticle ) {
@@ -117,13 +127,19 @@ namespace HepMC {
 	if ( end_vertex() && end_vertex()->barcode()!=0 ) {
 	    ostr << " EV:" << end_vertex()->barcode();
 	} else ostr << " EV:" << end_vertex();
-	ostr << " Pol:" << polarization() << " F:" << m_flow << std::endl;
-    }
+	ostr << " Pol:" << polarization() << " F:" << m_flow ;
+	ostr << std::endl;
+   }
 
     GenEvent* GenParticle::parent_event() const {
 	if ( production_vertex() ) return production_vertex()->parent_event();
 	if ( end_vertex() ) return end_vertex()->parent_event();
 	return 0;
+    }
+
+    void GenParticle::set_parent_event_() {
+	if ( end_vertex() ) m_parent_event=end_vertex()->parent_event();
+	if ( production_vertex() ) m_parent_event=production_vertex()->parent_event();
     }
 
     void GenParticle::set_production_vertex_( GenVertex* prodvertex )
@@ -137,6 +153,7 @@ namespace HepMC {
 	    if ( its_new_event ) its_new_event->set_barcode( this, barcode() );
 	    if ( its_orig_event ) its_orig_event->remove_barcode( this );
 	}
+	set_parent_event_();
     }
 
     void GenParticle::set_end_vertex_( GenVertex* decayvertex ) 
@@ -148,6 +165,7 @@ namespace HepMC {
 	    if ( its_new_event ) its_new_event->set_barcode( this, barcode() );
 	    if ( its_orig_event ) its_orig_event->remove_barcode( this );
 	}
+	set_parent_event_();
     }	
 
     bool GenParticle::suggest_barcode( int the_bar_code )
