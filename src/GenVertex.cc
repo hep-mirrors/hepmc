@@ -13,7 +13,8 @@ namespace HepMC {
 
     GenVertex::GenVertex( const FourVector& position,
 			  int id, const WeightContainer& weights ) 
-	: m_position(position), m_id(id), m_weights(weights), m_event(0),
+	: m_position(position), m_id(id), 
+	  m_weights(weights), m_event(0),
 	  m_barcode(0)
     {}
     //{
@@ -22,12 +23,14 @@ namespace HepMC {
 
     GenVertex::GenVertex( const GenVertex& invertex ) 
     : m_position( invertex.position() ),
-      m_particles_in(),
-      m_particles_out(),
+      m_particles_in_index(), 
+      m_particles_out_index(),
       m_id( invertex.id() ),
       m_weights( invertex.weights() ),
-      m_event(0),
-      m_barcode(0) 
+      m_barcode(0),
+      m_particles_in(),
+      m_particles_out(),
+      m_event(0)
     {
 	/// Shallow copy: does not copy the FULL list of particle pointers.
 	/// Creates a copy of  - invertex

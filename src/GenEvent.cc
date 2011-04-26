@@ -32,18 +32,20 @@ namespace HepMC {
 	m_event_scale(-1), 
 	m_alphaQCD(-1), 
 	m_alphaQED(-1),
-	m_signal_process_vertex(signal_vertex), 
-	m_beam_particle_1(0),
-	m_beam_particle_2(0),
 	m_weights(weights),
 	m_random_states(random_states),
-	m_vertex_barcodes(),
-	m_particle_barcodes(),
+	m_vertices(),
+	m_particles(),
 	m_cross_section(0), 
 	m_heavy_ion(0), 
 	m_pdf_info(0),
 	m_momentum_unit(mom),
-	m_position_unit(len)
+	m_position_unit(len),
+	m_signal_process_vertex(signal_vertex), 
+	m_beam_particle_1(0),
+	m_beam_particle_2(0),
+	m_vertex_barcodes(),
+	m_particle_barcodes()
     {
         /// This constructor only allows null pointers to HeavyIon and PdfInfo
 	///
@@ -66,18 +68,20 @@ namespace HepMC {
 	m_event_scale(-1), 
 	m_alphaQCD(-1), 
 	m_alphaQED(-1),
-	m_signal_process_vertex(signal_vertex), 
-	m_beam_particle_1(0),
-	m_beam_particle_2(0),
 	m_weights(weights),
 	m_random_states(random_states), 
-	m_vertex_barcodes(),
-	m_particle_barcodes(),
+	m_vertices(),
+	m_particles(),
 	m_cross_section(0), 
 	m_heavy_ion( new HeavyIon(ion) ), 
 	m_pdf_info( new PdfInfo(pdf) ),
 	m_momentum_unit(mom),
-	m_position_unit(len)
+	m_position_unit(len),
+	m_signal_process_vertex(signal_vertex), 
+	m_beam_particle_1(0),
+	m_beam_particle_2(0),
+	m_vertex_barcodes(),
+	m_particle_barcodes()
     {
         /// GenEvent makes its own copy of HeavyIon and PdfInfo
 	///
@@ -98,18 +102,20 @@ namespace HepMC {
 	m_event_scale(-1), 
 	m_alphaQCD(-1), 
 	m_alphaQED(-1),
-	m_signal_process_vertex(signal_vertex), 
-	m_beam_particle_1(0),
-	m_beam_particle_2(0),
 	m_weights(weights),
 	m_random_states(random_states),
-	m_vertex_barcodes(),
-	m_particle_barcodes(),
+	m_vertices(),
+	m_particles(),
 	m_cross_section(0), 
 	m_heavy_ion(0), 
 	m_pdf_info(0),
 	m_momentum_unit(mom),
-	m_position_unit(len)
+	m_position_unit(len),
+	m_signal_process_vertex(signal_vertex), 
+	m_beam_particle_1(0),
+	m_beam_particle_2(0),
+	m_vertex_barcodes(),
+	m_particle_barcodes()
     {
         /// constructor requiring units - all else is default
         /// This constructor only allows null pointers to HeavyIon and PdfInfo
@@ -133,18 +139,20 @@ namespace HepMC {
 	m_event_scale(-1), 
 	m_alphaQCD(-1), 
 	m_alphaQED(-1),
-	m_signal_process_vertex(signal_vertex), 
-	m_beam_particle_1(0),
-	m_beam_particle_2(0),
 	m_weights(weights),
 	m_random_states(random_states), 
-	m_vertex_barcodes(),
-	m_particle_barcodes(),
+	m_vertices(),
+	m_particles(),
 	m_cross_section(0), 
 	m_heavy_ion( new HeavyIon(ion) ), 
 	m_pdf_info( new PdfInfo(pdf) ),
 	m_momentum_unit(mom),
-	m_position_unit(len)
+	m_position_unit(len),
+	m_signal_process_vertex(signal_vertex), 
+	m_beam_particle_1(0),
+	m_beam_particle_2(0),
+	m_vertex_barcodes(),
+	m_particle_barcodes()
     {
         /// explicit constructor with units first that takes HeavyIon and PdfInfo
         /// GenEvent makes its own copy of HeavyIon and PdfInfo
@@ -160,18 +168,20 @@ namespace HepMC {
 	m_event_scale          ( inevent.event_scale() ),
 	m_alphaQCD             ( inevent.alphaQCD() ),
 	m_alphaQED             ( inevent.alphaQED() ),
-	m_signal_process_vertex( /* inevent.m_signal_process_vertex */ ),
-	m_beam_particle_1      ( /* inevent.m_beam_particle_1 */ ),
-	m_beam_particle_2      ( /* inevent.m_beam_particle_2 */ ),
 	m_weights              ( /* inevent.m_weights */ ),
 	m_random_states        ( /* inevent.m_random_states */ ),
-	m_vertex_barcodes      ( /* inevent.m_vertex_barcodes */ ),
-	m_particle_barcodes    ( /* inevent.m_particle_barcodes */ ),
+	m_vertices             ( /* inevent.m_vertices */ ),
+	m_particles            ( /* inevent.m_particles */ ),
 	m_cross_section        ( inevent.cross_section() ? new GenCrossSection(*inevent.cross_section()) : 0 ),
 	m_heavy_ion            ( inevent.heavy_ion() ? new HeavyIon(*inevent.heavy_ion()) : 0 ),
 	m_pdf_info             ( inevent.pdf_info() ? new PdfInfo(*inevent.pdf_info()) : 0 ),
 	m_momentum_unit        ( inevent.momentum_unit() ),
-	m_position_unit        ( inevent.length_unit() )
+	m_position_unit        ( inevent.length_unit() ),
+	m_signal_process_vertex( /* inevent.m_signal_process_vertex */ ),
+	m_beam_particle_1      ( /* inevent.m_beam_particle_1 */ ),
+	m_beam_particle_2      ( /* inevent.m_beam_particle_2 */ ),
+	m_vertex_barcodes      ( /* inevent.m_vertex_barcodes */ ),
+	m_particle_barcodes    ( /* inevent.m_particle_barcodes */ )
     {
 	/// deep copy - makes a copy of all vertices!
 	//
@@ -232,18 +242,20 @@ namespace HepMC {
 	std::swap(m_event_scale          , other.m_event_scale          );
 	std::swap(m_alphaQCD             , other.m_alphaQCD             );
 	std::swap(m_alphaQED             , other.m_alphaQED             );
-	std::swap(m_signal_process_vertex, other.m_signal_process_vertex);
-	std::swap(m_beam_particle_1      , other.m_beam_particle_1      );
-	std::swap(m_beam_particle_2      , other.m_beam_particle_2      );
 	m_weights.swap(           other.m_weights  );
 	m_random_states.swap(     other.m_random_states  );
-	m_vertex_barcodes.swap(   other.m_vertex_barcodes );
-	m_particle_barcodes.swap( other.m_particle_barcodes );
+	m_vertices.swap(   other.m_vertices );
+	m_particles.swap( other.m_particles );
 	std::swap(m_cross_section        , other.m_cross_section        );
 	std::swap(m_heavy_ion            , other.m_heavy_ion            );
 	std::swap(m_pdf_info             , other.m_pdf_info             );
 	std::swap(m_momentum_unit       , other.m_momentum_unit       );
 	std::swap(m_position_unit       , other.m_position_unit       );
+	std::swap(m_signal_process_vertex, other.m_signal_process_vertex);
+	std::swap(m_beam_particle_1      , other.m_beam_particle_1      );
+	std::swap(m_beam_particle_2      , other.m_beam_particle_2      );
+	m_vertex_barcodes.swap(   other.m_vertex_barcodes );
+	m_particle_barcodes.swap( other.m_particle_barcodes );
 	// must now adjust GenVertex back pointers
 	for ( GenEvent::vertex_const_iterator vthis = vertices_begin();
 	      vthis != vertices_end(); ++vthis ) {

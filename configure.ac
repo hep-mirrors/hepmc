@@ -148,6 +148,13 @@ AC_CONFIG_FILES([Makefile
                  doc/VCMakefile
                  examples/Makefile
                  examples/VCMakefile
+                 examples/GNUmakefile.example
+                 examples/clhep/Makefile
+                 examples/clhep/GNUmakefile.example
+                 examples/herwig/Makefile
+                 examples/herwig/GNUmakefile.example
+                 examples/pythia/Makefile
+                 examples/pythia/GNUmakefile.example
                  fio/Makefile
                  fio/VCMakefile
                  src/Makefile
@@ -159,8 +166,7 @@ AC_CONFIG_FILES([Makefile
                  test/testMass.cc
                  test/testHepMCIteration.cc
                  test/testMultipleCopies.cc
-                 test/testStreamIO.cc
-                 examples/GNUmakefile.example])
+                 test/testStreamIO.cc])
 
 AC_CONFIG_FILES([test/testHepMC.sh], [chmod +x test/testHepMC.sh])
 AC_CONFIG_FILES([test/testFlow.sh], [chmod +x test/testFlow.sh])

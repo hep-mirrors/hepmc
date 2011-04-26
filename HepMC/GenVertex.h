@@ -384,13 +384,17 @@ namespace HepMC {
 	void convert_position( const double& );
 
     private: // GenVertex data members
-	FourVector              m_position;      //4-vec of vertex [mm]
-	std::vector<HepMC::GenParticle*>  m_particles_in;  //all incoming particles
-	std::vector<HepMC::GenParticle*>  m_particles_out; //all outgoing particles
+	// persistent data
+	FourVector           m_position;      //4-vec of vertex [mm]
+	std::vector<size_t>  m_particles_in_index;  //all incoming particles
+	std::vector<size_t>  m_particles_out_index; //all outgoing particles
 	int                  m_id;
 	WeightContainer      m_weights;       // weights for this vtx
-	GenEvent*            m_event;
 	int                  m_barcode;   // unique identifier in the event
+	// transient data
+	std::vector<HepMC::GenParticle*>  m_particles_in;  //all incoming particles
+	std::vector<HepMC::GenParticle*>  m_particles_out; //all outgoing particles
+	GenEvent*            m_event;
 
 	//static unsigned int  s_counter;
     };  

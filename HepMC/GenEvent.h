@@ -605,27 +605,30 @@ namespace HepMC {
         std::istream & process_event_line( std::istream &, int &, int &, int &, int & );
 
     private: // data members
+	// persistent data
 	int                   m_signal_process_id;
 	int                   m_event_number;  
 	int                   m_mpi;        // number of multi paricle interactions
 	double                m_event_scale;// energy scale, see hep-ph/0109068
 	double                m_alphaQCD;   // QCD coupling, see hep-ph/0109068
 	double                m_alphaQED;   // QED coupling, see hep-ph/0109068
-	GenVertex*            m_signal_process_vertex;
-	GenParticle*          m_beam_particle_1;
-	GenParticle*          m_beam_particle_2;
 	WeightContainer       m_weights; // weights for this event first weight
 	                                 // is used by default for hit and miss
-	std::vector<long> m_random_states; // container of rndm num 
-	                                       // generator states
+	std::vector<long> m_random_states; // container of rndm num generator states
 
-	std::map< int,HepMC::GenVertex*,std::greater<int> >   m_vertex_barcodes;
-	std::map< int,HepMC::GenParticle*,std::less<int> >    m_particle_barcodes;
+	std::vector<HepMC::GenVertex>   m_vertices;
+	std::vector<HepMC::GenParticle>    m_particles;
 	GenCrossSection*         m_cross_section; 	      // undefined by default
 	HeavyIon*             m_heavy_ion; 	      // undefined by default
 	PdfInfo*              m_pdf_info; 	      // undefined by default
 	Units::MomentumUnit   m_momentum_unit;    // default value set by configure switch
 	Units::LengthUnit     m_position_unit;    // default value set by configure switch
+	// transient data
+	GenVertex*            m_signal_process_vertex;
+	GenParticle*          m_beam_particle_1;
+	GenParticle*          m_beam_particle_2;
+	std::map< int,HepMC::GenVertex*,std::greater<int> >   m_vertex_barcodes;
+	std::map< int,HepMC::GenParticle*,std::less<int> >    m_particle_barcodes;
 
     };
 
