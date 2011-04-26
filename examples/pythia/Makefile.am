@@ -1,15 +1,16 @@
 # This makefile is used to copy files during the "make install" step
 
-INSTALLDIR = $(pkgdatadir)/examples
-
-SUBDIRS = clhep herwig pythia
-DIST_SUBDIRS =  clhep herwig pythia
+INSTALLDIR = $(pkgdatadir)/examples/pythia
 
 # files to distribute
 EXTRA_DIST = \
-    example_EventSelection.cc \
-    example_UsingIterators.cc \
-    example_UsingIterators.txt
+    example_MyPythia.cc \
+    example_MyPythiaOnlyToHepMC.cc \
+    example_PythiaStreamIO.cc \
+    testPythiaCopies.cc	\
+    initPythia.cc \
+    initpydata.f \
+    PythiaHelper.h
 
 install-data-local:
 	$(mkinstalldirs) $(DESTDIR)$(INSTALLDIR)

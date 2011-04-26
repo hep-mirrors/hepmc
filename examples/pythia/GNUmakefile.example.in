@@ -9,11 +9,14 @@
 # or simply   gmake all     to compile all examples.
 #
 ################################################################################ Define directory paths 
-#    You may have to change variables in this block
+#    You may have to change GENSERdir and/or other variables in this block
 #
   HepMCdir             = @prefix@
   HepMClib             = -L$(HepMCdir)/lib -lHepMC
   HepMCfiolib          = -L$(HepMCdir)/lib -lHepMCfio
+  GENSERdir            = @GENSERdir@
+  Pythia_LIB	= -L$(GENSERdir)/lib -Wl,-rpath -Wl,$(GENSERdir)/lib \
+                  -lpythia6_403 -lpythia6_403_dumm -lpythia6_403_pdfdumm
 
 ################################################################################ Compiler options
 #
@@ -29,12 +32,21 @@ else
 endif
 
 LINK_LIBS     = @LDFLAGS@ 
+UNAME = $(shell uname)
 
-SRCS	        = example_EventSelection.cc	\
-		example_UsingIterators.cc
+initpydata_OBJ= initpydata.o
+pythia_OBJ    = initPythia.o initpydata.o
+SRCS	        = example_MyPythia.cc	\
+		example_MyPythiaOnlyToHepMC.cc	\
+		example_PythiaStreamIO.cc	\
+		testPythiaCopies.cc	\
+		initPythia.cc		\
+		initpydata.f
 HDRS          = $(HepMCdir)/include/HepMC/*.h *.h
-EXAMPLES	= example_EventSelection.exe	\
-		example_UsingIterators.exe
+EXAMPLES	= example_MyPythia.exe	\
+		example_MyPythiaOnlyToHepMC.exe	\
+		example_PythiaStreamIO.exe	\
+		testPythiaCopies.exe
 
 ################################################################################ 
 
@@ -79,17 +91,29 @@ endif
 .SUFFIXES:      .o .cxx .f .exe
 all:	$(EXAMPLES)
 
-example_EventSelection.exe: example_EventSelection.o
+example_MyPythia.exe: $(initpydata_OBJ) $(pythia_OBJ) example_MyPythia.o
 	@echo "Building $@ ..."
-	$(CXX) $(FLAGS) example_EventSelection.o \
-		$(HepMClib) \
-	        $(LINK_LIBS) -o $@
+	$(CXX) $(FLAGS) $(pythia_OBJ) example_MyPythia.o \
+		$(HepMClib) $(HepMCfiolib) \
+	        $(Pythia_LIB) $(LINK_LIBS) -o $@
 
-example_UsingIterators.exe: example_UsingIterators.o
+example_MyPythiaOnlyToHepMC.exe: $(initpydata_OBJ) $(pythia_OBJ) example_MyPythiaOnlyToHepMC.o
 	@echo "Building $@ ..."
-	$(CXX) $(FLAGS) example_UsingIterators.o \
-		$(HepMClib) \
-	        $(LINK_LIBS) -o $@
+	$(CXX) $(FLAGS) $(pythia_OBJ) example_MyPythiaOnlyToHepMC.o \
+		$(HepMClib) $(HepMCfiolib) \
+	        $(Pythia_LIB) $(LINK_LIBS) -o $@
+
+example_PythiaStreamIO.exe: $(initpydata_OBJ) $(pythia_OBJ) example_PythiaStreamIO.o
+	@echo "Building $@ ..."
+	$(CXX) $(FLAGS) $(pythia_OBJ) example_PythiaStreamIO.o \
+		$(HepMClib) $(HepMCfiolib) \
+	        $(Pythia_LIB) $(LINK_LIBS) -o $@
+
+testPythiaCopies.exe: $(initpydata_OBJ) $(pythia_OBJ) testPythiaCopies.o
+	@echo "Building $@ ..."
+	$(CXX) $(FLAGS) $(pythia_OBJ) testPythiaCopies.o \
+		$(HepMClib) $(HepMCfiolib) \
+	        $(Pythia_LIB) $(LINK_LIBS) -o $@
 
 ###############################################################################
 # instructions for building a .o file from a .cxx file

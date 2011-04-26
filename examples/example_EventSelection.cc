@@ -35,10 +35,10 @@ public:
 };
 
 int main() { 
-    // declare an input strategy to read the data produced with the 
-    // example_MyPythia
+    int ierr=0;
+    // declare an input strategy to read the data produced by example_MyPythia
     { // begin scope of ascii_in and ascii_out
-	HepMC::IO_GenEvent ascii_in("example_MyPythia.dat",std::ios::in);
+	HepMC::IO_GenEvent ascii_in("pythia/example_MyPythia.dat",std::ios::in);
 	// declare another IO_GenEvent for writing out the good events
 	HepMC::IO_GenEvent ascii_out("example_EventSelection.dat",std::ios::out);
 	// declare an instance of the event selection predicate
@@ -60,10 +60,14 @@ int main() {
 	    ascii_in >> evt;
 	}
 	//........................................PRINT RESULT
+	if ( icount == 0 ) {
+	    ierr=1;
+	    std::cerr << "ERROR: input file pythia/example_MyPythia.dat not found\n";
+	}
 	std::cout << num_good_events << " out of " << icount 
 		  << " processed events passed the cuts. Finished." << std::endl;
     } // end scope of ascii_in and ascii_out
-    return 0;
+    return ierr;
 }
 
 

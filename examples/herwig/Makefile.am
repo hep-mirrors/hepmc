@@ -1,15 +1,11 @@
 # This makefile is used to copy files during the "make install" step
 
-INSTALLDIR = $(pkgdatadir)/examples
-
-SUBDIRS = clhep herwig pythia
-DIST_SUBDIRS =  clhep herwig pythia
+INSTALLDIR = $(pkgdatadir)/examples/herwig
 
 # files to distribute
 EXTRA_DIST = \
-    example_EventSelection.cc \
-    example_UsingIterators.cc \
-    example_UsingIterators.txt
+    example_MyHerwig.cc \
+    testHerwigCopies.cc
 
 install-data-local:
 	$(mkinstalldirs) $(DESTDIR)$(INSTALLDIR)
