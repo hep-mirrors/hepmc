@@ -603,6 +603,10 @@ namespace HepMC {
         std::istream & read_weight_names( std::istream & );
 	/// read the event header line
         std::istream & process_event_line( std::istream &, int &, int &, int &, int & );
+	/// send all GenVertices to ASCII output
+	std::ostream & write_vertex_list( std::ostream & );
+	/// send all GenParticles to ASCII output
+	std::ostream & write_particle_list( std::ostream & );
 
     private: // data members
 	// persistent data
@@ -616,9 +620,9 @@ namespace HepMC {
 	                                 // is used by default for hit and miss
 	std::vector<long> m_random_states; // container of rndm num generator states
 
-	std::vector<HepMC::GenVertex>   m_vertices;
-	std::vector<HepMC::GenParticle>    m_particles;
-	GenCrossSection*         m_cross_section; 	      // undefined by default
+	std::vector<HepMC::GenVertex*>   m_vertices;
+	std::vector<HepMC::GenParticle*> m_particles;
+	GenCrossSection*      m_cross_section; 	      // undefined by default
 	HeavyIon*             m_heavy_ion; 	      // undefined by default
 	PdfInfo*              m_pdf_info; 	      // undefined by default
 	Units::MomentumUnit   m_momentum_unit;    // default value set by configure switch

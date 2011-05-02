@@ -363,6 +363,9 @@ namespace HepMC {
 	// setting the vertex parent also inserts the vertex into this
 	// event
 	vtx->set_parent_event_( this );
+	// add to m_vertices
+	m_vertices.push_back( vtx );
+	// verify status
 	return ( m_vertex_barcodes.count(vtx->barcode()) ? true : false );
     }
 
@@ -698,6 +701,24 @@ namespace HepMC {
 	   detail::output( os, p->barcode() );
 	}
 
+	return os;
+    }
+
+    std::ostream & GenEvent::write_vertex_list( std::ostream & os )
+    {
+	std::vector<HepMC::GenVertex*>::iterator i;
+        for( i = m_vertices.begin(); i != m_vertices.end(); ++i ) {
+	    write_vertex( os, *i );
+	}
+ 	return os;
+   }
+
+    std::ostream & GenEvent::write_particle_list( std::ostream & os )
+    {
+	std::vector<HepMC::GenParticle*>::const_iterator i;
+        for( i = m_particles.begin(); i != m_particles.end(); ++i ) {
+	    write_particle( os, *i );
+	}
 	return os;
     }
 
