@@ -1,0 +1,78 @@
+#! /bin/bash
+# @configure_input@
+
+# cleanup any old output files first
+rm -f testMockRoot.cout
+rm -f testMockRoot.out
+
+./testMockRoot@EXEEXT@
+
+OS=`uname`
+case "$OS" in
+CYGWIN*)
+  cmd1=`sed 's/e-0/e-/g' testMockRoot.out | \
+        sed 's/e+0/e+/g' | \
+        sed 's/@HEPMC_DEFAULT_MOM_UNIT@/GEV/g' | \
+        sed 's/@HEPMC_DEFAULT_LEN_UNIT@/MM/g' | \
+        @DIFF_Q@ - @srcdir@/testMockRoot.dat`
+if [ "@HEPMC_DEFAULT_MOM_UNIT@" = "GEV" ];then
+  if [ "@HEPMC_DEFAULT_LEN_UNIT@" = "MM" ];then
+  cmd9=`sed 's/e-0/e-/g' testMockRootVarious.cout | \
+        sed 's/e+0/e+/g' | \
+        @DIFF_Q@ - @srcdir@/testHepMCVarious.output`
+  fi
+fi
+  cmd=`sed 's/e-0/e-/g' testMockRoot.cout | \
+        sed 's/e+0/e+/g' | \
+        @DIFF_Q@ - @srcdir@/testMockRoot.output`
+  ;;
+Darwin*)
+  # MacOSX fix
+  cmd1=`sed 's/@HEPMC_DEFAULT_MOM_UNIT@/GEV/g' testMockRoot.out | \
+        sed 's/@HEPMC_DEFAULT_LEN_UNIT@/MM/g' | \
+        @DIFF_Q@ - @srcdir@/testMockRoot.dat`
+if [ "@HEPMC_DEFAULT_MOM_UNIT@" = "GEV" ];then
+  if [ "@HEPMC_DEFAULT_LEN_UNIT@" = "MM" ];then
+    cmd9=`@DIFF_Q@ testMockRootVarious.cout @srcdir@/testHepMCVarious.output`
+  fi
+fi
+  cmd=`@DIFF_Q@ testMockRoot.cout @srcdir@/testMockRoot.output`
+  ;;
+*)
+
+  cmd1=`sed 's/@HEPMC_DEFAULT_MOM_UNIT@/GEV/g' testMockRoot.out | \
+        sed 's/@HEPMC_DEFAULT_LEN_UNIT@/MM/g' | \
+        @DIFF_Q@ - @srcdir@/testMockRoot.dat`
+if [ "@HEPMC_DEFAULT_MOM_UNIT@" = "GEV" ];then
+  if [ "@HEPMC_DEFAULT_LEN_UNIT@" = "MM" ];then
+    cmd9=`@DIFF_Q@ testMockRootVarious.cout @srcdir@/testHepMCVarious.output`
+  fi
+fi
+  cmd=`@DIFF_Q@ testMockRoot.cout @srcdir@/testMockRoot.output`
+esac
+
+if [ -n "$cmd" ]; then
+  echo "testMockRoot.cout and @srcdir@/testMockRoot.output differ"
+  exit 1;
+fi
+
+if [ -n "$cmd1" ]
+then
+  echo $cmd1
+  exit 1;
+fi
+
+if [ -n "$cmd2" ]
+then
+  echo $cmd2
+  exit 1;
+fi
+
+if [ -n "$cmd9" ]
+then
+  echo $cmd9
+  exit 1;
+fi
+
+exit 0;
+

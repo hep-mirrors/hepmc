@@ -13,6 +13,7 @@ libHepMC_la_SOURCES = \
 	GenRanges.cc	\
 	HeavyIon.cc	\
 	IO_AsciiParticles.cc	\
+	IO_MockRoot.cc	\
 	IO_GenEvent.cc	\
 	PdfInfo.cc	\
 	Polarization.cc	\

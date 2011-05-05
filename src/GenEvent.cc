@@ -364,7 +364,7 @@ namespace HepMC {
 	// event
 	vtx->set_parent_event_( this );
 	// add to m_vertices
-	m_vertices.push_back( vtx );
+	add_vertex_to_list( vtx );
 	// verify status
 	return ( m_vertex_barcodes.count(vtx->barcode()) ? true : false );
     }
@@ -444,6 +444,7 @@ namespace HepMC {
     
     bool GenEvent::set_barcode( GenParticle* p, int suggested_barcode )
     {
+    // this is where m_particle_barcodes and m_particles are filled
 	if ( p->parent_event() != this ) {
 	    std::cerr << "GenEvent::set_barcode attempted, but the argument's"
 		      << "\n parent_event is not this ... request rejected."
@@ -458,6 +459,7 @@ namespace HepMC {
 	    if ( m_particle_barcodes.count(p->barcode()) &&
 		 m_particle_barcodes[p->barcode()] == p ) {
 		m_particle_barcodes.erase( p->barcode() );
+		m_particles.erase(find(m_particles.begin(),m_particles.end(),p));
 	    }
 	    // At this point either the particle is NOT in
 	    // m_particle_barcodes, or else it is in the map, but
@@ -480,6 +482,7 @@ namespace HepMC {
 	    } else { // suggested barcode is OK, proceed to insert
 		m_particle_barcodes[suggested_barcode] = p;
 		p->set_barcode_( suggested_barcode );
+		add_particle_to_list(p);
 		return true;
 	    }
 	}
@@ -510,6 +513,7 @@ namespace HepMC {
 	}
 	m_particle_barcodes[suggested_barcode] = p;
 	p->set_barcode_( suggested_barcode );
+	add_particle_to_list(p);
 	return insert_success;
     }
 
@@ -577,6 +581,21 @@ namespace HepMC {
 	m_vertex_barcodes[suggested_barcode] = v;
 	v->set_barcode_( suggested_barcode );
 	return insert_success;
+    }
+
+    bool  GenEvent::add_particle_to_list(HepMC::GenParticle* p) {
+	m_particles.push_back(p);
+	size_t ind = find(m_particles.begin(),m_particles.end(),p) 
+		     - m_particles.begin();
+	return true;
+    }
+
+    bool  GenEvent::add_vertex_to_list(HepMC::GenVertex* v) {
+	// add to m_vertices
+	m_vertices.push_back( v );
+	size_t ind = find(m_vertices.begin(),m_vertices.end(),v) 
+		     - m_vertices.begin();
+	return true;
     }
 
     /// test to see if we have two valid beam particles
@@ -708,13 +727,14 @@ namespace HepMC {
     {
 	std::vector<HepMC::GenVertex*>::iterator i;
         for( i = m_vertices.begin(); i != m_vertices.end(); ++i ) {
-	    write_vertex( os, *i );
+	    write_vertex_line( os, *i );
 	}
  	return os;
-   }
+    }
 
     std::ostream & GenEvent::write_particle_list( std::ostream & os )
     {
+        os << "GenEvent::write_particle_list writing " << m_particles.size() << " particles\n";
 	std::vector<HepMC::GenParticle*>::const_iterator i;
         for( i = m_particles.begin(); i != m_particles.end(); ++i ) {
 	    write_particle( os, *i );
@@ -768,6 +788,41 @@ namespace HepMC {
 	      p3 != v->particles_out_const_end(); ++p3 ) {
 	    write_particle( os, *p3 );
 	}
+	return os;
+    }
+
+    std::ostream & GenEvent::write_vertex_line(std::ostream & os, GenVertex const * v)
+    {
+	if ( !v || !os ) {
+	    std::cerr << "GenEvent::write_vertex !v||!os, "
+		      << "v="<< v << " setting badbit" << std::endl;
+	    os.clear(std::ios::badbit); 
+	    return os;
+	}
+	// First collect info we need
+	// count the number of orphan particles going into v
+	int num_orphans_in = 0;
+	for ( GenVertex::particles_in_const_iterator p1
+		  = v->particles_in_const_begin();
+	      p1 != v->particles_in_const_end(); ++p1 ) {
+	    if ( !(*p1)->production_vertex() ) ++num_orphans_in;
+	}
+	//
+	os << 'V';
+	detail::output( os, v->barcode() ); // v's unique identifier
+	detail::output( os, v->id() );
+	detail::output( os, v->position().x() );
+	detail::output( os, v->position().y() );
+	detail::output( os, v->position().z() );
+	detail::output( os, v->position().t() );
+	detail::output( os, num_orphans_in );
+	detail::output( os, (int)v->particles_out_size() );
+	detail::output( os, (int)v->weights().size() );
+	for ( WeightContainer::const_iterator w = v->weights().begin(); 
+	      w != v->weights().end(); ++w ) {
+	    detail::output( os, *w );
+	}
+	detail::output( os,'\n');
 	return os;
     }
 

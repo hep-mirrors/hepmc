@@ -8,15 +8,16 @@ LDADD = $(top_builddir)/src/libHepMC.la
 check_PROGRAMS = testSimpleVector testUnits testPrintBug \
                  testHepMC testHepMCIteration testMass \
                  testMultipleCopies testStreamIO testFlow \
-		 testPolarization testWeights
+		 testPolarization testWeights testMockRoot
 
-check_SCRIPTS = testHepMC.sh testHepMCIteration.sh testPrintBug.sh \
+check_SCRIPTS = testHepMC.sh testHepMCIteration.sh testPrintBug.sh testMockRoot.sh \
                 testMass.sh testStreamIO.sh testFlow.sh testPolarization.sh
 
 # Identify test(s) to run when 'make check' is requested:
 TESTS = testSimpleVector testUnits \
-        testHepMC.sh testHepMCIteration.sh testMass.sh testFlow.sh testStreamIO.sh \
-        testPrintBug.sh testMultipleCopies testPolarization.sh testWeights
+        testHepMC.sh testHepMCIteration.sh testMass.sh testFlow.sh \
+	testStreamIO.sh testPrintBug.sh testPolarization.sh testMockRoot.sh \
+	testMultipleCopies testWeights
 
 # Identify the test(s) for which failure is the intended outcome:
 XFAIL_TESTS = 
@@ -29,6 +30,7 @@ testPolarization_SOURCES   = testPolarization.cc
 testWeights_SOURCES        = testWeights.cc
 testHepMC_SOURCES          = testHepMC.cc testHepMCMethods.cc
 testMass_SOURCES           = testMass.cc
+testMockRoot_SOURCES       = testMockRoot.cc testHepMCMethods.cc
 testStreamIO_SOURCES       = testStreamIO.cc testHepMCMethods.cc
 testHepMCIteration_SOURCES = testHepMCIteration.cc
 testMultipleCopies_SOURCES = testMultipleCopies.cc
@@ -47,7 +49,7 @@ EXTRA_DIST = testIOGenEvent.input \
 	     testHepMC.dat \
 	     testHepMCIteration.dat \
 	     testMass1.dat \
-	     testStreamIOVarious.dat
+	     testMockRoot.dat testMockRoot.output
 
 # Identify generated file(s) to be removed when 'make clean' is requested:
 CLEANFILES = testHepMC.cout testStreamIO.cout \
@@ -68,4 +70,5 @@ CLEANFILES = testHepMC.cout testStreamIO.cout \
 	     testFlow.out testFlow.out1 testFlow.out2 testFlow.out3 testFlow.out4 testFlow.out5 \
 	     testPolarization.cout testPolarization1.dat testPolarization2.dat \
 	     testPolarization4.out testPolarization5.out \
-	     testWithWeight.cout testWithWeight.out testWithWeight2.out
+	     testWithWeight.cout testWithWeight.out testWithWeight2.out \
+	     testMockRoot.out testMockRoot.cout

@@ -15,24 +15,14 @@
 #define HEPMC_HAS_HEAVY_ION
 #endif
 
-// the IO_Ascii class is NOT available in HepMC   
-#ifndef HEPMC_IO_ASCII_REMOVED
-#define HEPMC_IO_ASCII_REMOVED
-#endif
-
-// the ParticleData class is NOT available in HepMC   
-#ifndef HEPMC_PARTICLE_DATA_REMOVED
-#define HEPMC_PARTICLE_DATA_REMOVED
-#endif
-
-// the IO_GenEvent class is available in HepMC   
-#ifndef HEPMC_HAS_IO_GENEVENT
-#define HEPMC_HAS_IO_GENEVENT
-#endif
-
 // the PdfInfo class is available in HepMC  
 #ifndef HEPMC_HAS_PDF_INFO
 #define HEPMC_HAS_PDF_INFO
+#endif
+
+// the GenCrossSection class is available in HepMC  
+#ifndef HEPMC_HAS_CROSS_SECTION
+#define HEPMC_HAS_CROSS_SECTION
 #endif
 
 // HepMC uses SimpleVector (FourVector) to store momentum and position  
@@ -45,11 +35,6 @@
 #define HEPMC_HAS_UNITS
 #endif
 
-// the GenCrossSection class is available in HepMC  
-#ifndef HEPMC_HAS_CROSS_SECTION
-#define HEPMC_HAS_CROSS_SECTION
-#endif
-
 // the iterator range classes are available in HepMC  
 #ifndef HEPMC_HAS_ITERATOR_RANGES
 #define HEPMC_HAS_ITERATOR_RANGES
@@ -58,6 +43,26 @@
 // the HepMC::WeightContainer class allows named weights
 #ifndef HEPMC_HAS_NAMED_WEIGHTS
 #define HEPMC_HAS_NAMED_WEIGHTS
+#endif
+
+// the IO_GenEvent class is available in HepMC   
+#ifndef HEPMC_HAS_IO_GENEVENT
+#define HEPMC_HAS_IO_GENEVENT
+#endif
+
+// the IO_MockRoot class is available in HepMC   
+#ifndef HEPMC_HAS_IO_MOCKROOT
+#define HEPMC_HAS_IO_MOCKROOT
+#endif
+
+// the IO_Ascii class is NOT available in HepMC   
+#ifndef HEPMC_IO_ASCII_REMOVED
+#define HEPMC_IO_ASCII_REMOVED
+#endif
+
+// the ParticleData class is NOT available in HepMC   
+#ifndef HEPMC_PARTICLE_DATA_REMOVED
+#define HEPMC_PARTICLE_DATA_REMOVED
 #endif
 
 // define the version of HepMC. 

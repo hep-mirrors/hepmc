@@ -17,6 +17,7 @@ pkginclude_HEADERS = \
 	IO_AsciiParticles.h	\
 	IO_BaseClass.h	\
 	IO_Exception.h	\
+	IO_MockRoot.h	\
 	IO_GenEvent.h	\
 	IO_HEPEVT.h	\
 	IO_HERWIG.h	\

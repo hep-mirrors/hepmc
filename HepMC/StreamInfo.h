@@ -14,7 +14,7 @@
 namespace HepMC {
 
 /// The known_io enum is used to track which type of input is being read
-enum known_io { gen=1, ascii, extascii, ascii_pdt, extascii_pdt };
+enum known_io { gen=1, ascii, extascii, ascii_pdt, extascii_pdt, mockroot };
 
 //! StreamInfo contains extra information needed when using streaming IO.
 
@@ -34,6 +34,11 @@ public:
     std::string IO_GenEvent_Key()          const { return m_io_genevent_start; }
     /// IO_GenEvent end event block key
     std::string IO_GenEvent_End()          const { return m_io_genevent_end; }
+
+    /// IO_MockRoot begin event block key
+    std::string IO_MockRoot_Key()          const { return m_io_mockroot_start; }
+    /// IO_MockRoot end event block key
+    std::string IO_MockRoot_End()          const { return m_io_mockroot_end; }
 
     /// IO_Ascii begin event block key
     /// IO_Ascii has been removed, but we want to be able to read 
@@ -98,9 +103,11 @@ private: // data members
     bool        m_finished_first_event_io;
     // GenEvent I/O method keys
     std::string m_io_genevent_start;
+    std::string m_io_mockroot_start;
     std::string m_io_ascii_start;
     std::string m_io_extendedascii_start;
     std::string m_io_genevent_end;
+    std::string m_io_mockroot_end;
     std::string m_io_ascii_end;
     std::string m_io_extendedascii_end;
     // particle data I/O method keys

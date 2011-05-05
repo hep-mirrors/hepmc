@@ -13,9 +13,11 @@ namespace HepMC {
 StreamInfo::StreamInfo( )
 : m_finished_first_event_io(false),
   m_io_genevent_start("HepMC::IO_GenEvent-START_EVENT_LISTING"),
+  m_io_mockroot_start("HepMC::IO_MockRoot-START_EVENT_LISTING"),
   m_io_ascii_start("HepMC::IO_Ascii-START_EVENT_LISTING"),
   m_io_extendedascii_start("HepMC::IO_ExtendedAscii-START_EVENT_LISTING"),
   m_io_genevent_end("HepMC::IO_GenEvent-END_EVENT_LISTING"),
+  m_io_mockroot_end("HepMC::IO_MockRoot-END_EVENT_LISTING"),
   m_io_ascii_end("HepMC::IO_Ascii-END_EVENT_LISTING"),
   m_io_extendedascii_end("HepMC::IO_ExtendedAscii-END_EVENT_LISTING"),
   m_io_ascii_pdt_start("HepMC::IO_Ascii-START_PARTICLE_DATA"),

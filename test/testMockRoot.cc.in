@@ -1,0 +1,184 @@
+//-------------------------------------------------------------------
+// testMockRoot.cc.in
+//
+// garren@fnal.gov, May 2011
+// 
+// testing IO_MockRoot
+//-------------------------------------------------------------------
+//
+
+#include <fstream>
+
+#include "HepMC/GenEvent.h"
+#include "HepMC/Version.h"
+#include "HepMC/IO_GenEvent.h"
+#ifdef HEPMC_HAS_IO_MOCKROOT
+#include "HepMC/IO_MockRoot.h"
+#endif
+
+// define methods and classes used by this test
+#include "IsGoodEvent.h"
+#include "testHepMCMethods.h"
+
+void read_testIOGenEvent(std::ostream & os);
+void read_variousFormats(std::ostream & os);
+
+int main() { 
+    std::ofstream os( "testMockRoot.cout" );
+#ifdef HEPMC_HAS_IO_MOCKROOT
+    std::ofstream osv( "testMockRootVarious.cout" );
+    read_testIOGenEvent(os);
+    read_variousFormats(osv);
+    return 0;
+#else
+    os << "IO_MockRoot is not available in HepMC Version " 
+         << versionName() << std::endl;
+    return 1;
+#endif
+}
+
+
+void read_testIOGenEvent(std::ostream & os)
+{
+    os << std::endl;
+    os << "basic IO_GenEvent input and IO_MockRoot output" << std::endl;
+    // declare an input strategy to read the data - units are GeV and mm
+    HepMC::IO_GenEvent ascii_in("@srcdir@/testIOGenEvent.input",std::ios::in);
+    ascii_in.use_input_units( HepMC::Units::GEV, HepMC::Units::MM );
+    // declare an IO_MockRoot for writing out the good events
+    HepMC::IO_MockRoot mockRootOut("testMockRoot.out",std::ios::out);
+    // declare an output IO_MockRoot for testing precision
+    HepMC::IO_MockRoot prec_out("testMockRootprecision.out",std::ios::out);
+    prec_out.precision(10);
+    // declare an instance of the event selection predicate
+    IsGoodEvent is_good_event;
+    //........................................EVENT LOOP
+    int icount=0;
+    int num_good_events=0;
+    HepMC::GenEvent* evt = ascii_in.read_next_event();
+    while ( evt ) {
+	++icount;
+	if ( icount%50==1 ) os << "Processing Event Number " << icount
+				      << " its # " << evt->event_number() 
+				      << std::endl;
+	if ( is_good_event(evt) ) {
+	    particleTypes(evt,os);
+	    //mockRootOut << evt;
+	    mockRootOut.write_event( evt );
+	    prec_out << evt;
+	    ++num_good_events;
+	}
+	
+	// clean up and get next event
+	delete evt;
+	ascii_in >> evt;
+    }
+    //........................................PRINT RESULT
+    os << num_good_events << " out of " << icount 
+	      << " processed events passed the cuts. Finished." << std::endl;
+}
+
+void read_variousFormats(std::ostream & os)
+{
+    os << std::endl;
+    os << "process varied input" << std::endl;
+    // declare an input strategy 
+    HepMC::IO_GenEvent ascii_in("@srcdir@/testHepMCVarious.input",std::ios::in);
+    ascii_in.use_input_units( HepMC::Units::GEV, HepMC::Units::MM );
+    // declare an IO_MockRoot for writing out the good events
+    HepMC::IO_MockRoot mockRootOut("testMockRootVarious.out",std::ios::out);
+    //........................................EVENT LOOP
+    int icount=0;
+    HepMC::GenEvent* evt = ascii_in.read_next_event();
+    while ( evt ) {
+	icount++;
+	double pim;
+	os << "Processing Event Number " << icount
+		  << " its # " << evt->event_number() 
+		  << std::endl;
+	//mockRootOut << evt;
+	mockRootOut.write_event( evt );
+	// units should be unknown
+	evt->write_units(os);
+	pim = findPiZero(evt);
+	os << " pizero mass: " << pim << std::endl;
+	if( HepMC::Units::name( evt->momentum_unit() ) == "GEV" ) {
+	    os << " GenEvent units are GeV" << std::endl;
+	    if( pim > 1.0 ) {
+		// presume units are MEV and out of sync
+		os << " pizero units are MeV" << std::endl;
+		repairUnits(evt,HepMC::Units::MEV,HepMC::Units::GEV);
+		// set units to MeV and mm
+		evt->use_units(HepMC::Units::MEV, HepMC::Units::MM);
+		evt->write_units(os);
+		pim = findPiZero(evt);
+		os << " pizero mass: " << pim 
+	        	  << " " << HepMC::Units::name( evt->momentum_unit() ) << std::endl;
+		// convert units to MeV
+		evt->use_units(HepMC::Units::MEV, HepMC::Units::MM);
+		evt->write_units(os);
+		pim = findPiZero(evt);
+		os << " pizero mass: " << pim 
+	        	  << " " << HepMC::Units::name( evt->momentum_unit() ) << std::endl;
+	    } else if( pim > 0.1 ) {
+		// presume units are GEV
+		os << " pizero units are GeV" << std::endl;
+		// set units to GeV and mm
+		evt->use_units(HepMC::Units::GEV, HepMC::Units::MM);
+		evt->write_units(os);
+		pim = findPiZero(evt);
+		os << " pizero mass: " << pim 
+	        	  << " " << HepMC::Units::name( evt->momentum_unit() ) << std::endl;
+		// convert units to MeV
+		evt->use_units(HepMC::Units::MEV, HepMC::Units::MM);
+		evt->write_units(os);
+		pim = findPiZero(evt);
+		os << " pizero mass: " << pim 
+	        	  << " " << HepMC::Units::name( evt->momentum_unit() ) << std::endl;
+	    } else {
+		os << " pizero mass: " << pim 
+	        	  << " is inconsistent with allowed units " << std::endl;
+	    }
+	} else if( HepMC::Units::name( evt->momentum_unit() ) == "MEV" ) {
+	    os << " GenEvent units are MeV" << std::endl;
+	    if( pim > 1.0 ) {
+		// presume units are MEV
+		os << " pizero units are MeV" << std::endl;
+		// set units to MeV and mm
+		evt->use_units(HepMC::Units::MEV, HepMC::Units::MM);
+		evt->write_units(os);
+		pim = findPiZero(evt);
+		os << " pizero mass: " << pim 
+	        	  << " " << HepMC::Units::name( evt->momentum_unit() ) << std::endl;
+		// convert units to MeV
+		evt->use_units(HepMC::Units::MEV, HepMC::Units::MM);
+		evt->write_units(os);
+		pim = findPiZero(evt);
+		os << " pizero mass: " << pim 
+	        	  << " " << HepMC::Units::name( evt->momentum_unit() ) << std::endl;
+	    } else if( pim > 0.1 ) {
+		// presume units are GEV and out of sync
+		os << " pizero units are GeV" << std::endl;
+		repairUnits(evt,HepMC::Units::GEV,HepMC::Units::MEV);
+		evt->write_units(os);
+		pim = findPiZero(evt);
+		os << " pizero mass: " << pim 
+	        	  << " " << HepMC::Units::name( evt->momentum_unit() ) << std::endl;
+		// convert units to MeV
+		evt->use_units(HepMC::Units::MEV, HepMC::Units::MM);
+		evt->write_units(os);
+		pim = findPiZero(evt);
+		os << " pizero mass: " << pim 
+	        	  << " " << HepMC::Units::name( evt->momentum_unit() ) << std::endl;
+	    } else {
+		os << " pizero mass: " << pim 
+	        	  << " is inconsistent with allowed units " << std::endl;
+	    }
+	}
+	// clean up and get next event
+	delete evt;
+	ascii_in >> evt;
+    }
+    //........................................PRINT RESULT
+    os << icount << " events processed. Finished." << std::endl;
+}

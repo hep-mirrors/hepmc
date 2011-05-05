@@ -261,6 +261,8 @@ namespace HepMC {
 	
 	std::ostream& write(std::ostream&);
 	std::istream& read(std::istream&);
+	std::ostream& writeMockRoot(std::ostream&);
+	std::istream& readMockRoot(std::istream&);
 
 	/////////////////////
 	// mutator methods //
@@ -591,6 +593,8 @@ namespace HepMC {
                 	     std::pair<HepMC::GenParticle *,HepMC::GenParticle *> );
 	/// send a GenVertex to ASCII output
 	std::ostream & write_vertex( std::ostream &, GenVertex const * );
+	/// output just the GenVertex information, not the associated GenParticles
+	std::ostream & write_vertex_line( std::ostream &, GenVertex const * );
 	/// send a GenParticle to ASCII output
 	std::ostream & write_particle( std::ostream&, GenParticle const * );
 	/// find the file type
@@ -607,6 +611,10 @@ namespace HepMC {
 	std::ostream & write_vertex_list( std::ostream & );
 	/// send all GenParticles to ASCII output
 	std::ostream & write_particle_list( std::ostream & );
+	/// add particle to m_particles
+	bool add_particle_to_list( HepMC::GenParticle * );
+	/// add vertex to m_vertices
+	bool add_vertex_to_list( HepMC::GenVertex * );
 
     private: // data members
 	// persistent data
@@ -652,6 +660,10 @@ namespace HepMC {
     std::ostream & write_HepMC_IO_block_begin(std::ostream & );
     /// Explicitly write the end block line that IO_GenEvent uses
     std::ostream & write_HepMC_IO_block_end(std::ostream & );
+    /// Explicitly write the begin block lines that IO_MockRoot uses
+    std::ostream & write_HepMC_MockRoot_block_begin(std::ostream & );
+    /// Explicitly write the end block line that IO_MockRoot uses
+    std::ostream & write_HepMC_MockRoot_block_end(std::ostream & );
 
 
     ///////////////////////////

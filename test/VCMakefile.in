@@ -20,16 +20,19 @@ check_PROGRAMS = testSimpleVector$(EXEEXT) testUnits$(EXEEXT) \
 	testPrintBug$(EXEEXT) testHepMC$(EXEEXT) \
 	testHepMCIteration$(EXEEXT) testMass$(EXEEXT) \
 	testMultipleCopies$(EXEEXT) testStreamIO$(EXEEXT) \
-	testFlow$(EXEEXT) testPolarization$(EXEEXT) testWeights$(EXEEXT)
-TESTS = testSimpleVector$(EXEEXT) testUnits$(EXEEXT) testHepMC.sh \
-	testHepMCIteration.sh testMass.sh testStreamIO.sh testPrintBug.sh \
-	testMultipleCopies$(EXEEXT) testFlow.sh testPolarization.sh testWeights$(EXEEXT)
+	testFlow$(EXEEXT) testPolarization$(EXEEXT) testWeights$(EXEEXT) \
+	testMockRoot$(EXEEXT)
+TESTS = testSimpleVector$(EXEEXT) testUnits$(EXEEXT) \
+        testHepMC.sh testHepMCIteration.sh testMass.sh testFlow.sh \
+	testStreamIO.sh testPrintBug.sh testPolarization.sh testMockRoot.sh \
+	testMultipleCopies$(EXEEXT) testWeights$(EXEEXT)
 XFAIL_TESTS =
 subdir = test
 DIST_COMMON = $(srcdir)/Makefile.am $(srcdir)/Makefile.in \
 	$(srcdir)/testHepMC.cc.in $(srcdir)/testHepMC.sh.in \
 	$(srcdir)/testHepMCIteration.cc.in $(srcdir)/testHepMCIteration.sh.in \
 	$(srcdir)/testMass.cc.in $(srcdir)/testMass.sh.in \
+	$(srcdir)/testMockRoot.cc.in $(srcdir)/testMockRoot.sh.in \
 	$(srcdir)/testStreamIO.cc.in $(srcdir)/testStreamIO.sh.in \
 	$(srcdir)/testMultipleCopies.cc.in \
 	$(srcdir)/testPrintBug.sh.in $(srcdir)/testFlow.sh.in \
@@ -41,9 +44,9 @@ am__configure_deps = $(am__aclocal_m4_deps) $(CONFIGURE_DEPENDENCIES) \
 	$(ACLOCAL_M4)
 mkinstalldirs = $(install_sh) -d
 CONFIG_CLEAN_FILES = testHepMC.cc testMass.cc testHepMCIteration.cc \
-	testMultipleCopies.cc testStreamIO.cc \
+	testMultipleCopies.cc testStreamIO.cc testMockRoot.cc \
 	testHepMC.sh testMass.sh testHepMCIteration.sh testPrintBug.sh \
-	testStreamIO.sh testFlow.sh testPolarization.sh
+	testStreamIO.sh testFlow.sh testPolarization.sh testMockRoot.sh
 am_testHepMC_OBJECTS = testHepMC.$(OBJEXT) testHepMCMethods.$(OBJEXT)
 testHepMC_OBJECTS = $(am_testHepMC_OBJECTS)
 testHepMC_DEPENDENCIES = $(top_builddir)/src/HepMC.lib
@@ -62,6 +65,9 @@ testWeights_DEPENDENCIES = $(top_builddir)/src/HepMC.lib
 am_testMass_OBJECTS = testMass.$(OBJEXT)
 testMass_OBJECTS = $(am_testMass_OBJECTS)
 testMass_DEPENDENCIES = $(top_builddir)/src/HepMC.lib
+am_testMockRoot_OBJECTS = testMockRoot.$(OBJEXT)
+testMockRoot_OBJECTS = $(am_testMockRoot_OBJECTS)
+testMockRoot_DEPENDENCIES = $(top_builddir)/src/HepMC.lib
 am_testStreamIO_OBJECTS = testStreamIO.$(OBJEXT) testHepMCMethods.$(OBJEXT)
 testStreamIO_OBJECTS = $(am_testStreamIO_OBJECTS)
 testStreamIO_DEPENDENCIES = $(top_builddir)/src/HepMC.lib
@@ -87,14 +93,14 @@ CXXLINK = $(CXXLD) $(AM_CXXFLAGS) $(CXXFLAGS) $(LDFLAGS) /Fe$@
 SOURCES = $(testHepMC_SOURCES) \
 	$(testHepMCIteration_SOURCES) $(testMass_SOURCES) \
 	$(testMultipleCopies_SOURCES) $(testPrintBug_SOURCES) \
-	$(testStreamIO_SOURCES) \
+	$(testStreamIO_SOURCES) $(testMockRoot_SOURCES) \
 	$(testSimpleVector_SOURCES) $(testUnits_SOURCES) \
 	$(testFlow_SOURCES) $(testWeights_SOURCES) \
 	$(testPolarization_SOURCES) $(testWeights_SOURCES)
 DIST_SOURCES = $(testHepMC_SOURCES) \
 	$(testHepMCIteration_SOURCES) $(testMass_SOURCES) \
 	$(testMultipleCopies_SOURCES) $(testPrintBug_SOURCES) \
-	$(testStreamIO_SOURCES) \
+	$(testStreamIO_SOURCES) $(testMockRoot_SOURCES) \
 	$(testSimpleVector_SOURCES) $(testUnits_SOURCES) \
 	$(testFlow_SOURCES) $(testWeights_SOURCES) \
 	$(testPolarization_SOURCES) $(testWeights_SOURCES)
@@ -166,7 +172,7 @@ LDADD = $(top_builddir)/src/HepMC.lib \
 
 # how to specify output file
 OUTFLAG = /Fo$@
-check_SCRIPTS = testHepMC.sh testHepMCIteration.sh testPrintBug.sh \
+check_SCRIPTS = testHepMC.sh testHepMCIteration.sh testPrintBug.sh testMockRoot.sh \
                 testMass.sh testStreamIO.sh testFlow.sh testPolarization.sh
 
 
@@ -177,6 +183,7 @@ testHepMC_SOURCES = testHepMC.cc testHepMCMethods.cc
 testFlow_SOURCES = testFlow.cc
 testPolarization_SOURCES   = testPolarization.cc
 testMass_SOURCES = testMass.cc
+testMockRoot_SOURCES = testMockRoot.cc testHepMCMethods.cc
 testStreamIO_SOURCES = testStreamIO.cc testHepMCMethods.cc
 testHepMCIteration_SOURCES = testHepMCIteration.cc
 testMultipleCopies_SOURCES = testMultipleCopies.cc
@@ -190,6 +197,7 @@ testHepMC_LDADD = $(top_builddir)/src/HepMC.lib
 testFlow_LDADD = $(top_builddir)/src/HepMC.lib
 testPolarization_LDADD = $(top_builddir)/src/HepMC.lib
 testMass_LDADD = $(top_builddir)/src/HepMC.lib
+testMockRoot_LDADD = $(top_builddir)/src/HepMC.lib
 testStreamIO_LDADD = $(top_builddir)/src/HepMC.lib
 testHepMCIteration_LDADD = $(top_builddir)/src/HepMC.lib
 testMultipleCopies_LDADD = $(top_builddir)/src/HepMC.lib
@@ -207,7 +215,7 @@ EXTRA_DIST = testIOGenEvent.input \
 	     testHepMCIteration.dat \
 	     testMass1.dat \
 	     testFlow.output \
-	     testStreamIOVarious.dat
+	     testMockRoot.dat testMockRoot.output
 
 
 # Identify generated file(s) to be removed when 'make clean' is requested:
@@ -229,7 +237,8 @@ CLEANFILES = testHepMC.cout testStreamIO.cout \
 	     testFlow.out testFlow.out1 testFlow.out2 testFlow.out3 testFlow.out4 testFlow.out5 \
 	     testPolarization.cout testPolarization1.dat testPolarization2.dat \
 	     testPolarization4.out testPolarization5.out \
-	     testWithWeight.cout testWithWeight.out testWithWeight2.out
+	     testWithWeight.cout testWithWeight.out testWithWeight2.out \
+	     testMockRoot.out testMockRoot.cout
 
 all: all-am
 
@@ -256,6 +265,8 @@ testHepMC.cc: $(top_builddir)/config.status $(srcdir)/testHepMC.cc.in
 	cd $(top_builddir) && $(SHELL) ./config.status $(subdir)/$@
 testMass.cc: $(top_builddir)/config.status $(srcdir)/testMass.cc.in
 	cd $(top_builddir) && $(SHELL) ./config.status $(subdir)/$@
+testMockRoot.cc: $(top_builddir)/config.status $(srcdir)/testMockRoot.cc.in
+	cd $(top_builddir) && $(SHELL) ./config.status $(subdir)/$@
 testStreamIO.cc: $(top_builddir)/config.status $(srcdir)/testStreamIO.cc.in
 	cd $(top_builddir) && $(SHELL) ./config.status $(subdir)/$@
 testHepMCIteration.cc: $(top_builddir)/config.status $(srcdir)/testHepMCIteration.cc.in
@@ -269,6 +280,8 @@ testFlow.sh: $(top_builddir)/config.status $(srcdir)/testFlow.sh.in
 testPolarization.sh: $(top_builddir)/config.status $(srcdir)/testPolarization.sh.in
 	cd $(top_builddir) && $(SHELL) ./config.status $(subdir)/$@
 testMass.sh: $(top_builddir)/config.status $(srcdir)/testMass.sh.in
+	cd $(top_builddir) && $(SHELL) ./config.status $(subdir)/$@
+testMockRoot.sh: $(top_builddir)/config.status $(srcdir)/testMockRoot.sh.in
 	cd $(top_builddir) && $(SHELL) ./config.status $(subdir)/$@
 testStreamIO.sh: $(top_builddir)/config.status $(srcdir)/testStreamIO.sh.in
 	cd $(top_builddir) && $(SHELL) ./config.status $(subdir)/$@
@@ -298,6 +311,9 @@ testPolarization$(EXEEXT): $(testPolarization_OBJECTS) $(testPolarization_DEPEND
 testMass$(EXEEXT): $(testMass_OBJECTS) $(testMass_DEPENDENCIES) 
 	@rm -f testMass$(EXEEXT)
 	$(CXXLINK) $(testMass_OBJECTS) $(testMass_LDADD) $(LIBS)
+testMockRoot$(EXEEXT): $(testMockRoot_OBJECTS) $(testMockRoot_DEPENDENCIES) 
+	@rm -f testMockRoot$(EXEEXT)
+	$(CXXLINK) $(testMockRoot_OBJECTS) $(testMockRoot_LDADD) $(LIBS)
 testStreamIO$(EXEEXT): $(testStreamIO_OBJECTS) $(testStreamIO_DEPENDENCIES) 
 	@rm -f testStreamIO$(EXEEXT)
 	$(CXXLINK) $(testStreamIO_OBJECTS) $(testStreamIO_LDADD) $(LIBS)
@@ -329,6 +345,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/testFlow.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/testPolarization.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/testMass.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/testMockRoot.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/testMultipleCopies.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/testPrintBug.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/testSimpleVector.Po@am__quote@
