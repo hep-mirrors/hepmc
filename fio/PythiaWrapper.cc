@@ -10,22 +10,6 @@
 #include "HepMC/PythiaWrapper.h"
 #include "HepMC/GenCrossSection.h"
 
-#ifdef _WIN32 // Platform: Windows MS Visual C++
-
-#else // Generic version, tested on Linux ecgs/gcc
-
-// declare the structs here to keep the shared library happy
-struct pin3 pyint3_;
-struct pin5 pyint5_;
-struct pin7 pyint7_;
-struct pin8 pyint8_;
-struct pin9 pyint9_;
-struct pssm pyssm_;
-struct prvnv pyrvnv_;
-struct prvpm pyrvpm_;
-
-#endif // Platform
-
 namespace HepMC {
 
 HepMC::GenCrossSection getPythiaCrossSection() {
