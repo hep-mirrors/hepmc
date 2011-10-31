@@ -6,8 +6,7 @@ libHepMCfio_la_SOURCES = \
 	HEPEVT_Wrapper.cc	\
 	IO_HEPEVT.cc	\
 	IO_HERWIG.cc	\
-	HerwigWrapper.cc	\
-	PythiaWrapper.cc
+	HerwigWrapper.cc	
 
 lib_LTLIBRARIES = libHepMCfio.la
 
