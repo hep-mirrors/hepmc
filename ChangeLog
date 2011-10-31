@@ -1,4 +1,10 @@
 
+2011-10-31  Lynn Garren
+
+     * remove fio/PythiaWrapper.cc
+     * HepMC/PythiaWrapper.h: HepMC::GenCrossSection getPythiaCrossSection() 
+       is now an inline method
+
 2011-10-25  Lynn Garren
 
      * fio/PythiaWrapper.cc: remove struct definitions
