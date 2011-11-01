@@ -15,7 +15,10 @@
   HepMClib             = -L$(HepMCdir)/lib -lHepMC
   HepMCfiolib          = -L$(HepMCdir)/lib -lHepMCfio
   GENSERdir            = @GENSERdir@
-  CLHEPdir             = @CLHEPdir@
+  Pythia_LIB	= -L$(GENSERdir)/lib -Wl,-rpath -Wl,$(GENSERdir)/lib \
+                  -lpythia6_403 -lpythia6_403_dumm -lpythia6_403_pdfdumm
+  Herwig_LIB	= -L$(GENSERdir)/lib -Wl,-rpath -Wl,$(GENSERdir)/lib \
+                  -lherwig6_510 -lherwig6_510_dumm -lherwig6_510_pdfdumm
 
 ################################################################################ Compiler options
 #
@@ -23,40 +26,36 @@
   F77		= @F77@
   INCLUDES 	= -I$(HepMCdir)/include -I$(CLHEPdir)/include
   CXXFLAGS      =  @AM_CXXFLAGS@ @CXXFLAGS@ $(INCLUDES)
-  FLAGS 	= $(DFLG) $(INCDIR)
 ifeq "$(CXX)" "g++"
-   FLAGS 	+= -fno-second-underscore
+   FLAGS 	= $(DFLG) -fno-second-underscore $(INCDIR)
+else
+  FLAGS 	= $(DFLG) $(INCDIR)
 endif
 
-  EXAMPLES	= example_BuildEventFromScratch.exe	\
-		  example_EventSelection.exe	\
-		  example_UsingIterators.exe
   LINK_LIBS     = @LDFLAGS@ 
-  UNAME = $(shell uname)
 
-ifneq (,$(strip $(CLHEPdir)))
-  EXAMPLES	+= example_VectorConversion.exe
-ifeq "$(UNAME)" "Darwin"
-  CLHEP_LIB     = -L$(CLHEPdir)/lib -lCLHEP 
-else
-  CLHEP_LIB     = -L$(CLHEPdir)/lib -lCLHEP -Wl,-rpath -Wl,$(CLHEPdir)/lib
-endif  
-endif
-
-ifeq "$(UNAME)" "Darwin"
-else
+UNAME = $(shell uname)
+ifneq "$(UNAME)" "Darwin"
   LINK_LIBS     += -Wl,-rpath -Wl,$(HepMCdir)/lib
 endif
 
-  HDRS          = $(HepMCdir)/include/HepMC/*.h *.h
-
-################################################################################ 
-
-PLATFORM=$(shell uname)
-
-ifeq "$(PLATFORM)" "Linux"
+ifeq "$(UNAME)" "Linux"
+ifeq "$(F77)" "gfortran"
+    LINK_LIBS     += -lgfortran
+else
     LINK_LIBS     += -lg2c 
 endif
+endif
+
+  initpydata_OBJ= initpydata.o
+  pythia_OBJ    = initPythia.o initpydata.o
+  HDRS          = $(HepMCdir)/include/HepMC/*.h *.h
+  EXAMPLES	= example_MyHerwig.exe	\
+		  example_MyPythia.exe	\
+		  example_MyPythiaOnlyToHepMC.exe	\
+		  example_PythiaStreamIO.exe	\
+		  testPythiaCopies.exe	\
+		  testHerwigCopies.exe
 
 ################################################################################ definition of the compiler options
 #	-I location of directory containing include files
@@ -90,40 +89,58 @@ endif
 
 ###############################################################################
 #
-.SUFFIXES:      .o .cc .exe
+.SUFFIXES:      .o .cxx .f .exe
 all:	$(EXAMPLES)
 
-example_BuildEventFromScratch.exe: example_BuildEventFromScratch.o
+example_MyHerwig.exe: example_MyHerwig.o
 	@echo "Building $@ ..."
-	$(CXX) $(FLAGS) example_BuildEventFromScratch.o \
-		$(HepMClib) \
-	        $(LINK_LIBS) -o $@
+	$(CXX) $(FLAGS) example_MyHerwig.o \
+		$(HepMClib) $(HepMCfiolib) \
+	        $(Herwig_LIB) $(LINK_LIBS) -o $@
 
-example_VectorConversion.exe: example_VectorConversion.o
+example_MyPythia.exe: $(initpydata_OBJ) $(pythia_OBJ) example_MyPythia.o
 	@echo "Building $@ ..."
-	$(CXX) $(FLAGS) example_VectorConversion.o \
-		$(HepMClib) \
-		$(CLHEP_LIB) \
-	        $(LINK_LIBS) -o $@
+	$(CXX) $(FLAGS) $(pythia_OBJ) example_MyPythia.o \
+		$(HepMClib) $(HepMCfiolib) \
+	        $(Pythia_LIB) $(LINK_LIBS) -o $@
 
-example_EventSelection.exe: example_EventSelection.o
+example_MyPythiaOnlyToHepMC.exe: $(initpydata_OBJ) $(pythia_OBJ) example_MyPythiaOnlyToHepMC.o
 	@echo "Building $@ ..."
-	$(CXX) $(FLAGS) example_EventSelection.o \
-		$(HepMClib) \
-	        $(LINK_LIBS) -o $@
+	$(CXX) $(FLAGS) $(pythia_OBJ) example_MyPythiaOnlyToHepMC.o \
+		$(HepMClib) $(HepMCfiolib) \
+	        $(Pythia_LIB) $(LINK_LIBS) -o $@
 
-example_UsingIterators.exe: example_UsingIterators.o
+example_PythiaStreamIO.exe: $(initpydata_OBJ) $(pythia_OBJ) example_PythiaStreamIO.o
 	@echo "Building $@ ..."
-	$(CXX) $(FLAGS) example_UsingIterators.o \
-		$(HepMClib) \
-	        $(LINK_LIBS) -o $@
+	$(CXX) $(FLAGS) $(pythia_OBJ) example_PythiaStreamIO.o \
+		$(HepMClib) $(HepMCfiolib) \
+	        $(Pythia_LIB) $(LINK_LIBS) -o $@
+
+testPythiaCopies.exe: $(initpydata_OBJ) $(pythia_OBJ) testPythiaCopies.o
+	@echo "Building $@ ..."
+	$(CXX) $(FLAGS) $(pythia_OBJ) testPythiaCopies.o \
+		$(HepMClib) $(HepMCfiolib) \
+	        $(Pythia_LIB) $(LINK_LIBS) -o $@
+
+testHerwigCopies.exe: testHerwigCopies.o
+	@echo "Building $@ ..."
+	$(CXX) $(FLAGS) testHerwigCopies.o \
+		$(HepMClib) $(HepMCfiolib) \
+	        $(Herwig_LIB) $(LINK_LIBS) -o $@
 
 ###############################################################################
-# instructions for building a .o file from a .cc file
+# instructions for building a .o file from a .cxx file
 #
 .cc.o:         $(HDRS) $<
 	@echo "Compiling $< with $(CXX) ..."
 	@$(CXX) $(CXXFLAGS) -c $< -o $@
+
+###############################################################################
+# instructions for building a .o file from a .f file
+#
+.f.o:           $<
+	@echo "Compiling $< with $(F77) ..."
+	@$(F77) $(FLAGS) -c $< -o $@
 
 ###############################################################################
 # gmake clean       removes all garbage from HepMC directories.

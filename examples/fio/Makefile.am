@@ -1,15 +1,18 @@
 # This makefile is used to copy files during the "make install" step
 
-INSTALLDIR = $(pkgdatadir)/examples
+INSTALLDIR = $(pkgdatadir)/examples/fio
 
 # files to distribute
 EXTRA_DIST = \
-    example_BuildEventFromScratch.cc \
-    example_EventSelection.cc \
-    example_UsingIterators.cc \
-    example_VectorConversion.cc \
-    VectorConversion.h \
-    example_UsingIterators.txt
+    example_MyHerwig.cc \
+    example_MyPythia.cc \
+    example_MyPythiaOnlyToHepMC.cc \
+    example_PythiaStreamIO.cc \
+    testHerwigCopies.cc	\
+    testPythiaCopies.cc	\
+    initPythia.cc \
+    initpydata.f \
+    PythiaHelper.h
 
 install-data-local:
 	$(mkinstalldirs) $(DESTDIR)$(INSTALLDIR)

@@ -1,4 +1,8 @@
 
+2011-11-01  Lynn Garren
+
+     * examples: move Pythia and Herwig examples to examples/fio
+
 2011-10-31  Lynn Garren
 
      * remove fio/PythiaWrapper.cc

@@ -26,12 +26,15 @@ INSTALLDIR = $(pkgdatadir)/examples
 
 # files to distribute
 EXTRA_DIST = \
-    example_BuildEventFromScratch.cc \
-    example_EventSelection.cc \
-    example_UsingIterators.cc \
-    example_VectorConversion.cc \
-    VectorConversion.h \
-    example_UsingIterators.txt
+    example_MyHerwig.cc \
+    example_MyPythia.cc \
+    example_MyPythiaOnlyToHepMC.cc \
+    example_PythiaStreamIO.cc \
+    testHerwigCopies.cc	\
+    testPythiaCopies.cc	\
+    initPythia.cc \
+    initpydata.f \
+    PythiaHelper.h
 
 all: all-am
 all-am: VCMakefile GNUmakefile.example

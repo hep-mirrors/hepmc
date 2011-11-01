@@ -2,7 +2,7 @@
 	/// example to generate events and perform simple event selection
 	/// example to read the file written by pythia_out
 	/// example to generate events, write them, and read them back
-	/// \example example_MyPythia.cc
+	/// \example fio/example_MyPythia.cc
 	 
 	/// Example of generating events with Pythia using HepMC/PythiaWrapper.h 
 	/// Events are read into the HepMC event record from the FORTRAN HEPEVT 
@@ -11,7 +11,7 @@
 	/// from HEPEVT into the HepMC event record.
 	/// \example example_MyPythiaOnlyToHepMC.cc
 	 
-	/// \example example_MyHerwig.cc
+	/// \example fio/example_MyHerwig.cc
 	 
 	/// Example of applying an event selection to the events written to file
 	/// using example_MyPythia.cxx
@@ -23,6 +23,10 @@
 	/// This is meant to be of use for persons implementing HepMC inside a MC 
 	/// event generator
 	/// \example example_BuildEventFromScratch.cc
+	 
+	/// Example of how to convert from another vector class to a SimpleVector.
+	/// This example uses CLHEP::HepLorentzVector
+	/// \example example_VectorConversion.cc
 
 	/// This example shows low to use the particle and vertex iterators
 	/// \example example_UsingIterators.cc
@@ -30,13 +34,13 @@
 	/// This example generates Pythia events and fills
 	/// cross section information from pyint5.
 	/// The example uses streaming I/O to write a file and then read it.
-	/// \example example_PythiaStreamIO.cc
+	/// \example fio/example_PythiaStreamIO.cc
 	 
         /// Multiple events in memory at the same time
-	/// \example testHerwigCopies.cc
+	/// \example fio/testHerwigCopies.cc
 	 
 	/// Multiple events in memory at the same time
-	/// \example testPythiaCopies.cc
+	/// \example fio/testPythiaCopies.cc
 	 
 	/// This example converts from ThreeVector and FourVector to 
 	/// CLHEP::Hep3Vector and CLHEP::HepLorentzVector
