@@ -1,0 +1,22 @@
+
+set ( fio_source_list    
+			 HEPEVT_Wrapper.cc
+			 HerwigWrapper.cc
+			 IO_HEPEVT.cc
+			 IO_HERWIG.cc
+			  )
+
+ADD_LIBRARY (HepMCfio  SHARED ${fio_source_list})
+ADD_LIBRARY (HepMCfioS STATIC ${fio_source_list})
+SET_TARGET_PROPERTIES (HepMCfio  PROPERTIES OUTPUT_NAME HepMCfio )
+SET_TARGET_PROPERTIES (HepMCfioS PROPERTIES OUTPUT_NAME HepMCfio )
+SET_TARGET_PROPERTIES(HepMCfio  PROPERTIES CLEAN_DIRECT_OUTPUT 1)
+SET_TARGET_PROPERTIES(HepMCfioS PROPERTIES CLEAN_DIRECT_OUTPUT 1)
+target_link_libraries(HepMCfio  HepMC )
+target_link_libraries(HepMCfioS HepMC )
+
+INSTALL (TARGETS HepMCfio HepMCfioS
+    RUNTIME DESTINATION bin
+    LIBRARY DESTINATION lib
+    ARCHIVE DESTINATION lib
+    ) 
