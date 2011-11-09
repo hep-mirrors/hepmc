@@ -36,9 +36,5 @@ set( pkginclude_HEADERS
 		    HepMCDefs.h
 		    )
 
-CONFIGURE_FILE( ${CMAKE_CURRENT_SOURCE_DIR}/cmake-defs.h.in 
-                ${CMAKE_CURRENT_BINARY_DIR}/defs.h  @ONLY )
-
 INSTALL (FILES ${pkginclude_HEADERS}  
-               ${CMAKE_CURRENT_BINARY_DIR}/defs.h
          DESTINATION include/HepMC )

@@ -1,4 +1,9 @@
 
+2011-11-09  Lynn Garren
+
+     * add the ability to build with cmake
+     * defs.h is neither created nor installed when building with cmake
+
 2011-11-01  Lynn Garren
 
      * examples: move Pythia and Herwig examples to examples/fio
