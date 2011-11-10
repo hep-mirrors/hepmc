@@ -178,7 +178,7 @@ target_os = @target_os@
 target_vendor = @target_vendor@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
-SUBDIRS = HepMC src fio test examples doc
+SUBDIRS = HepMC src fio test examples examples/fio doc
 # list all subdirectories - for distribution and cleaning
 DIST_SUBDIRS = HepMC src fio test examples doc
 all: all-recursive
