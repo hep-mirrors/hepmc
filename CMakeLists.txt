@@ -33,7 +33,7 @@ else()
 endif()
 
 # find the HepMC cmake modules
-set(CMAKE_MODULE_PATH "${CMAKE_ROOT}/Modules")
+#set(CMAKE_MODULE_PATH "${CMAKE_ROOT}/Modules")
 set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake/Modules ${CMAKE_MODULE_PATH})
 message(STATUS "module path is ${CMAKE_MODULE_PATH}" )
 

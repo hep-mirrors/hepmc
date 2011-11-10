@@ -1,5 +1,6 @@
 
 include(HepMCBuildTest)
+link_libraries( HepMC )
 
 set( HepMC_tests 
 		 testHepMCIteration

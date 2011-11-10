@@ -11,7 +11,6 @@ macro( hepmc_test testname )
 
   message( STATUS "building ${testname} for ${testname}.sh" )
 
-  link_libraries( HepMC )
   find_file( ${testname}_source ${testname}.cc ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_BINARY_DIR} )
   ADD_EXECUTABLE(${testname} ${${testname}_source} ${ARGN} )
  
@@ -35,7 +34,6 @@ macro( hepmc_simple_test testname )
   # include test in search path
   include_directories ("${CMAKE_CURRENT_SOURCE_DIR}")
 
-  link_libraries( HepMC )
   find_file( ${testname}_source ${testname}.cc ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_BINARY_DIR} )
   #message(STATUS "building simple test ${testname} from ${${testname}_source}")
   ADD_EXECUTABLE(${testname} ${${testname}_source} ${ARGN} )

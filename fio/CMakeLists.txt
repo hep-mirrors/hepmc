@@ -6,14 +6,20 @@ set ( fio_source_list
 			 IO_HERWIG.cc
 			  )
 
+# this library is meant to interact with Fortran and needs extra flags
+    if(APPLE)
+      set( CMAKE_SHARED_LIBRARY_CREATE_CXX_FLAGS 
+           "${CMAKE_SHARED_LIBRARY_CREATE_CXX_FLAGS} -Wl,-undefined -Wl,dynamic_lookup -Wl,-single_module")
+    endif(APPLE)
+
 ADD_LIBRARY (HepMCfio  SHARED ${fio_source_list})
 ADD_LIBRARY (HepMCfioS STATIC ${fio_source_list})
 SET_TARGET_PROPERTIES (HepMCfio  PROPERTIES OUTPUT_NAME HepMCfio )
 SET_TARGET_PROPERTIES (HepMCfioS PROPERTIES OUTPUT_NAME HepMCfio )
 SET_TARGET_PROPERTIES(HepMCfio  PROPERTIES CLEAN_DIRECT_OUTPUT 1)
 SET_TARGET_PROPERTIES(HepMCfioS PROPERTIES CLEAN_DIRECT_OUTPUT 1)
-target_link_libraries(HepMCfio  HepMC )
-target_link_libraries(HepMCfioS HepMC )
+#target_link_libraries(HepMCfio  HepMC )
+#target_link_libraries(HepMCfioS HepMC )
 
 INSTALL (TARGETS HepMCfio HepMCfioS
     RUNTIME DESTINATION bin
