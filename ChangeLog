@@ -142,7 +142,7 @@
 
       * HepMC/GenEventIterators.h: This new header defines a set of classes
         which provide the appropriate iterators ranges.  They can be used to 
-	simplify code and also directly with such utilities as Boost foreach.
+	simplify code and also work directly with such utilities as std::foreach.
 	These new classes are 
 	GenEventVertexRange, ConstGenEventVertexRange, 
 	GenEventParticleRange, ConstGenEventParticleRange, 
