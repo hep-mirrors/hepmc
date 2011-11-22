@@ -32,14 +32,25 @@ else()
   message(FATAL_ERROR "You must specify the length units with -Dlength:STRING=[MM|CM]")
 endif()
 
+message(STATUS "default momentum and length are ${HEPMC_DEFAULT_MOM_UNIT} ${HEPMC_DEFAULT_LEN_UNIT}")
+
 # find the HepMC cmake modules
-#set(CMAKE_MODULE_PATH "${CMAKE_ROOT}/Modules")
 set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake/Modules ${CMAKE_MODULE_PATH})
-message(STATUS "module path is ${CMAKE_MODULE_PATH}" )
 
 # make sure we are not building from within the source code directory
-include(HepMCOutOfSourceBuild)
-hepmc_ensure_out_of_source_build()
+string(COMPARE EQUAL "${CMAKE_SOURCE_DIR}" "${CMAKE_BINARY_DIR}" in_source)
+string( REGEX MATCH "${CMAKE_SOURCE_DIR}/" in_source_subdir
+"${CMAKE_BINARY_DIR}")
+if (in_source OR in_source_subdir)
+  message(FATAL_ERROR "
+ERROR: In source builds of this project are not allowed.
+A separate build directory is required.
+Please create one and run cmake from the build directory.
+Also note that cmake has just added files to your source code directory.
+We suggest getting a new copy of the source code.
+Otherwise, delete `CMakeCache.txt' and the directory `CMakeFiles'.
+  ")
+endif ()
 
 # build_docs is OFF (false) by default
 if ( build_docs )
@@ -50,9 +61,7 @@ endif()
 
 # various handy macros
 include(HepMCVariables)
-include(HepMCParseVersion)
-
-include(CMakeDetermineFortranCompiler)
+#include(HepMCParseVersion)
 
 # because we want to move these libraries about,
 # do not embed full path in shared libraries or executables
@@ -66,8 +75,14 @@ include_directories ("${CMAKE_CURRENT_SOURCE_DIR}")
 #build all libraries in a single directory to facilitate testing
 SET(LIBRARY_OUTPUT_PATH ${PROJECT_BINARY_DIR}/lib)
 
+# parse the version 
+STRING( REGEX REPLACE "^([0-9]+)[.][0-9]+[.][0-9]+.*" "\\1" VERSION_MAJOR "${version}" )
+STRING( REGEX REPLACE "^[0-9]+[.]([0-9]+)[.][0-9]+.*" "\\1" VERSION_MINOR "${version}" )
+STRING( REGEX REPLACE "^[0-9]+[.][0-9]+[.]([0-9]+)+.*" "\\1" VERSION_PATCH "${version}" )
+message(STATUS "${project} version ${version} parses to ${VERSION_MAJOR} ${VERSION_MINOR} ${VERSION_PATCH}" )
+
 # set our preferred compiler flags and other variables
-hepmc_parse_version()
+include(CMakeDetermineFortranCompiler)
 hepmc_set_compiler_flags()
 
 add_subdirectory(HepMC) 

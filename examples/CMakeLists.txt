@@ -1,4 +1,3 @@
-include(HepMCFindCompiler)
 
 set( example_code 
 		  example_BuildEventFromScratch.cc
