@@ -150,10 +150,10 @@ AC_CONFIG_FILES([Makefile
                  test/Makefile
                  test/testHepMC.cc
                  test/testMass.cc
-                 test/testMockRoot.cc
                  test/testHepMCIteration.cc
                  test/testMultipleCopies.cc
                  test/testStreamIO.cc
+                 examples/root/testMockRoot.cc
                  examples/GNUmakefile.example
                  examples/fio/GNUmakefile.example])
 
@@ -164,6 +164,7 @@ AC_CONFIG_FILES([test/testHepMCIteration.sh], [chmod +x test/testHepMCIteration.
 AC_CONFIG_FILES([test/testPolarization.sh], [chmod +x test/testPolarization.sh])
 AC_CONFIG_FILES([test/testPrintBug.sh], [chmod +x test/testPrintBug.sh])
 AC_CONFIG_FILES([test/testStreamIO.sh], [chmod +x test/testStreamIO.sh])
+AC_CONFIG_FILES([examples/root/testMockRoot.sh], [chmod +x examples/root/testMockRoot.sh])
 
 # ----------------------------------------------------------------------
 # Finish up:

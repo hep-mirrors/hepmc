@@ -8,15 +8,15 @@ LDADD = $(top_builddir)/src/libHepMC.la
 check_PROGRAMS = testSimpleVector testUnits testPrintBug \
                  testHepMC testHepMCIteration testMass \
                  testMultipleCopies testStreamIO testFlow \
-		 testPolarization testWeights testMockRoot
+		 testPolarization testWeights 
 
-check_SCRIPTS = testHepMC.sh testHepMCIteration.sh testPrintBug.sh testMockRoot.sh \
+check_SCRIPTS = testHepMC.sh testHepMCIteration.sh testPrintBug.sh  \
                 testMass.sh testStreamIO.sh testFlow.sh testPolarization.sh
 
 # Identify test(s) to run when 'make check' is requested:
 TESTS = testSimpleVector testUnits \
         testHepMC.sh testHepMCIteration.sh testMass.sh testFlow.sh \
-	testStreamIO.sh testPrintBug.sh testPolarization.sh testMockRoot.sh \
+	testStreamIO.sh testPrintBug.sh testPolarization.sh  \
 	testMultipleCopies testWeights
 
 # Identify the test(s) for which failure is the intended outcome:
@@ -30,7 +30,6 @@ testPolarization_SOURCES   = testPolarization.cc
 testWeights_SOURCES        = testWeights.cc
 testHepMC_SOURCES          = testHepMC.cc testHepMCMethods.cc
 testMass_SOURCES           = testMass.cc
-testMockRoot_SOURCES       = testMockRoot.cc testHepMCMethods.cc
 testStreamIO_SOURCES       = testStreamIO.cc testHepMCMethods.cc
 testHepMCIteration_SOURCES = testHepMCIteration.cc
 testMultipleCopies_SOURCES = testMultipleCopies.cc
@@ -48,8 +47,7 @@ EXTRA_DIST = testIOGenEvent.input \
 	     testCrossSection.dat \
 	     testHepMC.dat \
 	     testHepMCIteration.dat \
-	     testMass1.dat \
-	     testMockRoot.dat testMockRoot.output
+	     testMass1.dat
 
 # Identify generated file(s) to be removed when 'make clean' is requested:
 CLEANFILES = testHepMC.cout testStreamIO.cout \
@@ -70,5 +68,4 @@ CLEANFILES = testHepMC.cout testStreamIO.cout \
 	     testFlow.out testFlow.out1 testFlow.out2 testFlow.out3 testFlow.out4 testFlow.out5 \
 	     testPolarization.cout testPolarization1.dat testPolarization2.dat \
 	     testPolarization4.out testPolarization5.out \
-	     testWithWeight.cout testWithWeight.out testWithWeight2.out \
-	     testMockRoot.out testMockRoot.cout
+	     testWithWeight.cout testWithWeight.out testWithWeight2.out

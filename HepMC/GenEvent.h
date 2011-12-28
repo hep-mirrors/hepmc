@@ -261,8 +261,6 @@ namespace HepMC {
 	
 	std::ostream& write(std::ostream&);
 	std::istream& read(std::istream&);
-	std::ostream& writeMockRoot(std::ostream&);
-	std::istream& readMockRoot(std::istream&);
 
 	/////////////////////
 	// mutator methods //
@@ -660,10 +658,6 @@ namespace HepMC {
     std::ostream & write_HepMC_IO_block_begin(std::ostream & );
     /// Explicitly write the end block line that IO_GenEvent uses
     std::ostream & write_HepMC_IO_block_end(std::ostream & );
-    /// Explicitly write the begin block lines that IO_MockRoot uses
-    std::ostream & write_HepMC_MockRoot_block_begin(std::ostream & );
-    /// Explicitly write the end block line that IO_MockRoot uses
-    std::ostream & write_HepMC_MockRoot_block_end(std::ostream & );
 
 
     ///////////////////////////

@@ -1,6 +1,6 @@
 //--------------------------------------------------------------------------
-#ifndef HEPMC_STREAM_INFO_H
-#define HEPMC_STREAM_INFO_H
+#ifndef HEPMC_MOCK_STREAM_INFO_H
+#define HEPMC_MOCK_STREAM_INFO_H
 
 //////////////////////////////////////////////////////////////////////////
 // garren@fnal.gov, March 2009
@@ -14,26 +14,31 @@
 namespace HepMC {
 
 /// The known_io enum is used to track which type of input is being read
-enum known_io { gen=1, ascii, extascii, ascii_pdt, extascii_pdt };
+enum known_io { gen=1, ascii, extascii, ascii_pdt, extascii_pdt, mockroot };
 
-//! StreamInfo contains extra information needed when using streaming IO.
+//! MockStreamInfo contains extra information needed when using streaming IO.
 
 ///
-/// \class  StreamInfo
+/// \class  MockStreamInfo
 /// This class contains the extra information needed when using streaming IO
 /// to process HepMC GenEvents
 ///
-class StreamInfo {
+class MockStreamInfo {
 public:
     /// default constructor
-    StreamInfo( );
+    MockStreamInfo( );
     /// destructor
-    ~StreamInfo() {}
+    ~MockStreamInfo() {}
 
     /// IO_GenEvent begin event block key
     std::string IO_GenEvent_Key()          const { return m_io_genevent_start; }
     /// IO_GenEvent end event block key
     std::string IO_GenEvent_End()          const { return m_io_genevent_end; }
+
+    /// IO_MockRoot begin event block key
+    std::string IO_MockRoot_Key()          const { return m_io_mockroot_start; }
+    /// IO_MockRoot end event block key
+    std::string IO_MockRoot_End()          const { return m_io_mockroot_end; }
 
     /// IO_Ascii begin event block key
     /// IO_Ascii has been removed, but we want to be able to read 
@@ -98,9 +103,11 @@ private: // data members
     bool        m_finished_first_event_io;
     // GenEvent I/O method keys
     std::string m_io_genevent_start;
+    std::string m_io_mockroot_start;
     std::string m_io_ascii_start;
     std::string m_io_extendedascii_start;
     std::string m_io_genevent_end;
+    std::string m_io_mockroot_end;
     std::string m_io_ascii_end;
     std::string m_io_extendedascii_end;
     // particle data I/O method keys
@@ -124,5 +131,5 @@ private: // data members
 
 } // HepMC
 
-#endif  // HEPMC_STREAM_INFO_H
+#endif  // HEPMC_MOCK_STREAM_INFO_H
 //--------------------------------------------------------------------------
