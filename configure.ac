@@ -118,13 +118,12 @@ AC_SUBST(DIFF_Q)
 
 # ----------------------------------------------------------------------
 # compiler dependent differences
+# support for cl (Visual C++) has been dropped
 # notice that the default is presumed to be some flavor of g++
 # ----------------------------------------------------------------------
 case "$CXX" in
 cl) 
   AM_CXXFLAGS="-EHsc -nologo -GR -MD"
-  AM_MAKEFLAGS="-f VCMakefile"
-  AC_SUBST(AM_MAKEFLAGS)
   CXXFLAGS=" "
   AC_SUBST(CXXFLAGS)
   build_visual="yes"
@@ -141,22 +140,14 @@ AM_CONDITIONAL(BUILD_VISUAL, test x$build_visual = xyes)
 # process Makefile.in and other *.in files
 # ----------------------------------------------------------------------
 AC_CONFIG_FILES([Makefile
-		 VCMakefile
 		 HepMC/Makefile
-		 HepMC/VCMakefile
                  doc/Makefile
-                 doc/VCMakefile
                  examples/Makefile
-                 examples/VCMakefile
                  examples/fio/Makefile
-                 examples/fio/VCMakefile
                  fio/Makefile
-                 fio/VCMakefile
                  src/Makefile
-                 src/VCMakefile
                  src/Units.cc
                  test/Makefile
-                 test/VCMakefile
                  test/testHepMC.cc
                  test/testMass.cc
                  test/testMockRoot.cc
