@@ -14,8 +14,8 @@ namespace HepMC {
     GenVertex::GenVertex( const FourVector& position,
 			  int id, const WeightContainer& weights ) 
 	: m_position(position), m_id(id), 
-	  m_weights(weights), m_event(0),
-	  m_barcode(0)
+	  m_weights(weights), m_barcode(0),
+	  m_event(0)
     {}
     //{
 	//s_counter++;
