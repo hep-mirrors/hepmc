@@ -2,13 +2,13 @@
 
 INSTALLDIR = $(pkgdatadir)/examples
 
-SUBDIRS = clhep herwig pythia
-DIST_SUBDIRS =  clhep herwig pythia
-
 # files to distribute
 EXTRA_DIST = \
+    example_BuildEventFromScratch.cc \
     example_EventSelection.cc \
     example_UsingIterators.cc \
+    example_VectorConversion.cc \
+    VectorConversion.h \
     example_UsingIterators.txt
 
 install-data-local:

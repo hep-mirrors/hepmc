@@ -9,39 +9,53 @@
 # or simply   gmake all     to compile all examples.
 #
 ################################################################################ Define directory paths 
-#    You may have to change variables in this block
+#    You may have to change GENSERdir and/or other variables
 #
   HepMCdir             = @prefix@
   HepMClib             = -L$(HepMCdir)/lib -lHepMC
   HepMCfiolib          = -L$(HepMCdir)/lib -lHepMCfio
+  GENSERdir            = @GENSERdir@
+  CLHEPdir             = @CLHEPdir@
 
 ################################################################################ Compiler options
 #
-CXX           = @CXX@
-INCLUDES 	= -I$(HepMCdir)/include
-CXXFLAGS      =  @AM_CXXFLAGS@ @CXXFLAGS@ $(INCLUDES)
-ifeq "$(CXX)" "g++"
-   F77           = g77
-   FLAGS 	= $(DFLG) -fno-second-underscore $(INCDIR)
-else
-  F77           = f77
+  CXX           = @CXX@
+  F77		= @F77@
+  INCLUDES 	= -I$(HepMCdir)/include -I$(CLHEPdir)/include
+  CXXFLAGS      =  @AM_CXXFLAGS@ @CXXFLAGS@ $(INCLUDES)
   FLAGS 	= $(DFLG) $(INCDIR)
+ifeq "$(CXX)" "g++"
+   FLAGS 	+= -fno-second-underscore
 endif
 
-LINK_LIBS     = @LDFLAGS@ 
+  EXAMPLES	= example_BuildEventFromScratch.exe	\
+		  example_EventSelection.exe	\
+		  example_UsingIterators.exe
+  LINK_LIBS     = @LDFLAGS@ 
+  UNAME = $(shell uname)
 
-SRCS	        = example_EventSelection.cc	\
-		example_UsingIterators.cc
-HDRS          = $(HepMCdir)/include/HepMC/*.h *.h
-EXAMPLES	= example_EventSelection.exe	\
-		example_UsingIterators.exe
+ifneq (,$(strip $(CLHEPdir)))
+  EXAMPLES	+= example_VectorConversion.exe
+ifeq "$(UNAME)" "Darwin"
+  CLHEP_LIB     = -L$(CLHEPdir)/lib -lCLHEP 
+else
+  CLHEP_LIB     = -L$(CLHEPdir)/lib -lCLHEP -Wl,-rpath -Wl,$(CLHEPdir)/lib
+endif  
+endif
+
+ifeq "$(UNAME)" "Darwin"
+else
+  LINK_LIBS     += -Wl,-rpath -Wl,$(HepMCdir)/lib
+endif
+
+  HDRS          = $(HepMCdir)/include/HepMC/*.h *.h
 
 ################################################################################ 
 
 PLATFORM=$(shell uname)
 
 ifeq "$(PLATFORM)" "Linux"
-    LINK_LIBS     += -Wl,-rpath -Wl,$(HepMCdir)/lib -lg2c 
+    LINK_LIBS     += -lg2c 
 endif
 
 ################################################################################ definition of the compiler options
@@ -76,8 +90,21 @@ endif
 
 ###############################################################################
 #
-.SUFFIXES:      .o .cxx .f .exe
+.SUFFIXES:      .o .cc .exe
 all:	$(EXAMPLES)
+
+example_BuildEventFromScratch.exe: example_BuildEventFromScratch.o
+	@echo "Building $@ ..."
+	$(CXX) $(FLAGS) example_BuildEventFromScratch.o \
+		$(HepMClib) \
+	        $(LINK_LIBS) -o $@
+
+example_VectorConversion.exe: example_VectorConversion.o
+	@echo "Building $@ ..."
+	$(CXX) $(FLAGS) example_VectorConversion.o \
+		$(HepMClib) \
+		$(CLHEP_LIB) \
+	        $(LINK_LIBS) -o $@
 
 example_EventSelection.exe: example_EventSelection.o
 	@echo "Building $@ ..."
@@ -92,18 +119,11 @@ example_UsingIterators.exe: example_UsingIterators.o
 	        $(LINK_LIBS) -o $@
 
 ###############################################################################
-# instructions for building a .o file from a .cxx file
+# instructions for building a .o file from a .cc file
 #
 .cc.o:         $(HDRS) $<
 	@echo "Compiling $< with $(CXX) ..."
 	@$(CXX) $(CXXFLAGS) -c $< -o $@
-
-###############################################################################
-# instructions for building a .o file from a .f file
-#
-.f.o:           $<
-	@echo "Compiling $< with $(F77) ..."
-	@$(F77) $(FLAGS) -c $< -o $@
 
 ###############################################################################
 # gmake clean       removes all garbage from HepMC directories.
