@@ -2,6 +2,6 @@
 
 includedir = $(prefix)/include
 
-SUBDIRS = HepMC src fio test examples doc
+SUBDIRS = HepMC src fio test examples examples/fio doc
 # list all subdirectories - for distribution and cleaning
-DIST_SUBDIRS = HepMC src fio test examples doc
+DIST_SUBDIRS = HepMC src fio test examples examples/fio doc

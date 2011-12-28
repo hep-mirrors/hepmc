@@ -2,8 +2,13 @@
 # installing HepMC
 #-------------------------------------------------------------
 
-Although it is possible to build the HepMC libraries from this directory,
+Although it may be possible to build the HepMC libraries from this directory,
 we recommend that you create a separate build directory and work from there.
+
+The directions below explain how to build with autoconf, etc.
+As of HepMC 2.06.06, you also have the option to build with cmake.
+We highly recommend that you build with cmake, as explained in 
+cmake/INSTALL.   Using cmake is preferred for MacOSX and Windows.
 
 #-------------------------------------------------------------
 #  platform specific issues
