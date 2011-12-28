@@ -383,7 +383,7 @@ Template Library (STL) style.
 In addition, the GenRanges header contains several iterator 
 classes which explicity provide begin() and end() methods for the various
 public iterator types, allowing the user to easily use such utilities as
-Boost foreach.
+std::foreach.
 
 \begin{figure}[!ht]
   \begin{center}
@@ -1044,7 +1044,7 @@ one-past-the-end of the particle iterator respectively.
 
 GenEventVertexRange( GenEvent\& ) is a wrapper for 
 GenEvent::vertex\_iterator which provides begin() and end() for
-ease of use with external fuctions, such as Boost foreach.
+ease of use with external fuctions, such as foreach.
 GenEvent::vertex\_range() also provides this functionality.
 
 %
@@ -1073,7 +1073,7 @@ one-past-the-end of the particle iterator respectively.
 
 GenEventParticleRange( GenEvent\& ) is a wrapper for
 GenEvent::particle\_iterator which provides begin() and end() for
-ease of use with external fuctions, such as Boost foreach.
+ease of use with external fuctions, such as foreach.
 GenEvent::particle\_range() also provides this functionality.
 
 %
@@ -1176,7 +1176,7 @@ and the same considerations apply.
 
 GenVertexParticleRange( GenVertex\&, IteratorRange ) is a wrapper for
 GenVertex::particle\_iterator which provides begin() and end() for
-ease of use with external fuctions, such as Boost foreach.
+ease of use with external fuctions, such as foreach.
 If the HepMC::IteratorRange is unspecified, it defaults to "relatives".
 GenVertex::particles( IteratorRange ) also provides this functionality.
 
