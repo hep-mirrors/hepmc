@@ -1,11 +1,18 @@
 # This makefile is used to copy files during the "make install" step
 
-INSTALLDIR = $(pkgdatadir)/examples/herwig
+INSTALLDIR = $(pkgdatadir)/examples/fio
 
 # files to distribute
 EXTRA_DIST = \
     example_MyHerwig.cc \
-    testHerwigCopies.cc
+    example_MyPythia.cc \
+    example_MyPythiaOnlyToHepMC.cc \
+    example_PythiaStreamIO.cc \
+    testHerwigCopies.cc	\
+    testPythiaCopies.cc	\
+    initPythia.cc \
+    initpydata.f \
+    PythiaHelper.h
 
 install-data-local:
 	$(mkinstalldirs) $(DESTDIR)$(INSTALLDIR)

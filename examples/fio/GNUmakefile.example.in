@@ -9,44 +9,53 @@
 # or simply   gmake all     to compile all examples.
 #
 ################################################################################ Define directory paths 
-#    You may have to change GENSERdir and/or other variables in this block
+#    You may have to change GENSERdir and/or other variables
 #
   HepMCdir             = @prefix@
   HepMClib             = -L$(HepMCdir)/lib -lHepMC
   HepMCfiolib          = -L$(HepMCdir)/lib -lHepMCfio
   GENSERdir            = @GENSERdir@
+  Pythia_LIB	= -L$(GENSERdir)/lib -Wl,-rpath -Wl,$(GENSERdir)/lib \
+                  -lpythia6_403 -lpythia6_403_dumm -lpythia6_403_pdfdumm
   Herwig_LIB	= -L$(GENSERdir)/lib -Wl,-rpath -Wl,$(GENSERdir)/lib \
                   -lherwig6_510 -lherwig6_510_dumm -lherwig6_510_pdfdumm
 
 ################################################################################ Compiler options
 #
-CXX           = @CXX@
-INCLUDES 	= -I$(HepMCdir)/include
-CXXFLAGS      =  @AM_CXXFLAGS@ @CXXFLAGS@ $(INCLUDES)
+  CXX           = @CXX@
+  F77		= @F77@
+  INCLUDES 	= -I$(HepMCdir)/include -I$(CLHEPdir)/include
+  CXXFLAGS      =  @AM_CXXFLAGS@ @CXXFLAGS@ $(INCLUDES)
 ifeq "$(CXX)" "g++"
-   F77           = g77
    FLAGS 	= $(DFLG) -fno-second-underscore $(INCDIR)
 else
-  F77           = f77
   FLAGS 	= $(DFLG) $(INCDIR)
 endif
 
-LINK_LIBS     = @LDFLAGS@ 
+  LINK_LIBS     = @LDFLAGS@ 
+
 UNAME = $(shell uname)
-
-SRCS	        = example_MyHerwig.cc	\
-		testHerwigCopies.cc
-HDRS          = $(HepMCdir)/include/HepMC/*.h *.h
-EXAMPLES	= example_MyHerwig.exe	\
-		testHerwigCopies.exe
-
-################################################################################ 
-
-PLATFORM=$(shell uname)
-
-ifeq "$(PLATFORM)" "Linux"
-    LINK_LIBS     += -Wl,-rpath -Wl,$(HepMCdir)/lib -lg2c 
+ifneq "$(UNAME)" "Darwin"
+  LINK_LIBS     += -Wl,-rpath -Wl,$(HepMCdir)/lib
 endif
+
+ifeq "$(UNAME)" "Linux"
+ifeq "$(F77)" "gfortran"
+    LINK_LIBS     += -lgfortran
+else
+    LINK_LIBS     += -lg2c 
+endif
+endif
+
+  initpydata_OBJ= initpydata.o
+  pythia_OBJ    = initPythia.o initpydata.o
+  HDRS          = $(HepMCdir)/include/HepMC/*.h *.h
+  EXAMPLES	= example_MyHerwig.exe	\
+		  example_MyPythia.exe	\
+		  example_MyPythiaOnlyToHepMC.exe	\
+		  example_PythiaStreamIO.exe	\
+		  testPythiaCopies.exe	\
+		  testHerwigCopies.exe
 
 ################################################################################ definition of the compiler options
 #	-I location of directory containing include files
@@ -88,6 +97,30 @@ example_MyHerwig.exe: example_MyHerwig.o
 	$(CXX) $(FLAGS) example_MyHerwig.o \
 		$(HepMClib) $(HepMCfiolib) \
 	        $(Herwig_LIB) $(LINK_LIBS) -o $@
+
+example_MyPythia.exe: $(initpydata_OBJ) $(pythia_OBJ) example_MyPythia.o
+	@echo "Building $@ ..."
+	$(CXX) $(FLAGS) $(pythia_OBJ) example_MyPythia.o \
+		$(HepMClib) $(HepMCfiolib) \
+	        $(Pythia_LIB) $(LINK_LIBS) -o $@
+
+example_MyPythiaOnlyToHepMC.exe: $(initpydata_OBJ) $(pythia_OBJ) example_MyPythiaOnlyToHepMC.o
+	@echo "Building $@ ..."
+	$(CXX) $(FLAGS) $(pythia_OBJ) example_MyPythiaOnlyToHepMC.o \
+		$(HepMClib) $(HepMCfiolib) \
+	        $(Pythia_LIB) $(LINK_LIBS) -o $@
+
+example_PythiaStreamIO.exe: $(initpydata_OBJ) $(pythia_OBJ) example_PythiaStreamIO.o
+	@echo "Building $@ ..."
+	$(CXX) $(FLAGS) $(pythia_OBJ) example_PythiaStreamIO.o \
+		$(HepMClib) $(HepMCfiolib) \
+	        $(Pythia_LIB) $(LINK_LIBS) -o $@
+
+testPythiaCopies.exe: $(initpydata_OBJ) $(pythia_OBJ) testPythiaCopies.o
+	@echo "Building $@ ..."
+	$(CXX) $(FLAGS) $(pythia_OBJ) testPythiaCopies.o \
+		$(HepMClib) $(HepMCfiolib) \
+	        $(Pythia_LIB) $(LINK_LIBS) -o $@
 
 testHerwigCopies.exe: testHerwigCopies.o
 	@echo "Building $@ ..."
