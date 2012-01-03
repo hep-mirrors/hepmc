@@ -80,7 +80,7 @@ namespace HepMC {
 	bool       operator!=( const GenVertex& a ) const; //!< inequality
 	void       print( std::ostream& ostr = std::cout ) const; //!< print vertex information
 
-	double     check_momentum_conservation() const;//!< |Sum (mom_in-mom_out)|
+	double     check_momentum_conservation() const;//!< |Sum (three_mom_in-three_mom_out)|
 
 	/// add incoming particle
 	void       add_particle_in( GenParticle* inparticle );
