@@ -48,8 +48,8 @@ public:
   : m_x(xin), m_y(yin), m_z(zin), m_t(tin) {}
 
   /// constructor requiring only t 
-  FourVector(double t)
-  : m_x(0), m_y(0), m_z(0), m_t(t) {}
+  FourVector(double tin)
+  : m_x(0), m_y(0), m_z(0), m_t(tin) {}
 
   FourVector() 
   : m_x(0), m_y(0), m_z(0), m_t(0) {}
@@ -99,15 +99,15 @@ public:
   /// set x, y, z, and t
   void set        (double x, double y, double z, double  t);
 
-  void setX(double x) { m_x=x; }  //!< set x
-  void setY(double y) { m_y=y; }  //!< set y
-  void setZ(double z) { m_z=z; }  //!< set z
-  void setT(double t) { m_t=t; }  //!< set t
+  void setX(double xin) { m_x=xin; }  //!< set x
+  void setY(double yin) { m_y=yin; }  //!< set y
+  void setZ(double zin) { m_z=zin; }  //!< set z
+  void setT(double tin) { m_t=tin; }  //!< set t
 
-  void setPx(double x) { m_x=x; }  //!< set px
-  void setPy(double y) { m_y=y; }  //!< set py
-  void setPz(double z) { m_z=z; }  //!< set pz
-  void setE(double t)  { m_t=t; }  //!< set E
+  void setPx(double xin) { m_x=xin; }  //!< set px
+  void setPy(double yin) { m_y=yin; }  //!< set py
+  void setPz(double zin) { m_z=zin; }  //!< set pz
+  void setE(double tin)  { m_t=tin; }  //!< set E
 
 private:
 
@@ -156,9 +156,9 @@ public:
   double y() const { return m_y; }  //!< return y
   double z() const { return m_z; }  //!< return z
 
-  void setX(double x) { m_x=x; }  //!< set x
-  void setY(double y) { m_y=y; }  //!< set y
-  void setZ(double z) { m_z=z; }  //!< set z
+  void setX(double xin) { m_x=xin; }  //!< set x
+  void setY(double yin) { m_y=yin; }  //!< set y
+  void setZ(double zin) { m_z=zin; }  //!< set z
   void set( double x, double y, double z);   //!< set x, y, and z
 
   double phi()   const;  //!< The azimuth angle.
