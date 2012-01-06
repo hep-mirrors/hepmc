@@ -1,6 +1,10 @@
 
 2012-01-05  Lynn Garren
 
+     * src/GenEvent.cc: fix error text for GenEvent::use_length_unit
+
+2012-01-05  Lynn Garren
+
      * GenParticle.h, GenVertex.h, PdfInfo.h, SimpleVector.h, SimpleVector.icc:
        Rename local variables to avoid shadowing class variables.
        This problem surfaces when compiling with -Wshadow.

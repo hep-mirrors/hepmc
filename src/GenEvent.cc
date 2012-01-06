@@ -658,7 +658,7 @@ namespace HepMC {
     bool GenEvent::use_length_unit( std::string& newunit ) { 
         if     ( newunit == "MM" ) return use_length_unit( Units::MM );
 	else if( newunit == "CM" ) return use_length_unit( Units::CM );
-	else std::cerr << "GenEvent::use_length_unit ERROR: use either MEV or GEV\n";
+	else std::cerr << "GenEvent::use_length_unit ERROR: use either MM or CM\n";
 	return false;
     }  
 
