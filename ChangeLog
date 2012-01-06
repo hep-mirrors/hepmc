@@ -2,6 +2,8 @@
 2012-01-05  Lynn Garren
 
      * src/GenEvent.cc: fix error text for GenEvent::use_length_unit
+     
+     * examples/pythia8: add main31 and main32 from pythia8
 
 2012-01-05  Lynn Garren
 

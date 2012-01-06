@@ -16,3 +16,4 @@ INSTALL (FILES ${example_code}
          DESTINATION share/HepMC/examples )
 
 add_subdirectory(fio) 
+add_subdirectory(pythia8) 

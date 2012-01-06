@@ -163,7 +163,10 @@ AC_CONFIG_FILES([Makefile
                  test/testMultipleCopies.cc
                  test/testStreamIO.cc
                  examples/GNUmakefile.example
-                 examples/fio/GNUmakefile.example])
+                 examples/fio/GNUmakefile.example
+                 examples/pythia8/config.csh
+                 examples/pythia8/config.sh
+                 examples/pythia8/GNUmakefile.example])
 
 AC_CONFIG_FILES([test/testHepMC.sh], [chmod +x test/testHepMC.sh])
 AC_CONFIG_FILES([test/testFlow.sh], [chmod +x test/testFlow.sh])
