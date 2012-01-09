@@ -1,5 +1,8 @@
 # build HepMC documentation
 # for documentation
+
+if ( build_docs )
+
 find_package(LATEX)
 find_package(Doxygen)
 
@@ -65,8 +68,6 @@ ENDIF(LATEX_COMPILER)
 INSTALL (FILES ${CMAKE_CURRENT_BINARY_DIR}/${main_tex_file}.pdf
          DESTINATION share/HepMC/doc )
 endmacro( hepmc_latex )
-
-if ( build_docs )
 
 # use the macro to build the user manual
 hepmc_latex( HepMC HepMC2_user_manual 
