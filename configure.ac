@@ -4,7 +4,7 @@
 # ----------------------------------------------------------------------
 
 AC_PREREQ(2.59)
-AC_INIT([HepMC],[2.06.06],[https://savannah.cern.ch/projects/hepmc/],[HepMC])
+AC_INIT([HepMC],[2.06.07],[https://savannah.cern.ch/projects/hepmc/],[HepMC])
 AC_CANONICAL_TARGET
 AM_INIT_AUTOMAKE(1.9 foreign)
 AC_CONFIG_SRCDIR([src/GenEvent.cc])
@@ -123,7 +123,6 @@ AC_SUBST(DIFF_Q)
 case "$CXX" in
 cl) 
   AM_CXXFLAGS="-EHsc -nologo -GR -MD"
-  AM_MAKEFLAGS="-f VCMakefile"
   AC_SUBST(AM_MAKEFLAGS)
   CXXFLAGS=" "
   AC_SUBST(CXXFLAGS)
@@ -141,22 +140,15 @@ AM_CONDITIONAL(BUILD_VISUAL, test x$build_visual = xyes)
 # process Makefile.in and other *.in files
 # ----------------------------------------------------------------------
 AC_CONFIG_FILES([Makefile
-		 VCMakefile
 		 HepMC/Makefile
-		 HepMC/VCMakefile
                  doc/Makefile
-                 doc/VCMakefile
                  examples/Makefile
-                 examples/VCMakefile
                  examples/fio/Makefile
-                 examples/fio/VCMakefile
+                 examples/pythia8/Makefile
                  fio/Makefile
-                 fio/VCMakefile
                  src/Makefile
-                 src/VCMakefile
                  src/Units.cc
                  test/Makefile
-                 test/VCMakefile
                  test/testHepMC.cc
                  test/testMass.cc
                  test/testHepMCIteration.cc
