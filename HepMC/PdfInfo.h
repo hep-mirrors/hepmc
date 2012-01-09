@@ -133,15 +133,15 @@ std::ostream & operator << (std::ostream &, PdfInfo const *);
 std::istream & operator >> (std::istream &, PdfInfo *);
 
 // inline operators
-inline PdfInfo::PdfInfo( int i1, int i2, double x1, double x2,
+inline PdfInfo::PdfInfo( int i1, int i2, double xin1, double xin2,
         		 double q, double p1, double p2,
-			 int pdf_id1, int pdf_id2 )
+			 int pid1, int pid2 )
     : m_id1(i1), 
       m_id2(i2),
-      m_pdf_id1(pdf_id1),
-      m_pdf_id2(pdf_id2),
-      m_x1(x1),
-      m_x2(x2),
+      m_pdf_id1(pid1),
+      m_pdf_id2(pid2),
+      m_x1(xin1),
+      m_x2(xin2),
       m_scalePDF(q),
       m_pdf1(p1),
       m_pdf2(p2)

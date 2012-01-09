@@ -240,7 +240,7 @@ namespace HepMC {
 
     inline void GenParticle::set_pdg_id( int id ) { m_pdg_id = id; }
 
-    inline void GenParticle::set_status( int status ) { m_status = status; }
+    inline void GenParticle::set_status( int st ) { m_status = st; }
 
     inline void GenParticle::set_flow( const Flow& f ) { m_flow = f; }
 

@@ -32,11 +32,11 @@ inline FourVector & FourVector::operator=(const FourVector & v) {
   return *this;
 }
 
-inline void FourVector::set(double x, double y, double z, double  t) {
-  m_x = x;
-  m_y = y;
-  m_z = z;
-  m_t = t;
+inline void FourVector::set(double xin, double yin, double zin, double  tin) {
+  m_x = xin;
+  m_y = yin;
+  m_z = zin;
+  m_t = tin;
 }
 
 inline double FourVector::m2() const {
@@ -73,11 +73,11 @@ inline bool FourVector::operator != (const FourVector & v) const {
 }
 
 inline double FourVector::pseudoRapidity() const {
-  double m = std::sqrt( m_x*m_x + m_y*m_y + m_z*m_z );
-  if ( m==  0   ) return  0.0;   
-  if ( m==  z() ) return  1.0E72;
-  if ( m== -z() ) return -1.0E72;
-  return 0.5*log( (m+z())/(m-z()) );
+  double m1 = std::sqrt( m_x*m_x + m_y*m_y + m_z*m_z );
+  if ( m1==  0   ) return  0.0;   
+  if ( m1==  z() ) return  1.0E72;
+  if ( m1== -z() ) return -1.0E72;
+  return 0.5*log( (m1+z())/(m1-z()) );
 }
 
 inline double FourVector::eta()    const { return pseudoRapidity();}
@@ -105,10 +105,10 @@ inline double ThreeVector::r()    const {
 return std::sqrt( m_x*m_x + m_y*m_y + m_z*m_z );
 }
 
-inline void ThreeVector::set(double x, double y, double z) {
-  m_x = x;
-  m_y = y;
-  m_z = z;
+inline void ThreeVector::set(double xin, double yin, double zin) {
+  m_x = xin;
+  m_y = yin;
+  m_z = zin;
 }
 
 inline void ThreeVector::setPhi(double ph) { 

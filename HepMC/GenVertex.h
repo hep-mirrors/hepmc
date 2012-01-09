@@ -425,11 +425,11 @@ namespace HepMC {
     inline const WeightContainer& GenVertex::weights() const 
     { return m_weights; }
 
-    inline void GenVertex::set_position( const FourVector& position ) {
-	m_position = position;
+    inline void GenVertex::set_position( const FourVector& pos ) {
+	m_position = pos;
     }
 
-    inline void GenVertex::set_id( int id ) { m_id = id; }
+    inline void GenVertex::set_id( int pid ) { m_id = pid; }
 
     //////////////
     // INLINES  //

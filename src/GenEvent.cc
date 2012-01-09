@@ -585,16 +585,16 @@ namespace HepMC {
 
     bool  GenEvent::add_particle_to_list(HepMC::GenParticle* p) {
 	m_particles.push_back(p);
-	size_t ind = find(m_particles.begin(),m_particles.end(),p) 
-		     - m_particles.begin();
+	//size_t ind = find(m_particles.begin(),m_particles.end(),p) 
+	//	     - m_particles.begin();
 	return true;
     }
 
     bool  GenEvent::add_vertex_to_list(HepMC::GenVertex* v) {
 	// add to m_vertices
 	m_vertices.push_back( v );
-	size_t ind = find(m_vertices.begin(),m_vertices.end(),v) 
-		     - m_vertices.begin();
+	//size_t ind = find(m_vertices.begin(),m_vertices.end(),v) 
+	//	     - m_vertices.begin();
 	return true;
     }
 
