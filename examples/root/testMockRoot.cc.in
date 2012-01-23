@@ -12,9 +12,7 @@
 #include "HepMC/GenEvent.h"
 #include "HepMC/Version.h"
 #include "HepMC/IO_GenEvent.h"
-#ifdef HEPMC_HAS_IO_MOCKROOT
-#include "HepMC/IO_MockRoot.h"
-#endif
+#include "IO_MockRoot.h"
 
 // define methods and classes used by this test
 #include "IsGoodEvent.h"
@@ -25,16 +23,10 @@ void read_variousFormats(std::ostream & os);
 
 int main() { 
     std::ofstream os( "testMockRoot.cout" );
-#ifdef HEPMC_HAS_IO_MOCKROOT
     std::ofstream osv( "testMockRootVarious.cout" );
     read_testIOGenEvent(os);
     read_variousFormats(osv);
     return 0;
-#else
-    os << "IO_MockRoot is not available in HepMC Version " 
-         << versionName() << std::endl;
-    return 1;
-#endif
 }
 
 
@@ -43,13 +35,10 @@ void read_testIOGenEvent(std::ostream & os)
     os << std::endl;
     os << "basic IO_GenEvent input and IO_MockRoot output" << std::endl;
     // declare an input strategy to read the data - units are GeV and mm
-    HepMC::IO_GenEvent ascii_in("@srcdir@/testIOGenEvent.input",std::ios::in);
+    HepMC::IO_GenEvent ascii_in("@srcdir@/../../test/testIOGenEvent.input",std::ios::in);
     ascii_in.use_input_units( HepMC::Units::GEV, HepMC::Units::MM );
     // declare an IO_MockRoot for writing out the good events
     HepMC::IO_MockRoot mockRootOut("testMockRoot.out",std::ios::out);
-    // declare an output IO_MockRoot for testing precision
-    HepMC::IO_MockRoot prec_out("testMockRootprecision.out",std::ios::out);
-    prec_out.precision(10);
     // declare an instance of the event selection predicate
     IsGoodEvent is_good_event;
     //........................................EVENT LOOP
@@ -65,7 +54,6 @@ void read_testIOGenEvent(std::ostream & os)
 	    particleTypes(evt,os);
 	    //mockRootOut << evt;
 	    mockRootOut.write_event( evt );
-	    prec_out << evt;
 	    ++num_good_events;
 	}
 	
@@ -83,7 +71,7 @@ void read_variousFormats(std::ostream & os)
     os << std::endl;
     os << "process varied input" << std::endl;
     // declare an input strategy 
-    HepMC::IO_GenEvent ascii_in("@srcdir@/testHepMCVarious.input",std::ios::in);
+    HepMC::IO_GenEvent ascii_in("@srcdir@/../../test/testHepMCVarious.input",std::ios::in);
     ascii_in.use_input_units( HepMC::Units::GEV, HepMC::Units::MM );
     // declare an IO_MockRoot for writing out the good events
     HepMC::IO_MockRoot mockRootOut("testMockRootVarious.out",std::ios::out);

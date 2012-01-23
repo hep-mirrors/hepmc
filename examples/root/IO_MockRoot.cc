@@ -6,10 +6,11 @@
 // Format: event header, list of vertices, list of particles
 //////////////////////////////////////////////////////////////////////////
 
-#include "HepMC/IO_MockRoot.h"
+#include "IO_MockRoot.h"
 #include "HepMC/IO_Exception.h"
 #include "HepMC/GenEvent.h"
 #include "HepMC/StreamHelpers.h"
+#include "HepMC/Version.h"
 
 namespace HepMC {
 
@@ -21,7 +22,9 @@ namespace HepMC {
       m_iostr(0),
       m_have_file(false),
       m_error_type(IO_Exception::OK),
-      m_error_message()
+      m_error_message(),
+      m_io_mockroot_start("HepMC::IO_MockRoot-START_EVENT_LISTING"),
+      m_io_mockroot_end("HepMC::IO_MockRoot-END_EVENT_LISTING")
     {
 	if ( (m_mode&std::ios::out && m_mode&std::ios::in) ||
 	     (m_mode&std::ios::app && m_mode&std::ios::in) ) {
@@ -53,7 +56,9 @@ namespace HepMC {
       m_iostr(&istr),
       m_have_file(false),
       m_error_type(IO_Exception::OK),
-      m_error_message()
+      m_error_message(),
+      m_io_mockroot_start("HepMC::IO_MockRoot-START_EVENT_LISTING"),
+      m_io_mockroot_end("HepMC::IO_MockRoot-END_EVENT_LISTING")
     { 
         detail::establish_input_stream_info( istr );
     }
@@ -64,14 +69,16 @@ namespace HepMC {
       m_iostr(&ostr),
       m_have_file(false),
       m_error_type(IO_Exception::OK),
-      m_error_message()
+      m_error_message(),
+      m_io_mockroot_start("HepMC::IO_MockRoot-START_EVENT_LISTING"),
+      m_io_mockroot_end("HepMC::IO_MockRoot-END_EVENT_LISTING")
    {
         detail::establish_output_stream_info( ostr );
    }
 
     IO_MockRoot::~IO_MockRoot() {
     	if ( m_ostr != NULL ) {
-	    write_HepMC_MockRoot_block_end(*m_ostr);
+	    write_HepMC_MockRoot_block_end();
 	}
 	if(m_have_file) m_file.close();
     }
@@ -128,7 +135,7 @@ namespace HepMC {
 	}
 	// use streaming input
         try {
-	    evt->readMockRoot(*m_istr);
+	    readMockRoot(evt);
 	}
         catch (IO_Exception& e) {
             m_error_type = IO_Exception::InvalidData;
@@ -139,6 +146,9 @@ namespace HepMC {
 	if( evt->is_valid() ) return true;
 	return false;
     }
+
+    void IO_MockRoot::readMockRoot(GenEvent* evt)
+    {}
 
     void IO_MockRoot::write_event( const GenEvent* evt ) {
 	/// Writes evt to output stream. It does NOT delete the event after writing.
@@ -153,27 +163,174 @@ namespace HepMC {
 	}
 	//
 	// write event listing key before first event only.
-	write_HepMC_MockRoot_block_begin(*m_ostr);
+	write_HepMC_MockRoot_block_begin();
 	// write event
 	// explicit cast is necessary
 	GenEvent e = *evt;
-	e.writeMockRoot(*m_ostr);
+	writeMockRoot(e);
     }
 
-    void IO_MockRoot::write_comment( const std::string comment ) {
-	// make sure the stream is good, and that it is in output mode
-	if ( !(*m_ostr) ) return;
-	if ( m_ostr == NULL ) {
-            m_error_type = IO_Exception::WrongFileType;
-	    m_error_message = "HepMC::IO_MockRoot::write_event attempt to write to input file.";
-	    std::cerr << m_error_message << std::endl;
-	    return;
-	}
-	// write end of event listing key if events have already been written
-	write_HepMC_MockRoot_block_end(*m_ostr);
-	// insert the comment key before the comment
-	*m_ostr << "\n" << "HepMC::IO_MockRoot-COMMENT\n";
-	*m_ostr << comment << std::endl;
+void IO_MockRoot::writeMockRoot(GenEvent& evt)
+{
+    //
+    // output the event data including the number of primary vertices
+    //  and the total number of vertices
+    //std::vector<long> random_states = random_states();
+    *m_ostr << 'E';
+    detail::output( *m_ostr, evt.event_number() );
+    detail::output( *m_ostr, evt.mpi() );
+    detail::output( *m_ostr, evt.event_scale() );
+    detail::output( *m_ostr, evt.alphaQCD() );
+    detail::output( *m_ostr, evt.alphaQED() );
+    detail::output( *m_ostr, evt.signal_process_id() );
+    detail::output( *m_ostr,   ( evt.signal_process_vertex() ?
+		evt.signal_process_vertex()->barcode() : 0 )   );
+    detail::output( *m_ostr, evt.vertices_size() ); // total number of vertices.
+    write_beam_particles( evt.beam_particles() );
+    // random state
+    std::vector<long> randomstates = evt.random_states();
+    detail::output( *m_ostr, (int)randomstates.size() );
+    for ( std::vector<long>::iterator rs = randomstates.begin(); 
+	  rs != randomstates.end(); ++rs ) {
+	 detail::output( *m_ostr, *rs );
     }
+    // weights
+    evt.weights().write_io(*m_ostr);
+    //
+    // Units
+    *m_ostr << "U " << name(evt.momentum_unit());
+    *m_ostr << " " << name(evt.length_unit());
+    detail::output( *m_ostr,'\n');
+    //
+    // write GenCrossSection if it has been set
+    if( evt.cross_section() ) evt.cross_section()->write(*m_ostr);
+    //
+    // write HeavyIon and PdfInfo if they have been set
+    if( evt.heavy_ion() ) *m_ostr << evt.heavy_ion() ;
+    if( evt.pdf_info() ) *m_ostr << evt.pdf_info() ;
+    //
+    // Output vertices
+    write_vertex_list(evt);
+    //
+    // Output particles
+    write_particle_list(evt);
+}
+
+void IO_MockRoot::write_beam_particles( std::pair<HepMC::GenParticle *,HepMC::GenParticle *> pr)
+{
+    GenParticle* p = pr.first;
+    if(!p) {
+       detail::output( *m_ostr, 0 );
+    } else {
+       detail::output( *m_ostr, p->barcode() );
+    }
+    p = pr.second;
+    if(!p) {
+       detail::output( *m_ostr, 0 );
+    } else {
+       detail::output( *m_ostr, p->barcode() );
+    }
+}
+
+void IO_MockRoot::write_vertex_list(GenEvent& evt)
+{
+    for ( GenEvent::vertex_iterator v = evt.vertices_begin();
+          v != evt.vertices_end(); ++v ) {
+	// First collect info we need
+	// count the number of orphan particles going into v
+	int num_orphans_in = 0;
+	for ( GenVertex::particles_in_const_iterator p1
+		  = (*v)->particles_in_const_begin();
+	      p1 != (*v)->particles_in_const_end(); ++p1 ) {
+	    if ( !(*p1)->production_vertex() ) ++num_orphans_in;
+	}
+	//
+	*m_ostr << 'V';
+	detail::output( *m_ostr, (*v)->barcode() ); // v's unique identifier
+	detail::output( *m_ostr, (*v)->id() );
+	detail::output( *m_ostr, (*v)->position().x() );
+	detail::output( *m_ostr, (*v)->position().y() );
+	detail::output( *m_ostr, (*v)->position().z() );
+	detail::output( *m_ostr, (*v)->position().t() );
+	detail::output( *m_ostr, num_orphans_in );
+	detail::output( *m_ostr, (int)(*v)->particles_out_size() );
+	detail::output( *m_ostr, (int)(*v)->weights().size() );
+	for ( WeightContainer::const_iterator w = (*v)->weights().begin(); 
+	      w != (*v)->weights().end(); ++w ) {
+	    detail::output( *m_ostr, *w );
+	}
+	detail::output( *m_ostr,'\n');
+        
+    }
+
+}
+
+void IO_MockRoot::write_particle_list(GenEvent& evt)
+{
+    for ( GenEvent::particle_iterator p = evt.particles_begin();
+          p != evt.particles_end(); ++p ) {
+	*m_ostr << 'P';
+	detail::output( *m_ostr, (*p)->barcode() );
+	detail::output( *m_ostr, (*p)->pdg_id() );
+	detail::output( *m_ostr, (*p)->momentum().px() );
+	detail::output( *m_ostr, (*p)->momentum().py() );
+	detail::output( *m_ostr, (*p)->momentum().pz() );
+	detail::output( *m_ostr, (*p)->momentum().e() );
+	detail::output( *m_ostr, (*p)->generated_mass() );
+	detail::output( *m_ostr, (*p)->status() );
+	detail::output( *m_ostr, (*p)->polarization().theta() );
+	detail::output( *m_ostr, (*p)->polarization().phi() );
+	detail::output( *m_ostr,   ( (*p)->end_vertex() ? (*p)->end_vertex()->barcode() : 0 )  );
+	*m_ostr << ' ' << (*p)->flow() << "\n";
+    }
+
+}
+
+void IO_MockRoot::write_comment( const std::string comment ) {
+    // make sure the stream is good, and that it is in output mode
+    if ( !(*m_ostr) ) return;
+    if ( m_ostr == NULL ) {
+        m_error_type = IO_Exception::WrongFileType;
+	m_error_message = "HepMC::IO_MockRoot::write_event attempt to write to input file.";
+	std::cerr << m_error_message << std::endl;
+	return;
+    }
+    // write end of event listing key if events have already been written
+    write_HepMC_MockRoot_block_end();
+    // insert the comment key before the comment
+    *m_ostr << "\n" << "HepMC::IO_MockRoot-COMMENT\n";
+    *m_ostr << comment << std::endl;
+}
 	
+void IO_MockRoot::write_HepMC_MockRoot_block_begin( )
+{
+    // make sure the stream is good, and that it is in output mode
+    if ( !(*m_ostr) ) return;
+    if ( m_ostr == NULL ) {
+        m_error_type = IO_Exception::WrongFileType;
+	m_error_message = "HepMC::IO_MockRoot::write_HepMC_IO_block_begin attempt to write to input file.";
+	std::cerr << m_error_message << std::endl;
+	return;
+    }
+
+    *m_ostr << "\n" << "HepMC::Version " << versionName();
+    *m_ostr << "\n";
+    *m_ostr << m_io_mockroot_start << "\n";
+}
+
+void IO_MockRoot::write_HepMC_MockRoot_block_end( )
+{
+    // make sure the stream is good, and that it is in output mode
+    if ( !(*m_ostr) ) return;
+    if ( m_ostr == NULL ) {
+        m_error_type = IO_Exception::WrongFileType;
+	m_error_message = "HepMC::IO_MockRoot::write_HepMC_IO_block_end attempt to write to input file.";
+	std::cerr << m_error_message << std::endl;
+	return;
+    }
+
+    *m_ostr << m_io_mockroot_end << "\n";
+    *m_ostr << std::flush;
+}
+
 } // HepMC

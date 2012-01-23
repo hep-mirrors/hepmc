@@ -15,4 +15,7 @@ INSTALL (FILES ${example_code}
                ${CMAKE_CURRENT_BINARY_DIR}/GNUmakefile
          DESTINATION share/HepMC/examples )
 
-add_subdirectory(fio) 
+add_subdirectory(fio)
+add_subdirectory(pythia8)
+#add_subdirectory(compress)
+add_subdirectory(root)

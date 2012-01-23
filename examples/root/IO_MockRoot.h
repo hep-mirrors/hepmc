@@ -14,24 +14,17 @@
 #include <string>
 #include <map>
 #include <vector>
-#include "HepMC/IO_BaseClass.h"
 #include "HepMC/IO_Exception.h"
+#include "HepMC/GenEvent.h"
 #include "HepMC/Units.h"
 
 namespace HepMC {
 
-class GenEvent;
-class GenVertex;
-class GenParticle;
-class HeavyIon;
-class PdfInfo;
-
-//! IO_MockRoot also deals with HeavyIon and PdfInfo 
+//! IO_MockRoot is meant as a proof of principle for root IO
 
 ///
 /// \class  IO_MockRoot
 /// event input/output in ascii format for machine reading
-/// extended format contains HeavyIon and PdfInfo classes
 ///
 /// Strategy for reading or writing events using iostreams
 /// When instantiating with a file name, the mode of file to be created 
@@ -56,7 +49,7 @@ class PdfInfo;
 /// Comments may appear anywhere in the file -- so long as they do not contain
 ///  any of the start/stop keys.
 ///
-class IO_MockRoot : public IO_BaseClass {
+class IO_MockRoot {
 public:
     /// constructor requiring a file name and std::ios mode
     IO_MockRoot( const std::string& filename="IO_MockRoot.dat", 
@@ -65,12 +58,17 @@ public:
     IO_MockRoot( std::istream & );
     /// constructor requiring an output stream
     IO_MockRoot( std::ostream & );
-    virtual       ~IO_MockRoot();
+    ~IO_MockRoot();
 
     /// write this event
     void          write_event( const GenEvent* evt );
     /// get the next event
     bool          fill_next_event( GenEvent* evt );
+    //
+    // the read_next_event() differs from
+    // the fill_***() methods in that it creates a new event
+    // before calling the  corresponding fill_*** method
+    GenEvent*    read_next_event();
     /// insert a comment directly into the output file --- normally you
     ///  only want to do this at the beginning or end of the file. All
     ///  comments are preceded with "HepMC::IO_MockRoot-COMMENT\n"
@@ -81,6 +79,24 @@ public:
 
     /// write to ostr
     void          print( std::ostream& ostr = std::cout ) const;
+    //
+    // The overloaded stream operators >>,<< are identical to
+    //   read_next_event and write_event methods respectively.
+    //   (or read_particle_data_table and write_particle_data_table)
+    // the event argument for the overloaded stream operators is a pointer,
+    // which is passed by reference.
+    //  i.e.  GenEvent* evt; 
+    //        io >> evt; 
+    // will give the expected result.
+    // (note: I don't see any reason to have separate const and non-const
+    //  versions of operator<<, but the pedantic ansi standard insists 
+    //  on it) 
+    /// the same as read_next_event
+    GenEvent*& operator>>( GenEvent*& );
+    /// the same as write_event
+    const GenEvent*& operator<<( const GenEvent*& );
+    /// the same as write_event
+    GenEvent*& operator<<( GenEvent*& );
 
     /// needed when reading a file without units if those units are 
     /// different than the declared default units 
@@ -97,8 +113,25 @@ public:
     /// the read error message string
     const std::string & error_message() const;
 
+protected:
+    /// Explicitly write the begin block lines
+    void write_HepMC_MockRoot_block_begin( );
+    /// Explicitly write the end block line
+    void write_HepMC_MockRoot_block_end( );
+
+    void readMockRoot(GenEvent*);
+    void writeMockRoot(GenEvent& );
+
+    /// send the beam particles to ASCII output
+    void write_beam_particles( std::pair<HepMC::GenParticle *,HepMC::GenParticle *> );
+
+    /// send all GenVertices to ASCII output
+    void write_vertex_list( GenEvent & );
+    /// send all GenParticles to ASCII output
+    void write_particle_list( GenEvent & );
+
 private: // use of copy constructor is not allowed
-    IO_MockRoot( const IO_MockRoot& ) : IO_BaseClass() {}
+    IO_MockRoot( const IO_MockRoot& ) {}
 
 private: // data members
     std::ios::openmode  m_mode;
@@ -109,12 +142,46 @@ private: // data members
     bool                m_have_file;
     IO_Exception::ErrorType m_error_type;
     std::string         m_error_message;
+    std::string         m_io_mockroot_start;
+    std::string         m_io_mockroot_end;
 
 };
 
 //////////////
 // Inlines  //
 //////////////
+
+inline GenEvent* IO_MockRoot::read_next_event() {
+    /// creates a new event and fills it by calling 
+    /// the sister method read_next_event( GenEvent* )
+    // 
+    // 1. create an empty event container
+    GenEvent* evt = new GenEvent();
+    // 2. fill the evt container - if the read is successful, return the
+    //    pointer, otherwise return null and delete the evt
+    if ( fill_next_event( evt ) ) return evt;
+    // note: the below delete is only reached if read fails
+    //       ... thus there is not much overhead in new then delete 
+    //       since this statement is rarely reached
+    delete evt;
+    return 0;
+}
+
+inline GenEvent*& IO_MockRoot::operator>>( GenEvent*& evt ){
+    evt = read_next_event();
+    return evt;
+}
+
+inline const GenEvent*& IO_MockRoot::operator<<(
+					  const GenEvent*& evt ) {
+    write_event( evt );
+    return evt;
+}
+
+inline GenEvent*& IO_MockRoot::operator<<( GenEvent*& evt ) {
+    write_event( evt );
+    return evt;
+}
 
 inline int  IO_MockRoot::rdstate() const { 
     int state;

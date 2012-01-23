@@ -1,0 +1,63 @@
+################################################################################
+# mock root IO test
+#
+################################################################################ Define directory paths 
+#
+HepMCdir      = @prefix@
+HepMClib             = -L$(HepMCdir)/lib -lHepMC
+
+################################################################################ Compiler options
+#
+CXX           = @CXX@
+INCLUDES 	= -I$(HepMCdir)/include 
+CXXFLAGS      =   -O -ansi -pedantic -Wall -D_GNU_SOURCE -O2 -g $(INCLUDES)
+FLAGS 	= $(DFLG) $(INCDIR)
+ifeq "$(CXX)" "g++"
+   FLAGS 	+= -fno-second-underscore
+endif
+
+EXAMPLES	= testMockRoot.exe
+MOCKROOT_SRC    = testHepMCMethods.cc IO_MockRoot.cc
+MOCKROOT_OBJ    = testHepMCMethods.o IO_MockRoot.o 
+LINK_LIBS     =  
+UNAME = $(shell uname)
+
+LINK_LIBS     = @LDFLAGS@ 
+
+HDRS          = $(HepMCdir)/include/HepMC/*.h *.h
+
+###############################################################################
+#
+.SUFFIXES:      .o .cc .exe
+all:	$(EXAMPLES)
+
+testMockRoot.exe: testMockRoot.o $(MOCKROOT_OBJ)
+	@echo "Building $@ ..."
+	$(CXX) $(FLAGS) testMockRoot.o $(MOCKROOT_OBJ) \
+		$(HepMClib) \
+	        $(LINK_LIBS) -o $@
+
+run: testMockRoot.exe
+	if test -f testMockRoot.cout; then (mv testMockRoot.cout testMockRoot.cout.bak); fi
+	if test -f testMockRoot.out; then (mv testMockRoot.out testMockRoot.out.bak); fi
+	if test -f testMockRootVarious.cout; then (mv testMockRootVarious.cout testMockRootVarious.cout.bak); fi
+	if test -f testMockRootVarious.out; then (mv testMockRootVarious.out testMockRootVarious.out.bak); fi
+	./testMockRoot.exe
+
+###############################################################################
+# instructions for building a .o file from a .cc file
+#
+.cc.o:         $(HDRS) $<
+	@echo "Compiling $< with $(CXX) ..."
+	@$(CXX) $(CXXFLAGS) -c $< -o $@
+
+###############################################################################
+#
+clean:
+	rm -f *.o
+	rm -f *.exe
+
+distclean: 
+	$(MAKE) clean --no-print-directory
+	rm -f *.out *.cout *.bak
+
