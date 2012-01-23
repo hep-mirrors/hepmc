@@ -56,6 +56,8 @@ namespace HepMC {
 	void          print( std::ostream& ostr = std::cout ) const;
         /// write weights in a readable table
 	void          write( std::ostream& ostr = std::cout ) const;
+	/// method for use by output stream
+	std::ostream& write_io(  std::ostream& );
 
         /// size of weight container
 	size_type     size() const;

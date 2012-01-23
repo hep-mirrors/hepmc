@@ -1,9 +1,32 @@
 
+2012-01-23  Lynn Garren
+
+     * HepMC/WeightContainer.h: add write_io method for streaming output
+
 2011-12-28  Lynn Garren
 
      * Windows builds are no longer supported.
-     * removed all VCMakefile.in files
-     * still possible to build on Windows with cmake
+
+  --------------------------  HepMC-2.06.07  --------------------------
+
+2012-01-09  Lynn Garren
+
+     * remove all VCMakefile.in files
+     * Use cmake to build for Windows
+     * cmake is now the preferred build method
+
+2012-01-05  Lynn Garren
+
+     * src/GenEvent.cc: fix a typo in error report for GenEvent::use_length_unit
+     
+     * examples/pythia8: add main31 and main32 from pythia8
+
+2012-01-05  Lynn Garren
+
+     * GenParticle.h, GenVertex.h, PdfInfo.h, SimpleVector.h, SimpleVector.icc:
+       Rename local variables to avoid shadowing class variables.
+       This problem surfaces when compiling with -Wshadow.
+
 
   --------------------------  HepMC-2.06.06  --------------------------
 

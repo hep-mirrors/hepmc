@@ -16,6 +16,7 @@
 #include <stdexcept>
 
 #include "HepMC/WeightContainer.h"
+#include "HepMC/StreamHelpers.h"
 
 namespace HepMC {
 
@@ -133,6 +134,31 @@ void WeightContainer::write( std::ostream& ostr ) const
 	     << " is " << *w << std::endl;
 	++count;
     }
+}
+
+std::ostream& WeightContainer::write_io(  std::ostream& ostr )
+{
+    ostr << ' ' << (int)size() ;
+    for ( const_map_iterator w = map_begin(); 
+	  w != map_end(); ++w ) {
+        detail::output( ostr, m_weights[w->second] );
+    }
+    detail::output( ostr,'\n');
+    // now add names for weights
+    // note that this prints a new line if and only if the weight container
+    // is not empty
+    if ( ! empty() ) {
+	ostr << "N " << (int)size() << " " ;
+	for ( const_map_iterator w = map_begin(); 
+	      w != map_end(); ++w ) {
+	    detail::output( ostr,'"');
+	    ostr << w->first;
+	    detail::output( ostr,'"');
+	    detail::output( ostr,' ');
+	}
+	detail::output( ostr,'\n');
+    }
+    return ostr;
 }
 
 } // HepMC
