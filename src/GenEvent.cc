@@ -723,25 +723,6 @@ namespace HepMC {
 	return os;
     }
 
-    std::ostream & GenEvent::write_vertex_list( std::ostream & os )
-    {
-	std::vector<HepMC::GenVertex*>::iterator i;
-        for( i = m_vertices.begin(); i != m_vertices.end(); ++i ) {
-	    write_vertex_line( os, *i );
-	}
- 	return os;
-    }
-
-    std::ostream & GenEvent::write_particle_list( std::ostream & os )
-    {
-        os << "GenEvent::write_particle_list writing " << m_particles.size() << " particles\n";
-	std::vector<HepMC::GenParticle*>::const_iterator i;
-        for( i = m_particles.begin(); i != m_particles.end(); ++i ) {
-	    write_particle( os, *i );
-	}
-	return os;
-    }
-
     std::ostream & GenEvent::write_vertex(std::ostream & os, GenVertex const * v)
     {
 	if ( !v || !os ) {

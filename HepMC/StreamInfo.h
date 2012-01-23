@@ -15,6 +15,7 @@ namespace HepMC {
 
 /// The known_io enum is used to track which type of input is being read
 enum known_io { gen=1, ascii, extascii, ascii_pdt, extascii_pdt };
+enum compression_type { none=1, status_1, status_1_2 };
 
 //! StreamInfo contains extra information needed when using streaming IO.
 

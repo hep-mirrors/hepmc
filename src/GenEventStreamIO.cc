@@ -109,28 +109,7 @@ std::ostream& GenEvent::write( std::ostream& os )
 	 detail::output( os, *rs );
     }
     // weights
-    // we need to iterate over the map so that the weights printed 
-    // here will be in the same order as the names printed next
-    os << ' ' << (int)weights().size() ;
-    for ( WeightContainer::const_map_iterator w = weights().map_begin(); 
-	  w != weights().map_end(); ++w ) {
-        detail::output( os, m_weights[w->second] );
-    }
-    detail::output( os,'\n');
-    // now add names for weights
-    // note that this prints a new line if and only if the weight container
-    // is not empty
-    if ( ! weights().empty() ) {
-	os << "N " << weights().size() << " " ;
-	for ( WeightContainer::const_map_iterator w = weights().map_begin(); 
-	      w != weights().map_end(); ++w ) {
-	    detail::output( os,'"');
-	    os << w->first;
-	    detail::output( os,'"');
-	    detail::output( os,' ');
-	}
-	detail::output( os,'\n');
-    }
+    weights().write_io(os);
     //
     // Units
     os << "U " << name(momentum_unit());

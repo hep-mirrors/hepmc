@@ -605,10 +605,6 @@ namespace HepMC {
         std::istream & read_weight_names( std::istream & );
 	/// read the event header line
         std::istream & process_event_line( std::istream &, int &, int &, int &, int & );
-	/// send all GenVertices to ASCII output
-	std::ostream & write_vertex_list( std::ostream & );
-	/// send all GenParticles to ASCII output
-	std::ostream & write_particle_list( std::ostream & );
 	/// add particle to m_particles
 	bool add_particle_to_list( HepMC::GenParticle * );
 	/// add vertex to m_vertices

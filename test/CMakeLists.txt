@@ -5,7 +5,7 @@ macro( hepmc_test testname )
   message( STATUS "building ${testname} for ${testname}.sh" )
 
   find_file( ${testname}_source ${testname}.cc ${CMAKE_CURRENT_SOURCE_DIR}
-${CMAKE_CURRENT_BINARY_DIR} )
+                                               ${CMAKE_CURRENT_BINARY_DIR} )
   ADD_EXECUTABLE(${testname} ${${testname}_source} ${ARGN} )
  
   if( ${CMAKE_SYSTEM_NAME} MATCHES "Windows" )
