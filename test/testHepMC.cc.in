@@ -25,6 +25,7 @@
 #include "testHepMCMethods.h"
 
 void read_testIOGenEvent(std::ostream & os);
+void read_testUnits(std::ostream & os);
 void read_variousFormats(std::ostream & os);
 void writeWithCrossSection(std::ostream & os);
 void readWithCrossSection(std::ostream & os);
@@ -36,6 +37,7 @@ int main() {
     std::ofstream os( "testHepMC.cout" );
     std::ofstream osv( "testHepMCVarious.cout" );
     read_testIOGenEvent(os);
+    read_testUnits(os);
     read_variousFormats(osv);
     read_nan(os);
     writeWithCrossSection(os);
@@ -76,6 +78,43 @@ void read_testIOGenEvent(std::ostream & os)
 	    ascii_out << evt;
 	    particle_out << evt;
 	    prec_out << evt;
+	    ++num_good_events;
+	}
+	
+	// clean up and get next event
+	delete evt;
+	ascii_in >> evt;
+    }
+    //........................................PRINT RESULT
+    os << num_good_events << " out of " << icount 
+	      << " processed events passed the cuts. Finished." << std::endl;
+}
+
+void read_testUnits(std::ostream & os)
+{
+    os << std::endl;
+    os << "IO_GenEvent input and output using define_units" << std::endl;
+    // declare an input strategy to read the data produced with the 
+    // example_MyPythia - units are GeV and mm
+    // we DO NOT define input units here, instead we use define_units
+    HepMC::IO_GenEvent ascii_in("@srcdir@/testIOGenEvent.input",std::ios::in);
+    // declare another IO_GenEvent for writing out the good events
+    HepMC::IO_GenEvent ascii_out("testDefineUnits.out",std::ios::out);
+    // declare an instance of the event selection predicate
+    IsGoodEvent is_good_event;
+    //........................................EVENT LOOP
+    int icount=0;
+    int num_good_events=0;
+    HepMC::GenEvent* evt = ascii_in.read_next_event();
+    while ( evt ) {
+	++icount;
+	evt->define_units( HepMC::Units::GEV, HepMC::Units::MM );
+	if ( icount%50==1 ) os << "Processing Event Number " << icount
+				      << " its # " << evt->event_number() 
+				      << std::endl;
+	if ( is_good_event(evt) ) {
+	    particleTypes(evt,os);
+	    ascii_out << evt;
 	    ++num_good_events;
 	}
 	

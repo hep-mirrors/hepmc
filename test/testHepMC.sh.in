@@ -57,6 +57,7 @@ fi
   cmd2=
   cmd4=`@DIFF_Q@ testCrossSection2.out testCrossSection.out`
   cmd7=`@DIFF_Q@ testWithWeight2.out testWithWeight.out`
+  cmd10=`@DIFF_Q@ testDefineUnits.out testHepMC.out`
   ;;
 Darwin*)
   # MacOSX fix
@@ -86,6 +87,7 @@ fi
 	@DIFF_Q@ - testHepMCParticle.out`
   cmd4=`@DIFF_Q@ testCrossSection2.out testCrossSection.out`
   cmd7=`@DIFF_Q@ testWithWeight2.out testWithWeight.out`
+  cmd10=`@DIFF_Q@ testDefineUnits.out testHepMC.out`
   ;;
 *)
 
@@ -115,6 +117,7 @@ fi
   cmd2=`@DIFF_Q@ testHepMCParticle.out @srcdir@/testHepMCParticle.output`
   cmd4=`@DIFF_Q@ testCrossSection2.out testCrossSection.out`
   cmd7=`@DIFF_Q@ testWithWeight2.out testWithWeight.out`
+  cmd10=`@DIFF_Q@ testDefineUnits.out testHepMC.out`
 esac
 
 if [ -n "$cmd" ]; then
@@ -173,6 +176,12 @@ fi
 if [ -n "$cmd9" ]
 then
   echo $cmd9
+  exit 1;
+fi
+
+if [ -n "$cmd10" ]
+then
+  echo $cmd10
   exit 1;
 fi
 

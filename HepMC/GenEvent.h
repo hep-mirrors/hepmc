@@ -294,10 +294,20 @@ namespace HepMC {
 	void set_pdf_info( const PdfInfo& p );
 	
 	/// set the units using enums
+	/// This method will convert momentum and position data if necessary
 	void use_units( Units::MomentumUnit, Units::LengthUnit );
 	/// set the units using strings
 	/// the string must match the enum exactly
+	/// This method will convert momentum and position data if necessary
         void use_units( std::string&, std::string& );
+	
+	/// set the units using enums
+	/// This method will NOT convert momentum and position data
+	void define_units( Units::MomentumUnit, Units::LengthUnit );
+	/// set the units using strings
+	/// the string must match the enum exactly
+	/// This method will NOT convert momentum and position data
+        void define_units( std::string&, std::string& );
 	
 	/// vertex range
 	GenEventVertexRange vertex_range();
@@ -851,6 +861,11 @@ namespace HepMC {
     inline void GenEvent::use_units( std::string& new_m, std::string& new_l ) { 
        use_momentum_unit( new_m );
        use_length_unit( new_l );
+    }
+    
+    inline void GenEvent::define_units( Units::MomentumUnit new_m, Units::LengthUnit new_l ) { 
+	m_momentum_unit = new_m; 
+	m_position_unit = new_l; 
     }
 
 } // HepMC
