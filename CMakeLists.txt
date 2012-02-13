@@ -18,7 +18,7 @@ cmake_minimum_required (VERSION 2.6)
 
 # project name and version
 project(HepMC)
-set( version 2.06.07 )
+set( version 2.06.08 )
 
 if ( momentum )
   set( HEPMC_DEFAULT_MOM_UNIT ${momentum} )

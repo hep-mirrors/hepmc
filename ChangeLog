@@ -1,3 +1,11 @@
+  --------------------------  HepMC-2.06.08  --------------------------
+
+2012-02-10  Lynn Garren
+
+     * cmake/Modules/HepMCVariables.cmake: deal with Windows
+     
+     * HepMC/GenEvent.h: add define_units()
+
   --------------------------  HepMC-2.06.07  --------------------------
 
 2012-01-09  Lynn Garren
