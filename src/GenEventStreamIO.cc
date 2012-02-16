@@ -204,6 +204,7 @@ std::istream& GenEvent::read( std::istream& is )
 
     int signal_process_vertex = 0;
     int num_vertices = 0, bp1 = 0, bp2 = 0;
+    bool units_line = false;
     // OK - now ready to start reading the event, so set the header flag
     info.set_reading_event_header(true);
     // The flag will be set to false when we reach the end of the header
@@ -219,6 +220,7 @@ std::istream& GenEvent::read( std::istream& is )
 	    } break;
 	    case 'U':
 	    {	// get unit information if it exists
+                units_line = true;
 		if( info.io_type() == gen ) {
 		    read_units( is );
 		}
@@ -288,6 +290,11 @@ std::istream& GenEvent::read( std::istream& is )
 	        break;
 	} // switch on line type
     } // while reading_event_header
+    // before proceeding - did we find a units line?
+    if( !units_line ) {
+ 	use_units( info.io_momentum_unit(), 
+	               info.io_position_unit() );
+    }
     //
     // the end vertices of the particles are not connected until
     //  after the event is read --- we store the values in a map until then
@@ -756,33 +763,6 @@ std::istream & read_particle( std::istream & is,
     if ( end_vtx_code != 0 ) {
 	particle_to_end_vertex.addEndParticle(p,end_vtx_code);
     }
-    return is;
-}
-
-std::istream & read_units( std::istream & is, GenEvent & evt )
-{
-    //
-    if ( !is ) {
-	std::cerr << "StreamHelpers read_units setting badbit." << std::endl;
-	is.clear(std::ios::badbit);
-	return is;
-    } 
-    //
-    StreamInfo & info = get_stream_info(is);
-    // test to be sure the next entry is of type "U" then ignore it
-    // if we have no units, this is not an error
-    // releases prior to 2.04.00 did not write unit information
-    if ( is.peek() !='U') {
- 	evt.use_units( info.io_momentum_unit(), 
-	               info.io_position_unit() );
-	return is;
-    } 
-    is.ignore();	// ignore the first character in the line
-    std::string mom, pos;
-    is >> mom >> pos;
-    is.ignore(1);      // eat the extra whitespace
-    evt.use_units(mom,pos);
-    //
     return is;
 }
 
