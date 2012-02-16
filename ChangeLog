@@ -1,5 +1,11 @@
   --------------------------  HepMC-2.06.08  --------------------------
 
+2012-02-16  Lynn Garren
+
+     * src/GenEventStreamIO.cc: make sure we check the stream units 
+       if there is no unit line in the event header
+     * test/testHepMC.cc.in: verify unit behavior
+
 2012-02-10  Lynn Garren
 
      * cmake/Modules/HepMCVariables.cmake: deal with Windows
