@@ -62,7 +62,7 @@
 
 // define the version of HepMC. 
 #ifndef HEPMC_VERSION
-#define HEPMC_VERSION "2.06.08"
+#define HEPMC_VERSION "2.06.09"
 #endif
 
 #endif  // HEPMC_DEFS_H

@@ -1,3 +1,10 @@
+  --------------------------  HepMC-2.06.09  --------------------------
+
+2012-06-05  Lynn Garren
+
+     * configure.ac: explicitly disallow using configure with VC++
+     * INSTALL*: improve build instructions
+
   --------------------------  HepMC-2.06.08  --------------------------
 
 2012-02-16  Lynn Garren

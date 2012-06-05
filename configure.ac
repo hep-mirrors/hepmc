@@ -4,7 +4,7 @@
 # ----------------------------------------------------------------------
 
 AC_PREREQ(2.59)
-AC_INIT([HepMC],[2.06.08],[https://savannah.cern.ch/projects/hepmc/],[HepMC])
+AC_INIT([HepMC],[2.06.09],[https://savannah.cern.ch/projects/hepmc/],[HepMC])
 AC_CANONICAL_TARGET
 AM_INIT_AUTOMAKE(1.9 foreign)
 AC_CONFIG_SRCDIR([src/GenEvent.cc])
