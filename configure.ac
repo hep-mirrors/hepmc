@@ -67,6 +67,14 @@ AC_SUBST(GENSERdir)
 # ----------------------------------------------------------------------
 # Checks for programs.
 # ----------------------------------------------------------------------
+case "$CXX" in
+cl) 
+  AC_MSG_ERROR([configure is not supported for VC++, use cmake instead])
+  ;;
+*)
+  AC_MSG_NOTICE([using compiler $CXX - can proceed])
+esac
+
 AC_PROG_CXX
 AC_PROG_CC
 AC_PROG_MAKE_SET
@@ -127,6 +135,7 @@ cl)
   CXXFLAGS=" "
   AC_SUBST(CXXFLAGS)
   build_visual="yes"
+  AC_MSG_ERROR([configure is not supported for VC++, use cmake instead])
   ;;
 *)  
   AM_CXXFLAGS="-ansi -pedantic -Wall"
