@@ -19,3 +19,11 @@ and:
  the package authors. Anyone may copy and distribute this package
  freely.
 
+        *****************************************************
+
+2002-01-23 HepMC was developed on Linux with gcc.
+        Thanks to the work of Witold Pokorski and Pere Mato, 
+        it now compiles and runs on Windows with Microsoft Visual C++. 
+	
+        *****************************************************
+

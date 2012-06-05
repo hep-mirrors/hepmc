@@ -19,16 +19,17 @@ cmake -DCMAKE_INSTALL_PREFIX=<install_dir> \
       -Dmomentum:STRING=[MEV|GEV] \
       -Dlength:STRING=[MM|CM] \
       <source_code_dir>
-   (Note that files will be installed under /usr/local if you do not 
-    specify a prefix.) 
-   (Use relative or full paths for install_dir and source_code_dir)
+ (Note that files will be installed under /usr/local if you do not 
+  specify a prefix.) 
+ (Use relative or full paths for install_dir and source_code_dir)
+ (source_code_dir is .../HepMC-2.xx.yy, not .../HepMC-2.xx.yy/src.)
 make
-   (Build temporary copies of libraries and executables.)
+ (Build temporary copies of libraries and executables.)
 make test
-   (Run the tests.)
+ (Run the tests.)
 make install
-   (Copy libraries, headers, executables, etc. to relevant 
-    subdirectories under <install_dir>.)
+ (Copy libraries, headers, executables, etc. to relevant 
+  subdirectories under <install_dir>.)
 
 Use relative or full paths for install_dir and source_code_dir.
 
@@ -45,6 +46,10 @@ Use relative or full paths for install_dir and source_code_dir.
 -DCMAKE_BUILD_TYPE=Debug|Release|RelWithDebInfo|MinSizeRel
 -Dbuild_docs:BOOL=ON
  
+-DCMAKE_C_COMPILER=...
+-DCMAKE_CXX_COMPILER=...
+-DCMAKE_CXX_FLAGS="list_of_flags"
+
 #-------------------------------------------------------------
 # building documents
 #-------------------------------------------------------------

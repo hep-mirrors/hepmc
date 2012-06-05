@@ -10,10 +10,4 @@ we strongly recommend building with cmake.
 Cmake is preferred for MacOSX and required for Windows.
 Cmake is also required if you are using clang, or any non-gcc compiler.
 
-Please see either INSTALL.autotools or INSTALL.cmake for directions.
-
-The directions below explain how to build with autoconf, etc.
-As of HepMC 2.06.06, you also have the option to build with cmake.
-We highly recommend that you build with cmake, as explained in 
-cmake/INSTALL.   Using cmake is preferred for MacOSX and Windows.
-
+Please see either INSTALL.cmake or INSTALL.autotools for directions.

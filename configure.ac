@@ -69,15 +69,15 @@ AC_SUBST(GENSERdir)
 # ----------------------------------------------------------------------
 case "$CXX" in
 cl) 
-  AC_MSG_ERROR([configure is not supported for VC++, use cmake instead])
+  AC_MSG_ERROR([configure is not supported for Visual C++, use cmake instead])
   ;;
 *)
-  AC_MSG_NOTICE([using compiler $CXX - can proceed])
 esac
 
 AC_PROG_CXX
 AC_PROG_CC
 AC_PROG_MAKE_SET
+AC_PROG_F77(gfortran g77 f77)
 
 # special libtool rules for Windows - work with gcc and cygwin
 AC_LIBTOOL_WIN32_DLL
@@ -113,6 +113,11 @@ AC_HEADER_STDC
 case "$target" in
 *-*-win32*)
   COPY_P="copy -p"
+  AC_MSG_WARN([we recommend using cmake instead of configure on Windows])
+  ;;
+*-*-darwin*)
+  COPY_P="cp -p"
+  AC_MSG_WARN([we recommend using cmake instead of configure on MacOSX])
   ;;
 *)
   COPY_P="cp -p"
@@ -135,7 +140,7 @@ cl)
   CXXFLAGS=" "
   AC_SUBST(CXXFLAGS)
   build_visual="yes"
-  AC_MSG_ERROR([configure is not supported for VC++, use cmake instead])
+  AC_MSG_ERROR([configure is not supported for Visual C++, use cmake instead])
   ;;
 *)  
   AM_CXXFLAGS="-ansi -pedantic -Wall"
