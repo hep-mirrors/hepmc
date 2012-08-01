@@ -1,0 +1,39 @@
+#-------------------------------------------------------------
+
+You MUST use cmake and nmake to build on a Windows machine.
+
+Work in a DOS window.  
+You may also have success using the cmake and VC gui interfaces.
+
+#-------------------------------------------------------------
+# setup the compiler
+#-------------------------------------------------------------
+
+call "C:\Program Files\Microsoft Visual Studio 9.0\VC\bin\vcvars32.bat"
+
+#-------------------------------------------------------------
+# building HepMC
+#-------------------------------------------------------------
+
+Work from a separate build directory.
+
+cmake -DCMAKE_INSTALL_PREFIX=C:\....
+      -G "NMake Makefiles"
+      -Dmomentum:STRING=[MEV|GEV] \
+      -Dlength:STRING=[MM|CM] \
+       C:\full\path\to\HepMC
+
+nmake
+
+nmake test
+
+nmake install
+
+#-------------------------------------------------------------
+# trouble reports
+#-------------------------------------------------------------
+
+Please report problems using the bug-tracker of the savannah portal at: 
+
+http://savannah.cern.ch/projects/clhep
+

@@ -10,7 +10,7 @@ As of HepMC 2.06.06, you also have the option to build with cmake.
 We highly recommend that you build with cmake, as explained in 
 INSTALL.cmake   
 
-Cmake is preferred for MacOSX and required for Windows.
+Cmake is preferred for MacOSX and REQUIRED for Windows.
 
 #-------------------------------------------------------------
 #  installing from a source code tar ball

@@ -99,3 +99,8 @@ make install
 Add <cmake_install_dir>/bin to your path.
 
 #-------------------------------------------------------------
+# Windows
+#-------------------------------------------------------------
+
+Please see Readme.win for Windows specific instructions
+
