@@ -1,6 +1,6 @@
 ________________________________________________________________________________
 GenEvent: #1 ID=20 SignalProcessGenVertex Barcode: 0
- Momenutm units:     GEV     Position units:      MM
+ Momentum units:     GEV     Position units:      MM
  Entries this event: 357 vertices, 1046 particles.
  Beam Particle barcodes: 1 2 
  RndmState(0)=
@@ -1777,7 +1777,7 @@ Vertex:     -357 ID:    0 (X,cT)=-7.50e-02,+7.42e-01,+2.34e+00,+2.47e+00
 ________________________________________________________________________________
 ________________________________________________________________________________
 GenEvent: #39 ID=20 SignalProcessGenVertex Barcode: 0
- Momenutm units:     GEV     Position units:      MM
+ Momentum units:     GEV     Position units:      MM
  Entries this event: 133 vertices, 382 particles.
  Beam Particle barcodes: 1 2 
  RndmState(0)=
