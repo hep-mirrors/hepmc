@@ -1,52 +1,16 @@
-//--------------------------------------------------------------------------
 #ifndef HEPMC_GEN_PARTICLE_H
 #define HEPMC_GEN_PARTICLE_H
-
-//////////////////////////////////////////////////////////////////////////
-// Matt.Dobbs@Cern.CH, September 1999, refer to:
-// M. Dobbs and J.B. Hansen, "The HepMC C++ Monte Carlo Event Record for
-// High Energy Physics", Computer Physics Communications (to be published).
-//
-// particle within an event coming in/out of a vertex
-// particle is the basic building block or unit of the event record
-//////////////////////////////////////////////////////////////////////////
-//
-// example:
-//      GenParticle* p = new GenParticle( FourVector(1,1,1,3), 11, 1 );
-// creates a particle with 4-vector (p,E)=1,1,1,3 - with pdg id 11 (electron)
-// and give this particle status =1.
-//
-// the pointers to end/production vertices can only be set by the
-//  vertices themselves - thus to set the production vertex for a particle,
-//  you add the particle to that vertex with GenVertex::add_particle_out()
-//
-// We decide not to have a separate 4 vector for the momentum 
-//  at decay time (which MC++ includes to allow dE/dX losses etc). 
-//  If you want that, just add a decay vertex with the
-//  same particle (modified momentum) going out
-//
 
 #include "HepMC/Flow.h"
 #include "HepMC/Polarization.h"
 #include "HepMC/SimpleVector.h"
-#include "HepMC/IteratorRange.h"
+
 #include <iostream>
-#ifdef _WIN32
-#define hepmc_uint64_t  __int64
-#else
-#include <stdint.h>	// for uint64_t
-#define hepmc_uint64_t   uint64_t
-#endif
 
 namespace HepMC {
 
     class GenVertex;
     class GenEvent; 
-
-    class GenParticleProductionRange;
-    class ConstGenParticleProductionRange;
-    class GenParticleEndRange;
-    class ConstGenParticleEndRange;
 
     //! The GenParticle class contains information about generated particles
 
@@ -54,7 +18,7 @@ namespace HepMC {
     /// \class GenParticle 
     /// HepMC::GenParticle 
     /// contains momentum, generated mass, particle ID, decay status, 
-    /// flow, polarization, pointers to production and decay vertices
+    /// flow, polarization, indices to production and decay vertices
     /// and a unique barcode identfier.
     ///
     class GenParticle {
@@ -103,9 +67,13 @@ namespace HepMC {
         /// polarization information
 	const Polarization & polarization() const;
 	/// pointer to the production vertex
-	GenVertex*           production_vertex() const;
+	GenVertex&           production_vertex() const;
 	/// pointer to the decay vertex
-	GenVertex*           end_vertex() const;
+	GenVertex&           end_vertex() const;
+	/// index to the production vertex
+	size_t           production_vertex_index() const;
+	/// index to the decay vertex
+	size_t           end_vertex_index() const;
 	/// pointer to the event that owns this particle
 	GenEvent*            parent_event() const;
 
@@ -132,6 +100,9 @@ namespace HepMC {
 	/// the barcode data member and causes confusion among users. 
 	/// 
 	int                  barcode() const; //!< particle barcode
+
+        size_t       event_index();
+        const size_t event_index() const;
 	
 	/// Convenience method.  Returns true if status==1
 	bool                 is_undecayed() const;
@@ -142,21 +113,9 @@ namespace HepMC {
 	/// may not have been implemented by the code originating this GenEvent.
 	bool                 is_beam() const;
 
-	/// incoming particle range
-	GenParticleProductionRange particles_in( IteratorRange range = relatives );
-	/// incoming particle range
-	ConstGenParticleProductionRange particles_in( IteratorRange range = relatives ) const;
-	/// outgoing particle range
-	GenParticleEndRange particles_out( IteratorRange range = relatives );
-	/// outgoing particle range
-	ConstGenParticleEndRange particles_out( IteratorRange range = relatives ) const;
-
 	/////////////////////
 	// mutator methods //
 	/////////////////////
-
-	/// In general there is no reason to "suggest_barcode"
-	bool                 suggest_barcode( int the_bar_code );
 
 	void   set_momentum( const FourVector& vec4 ); //!< set standard 4 momentum
 	void   set_pdg_id( int id ); //!< set particle ID
@@ -169,102 +128,48 @@ namespace HepMC {
         ///  generated_mass() will simply return the mass calculated from momentum()
         void   set_generated_mass( const double & m ); //!< define the actual generated mass
 
-	///  setGeneratedMass() is included for backwards compatibility with CLHEP HepMC
-        void   setGeneratedMass( const double & m )  
-	                 { return set_generated_mass(m); }
+        /// This method is ONLY to be used by VectorID.  Any attempt by
+	/// another to set the event index will result in corrupt code.
+        void   set_event_index(size_t);
 
     protected: // for internal use only by friend GenVertex class
 
 	//static unsigned int counter(); //!< temporary for debugging
 
         /// set production vertex - for internal use only
-	void   set_production_vertex_( GenVertex* productionvertex = 0);
+	void   set_production_vertex_( size_t productionvertex = 0);
         /// set decay vertex - for internal use only
-	void   set_end_vertex_( GenVertex* decayvertex = 0 );
+	void   set_end_vertex_( size_t decayvertex = 0 );
 	void   set_barcode_( int the_bar_code ); //!< for use by GenEvent only
 
         /// scale the momentum vector and generated mass 
         /// this method is only for use by GenEvent
 	void convert_momentum( const double& );
 
+	/// only the GenEvent (friend) is allowed to set the parent_event
+	void                    set_parent_event_( GenEvent* evt ); //!< set parent event
+
     private:
+    
+        // persistent data
 	FourVector       m_momentum;          // momentum vector
 	int              m_pdg_id;            // id according to PDG convention
 	int              m_status;            // As defined for HEPEVT
 	Flow             m_flow;
 	Polarization     m_polarization;
-	GenVertex*       m_production_vertex; // null if vacuum or beam
-	GenVertex*       m_end_vertex;        // null if not-decayed
+	size_t           m_production_vertex; // index in production vertex list, -1 if vacuum or beam
+	size_t           m_end_vertex;        // index in production end list, -1 if not-decayed
+	size_t           m_event_index;       // index in master list, -1 if not set
 	int              m_barcode;           // unique identifier in the event
         double           m_generated_mass;    // mass of this particle when it was generated
 
-	//static unsigned int       s_counter;
+        // transient data
+	GenEvent*        m_event;             // parent event
+
     };  
 
-    //////////////
-    // INLINES  //
-    //////////////
-
-    inline GenParticle::operator HepMC::FourVector() const 
-    { return m_momentum; }
-
-    inline const FourVector & GenParticle::momentum() const 
-    { return m_momentum; }
-
-    inline int GenParticle::pdg_id() const { return m_pdg_id; }
-
-    inline int GenParticle::status() const { return m_status; }
-
-    inline GenVertex* GenParticle::production_vertex() const 
-    { return m_production_vertex; }
-
-    inline GenVertex* GenParticle::end_vertex() const { return m_end_vertex; }
-
-    inline const Flow & GenParticle::flow() const { return m_flow; }
-
-    inline int GenParticle::flow( int code_index ) const
-    { return m_flow.icode( code_index ); }
-
-    inline const Polarization & GenParticle::polarization() const 
-    { return m_polarization; }
-
-    inline void GenParticle::set_momentum( const FourVector& vec4 )
-    { m_momentum = vec4; }
-
-    inline void GenParticle::set_pdg_id( int id ) { m_pdg_id = id; }
-
-    inline void GenParticle::set_status( int st ) { m_status = st; }
-
-    inline void GenParticle::set_flow( const Flow& f ) { m_flow = f; }
-
-    inline void GenParticle::set_flow( int code_index, int code ) 
-    {
-	if ( code == 0 ) { 
-	    m_flow.set_unique_icode( code_index );
-	} else { 
-	    m_flow.set_icode( code_index, code );
-	}
-    }
-
-    inline void GenParticle::set_polarization( const Polarization& polar )
-    { m_polarization = polar; }
-
-    inline int  GenParticle::barcode() const { return m_barcode; }
-
-    inline void GenParticle::set_barcode_( int bc ) { m_barcode = bc; }
-
-    inline bool GenParticle::is_undecayed() const {
-        return ( m_status==1 ) ?  true : false;
-    }
-    inline bool GenParticle::has_decayed() const {
-        return ( m_status==2 ) ?  true : false;
-    }
-    inline bool GenParticle::is_beam() const {
-        return ( m_status==4 ) ?  true : false;
-    }
 
 } // HepMC
 
 #endif  // HEPMC_GEN_PARTICLE_H
-//--------------------------------------------------------------------------
 

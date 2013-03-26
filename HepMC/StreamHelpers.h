@@ -12,7 +12,6 @@
 #include <istream>
 
 #include "HepMC/GenEvent.h"
-#include "HepMC/TempParticleMap.h"
 
 namespace HepMC {
 
@@ -22,14 +21,6 @@ namespace detail {
 std::ostream & establish_output_stream_info( std::ostream & );
 /// used by IO_GenEvent constructor
 std::istream & establish_input_stream_info( std::istream & );
-
-/// get a GenVertex from ASCII input
-/// TempParticleMap is used to track the associations of particles with vertices
-std::istream & read_vertex( std::istream &, TempParticleMap &, GenVertex * );
-
-/// get a GenParticle from ASCII input
-/// TempParticleMap is used to track the associations of particles with vertices
-std::istream & read_particle( std::istream&, TempParticleMap &, GenParticle * );
 
 /// write a double - for internal use by streaming IO
 inline std::ostream & output( std::ostream & os, const double& d ) {
