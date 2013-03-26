@@ -67,6 +67,7 @@ int main() {
 		    evt->set_pdf_info(pdf);
 		    // add some arbitrary HeavyIon information
 	            HepMC::HeavyIon ion(23,11,12,15,3,5,0,0,0,0.0145);
+		    ion.set_centrality(0.23);
 	            evt->set_heavy_ion( ion );
 		}
 	        os << "saving Event " << evt->event_number() << std::endl;

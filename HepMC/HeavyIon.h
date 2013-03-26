@@ -24,8 +24,10 @@
 //                                        (as in phobos nucl-ex/0510031) 
 //      float sigma_inel_NN           // nucleon-nucleon inelastic 
 //                                        (including diffractive) cross-section
+//      float centrality              // centrality (fraction of geometric cross section)
 //
 //////////////////////////////////////////////////////////////////////////
+// Mar. 25, 2013: add centrality by request from Korinna Zapp
 // Feb. 17, 2006: adjust names according to suggestions from Heavy Ion users
 // Feb.  7, 2006: first pass at making method names consistent with existing
 //                HepMC code
@@ -61,13 +63,15 @@ public:
       m_impact_parameter(0),
       m_event_plane_angle(0),
       m_eccentricity(0),
-      m_sigma_inel_NN(0)
+      m_sigma_inel_NN(0),
+      m_centrality(0)
     {}
 
   /// The first 6 values must be provided.
   HeavyIon( int nh, int np, int nt, int nc, int ns, int nsp,
                    int nnw=0, int nwn=0, int nwnw=0, 
-		   float im=0., float pl=0., float ec=0., float s=0. );
+		   float im=0., float pl=0., float ec=0., float s=0.,
+		   float fc=0. );
 
   ~HeavyIon() {}
     
@@ -110,6 +114,8 @@ public:
     float eccentricity()                 const { return m_eccentricity;  }
     /// nucleon-nucleon inelastic (including diffractive) cross-section
     float sigma_inel_NN()                const { return m_sigma_inel_NN; }
+    /// centrality (fraction of geometric cross section)
+    float centrality()                const { return m_centrality; }
 
     /// verify that the instance contains non-zero information
     bool  is_valid()                     const;
@@ -142,6 +148,8 @@ public:
     void   set_eccentricity(const float &f)          { m_eccentricity=f;  }
     /// set nucleon-nucleon inelastic cross-section
     void   set_sigma_inel_NN(const float &f)         { m_sigma_inel_NN=f; }
+    /// set centrality
+    void   set_centrality(const float &f)         { m_centrality=f; }
 
 private: // data members
     int   m_Ncoll_hard; 
@@ -157,6 +165,7 @@ private: // data members
     float m_event_plane_angle;
     float m_eccentricity; 
     float m_sigma_inel_NN;
+    float m_centrality;
 
 };
 
@@ -177,7 +186,7 @@ std::istream & operator >> (std::istream &, HeavyIon *);
   /// the number of spectator protons.
 inline HeavyIon::HeavyIon( int nh, int np, int nt, int nc, int ns, int nsp,
                    int nnw, int nwn, int nwnw, 
-		   float im, float pl, float ec, float s )
+		   float im, float pl, float ec, float s, float c )
     : m_Ncoll_hard(nh), 
       m_Npart_proj(np),
       m_Npart_targ(nt),
@@ -190,7 +199,8 @@ inline HeavyIon::HeavyIon( int nh, int np, int nt, int nc, int ns, int nsp,
       m_impact_parameter(im),
       m_event_plane_angle(pl),
       m_eccentricity(ec),
-      m_sigma_inel_NN(s)
+      m_sigma_inel_NN(s),
+      m_centrality(c)
    {}
 
 inline HeavyIon::HeavyIon( HeavyIon const & orig )
@@ -206,7 +216,8 @@ inline HeavyIon::HeavyIon( HeavyIon const & orig )
       m_impact_parameter(orig.m_impact_parameter),
       m_event_plane_angle(orig.m_event_plane_angle),
       m_eccentricity(orig.m_eccentricity),
-      m_sigma_inel_NN(orig.m_sigma_inel_NN)
+      m_sigma_inel_NN(orig.m_sigma_inel_NN),
+      m_centrality(orig.m_centrality)
    {}
 
 inline HeavyIon &  HeavyIon::operator = ( HeavyIon const & rhs ) 
@@ -231,6 +242,7 @@ inline void HeavyIon::swap( HeavyIon & other )
   std::swap(m_event_plane_angle, other.m_event_plane_angle);
   std::swap(m_eccentricity, other.m_eccentricity);
   std::swap(m_sigma_inel_NN, other.m_sigma_inel_NN);
+  std::swap(m_centrality, other.m_centrality);
 }
 
 inline bool    HeavyIon::operator==( const HeavyIon& a ) const
@@ -248,7 +260,8 @@ inline bool    HeavyIon::operator==( const HeavyIon& a ) const
 	     && a.impact_parameter() == this->impact_parameter() 
 	     && a.event_plane_angle() == this->event_plane_angle()
 	     && a.eccentricity() == this->eccentricity() 
-	     && a.sigma_inel_NN() == this->sigma_inel_NN() );
+	     && a.sigma_inel_NN() == this->sigma_inel_NN()
+	     && a.centrality() == this->centrality() );
 }
 
 inline bool    HeavyIon::operator!=( const HeavyIon& a ) const
@@ -272,6 +285,7 @@ inline bool  HeavyIon::is_valid() const
     if( m_event_plane_angle != 0 ) return true;
     if( m_eccentricity != 0 ) return true;
     if( m_sigma_inel_NN != 0 ) return true;
+    if( m_centrality != 0 ) return true;
     return false;
 }
 

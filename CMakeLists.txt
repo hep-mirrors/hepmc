@@ -18,7 +18,7 @@ cmake_minimum_required (VERSION 2.6)
 
 # project name and version
 project(HepMC)
-set( version 2.06.09 )
+set( version 2.07.00.a01 )
 
 if ( momentum )
   set( HEPMC_DEFAULT_MOM_UNIT ${momentum} )
@@ -61,7 +61,7 @@ endif()
 
 # various handy macros
 include(HepMCVariables)
-#include(HepMCParseVersion)
+include(HepMCParseVersion)
 
 # because we want to move these libraries about,
 # do not embed full path in shared libraries or executables
@@ -76,10 +76,8 @@ include_directories ("${CMAKE_CURRENT_SOURCE_DIR}")
 SET(LIBRARY_OUTPUT_PATH ${PROJECT_BINARY_DIR}/lib)
 
 # parse the version 
-STRING( REGEX REPLACE "^([0-9]+)[.][0-9]+[.][0-9]+.*" "\\1" VERSION_MAJOR "${version}" )
-STRING( REGEX REPLACE "^[0-9]+[.]([0-9]+)[.][0-9]+.*" "\\1" VERSION_MINOR "${version}" )
-STRING( REGEX REPLACE "^[0-9]+[.][0-9]+[.]([0-9]+)+.*" "\\1" VERSION_PATCH "${version}" )
-message(STATUS "${project} version ${version} parses to ${VERSION_MAJOR} ${VERSION_MINOR} ${VERSION_PATCH}" )
+hepmc_parse_version()
+message(STATUS "${project} version ${version} parses to ${VERSION_MAJOR} ${VERSION_MINOR} ${VERSION_PATCH} ${VERSION_MICRO}" )
 
 # set our preferred compiler flags and other variables
 include(CMakeDetermineFortranCompiler)

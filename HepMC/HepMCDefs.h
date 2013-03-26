@@ -60,9 +60,14 @@
 #define HEPMC_HAS_NAMED_WEIGHTS
 #endif
 
+// the HepMC::HeavyIon class contains centrality
+#ifndef HEPMC_HEAVY_ION_HAS_CENTRALITY
+#define HEPMC_HEAVY_ION_HAS_CENTRALITY
+#endif
+
 // define the version of HepMC. 
 #ifndef HEPMC_VERSION
-#define HEPMC_VERSION "2.06.09"
+#define HEPMC_VERSION "2.07.00.a01"
 #endif
 
 #endif  // HEPMC_DEFS_H
