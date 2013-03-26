@@ -365,6 +365,11 @@ namespace HepMC {
 	vtx->set_parent_event_( this );
 	// add to m_vertices
 	add_vertex_to_list( vtx );
+	std::cout << "GenEvent::add_vertex: adding vertex "
+	          <<  m_event_number << " "
+	          << vtx->barcode() << " with "
+	          << vtx->particles_in_index().size() << " and "
+		  << vtx->particles_out_index().size() << std::endl;
 	// verify status
 	return ( m_vertex_barcodes.count(vtx->barcode()) ? true : false );
     }
@@ -375,6 +380,32 @@ namespace HepMC {
 	if ( m_signal_process_vertex == vtx ) m_signal_process_vertex = 0;
 	if ( vtx->parent_event() == this ) vtx->set_parent_event_( 0 );
 	return ( m_vertex_barcodes.count(vtx->barcode()) ? false : true );
+    }
+
+    void GenEvent::remove_barcode( GenParticle* p )
+    { 
+	if( p->event_index() < 1 ) {
+	    std::cout << "ERROR remove_barcode(GenParticle*): event index is : "
+	              << p->event_index()  << std::endl;
+	} else {
+	    m_particles.erase(find(m_particles.begin(),
+	                	   m_particles.end(),
+				   p->event_index()));
+	} 
+        m_particle_barcodes.erase( p->barcode() ); 
+    }
+
+    void GenEvent::remove_barcode( GenVertex* v )
+    { 
+	if( v->event_index() < 1 ) {
+	    std::cout << "ERROR remove_barcode(GenVertex*): event index is : "
+	              << v->event_index()  << std::endl;
+	} else {
+	    m_vertices.erase(find(m_vertices.begin(),
+	                	  m_vertices.end(),
+				  v->event_index()));
+	} 
+        m_vertex_barcodes.erase( v->barcode() ); 
     }
 
     void GenEvent::clear() 
@@ -482,7 +513,8 @@ namespace HepMC {
 	    } else { // suggested barcode is OK, proceed to insert
 		m_particle_barcodes[suggested_barcode] = p;
 		p->set_barcode_( suggested_barcode );
-		add_particle_to_list(p);
+		//add_particle_to_list(p);
+		p->set_event_index_(add_particle_to_list(p));
 		return true;
 	    }
 	}
@@ -513,7 +545,8 @@ namespace HepMC {
 	}
 	m_particle_barcodes[suggested_barcode] = p;
 	p->set_barcode_( suggested_barcode );
-	add_particle_to_list(p);
+	//add_particle_to_list(p);
+	p->set_event_index_(add_particle_to_list(p));
 	return insert_success;
     }
 
@@ -583,19 +616,19 @@ namespace HepMC {
 	return insert_success;
     }
 
-    bool  GenEvent::add_particle_to_list(HepMC::GenParticle* p) {
+    size_t  GenEvent::add_particle_to_list(HepMC::GenParticle* p) {
 	m_particles.push_back(p);
-	//size_t ind = find(m_particles.begin(),m_particles.end(),p) 
-	//	     - m_particles.begin();
-	return true;
+	size_t ind = find(m_particles.begin(),m_particles.end(),p) 
+		     - m_particles.begin();
+	return ind;
     }
 
-    bool  GenEvent::add_vertex_to_list(HepMC::GenVertex* v) {
+    size_t  GenEvent::add_vertex_to_list(HepMC::GenVertex* v) {
 	// add to m_vertices
 	m_vertices.push_back( v );
-	//size_t ind = find(m_vertices.begin(),m_vertices.end(),v) 
-	//	     - m_vertices.begin();
-	return true;
+	size_t ind = find(m_vertices.begin(),m_vertices.end(),v) 
+		     - m_vertices.begin();
+	return ind;
     }
 
     /// test to see if we have two valid beam particles

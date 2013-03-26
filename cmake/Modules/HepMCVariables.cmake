@@ -67,7 +67,11 @@ macro( hepmc_autoconf_variables )
   set( LDFLAGS      ${CMAKE_MODULE_LINKER_FLAGS} )
   set( LIBS         "" )
   set( DIFF_Q       "diff -q -b" )
+  if( ${CMAKE_SYSTEM_NAME} MATCHES "Windows" )
+     message(STATUS "don't try to figure out fortran compiler for Windows")
+  else()
   _hepmc_fortran_compiler()
+  endif()
 
 endmacro( hepmc_autoconf_variables )
 

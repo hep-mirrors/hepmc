@@ -84,6 +84,8 @@ message(STATUS "${project} version ${version} parses to ${VERSION_MAJOR} ${VERSI
 # set our preferred compiler flags and other variables
 include(CMakeDetermineFortranCompiler)
 hepmc_set_compiler_flags()
+# used to set paths for examples
+set(hepmc_top_srcdir ${CMAKE_CURRENT_SOURCE_DIR} )
 
 add_subdirectory(HepMC) 
 add_subdirectory(src) 

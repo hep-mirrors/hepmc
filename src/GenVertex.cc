@@ -76,6 +76,8 @@ namespace HepMC {
         m_position.swap( other.m_position );
 	m_particles_in.swap( other.m_particles_in );
 	m_particles_out.swap( other.m_particles_out );
+	m_particles_in_index.swap( other.m_particles_in_index );
+	m_particles_out_index.swap( other.m_particles_out_index );
 	std::swap( m_id, other.m_id );
 	m_weights.swap( other.m_weights );
 	std::swap( m_event, other.m_event );
@@ -320,12 +322,18 @@ namespace HepMC {
     void GenVertex::remove_particle_in( GenParticle* particle ) {
 	/// this finds *particle in m_particles_in and removes it from that list
 	if ( !particle ) return;
+	m_particles_in_index.erase(find(m_particles_in_index.begin(),
+	                                m_particles_in_index.end(),
+					particle->event_index()));
 	m_particles_in.erase( already_in_vector( &m_particles_in, particle ) );
     }
 
     void GenVertex::remove_particle_out( GenParticle* particle ) {
 	/// this finds *particle in m_particles_out and removes it from that list
 	if ( !particle ) return;
+	m_particles_out_index.erase(find(m_particles_out_index.begin(),
+	                                 m_particles_out_index.end(),
+					 particle->event_index()));
 	m_particles_out.erase( already_in_vector( &m_particles_out, particle ) );
     }
 
@@ -347,6 +355,7 @@ namespace HepMC {
 	    }
 	}
 	m_particles_out.clear();
+	m_particles_out_index.clear();
 	//
 	// 2. delete all incoming particles which don't have production
 	//    vertices. those that do become the responsibility of the 
@@ -361,6 +370,7 @@ namespace HepMC {
 	    }
 	}
 	m_particles_in.clear();
+	m_particles_in_index.clear();
     }
 
     bool GenVertex::suggest_barcode( int the_bar_code )

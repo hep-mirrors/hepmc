@@ -1,0 +1,18 @@
+Gavin Salam's compression on the fly example.
+
+#include "CleverStream.hh"
+
+// ......
+
+
+// get an input stream for the filename
+CleverIFStream istr(filename);
+
+// get an output stream for the filename
+CleverOFStream istr(filename);
+
+If the filename has the .gz or .bz2 extension it will perform decompression on the fly using boost's libraries. One needs to link with -lboost_iostreams for it to work.
+
+
+Also Leif's proposal:
+http://lappwiki01.in2p3.fr/LesHouches11Wiki/index.php/Reduced_event_file_format

@@ -14,7 +14,7 @@ namespace HepMC {
     GenParticle::GenParticle( void ) :
 	m_momentum(0), m_pdg_id(0), m_status(0), m_flow(this),
         m_polarization(0), 
-	m_production_vertex_index(0), m_end_vertex_index(0),
+	m_production_vertex_index(0), m_end_vertex_index(0), m_event_index(0),
         m_barcode(0), m_generated_mass(0.),
 	m_production_vertex(0), m_end_vertex(0), m_parent_event(0)
     {}
@@ -28,7 +28,7 @@ namespace HepMC {
 			const Polarization& polar ) : 
 	m_momentum(momentum), m_pdg_id(pdg_id), m_status(status), m_flow(this),
 	m_polarization(polar), 
-	m_production_vertex_index(0), m_end_vertex_index(0),
+	m_production_vertex_index(0), m_end_vertex_index(0), m_event_index(0),
         m_barcode(0), m_generated_mass(momentum.m()),
 	m_production_vertex(0), m_end_vertex(0), m_parent_event(0)
     {
@@ -46,6 +46,7 @@ namespace HepMC {
 	m_polarization( inparticle.polarization() ),
 	m_production_vertex_index(0), 
 	m_end_vertex_index(0), 
+	m_event_index(0),
 	m_barcode(0), 
         m_generated_mass( inparticle.generated_mass() ),
 	m_production_vertex(0), 
@@ -77,6 +78,7 @@ namespace HepMC {
 	m_polarization.swap( other.m_polarization );
 	std::swap( m_production_vertex_index, other.m_production_vertex_index );
 	std::swap( m_end_vertex_index, other.m_end_vertex_index );
+	std::swap( m_event_index, other.m_event_index );
 	std::swap( m_barcode, other.m_barcode );
 	std::swap( m_generated_mass, other.m_generated_mass );
 	std::swap( m_production_vertex, other.m_production_vertex );

@@ -236,14 +236,6 @@ void IO_MockRoot::write_vertex_list(GenEvent& evt)
 {
     for ( GenEvent::vertex_iterator v = evt.vertices_begin();
           v != evt.vertices_end(); ++v ) {
-	// First collect info we need
-	// count the number of orphan particles going into v
-	int num_orphans_in = 0;
-	for ( GenVertex::particles_in_const_iterator p1
-		  = (*v)->particles_in_const_begin();
-	      p1 != (*v)->particles_in_const_end(); ++p1 ) {
-	    if ( !(*p1)->production_vertex() ) ++num_orphans_in;
-	}
 	//
 	*m_ostr << 'V';
 	detail::output( *m_ostr, (*v)->barcode() ); // v's unique identifier
@@ -252,8 +244,18 @@ void IO_MockRoot::write_vertex_list(GenEvent& evt)
 	detail::output( *m_ostr, (*v)->position().y() );
 	detail::output( *m_ostr, (*v)->position().z() );
 	detail::output( *m_ostr, (*v)->position().t() );
-	detail::output( *m_ostr, num_orphans_in );
-	detail::output( *m_ostr, (int)(*v)->particles_out_size() );
+	std::vector<size_t> pin = (*v)->particles_in_index();
+	detail::output( *m_ostr, (int)pin.size() );
+	for( std::vector<size_t>::const_iterator p1 = pin.begin(); p1 < pin.end(); ++p1 )
+	{
+	    detail::output( *m_ostr, (int)(*p1) );
+	}
+	std::vector<size_t> pout = (*v)->particles_out_index();
+	detail::output( *m_ostr, (int)pout.size() );
+	for( std::vector<size_t>::const_iterator p2 = pout.begin(); p2 < pout.end(); ++p2 )
+	{
+	    detail::output( *m_ostr, (int)(*p2) );
+	}
 	detail::output( *m_ostr, (int)(*v)->weights().size() );
 	for ( WeightContainer::const_iterator w = (*v)->weights().begin(); 
 	      w != (*v)->weights().end(); ++w ) {

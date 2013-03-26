@@ -15,7 +15,6 @@
 #include "IO_MockRoot.h"
 
 // define methods and classes used by this test
-#include "IsGoodEvent.h"
 #include "testHepMCMethods.h"
 
 void read_testIOGenEvent(std::ostream & os);
@@ -30,17 +29,27 @@ int main() {
 }
 
 
+bool is_good_event( const HepMC::GenEvent* evt ) 
+{
+    for ( HepMC::GenEvent::particle_const_iterator p 
+	      = evt->particles_begin(); p != evt->particles_end(); ++p ){
+	if ( (*p)->pdg_id() == 22 && (*p)->momentum().perp() > 25. ) {
+	    return true;
+	}
+    }
+    return false;
+}
+
+
 void read_testIOGenEvent(std::ostream & os)
 {
     os << std::endl;
     os << "basic IO_GenEvent input and IO_MockRoot output" << std::endl;
     // declare an input strategy to read the data - units are GeV and mm
-    HepMC::IO_GenEvent ascii_in("@srcdir@/../../test/testIOGenEvent.input",std::ios::in);
+    HepMC::IO_GenEvent ascii_in("testIOGenEvent.input",std::ios::in);
     ascii_in.use_input_units( HepMC::Units::GEV, HepMC::Units::MM );
     // declare an IO_MockRoot for writing out the good events
     HepMC::IO_MockRoot mockRootOut("testMockRoot.out",std::ios::out);
-    // declare an instance of the event selection predicate
-    IsGoodEvent is_good_event;
     //........................................EVENT LOOP
     int icount=0;
     int num_good_events=0;
@@ -71,7 +80,7 @@ void read_variousFormats(std::ostream & os)
     os << std::endl;
     os << "process varied input" << std::endl;
     // declare an input strategy 
-    HepMC::IO_GenEvent ascii_in("@srcdir@/../../test/testHepMCVarious.input",std::ios::in);
+    HepMC::IO_GenEvent ascii_in("testHepMCVarious.input",std::ios::in);
     ascii_in.use_input_units( HepMC::Units::GEV, HepMC::Units::MM );
     // declare an IO_MockRoot for writing out the good events
     HepMC::IO_MockRoot mockRootOut("testMockRootVarious.out",std::ios::out);

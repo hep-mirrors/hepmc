@@ -1,4 +1,6 @@
 
+set(srcdir ${CMAKE_CURRENT_SOURCE_DIR} )
+
 set( mock_root_source 
 		      IO_MockRoot.cc
 		      IO_MockRoot.h
@@ -14,4 +16,8 @@ CONFIGURE_FILE( ${CMAKE_CURRENT_SOURCE_DIR}/testMockRoot.cc.in
 INSTALL (FILES ${mock_root_source}  
                ${CMAKE_CURRENT_BINARY_DIR}/GNUmakefile
                ${CMAKE_CURRENT_BINARY_DIR}/testMockRoot.cc
-         DESTINATION share/HepMC/examples/pythia8 )
+	       ${hepmc_top_srcdir}/test/testIOGenEvent.input
+	       ${hepmc_top_srcdir}/test/testHepMCVarious.input
+	       ${hepmc_top_srcdir}/test/testHepMCMethods.h
+	       ${hepmc_top_srcdir}/test/testHepMCMethods.cc
+         DESTINATION share/HepMC/examples/root )

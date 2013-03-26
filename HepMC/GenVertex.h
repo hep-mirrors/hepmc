@@ -82,6 +82,10 @@ namespace HepMC {
 
 	double     check_momentum_conservation() const;//!< |Sum (three_mom_in-three_mom_out)|
 
+        /// list of incoming particles by index - useful for I/O
+	std::vector<size_t> particles_in_index()  const { return m_particles_in_index; }
+        /// list of outgoing particles by index - useful for I/O
+	std::vector<size_t> particles_out_index() const { return m_particles_out_index; }
 	/// add incoming particle
 	void       add_particle_in( GenParticle* inparticle );
 	/// add outgoing particle
@@ -390,6 +394,7 @@ namespace HepMC {
 	std::vector<size_t>  m_particles_out_index; //all outgoing particles
 	int                  m_id;
 	WeightContainer      m_weights;       // weights for this vtx
+	size_t               m_event_index;   // index in master list
 	int                  m_barcode;   // unique identifier in the event
 	// transient data
 	std::vector<HepMC::GenParticle*>  m_particles_in;  //all incoming particles

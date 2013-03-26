@@ -294,10 +294,20 @@ namespace HepMC {
 	void set_pdf_info( const PdfInfo& p );
 	
 	/// set the units using enums
+	/// This method will convert momentum and position data if necessary
 	void use_units( Units::MomentumUnit, Units::LengthUnit );
 	/// set the units using strings
 	/// the string must match the enum exactly
+	/// This method will convert momentum and position data if necessary
         void use_units( std::string&, std::string& );
+	
+	/// set the units using enums
+	/// This method will NOT convert momentum and position data
+	void define_units( Units::MomentumUnit, Units::LengthUnit );
+	/// set the units using strings
+	/// the string must match the enum exactly
+	/// This method will NOT convert momentum and position data
+        void define_units( std::string&, std::string& );
 	
 	/// vertex range
 	GenEventVertexRange vertex_range();
@@ -606,9 +616,9 @@ namespace HepMC {
 	/// read the event header line
         std::istream & process_event_line( std::istream &, int &, int &, int &, int & );
 	/// add particle to m_particles
-	bool add_particle_to_list( HepMC::GenParticle * );
+	size_t add_particle_to_list( HepMC::GenParticle * );
 	/// add vertex to m_vertices
-	bool add_vertex_to_list( HepMC::GenVertex * );
+	size_t add_vertex_to_list( HepMC::GenVertex * );
 
     private: // data members
 	// persistent data
@@ -770,12 +780,6 @@ namespace HepMC {
 					     randomstates )
     { m_random_states = randomstates; }
 
-    inline void GenEvent::remove_barcode( GenParticle* p )
-    { m_particle_barcodes.erase( p->barcode() ); }
-
-    inline void GenEvent::remove_barcode( GenVertex* v )
-    { m_vertex_barcodes.erase( v->barcode() ); }
-
     /// Each vertex or particle has a barcode, which is just an integer which
     /// uniquely identifies it inside the event (i.e. there is a one to one
     /// mapping between particle memory addresses and particle barcodes... and 
@@ -860,6 +864,11 @@ namespace HepMC {
     inline void GenEvent::use_units( std::string& new_m, std::string& new_l ) { 
        use_momentum_unit( new_m );
        use_length_unit( new_l );
+    }
+    
+    inline void GenEvent::define_units( Units::MomentumUnit new_m, Units::LengthUnit new_l ) { 
+	m_momentum_unit = new_m; 
+	m_position_unit = new_l; 
     }
 
 } // HepMC

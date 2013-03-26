@@ -23,6 +23,10 @@ LINK_LIBS     =
 UNAME = $(shell uname)
 
 LINK_LIBS     = @LDFLAGS@ 
+ifeq "$(UNAME)" "Darwin"
+else
+  LINK_LIBS     += -Wl,-rpath -Wl,$(HepMCdir)/lib
+endif
 
 HDRS          = $(HepMCdir)/include/HepMC/*.h *.h
 

@@ -132,6 +132,10 @@ namespace HepMC {
 	/// the barcode data member and causes confusion among users. 
 	/// 
 	int                  barcode() const; //!< particle barcode
+
+	size_t           production_vertex_index() const;
+	size_t           end_vertex_index() const;
+	size_t           event_index() const;
 	
 	/// Convenience method.  Returns true if status==1
 	bool                 is_undecayed() const;
@@ -184,6 +188,7 @@ namespace HepMC {
         /// set parent event - for internal use only
 	void   set_parent_event_( );
 	void   set_barcode_( int the_bar_code ); //!< for use by GenEvent only
+	void   set_event_index_( size_t index ); //!< for use by GenEvent only
 
         /// scale the momentum vector and generated mass 
         /// this method is only for use by GenEvent
@@ -198,6 +203,7 @@ namespace HepMC {
 	Polarization     m_polarization;
 	size_t           m_production_vertex_index; // -1 if vacuum or beam
 	size_t           m_end_vertex_index;        // -1 if not-decayed
+	size_t           m_event_index;        // index in master list
 	int              m_barcode;           // unique identifier in the event
         double           m_generated_mass;    // mass of this particle when it was generated
 	// transient data
@@ -256,9 +262,15 @@ namespace HepMC {
     inline void GenParticle::set_polarization( const Polarization& polar )
     { m_polarization = polar; }
 
+    inline size_t GenParticle::production_vertex_index() const { return m_production_vertex_index ; }
+    inline size_t GenParticle::end_vertex_index() const { return m_end_vertex_index ; }
+    inline size_t GenParticle::event_index() const { return m_event_index ; }
+
     inline int  GenParticle::barcode() const { return m_barcode; }
 
     inline void GenParticle::set_barcode_( int bc ) { m_barcode = bc; }
+
+    inline void GenParticle::set_event_index_( size_t ind ) { m_event_index = ind; }
 
     inline bool GenParticle::is_undecayed() const {
         return ( m_status==1 ) ?  true : false;

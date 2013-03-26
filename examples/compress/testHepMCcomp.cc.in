@@ -1,0 +1,115 @@
+//////////////////////////////////////////////////////////////////////////
+// testHepMCcomp.cc.in
+//
+// garren@fnal.gov, January 2012
+// 
+// Test HepMC event compression methods
+//////////////////////////////////////////////////////////////////////////
+//
+
+#include <fstream>
+
+#include "HepMC/GenEvent.h"
+#include "HepMC/IO_GenEvent.h"
+#include "HepMC/Version.h"
+#include "HepMC/IO_Exception.h"
+
+#include "GenCompress.h"
+
+void read_testIOGenEvent(std::ostream & os);
+void write_to_stream(std::ostream & os);
+
+int main() { 
+    std::ofstream os( "testHepMCcomp.cout" );
+    write_to_stream(os);
+    read_testIOGenEvent(os);
+    return 0;
+}
+
+void write_to_stream(std::ostream & os)
+{
+    os << std::endl;
+    os << "basic IO_GenEvent input with streaming output" << std::endl;
+    // declare an input strategy to read the data produced with the 
+    // example_MyPythia - units are GeV and mm
+    HepMC::IO_GenEvent ascii_in("@srcdir@/testIOGenEvent.input",std::ios::in);
+    ascii_in.use_input_units( HepMC::Units::GEV, HepMC::Units::MM );
+    // declare an output stream
+    const char outfile[] = "testHepMCcomp.out";
+    std::ofstream ascii_out( outfile );
+    if( !ascii_out ) {
+      std::cerr << "cannot open " << outfile << std::endl;
+      exit(-1);
+    }
+    ascii_out.precision(16);
+    HepMC::write_HepMC_IO_block_begin( ascii_out );
+    //........................................EVENT LOOP
+    int icount=0;
+    int num_good_events=0;
+    HepMC::GenEvent* evt = ascii_in.read_next_event();
+    while ( evt ) {
+	icount++;
+	if ( icount%50==1 ) os << "Processing Event Number " << icount
+				      << " its # " << evt->event_number() 
+				      << std::endl;
+	    ++num_good_events;
+	    ascii_out << (*evt);
+	
+	// clean up and get next event
+	delete evt;
+	ascii_in >> evt;
+    }
+    HepMC::write_HepMC_IO_block_end( ascii_out );
+    //........................................PRINT RESULT
+    os << num_good_events << " out of " << icount 
+	      << " processed events passed the cuts. Finished." << std::endl;
+}
+
+void read_testIOGenEvent(std::ostream & os)
+{
+    os << std::endl;
+    os << "streaming input and output" << std::endl;
+    // input units are GeV and mm
+    const char infile[] = "@srcdir@/testIOGenEvent.input";
+    std::ifstream is( infile );
+    if( !is ) {
+      std::cerr << "cannot open " << infile << std::endl;
+      exit(-1);
+    }
+    // declare an output stream
+    const char outfile[] = "testHepMCcomp2.out";
+    std::ofstream ascii_out( outfile );
+    if( !ascii_out ) {
+      std::cerr << "cannot open " << outfile << std::endl;
+      exit(-1);
+    }
+    ascii_out.precision(16);
+    HepMC::write_HepMC_IO_block_begin( ascii_out );
+    // declare an IO_AsciiParticle for output
+    //HepMC::IO_AsciiParticles particle_out("testHepMCcompParticle.out",std::ios::out);
+    //........................................EVENT LOOP
+    int icount=0;
+    int num_good_events=0;
+    HepMC::GenEvent evt;
+    while ( is ) {
+	// WARNING - we are not using pointers, so this could be an empty event
+        is >> evt;
+	// make sure this is a valid event
+	if( evt.is_valid() ) {
+	    ++icount;
+	    if ( icount%50==1 ) os << "Processing Event Number " << icount
+					  << " its # " << evt.event_number() 
+					  << std::endl;
+		++num_good_events;
+		ascii_out << evt;
+		// We must explicitly create the pointer if we want to use this event
+		// with any IO strategy (e.g., IO_AsciiParticles)
+		//HepMC::GenEvent* pevt= &evt;
+		//particle_out << pevt;
+	}
+    }
+    HepMC::write_HepMC_IO_block_end( ascii_out );
+    //........................................PRINT RESULT
+    os << num_good_events << " out of " << icount 
+	      << " processed events passed the cuts. Finished." << std::endl;
+}
