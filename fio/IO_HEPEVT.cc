@@ -5,28 +5,28 @@
 
 #include "HepMC/IO_HEPEVT.h"
 #include "HepMC/GenEvent.h"
-#include <cstdio>       // needed for formatted output using sprintf 
+#include <cstdio>       // needed for formatted output using sprintf
 
 namespace HepMC {
 
-    IO_HEPEVT::IO_HEPEVT() : m_trust_mothers_before_daughters(1),
-			     m_trust_both_mothers_and_daughters(0),
-			     m_print_inconsistency_errors(1),
-			     m_trust_beam_particles(true)
-    {}
+  IO_HEPEVT::IO_HEPEVT() : m_trust_mothers_before_daughters(1),
+                           m_trust_both_mothers_and_daughters(0),
+                           m_print_inconsistency_errors(1),
+                           m_trust_beam_particles(true)
+  {}
 
-    IO_HEPEVT::~IO_HEPEVT(){}
+  IO_HEPEVT::~IO_HEPEVT(){}
 
-    void IO_HEPEVT::print( std::ostream& ostr ) const { 
-        ostr << "IO_HEPEVT: reads an event from the FORTRAN HEPEVT "
-             << "common block. \n" 
-	     << " trust_mothers_before_daughters = " 
-	     << m_trust_mothers_before_daughters
-	     << " trust_both_mothers_and_daughters = "
-	     << m_trust_both_mothers_and_daughters
-	     << ", print_inconsistency_errors = " 
-	     << m_print_inconsistency_errors << std::endl;
-    }
+  void IO_HEPEVT::print( std::ostream& ostr ) const {
+    ostr << "IO_HEPEVT: reads an event from the FORTRAN HEPEVT "
+         << "common block. \n"
+         << " trust_mothers_before_daughters = "
+         << m_trust_mothers_before_daughters
+         << " trust_both_mothers_and_daughters = "
+         << m_trust_both_mothers_and_daughters
+         << ", print_inconsistency_errors = "
+         << m_print_inconsistency_errors << std::endl;
+  }
 
     bool IO_HEPEVT::fill_next_event( GenEvent* evt ) {
 	/// read one event from the HEPEVT common block and fill GenEvent

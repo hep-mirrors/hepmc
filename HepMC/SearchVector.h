@@ -1,5 +1,6 @@
-#ifndef SearchVector_h
-#define SearchVector_h
+#ifndef HEPMC_SearchVector_h
+#define HEPMC_SearchVector_h
+
 // ----------------------------------------------------------------------
 //
 // SearchVector.h
@@ -11,15 +12,17 @@
 #include "HepMC/GenVertex.h"
 #include "HepMC/GenParticle.h"
 
+/// @todo Hide these in the implementation, not in the public interface
 namespace HepMC {
-  
-/// returns true if it cannot find GenParticle* in the vector
-bool not_in_vector( std::vector<HepMC::GenParticle*>*, GenParticle* );
 
-/// Returns the index of a GenParticle* within a vector.
-/// Returns -1 if GenParticle* is not in the vector.
-std::vector<HepMC::GenParticle*>::iterator already_in_vector( std::vector<HepMC::GenParticle*>*, GenParticle* );
+  /// Return true if it cannot find GenParticle* in the vector
+  bool not_in_vector( std::vector<HepMC::GenParticle*>*, GenParticle* );
 
-}	// HepMC
+  /// Return the index of a GenParticle* within a vector
+  ///
+  /// Returns -1 if GenParticle* is not in the vector.
+  std::vector<HepMC::GenParticle*>::iterator already_in_vector( std::vector<HepMC::GenParticle*>*, GenParticle* );
 
-#endif // SearchVector_h
+} // HepMC
+
+#endif // HEPMC_SearchVector_h

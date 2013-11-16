@@ -1,4 +1,3 @@
-//--------------------------------------------------------------------------
 #ifndef HEPMC_STREAM_HELPERS_H
 #define HEPMC_STREAM_HELPERS_H
 
@@ -16,87 +15,88 @@
 
 namespace HepMC {
 
-namespace detail {
+  namespace detail {
 
-/// used by IO_GenEvent constructor
-std::ostream & establish_output_stream_info( std::ostream & );
-/// used by IO_GenEvent constructor
-std::istream & establish_input_stream_info( std::istream & );
+    /// Used by IO_GenEvent constructor
+    std::ostream & establish_output_stream_info( std::ostream & );
+    /// Used by IO_GenEvent constructor
+    std::istream & establish_input_stream_info( std::istream & );
 
-/// get a GenVertex from ASCII input
-/// TempParticleMap is used to track the associations of particles with vertices
-std::istream & read_vertex( std::istream &, TempParticleMap &, GenVertex * );
+    /// Get a GenVertex from ASCII input
+    ///
+    /// TempParticleMap is used to track the associations of particles with vertices
+    std::istream & read_vertex( std::istream &, TempParticleMap &, GenVertex * );
 
-/// get a GenParticle from ASCII input
-/// TempParticleMap is used to track the associations of particles with vertices
-std::istream & read_particle( std::istream&, TempParticleMap &, GenParticle * );
+    /// Get a GenParticle from ASCII input
+    ///
+    /// TempParticleMap is used to track the associations of particles with vertices
+    std::istream & read_particle( std::istream&, TempParticleMap &, GenParticle * );
 
-/// write a double - for internal use by streaming IO
-inline std::ostream & output( std::ostream & os, const double& d ) {
-    if( os  ) {
-	if ( d == 0. ) {
-	    os << ' ' << (int)0;
-	} else {
-	    os << ' ' << d;
-	}
+    /// Write a double - for internal use by streaming IO
+    inline std::ostream & output( std::ostream & os, const double& d ) {
+      if ( os  ) {
+        if ( d == 0. ) {
+          os << ' ' << (int)0;
+        } else {
+          os << ' ' << d;
+        }
+      }
+      return os;
     }
-    return os;
-}
 
-/// write a float - for internal use by streaming IO
-inline std::ostream & output( std::ostream & os, const float& d ) {
-    if( os  ) {
-	if ( d == 0. ) {
-	    os << ' ' << (int)0;
-	} else {
-	    os << ' ' << d;
-	}
+    /// Write a float - for internal use by streaming IO
+    inline std::ostream & output( std::ostream & os, const float& d ) {
+      if ( os  ) {
+        if ( d == 0. ) {
+          os << ' ' << (int)0;
+        } else {
+          os << ' ' << d;
+        }
+      }
+      return os;
     }
-    return os;
-}
 
-/// write an int - for internal use by streaming IO
-inline std::ostream & output( std::ostream & os, const int& i ) { 
-    if( os  ) {
-	if ( i == 0. ) {
-	    os << ' ' << (int)0;
-	} else {
-            os << ' ' << i; 
-	}
+    /// Write an int - for internal use by streaming IO
+    inline std::ostream & output( std::ostream & os, const int& i ) {
+      if ( os  ) {
+        if ( i == 0. ) {
+          os << ' ' << (int)0;
+        } else {
+          os << ' ' << i;
+        }
+      }
+      return os;
     }
-    return os;
-}
 
-/// write a long - for internal use by streaming IO
-inline std::ostream & output( std::ostream & os, const long& i ) {
-    if( os  ) {
-	if ( i == 0. ) {
-	    os << ' ' << (int)0;
-	} else {
-            os << ' ' << i; 
-	}
+    /// Write a long int - for internal use by streaming IO
+    inline std::ostream & output( std::ostream & os, const long& i ) {
+      if ( os  ) {
+        if ( i == 0. ) {
+          os << ' ' << (int)0;
+        } else {
+          os << ' ' << i;
+        }
+      }
+      return os;
     }
-    return os;
-}
 
-/// write a single char - for internal use by streaming IO
-inline std::ostream & output( std::ostream & os, const char& c ) {
-    if( os  ) {
-	if ( c ) {
-            os << c; 
-	} else {
-	    os << ' ' ;
-	}
+    /// Write a single char - for internal use by streaming IO
+    inline std::ostream & output( std::ostream & os, const char& c ) {
+      if ( os  ) {
+        if ( c ) {
+          os << c;
+        } else {
+          os << ' ' ;
+        }
+      }
+      return os;
     }
-    return os;
-}
 
-/// used to read to the end of a bad event
-std::istream & find_event_end( std::istream & );
+    /// Used to read to the end of a bad event
+    std::istream & find_event_end( std::istream & );
 
-} // detail
+  } // detail
 
 } // HepMC
 
 #endif  // HEPMC_STREAM_HELPERS_H
-//--------------------------------------------------------------------------

@@ -1,6 +1,6 @@
 # Applicable to each test program:
 
-INCLUDES = -I$(top_builddir) -I$(top_srcdir) 
+AM_CPPFLAGS = -I$(top_builddir) -I$(top_srcdir)
 
 LDADD = $(top_builddir)/src/libHepMC.la
 
@@ -19,7 +19,7 @@ TESTS = testSimpleVector testUnits \
         testPrintBug.sh testMultipleCopies testPolarization.sh testWeights
 
 # Identify the test(s) for which failure is the intended outcome:
-XFAIL_TESTS = 
+XFAIL_TESTS =
 
 # Identify the dependencies on a per-test basis:
 testSimpleVector_SOURCES   = testSimpleVector.cc

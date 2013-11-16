@@ -5,7 +5,7 @@
 // Units.h
 // Author:  A. Buckley, D. Grellscheid
 //
-// units used by a GenEvent
+// Units used by a GenEvent
 // The default units are set by a configure switch at compile time in Units.cc.
 //--------------------------------------------------------------------------
 
@@ -14,29 +14,38 @@
 
 namespace HepMC {
 
-  ///
-  /// \namespace Units
   /// Allow units to be specified within HepMC.
-  /// The default units are set at compile time. 
   ///
+  /// The default units are set at compile time.
+  ///
+  /// @note Convention: if both types are passed, MomentumUnit always goes first.
   namespace Units {
 
-    // Convention: if both types are passed, MomentumUnit always goes first.
-    enum MomentumUnit { MEV, GEV };	//!< momentum units
-    enum LengthUnit   { MM, CM };	//!< position units
-    
-    LengthUnit   default_length_unit();		//!< default unit is defined by configure
-    MomentumUnit default_momentum_unit();	//!< default unit is defined by configure
+    /// Momentum units
+    enum MomentumUnit { MEV, GEV };
+    /// Length/position units
+    enum LengthUnit   { MM, CM };
 
-    // helper functions
-    std::string name( MomentumUnit );	//!< convert enum to string
-    std::string name( LengthUnit );	//!< convert enum to string
+    /// Get the default momentum unit
+    ///
+    /// Defined at HepMC configure/compile time
+    MomentumUnit default_momentum_unit();
+    /// Get the default length unit
+    ///
+    /// Defined at HepMC configure/compile time
+    LengthUnit   default_length_unit();
 
-    /// scaling factor relative to MeV
-    double conversion_factor( MomentumUnit from, MomentumUnit to ); 
+    /// Represent a momentum unit as a string
+    std::string name( MomentumUnit );
+    /// Represent a length unit as a string
+    std::string name( LengthUnit );
+
+    /// Get the scaling factor between two momentum units
+    double conversion_factor( MomentumUnit from, MomentumUnit to );
+    /// Get the scaling factor between two length units
     double conversion_factor( LengthUnit from, LengthUnit to );
 
-  }	// Units
-}	// HepMC
+  } // Units
+} // HepMC
 
 #endif // HEPMC_UNITS_H

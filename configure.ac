@@ -9,6 +9,7 @@ AC_CANONICAL_TARGET
 AM_INIT_AUTOMAKE(1.9 foreign)
 AC_CONFIG_SRCDIR([src/GenEvent.cc])
 AC_CONFIG_HEADER([HepMC/defs.h])
+AC_CONFIG_MACRO_DIR([m4])
 
 # ----------------------------------------------------------------------
 # shared library versioning
@@ -68,7 +69,7 @@ AC_SUBST(GENSERdir)
 # Checks for programs.
 # ----------------------------------------------------------------------
 case "$CXX" in
-cl) 
+cl)
   AC_MSG_ERROR([configure is not supported for Visual C++, use cmake instead])
   ;;
 *)
@@ -134,7 +135,7 @@ AC_SUBST(DIFF_Q)
 # notice that the default is presumed to be some flavor of g++
 # ----------------------------------------------------------------------
 case "$CXX" in
-cl) 
+cl)
   AM_CXXFLAGS="-EHsc -nologo -GR -MD"
   AC_SUBST(AM_MAKEFLAGS)
   CXXFLAGS=" "
@@ -142,7 +143,7 @@ cl)
   build_visual="yes"
   AC_MSG_ERROR([configure is not supported for Visual C++, use cmake instead])
   ;;
-*)  
+*)
   AM_CXXFLAGS="-ansi -pedantic -Wall"
 esac
 

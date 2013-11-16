@@ -18,28 +18,28 @@
 
 namespace HepMC {
 
-std::ostream & operator << ( std::ostream & os, PdfInfo const * pdf)
-{
+  std::ostream & operator << ( std::ostream & os, PdfInfo const * pdf)
+  {
     if ( !os ) {
-	std::cerr << "operator << for PdfInfo: !os, "
-		  << " setting badbit" << std::endl;
-	os.clear(std::ios::badbit); 
-	return os;
+      std::cerr << "operator << for PdfInfo: !os, "
+                << " setting badbit" << std::endl;
+      os.clear(std::ios::badbit);
+      return os;
     }
     os << 'F';
     // PdfInfo* is set to 0 by default
     if ( !pdf ) {
-	detail::output( os, 0 );
-	detail::output( os, 0 );
-	detail::output( os, 0. );
-	detail::output( os, 0. );
-	detail::output( os, 0. );
-	detail::output( os, 0. );
-	detail::output( os, 0. );
-	detail::output( os, 0 );
-	detail::output( os, 0 );
-	detail::output( os,'\n');
-	return os;
+      detail::output( os, 0 );
+      detail::output( os, 0 );
+      detail::output( os, 0. );
+      detail::output( os, 0. );
+      detail::output( os, 0. );
+      detail::output( os, 0. );
+      detail::output( os, 0. );
+      detail::output( os, 0 );
+      detail::output( os, 0 );
+      detail::output( os,'\n');
+      return os;
     }
     //
     detail::output( os, pdf->id1() );
@@ -54,16 +54,16 @@ std::ostream & operator << ( std::ostream & os, PdfInfo const * pdf)
     detail::output( os,'\n');
 
     return os;
-}
+  }
 
-std::istream & operator >> (std::istream & is, PdfInfo * pdf)
-{
+  std::istream & operator >> (std::istream & is, PdfInfo * pdf)
+  {
     // make sure the stream is valid
     if ( !is ) {
-	std::cerr << "PdfInfo input stream setting badbit." << std::endl;
-	is.clear(std::ios::badbit); 
-	return is;
-    } 
+      std::cerr << "PdfInfo input stream setting badbit." << std::endl;
+      is.clear(std::ios::badbit);
+      return is;
+    }
     //
     // get the PdfInfo line
     std::string line;
@@ -73,14 +73,14 @@ std::istream & operator >> (std::istream & is, PdfInfo * pdf)
     iline >> firstc;
     // test to be sure the next entry is of type "F" then ignore it
     if ( firstc != "F" ) {
-	std::cerr << "PdfInfo input stream invalid line type: " 
-	          << firstc << std::endl;
-	// this is non-recoverable, so throw here 
-	throw IO_Exception("PdfInfo input stream encounterd invalid data");
-    } 
+      std::cerr << "PdfInfo input stream invalid line type: "
+                << firstc << std::endl;
+      // this is non-recoverable, so throw here
+      throw IO_Exception("PdfInfo input stream encounterd invalid data");
+    }
     // read values into temp variables, then create a new PdfInfo object
     int id1 =0, id2 =0, pdf_id1=0, pdf_id2=0;
-    double  x1 = 0., x2 = 0., scale = 0., pdf1 = 0., pdf2 = 0.; 
+    double  x1 = 0., x2 = 0., scale = 0., pdf1 = 0., pdf2 = 0.;
     iline >> id1 ;
     if(!iline) throw IO_Exception("PdfInfo input stream encounterd invalid data");
     // check now for empty PdfInfo line
@@ -100,10 +100,10 @@ std::istream & operator >> (std::istream & is, PdfInfo * pdf)
     if(!iline) throw IO_Exception("PdfInfo input stream encounterd invalid data");
     // check to see if we are at the end of the line
     if( !iline.eof() ) {
-        iline >> pdf_id1 ;
-        if(!iline) throw IO_Exception("PdfInfo input stream encounterd invalid data");
-	iline >> pdf_id2;
-        if(!iline) throw IO_Exception("PdfInfo input stream encounterd invalid data");
+      iline >> pdf_id1 ;
+      if(!iline) throw IO_Exception("PdfInfo input stream encounterd invalid data");
+      iline >> pdf_id2;
+      if(!iline) throw IO_Exception("PdfInfo input stream encounterd invalid data");
     }
     pdf->set_id1( id1 );
     pdf->set_id2( id2 );
@@ -116,6 +116,6 @@ std::istream & operator >> (std::istream & is, PdfInfo * pdf)
     pdf->set_pdf2( pdf2 );
 
     return is;
-}
+  }
 
 } // HepMC

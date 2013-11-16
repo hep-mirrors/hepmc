@@ -1,94 +1,87 @@
 #ifndef IS_ARITHMETIC
 #define IS_ARITHMETIC
-// author: Walter Brown
-
-// ----------------------------------------------------------------------
-// prolog
 
 namespace HepMC  {
 
-///
-/// \namespace detail
-/// internal namespace
-///
-namespace detail  {
+  /// Internal namespace for utility functions
+  ///
+  /// @author Walter Brown
+  /// @todo Can be replaced by standard C++11 type traits features
+  namespace detail  {
 
+    /// @name Arithmetic type testing
+    //@{
 
-// ----------------------------------------------------------------------
-// is_arithmetic<>
+    /// Generic template form is non-arithmetic
+    template< class T >
+    struct is_arithmetic
+    {
+      static  bool const  value = false;
+    };
 
-/// undefined and therefore non-arithmetic
-template< class T >
-  struct is_arithmetic
-{
-  static  bool const  value = false;
-};
+    /// Specialise character as arithmetic
+    template<>
+    struct is_arithmetic<char>
+    { static  bool const  value = true; };
 
-/// character is arithmetic
-template<>
-  struct is_arithmetic<char>
-{ static  bool const  value = true; };
+    /// Specialise unsigned character as arithmetic
+    template<>
+    struct is_arithmetic<unsigned char>
+    { static  bool const  value = true; };
 
-/// unsigned character is arithmetic
-template<>
-  struct is_arithmetic<unsigned char>
-{ static  bool const  value = true; };
+    /// Specialise signed character as arithmetic
+    template<>
+    struct is_arithmetic<signed char>
+    { static  bool const  value = true; };
 
-/// signed character is arithmetic
-template<>
-  struct is_arithmetic<signed char>
-{ static  bool const  value = true; };
+    /// Specialise short as arithmetic
+    template<>
+    struct is_arithmetic<short>
+    { static  bool const  value = true; };
 
-/// short is arithmetic
-template<>
-  struct is_arithmetic<short>
-{ static  bool const  value = true; };
+    /// Specialise unsigned short as arithmetic
+    template<>
+    struct is_arithmetic<unsigned short>
+    { static  bool const  value = true; };
 
-/// unsigned short is arithmetic
-template<>
-  struct is_arithmetic<unsigned short>
-{ static  bool const  value = true; };
+    /// Specialise int as arithmetic
+    template<>
+    struct is_arithmetic<int>
+    { static  bool const  value = true; };
 
-/// int is arithmetic
-template<>
-  struct is_arithmetic<int>
-{ static  bool const  value = true; };
+    /// Specialise unsigned int as arithmetic
+    template<>
+    struct is_arithmetic<unsigned int>
+    { static  bool const  value = true; };
 
-/// unsigned int is arithmetic
-template<>
-  struct is_arithmetic<unsigned int>
-{ static  bool const  value = true; };
+    /// Specialise long as arithmetic
+    template<>
+    struct is_arithmetic<long>
+    { static  bool const  value = true; };
 
-/// long is arithmetic
-template<>
-  struct is_arithmetic<long>
-{ static  bool const  value = true; };
+    /// Specialise unsigned long as arithmetic
+    template<>
+    struct is_arithmetic<unsigned long>
+    { static  bool const  value = true; };
 
-/// unsigned long is arithmetic
-template<>
-  struct is_arithmetic<unsigned long>
-{ static  bool const  value = true; };
+    /// Specialise float as arithmetic
+    template<>
+    struct is_arithmetic<float>
+    { static  bool const  value = true; };
 
-/// float is arithmetic
-template<>
-  struct is_arithmetic<float>
-{ static  bool const  value = true; };
+    /// Specialise double as arithmetic
+    template<>
+    struct is_arithmetic<double>
+    { static  bool const  value = true; };
 
-/// double is arithmetic
-template<>
-  struct is_arithmetic<double>
-{ static  bool const  value = true; };
+    /// Specialise long double as arithmetic
+    template<>
+    struct is_arithmetic<long double>
+    { static  bool const  value = true; };
 
-/// long double is arithmetic
-template<>
-  struct is_arithmetic<long double>
-{ static  bool const  value = true; };
+    //@}
 
-
-// ----------------------------------------------------------------------
-// epilog
-
-}  // namespace detail
+  }  // namespace detail
 }  // namespace HepMC
 
 #endif  // IS_ARITHMETIC

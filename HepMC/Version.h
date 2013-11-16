@@ -1,5 +1,6 @@
 #ifndef HEPMC_VERSION_H
 #define HEPMC_VERSION_H
+
 // ----------------------------------------------------------------------
 //
 // Version.h
@@ -15,26 +16,22 @@
 
 namespace HepMC {
 
-void version( std::ostream & os = std::cout );			//!< print HepMC version
-void writeVersion( std::ostream & os );	//!< write HepMC version to os
-std::string versionName( );	//!< return HepMC version
-
-inline std::string versionName( )
-{
+  /// Return HepMC version string
+  inline std::string versionName( ) {
     return HEPMC_VERSION;
-}
+  }
 
-inline void version( std::ostream & os )
-{
-    os << " --------------- HepMC Version " << versionName()
-       << " --------------- " << std::endl;
-}
+  /// Print HepMC version (to optional ostream)
+  inline void version( std::ostream & os = std::cout ) {
+    os << " --------------- HepMC Version " << versionName() << " --------------- " << std::endl;
+  }
 
-inline void writeVersion( std::ostream & os )
-{
+  /// Write HepMC version to an ostream
+  inline void writeVersion( std::ostream & os ) {
+    /// @todo Why the leading spaces?
     os << "             HepMC Version: " << versionName() << std::endl;
-}
+  }
 
-}	// HepMC
+} // HepMC
 
 #endif // HEPMC_VERSION_H

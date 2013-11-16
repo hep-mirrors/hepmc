@@ -1,4 +1,3 @@
-//--------------------------------------------------------------------------
 #ifndef HEPMC_ITERATOR_RANGE_H
 #define HEPMC_ITERATOR_RANGE_H
 
@@ -13,10 +12,9 @@
 
 namespace HepMC {
 
-    /// type of iteration
-    enum IteratorRange { parents, children, family, 
-			 ancestors, descendants, relatives };
+  /// Type of particle relationship over which to iterate
+  enum IteratorRange { parents, children, family, ancestors, descendants, relatives };
+
 } // HepMC
 
 #endif  // HEPMC_ITERATOR_RANGE_H
-//--------------------------------------------------------------------------

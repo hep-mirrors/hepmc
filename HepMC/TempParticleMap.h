@@ -1,4 +1,3 @@
-//--------------------------------------------------------------------------
 #ifndef HEPMC_TempParticleMap_H
 #define HEPMC_TempParticleMap_H
 
@@ -12,56 +11,48 @@
 
 namespace HepMC {
 
-    class GenParticle;
+  class GenParticle;
 
-    //! TempParticleMap is a temporary GenParticle* container used during input.
+  //! TempParticleMap is a temporary GenParticle* container used during input.
+  /// @todo Hide from public header interface?
 
-    ///
-    /// \class  TempParticleMap
-    /// Used by IO classes for recoverable particle ordering.
-    /// Map GenParticle* against both outgoing vertex and particle order.
-    ///
-    class TempParticleMap {
-    public:
-        typedef std::map<HepMC::GenParticle*,int> TempMap;
-        typedef std::map<int,HepMC::GenParticle*> TempOrderMap;
-	typedef TempMap::iterator     TempMapIterator;
-	typedef TempOrderMap::iterator  orderIterator;
-	
-	TempParticleMap() 
-	: m_particle_to_end_vertex(), m_particle_order() {}
-	
-	~TempParticleMap() {}
-	
-	TempMapIterator begin() { return m_particle_to_end_vertex.begin(); }
-	TempMapIterator end() { return m_particle_to_end_vertex.end(); }
-	orderIterator order_begin() { return m_particle_order.begin(); }
-	orderIterator order_end() { return m_particle_order.end(); }
-	
-	int end_vertex( GenParticle* );
-	
-	void addEndParticle( GenParticle*, int& );
-	
-    private:
-        TempMap       m_particle_to_end_vertex;
-	TempOrderMap  m_particle_order;
-    };
-    
-    inline int TempParticleMap::end_vertex( GenParticle* p )
-    { 
-        //return m_particle_to_end_vertex[p]->second; 
-	TempMapIterator it = m_particle_to_end_vertex.find(p);
-	if( it == end() ) return 0;
-	return m_particle_to_end_vertex[p];
+  /// \class  TempParticleMap
+  /// Used by IO classes for recoverable particle ordering.
+  /// Map GenParticle* against both outgoing vertex and particle order.
+  ///
+  class TempParticleMap {
+  public:
+    typedef std::map<HepMC::GenParticle*,int> TempMap;
+    typedef std::map<int,HepMC::GenParticle*> TempOrderMap;
+    typedef TempMap::iterator     TempMapIterator;
+    typedef TempOrderMap::iterator  orderIterator;
+
+    TempParticleMap()
+      : m_particle_to_end_vertex(), m_particle_order()
+    { }
+
+    TempMapIterator begin() { return m_particle_to_end_vertex.begin(); }
+    TempMapIterator end() { return m_particle_to_end_vertex.end(); }
+    orderIterator order_begin() { return m_particle_order.begin(); }
+    orderIterator order_end() { return m_particle_order.end(); }
+
+    int end_vertex( GenParticle* p) {
+      return (m_particle_to_end_vertex.find(p) != end()) ? m_particle_to_end_vertex[p] : 0;
     }
 
-    inline void TempParticleMap::addEndParticle( GenParticle* p, int& end_vtx_code )
-    {
-	m_particle_order[p->barcode()] = p;
-        m_particle_to_end_vertex[p] = end_vtx_code;
-    }        
+    /// @todo Why pass the int by reference?
+    void addEndParticle( GenParticle* p, int& end_vtx_code) {
+      m_particle_order[p->barcode()] = p;
+      m_particle_to_end_vertex[p] = end_vtx_code;
+    }
+
+  private:
+
+    TempMap       m_particle_to_end_vertex;
+    TempOrderMap  m_particle_order;
+
+  };
 
 } // HepMC
 
 #endif  // HEPMC_TempParticleMap_H
-//--------------------------------------------------------------------------

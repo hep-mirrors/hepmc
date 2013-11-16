@@ -1,12 +1,12 @@
 ## Process this file with automake to produce Makefile.in
 
-INCLUDES = -I$(top_builddir) -I$(top_srcdir) 
+AM_CPPFLAGS = -I$(top_builddir) -I$(top_srcdir)
 
 libHepMCfio_la_SOURCES = \
-	HEPEVT_Wrapper.cc	\
-	IO_HEPEVT.cc	\
-	IO_HERWIG.cc	\
-	HerwigWrapper.cc	
+	HEPEVT_Wrapper.cc \
+	IO_HEPEVT.cc \
+	IO_HERWIG.cc \
+	HerwigWrapper.cc
 
 lib_LTLIBRARIES = libHepMCfio.la
 

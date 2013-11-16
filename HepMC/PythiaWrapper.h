@@ -1,4 +1,3 @@
-//--------------------------------------------------------------------------
 #ifndef PYTHIA_WRAPPER_H
 #define PYTHIA_WRAPPER_H
 
@@ -22,26 +21,26 @@
 
 #include "HepMC/GenCrossSection.h"
 
+/// @todo Remove this Fortran generator steering code / make it optional or push into HepMCfio
+
 namespace HepMC {
 
-/// calculate the Pythia cross section and statistical error
-inline GenCrossSection getPythiaCrossSection() {
 
-  GenCrossSection xsec;
-  // xsec(0,2) contains the sum of differential cross sections in mb
-  // ngen(0,2) contains the combined number of generated events
-  // convert to pb (HepMC convention)
-  double xsecval = pyint5.xsec[2][0] * 1.0e9;
-  // statistical error
-  double xsecerr = xsecval / std::sqrt( (double)pyint5.ngen[2][0] );
-  // set and return cross section information
-  xsec.set_cross_section(xsecval, xsecerr);
-  return xsec;
-}
-
+  /// Calculate the Pythia cross section and statistical error
+  inline GenCrossSection getPythiaCrossSection() {
+    GenCrossSection xsec;
+    // xsec(0,2) contains the sum of differential cross sections in mb
+    // ngen(0,2) contains the combined number of generated events
+    // convert to pb (HepMC convention)
+    double xsecval = pyint5.xsec[2][0] * 1.0e9;
+    // statistical error
+    double xsecerr = xsecval / std::sqrt( (double)pyint5.ngen[2][0] );
+    // set and return cross section information
+    xsec.set_cross_section(xsecval, xsecerr);
+    return xsec;
+  }
 
 
 } // HepMC
 
-#endif  // PYTHIA_WRAPPER_H
-//--------------------------------------------------------------------------
+#endif // PYTHIA_WRAPPER_H

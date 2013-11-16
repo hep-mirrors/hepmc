@@ -18,35 +18,35 @@
 
 namespace HepMC {
 
-/// Write the contents of HeavyIon to an output stream.
-/// GenEvent stores a pointer to a HeavyIon.
-std::ostream & operator << (std::ostream & os, HeavyIon const * ion)
-{
+  /// Write the contents of HeavyIon to an output stream.
+  /// GenEvent stores a pointer to a HeavyIon.
+  std::ostream & operator << (std::ostream & os, HeavyIon const * ion)
+  {
     if ( !os ) {
-	std::cerr << "HeavyIon output stream !os, "
-		  << " setting badbit" << std::endl;
-	os.clear(std::ios::badbit); 
-	return os;
+      std::cerr << "HeavyIon output stream !os, "
+                << " setting badbit" << std::endl;
+      os.clear(std::ios::badbit);
+      return os;
     }
     os << 'H';
     // HeavyIon* is set to 0 by default
     if ( !ion  ) {
-	detail::output( os, 0 );
-	detail::output( os, 0 );
-	detail::output( os, 0 );
-	detail::output( os, 0 );
-	detail::output( os, 0 );
-	detail::output( os, 0 );
-	detail::output( os, 0 );
-	detail::output( os, 0 );
-	detail::output( os, 0 );
-	detail::output( os, 0. );
-	detail::output( os, 0. );
-	detail::output( os, 0. );
-	detail::output( os, 0. );
-	detail::output( os, 0. );
-	detail::output( os,'\n');
-	return os;
+      detail::output( os, 0 );
+      detail::output( os, 0 );
+      detail::output( os, 0 );
+      detail::output( os, 0 );
+      detail::output( os, 0 );
+      detail::output( os, 0 );
+      detail::output( os, 0 );
+      detail::output( os, 0 );
+      detail::output( os, 0 );
+      detail::output( os, 0. );
+      detail::output( os, 0. );
+      detail::output( os, 0. );
+      detail::output( os, 0. );
+      detail::output( os, 0. );
+      detail::output( os,'\n');
+      return os;
     }
     //
     detail::output( os, ion->Ncoll_hard() );
@@ -66,17 +66,17 @@ std::ostream & operator << (std::ostream & os, HeavyIon const * ion)
     detail::output( os,'\n');
 
     return os;
-}
+  }
 
-/// Read the contents of HeavyIon from an input stream.
-/// GenEvent stores a pointer to a HeavyIon.
-std::istream & operator >> (std::istream & is, HeavyIon * ion)
-{
+  /// Read the contents of HeavyIon from an input stream.
+  /// GenEvent stores a pointer to a HeavyIon.
+  std::istream & operator >> (std::istream & is, HeavyIon * ion)
+  {
     // make sure the stream is valid
-    if ( !is ) { 
+    if ( !is ) {
       std::cerr << "HeavyIon input stream setting badbit." << std::endl;
-      is.clear(std::ios::badbit); 
-      return is; 
+      is.clear(std::ios::badbit);
+      return is;
     }
     // get the HeavyIon line
     std::string line;
@@ -84,17 +84,17 @@ std::istream & operator >> (std::istream & is, HeavyIon * ion)
     std::istringstream iline(line);
     std::string firstc;
     iline >> firstc;
-    // test to be sure the next entry is of type "H" 
-    if( firstc != "H" ) { 
-	std::cerr << "HeavyIon input stream invalid line type: " 
-	          << firstc << std::endl;
-	// The most likely problem is that we have found a HepMC block line
-	throw IO_Exception("HeavyIon input stream encounterd invalid data");
-    } 
+    // test to be sure the next entry is of type "H"
+    if( firstc != "H" ) {
+      std::cerr << "HeavyIon input stream invalid line type: "
+                << firstc << std::endl;
+      // The most likely problem is that we have found a HepMC block line
+      throw IO_Exception("HeavyIon input stream encounterd invalid data");
+    }
     // read values into temp variables, then create a new HeavyIon object
-    int nh =0, np =0, nt =0, nc =0, 
-        neut = 0, prot = 0, nw =0, nwn =0, nwnw =0;
-    float impact = 0., plane = 0., xcen = 0., inel = 0., cent=0.; 
+    int nh =0, np =0, nt =0, nc =0,
+      neut = 0, prot = 0, nw =0, nwn =0, nwnw =0;
+    float impact = 0., plane = 0., xcen = 0., inel = 0., cent=0.;
     iline >> nh ;
     if(!iline) throw IO_Exception("HeavyIon input stream encounterd invalid data");
     iline >> np ;
@@ -122,13 +122,13 @@ std::istream & operator >> (std::istream & is, HeavyIon * ion)
     iline >> inel;
     if(!iline) throw IO_Exception("HeavyIon input stream encounterd invalid data");
     // centrality was added in HepMC 2.07.00
-    // since we don't know if this event has centrality, set to zero if not found. 
+    // since we don't know if this event has centrality, set to zero if not found.
     iline >> cent;
     if(!iline) cent=0.;
     if( nh == 0 ) {
-        return is;
+      return is;
     }
-    
+
     ion->set_Ncoll_hard(nh);
     ion->set_Npart_proj(np);
     ion->set_Npart_targ(nt);
@@ -145,7 +145,7 @@ std::istream & operator >> (std::istream & is, HeavyIon * ion)
     ion->set_centrality(cent);
 
     return is;
-}
+  }
 
 
 } // HepMC
