@@ -41,16 +41,12 @@ namespace HepMC {
   class GenParticle;
   class GenEvent;
 
-  //! GenVertex contains information about decay vertices.
 
+  //! GenVertex contains information about decay vertices.
   ///
-  /// \class GenVertex
   /// HepMC::GenVertex contains the position in space and time of a decay.
   /// It also contains lists of incoming and outgoing particles.
-  ///
   class GenVertex {
-
-    /// print vertex information
     friend std::ostream& operator<<( std::ostream&, const GenVertex& );
     friend class GenEvent;
 
@@ -67,51 +63,51 @@ namespace HepMC {
 
   public:
     /// default constructor
-    GenVertex( const FourVector& position =FourVector(0,0,0,0),
-               int id = 0,
+    GenVertex( const FourVector& position =FourVector(0,0,0,0), int id = 0,
                const WeightContainer& weights = std::vector<double>() );
     GenVertex( const GenVertex& invertex );            //!< shallow copy
     virtual    ~GenVertex();
 
     void swap( GenVertex & other); //!< swap
     GenVertex& operator= ( const GenVertex& invertex ); //!< shallow
-    bool       operator==( const GenVertex& a ) const; //!< equality
-    bool       operator!=( const GenVertex& a ) const; //!< inequality
-    void       print( std::ostream& ostr = std::cout ) const; //!< print vertex information
+    bool operator==( const GenVertex& a ) const; //!< equality
+    bool operator!=( const GenVertex& a ) const; //!< inequality
+    void print( std::ostream& ostr = std::cout ) const; //!< print vertex information
 
-    double     check_momentum_conservation() const;//!< |Sum (three_mom_in-three_mom_out)|
+    double check_momentum_conservation() const;//!< |Sum (three_mom_in-three_mom_out)|
 
     /// add incoming particle
-    void       add_particle_in( GenParticle* inparticle );
+    void add_particle_in( GenParticle* inparticle );
     /// add outgoing particle
-    void       add_particle_out( GenParticle* outparticle );
+    void add_particle_out( GenParticle* outparticle );
     /// remove_particle finds *particle in the in and/or out list and
     ///  removes it from these lists ... it DOES NOT DELETE THE PARTICLE
     ///  or its relations. You could delete the particle too as follows:
     ///      delete vtx->remove_particle( particle );
     GenParticle* remove_particle( GenParticle* particle ); //!< remove a particle
 
-    operator    HepMC::FourVector() const; //!< conversion operator
-    operator   HepMC::ThreeVector() const; //!< conversion operator
+    /// Conversion operator to a 4D point
+    operator HepMC::FourVector() const { return position(); }
+    /// Conversion operator to a 3D point
+    operator HepMC::ThreeVector() const { return point3d(); }
 
     ////////////////////
     // access methods //
     ////////////////////
 
     /// pointer to the event that owns this vertex
-    GenEvent*               parent_event() const;
+    GenEvent* parent_event() const { return m_event; }
     /// vertex position
-    ThreeVector             point3d() const;
+    ThreeVector point3d() const { return ThreeVector(m_position.x(),m_position.y(),m_position.z()); }
     /// vertex position and time
-    const FourVector &      position() const;
+    const FourVector& position() const { return m_position; }
     /// set vertex position and time
-    void                    set_position( const FourVector& position = FourVector(0,0,0,0) );
-    /// we don't define what you use the id for -- but we imagine,
-    /// for example it might code the meaning of the weights()
-    int                     id() const;  //!< vertex ID
-    void                    set_id( int id );  //!< set vertex ID
+    void set_position(const FourVector& pos=FourVector(0,0,0,0)) { m_position = pos; }
+    /// Vertex IDs are used to encode the sort of transition represented: see docs
+    int id() const { return m_id; }
+    /// Set the vertex ID
+    void set_id( int id ) { m_id = id; }
 
-    ///
     /// The barcode is the vertex's reference number, every vertex in the
     /// event has a unique barcode. Vertex barcodes are negative numbers,
     /// particle barcodes are positive numbers.
@@ -121,15 +117,15 @@ namespace HepMC {
     /// Using the barcode to encode extra information is an abuse of
     /// the barcode data member and causes confusion among users.
     ///
-    int                     barcode() const; //!< unique identifier
+    int barcode() const { return m_barcode; }
 
     /// In general there is no reason to "suggest_barcode"
-    bool                    suggest_barcode( int the_bar_code );
+    bool suggest_barcode( int the_bar_code );
 
     /// direct access to the weights container is allowed.
-    WeightContainer&        weights();
+    WeightContainer& weights() { return m_weights; }
     /// const direct access to the weights container
-    const WeightContainer&  weights() const;
+    const WeightContainer& weights() const { return m_weights; }
 
     /// particle range
     GenVertexParticleRange particles( IteratorRange range = relatives );
@@ -153,27 +149,26 @@ namespace HepMC {
     typedef std::vector<HepMC::GenParticle*>::const_iterator
     particles_out_const_iterator;
     /// begin iteration of incoming particles
-    particles_in_const_iterator         particles_in_const_begin() const;
+    particles_in_const_iterator particles_in_const_begin() const;
     /// end iteration of incoming particles
-    particles_in_const_iterator         particles_in_const_end() const;
+    particles_in_const_iterator particles_in_const_end() const;
     /// begin iteration of outgoing particles
-    particles_out_const_iterator        particles_out_const_begin() const;
+    particles_out_const_iterator particles_out_const_begin() const;
     /// end iteration of outgoing particles
-    particles_out_const_iterator        particles_out_const_end() const;
+    particles_out_const_iterator particles_out_const_end() const;
     /// number of incoming particles
-    int                                 particles_in_size() const;
+    int particles_in_size() const;
     /// number of outgoing particles
-    int                                 particles_out_size() const;
+    int particles_out_size() const;
 
   protected:
-    //static unsigned int     counter(); //!< temporary for debugging
 
     /// only the GenEvent (friend) is allowed to set the parent_event,
     ///  and barcode. It is done automatically anytime you add a
     ///  vertex to an event
-    void                    set_parent_event_( GenEvent* evt ); //!< set parent event
-    void                    set_barcode_( int the_bar_code ); //!< set identifier
-    void                    change_parent_event_( GenEvent* evt ); //!< for use with swap
+    void set_parent_event_( GenEvent* evt ); //!< set parent event
+    void set_barcode_( int bc ) { m_barcode = bc; } //!< set identifier
+    void change_parent_event_( GenEvent* evt ); //!< for use with swap
 
     /////////////////////////////
     // edge_iterator           // (protected - for internal use only)
@@ -353,25 +348,24 @@ namespace HepMC {
       /// Post-fix increment
       particle_iterator   operator++(int);
       /// equality
-      bool                operator==( const particle_iterator& ) const;
+      bool operator==( const particle_iterator& ) const;
       /// inequality
-      bool                operator!=( const particle_iterator& ) const;
+      bool operator!=( const particle_iterator& ) const;
     protected:
-      GenParticle*        advance_to_first_(); //!< "first" particle
+      GenParticle* advance_to_first_(); //!< "first" particle
     private:
-      vertex_iterator     m_vertex_iterator;
-      edge_iterator       m_edge;     // points to the return
+      vertex_iterator m_vertex_iterator;
+      edge_iterator m_edge;     // points to the return
     };
     friend class particle_iterator;
     /// begin particle range
-    particle_iterator       particles_begin( IteratorRange range
-                                             = relatives );
+    particle_iterator particles_begin( IteratorRange range = relatives );
     /// end particle range
-    particle_iterator       particles_end( IteratorRange
-                                           /* dummy_range */ );
+    particle_iterator particles_end( IteratorRange );
 
-    ////////////////////////////////////////////////
+
   protected:
+
     /// for internal use only
     void delete_adopted_particles();
     /// for internal use only - remove particle from incoming list
@@ -382,51 +376,21 @@ namespace HepMC {
     /// this method is only for use by GenEvent
     void convert_position( const double& );
 
-  private: // GenVertex data members
+
+  private:
+
     FourVector              m_position;      //< 4-vec of vertex
     std::vector<HepMC::GenParticle*>  m_particles_in;  //< All incoming particles
     std::vector<HepMC::GenParticle*>  m_particles_out; //< All outgoing particles
-    /// @todo What's this? How's it different from the barcode?
-    int                  m_id;
-    /// @todo Are vertex weights used by anyone?!
-    WeightContainer      m_weights;       //< Weights for this vtx
-    GenEvent*            m_event;
-    int                  m_barcode;   // unique identifier in the event
+    /// @todo What's this? How's it different from the barcode? Remove?
+    int m_id;
+    /// @todo Are vertex weights used by anyone?! Remove?
+    WeightContainer m_weights;
+    GenEvent* m_event;
+    int m_barcode;
 
   };
 
-
-  ////////////////////////////
-  // INLINES access methods //
-  ////////////////////////////
-
-  inline GenVertex::operator HepMC::FourVector() const { return position(); }
-
-  inline GenVertex::operator HepMC::ThreeVector() const { return point3d(); }
-
-  inline const FourVector & GenVertex::position() const { return m_position; }
-
-  inline GenEvent* GenVertex::parent_event() const { return m_event; }
-
-  inline ThreeVector GenVertex::point3d() const {
-    return ThreeVector(m_position.x(),m_position.y(),m_position.z());
-  }
-
-  inline int GenVertex::id() const { return m_id; }
-
-  inline int  GenVertex::barcode() const { return m_barcode; }
-  inline void GenVertex::set_barcode_( int bc ) { m_barcode = bc; }
-
-  inline WeightContainer& GenVertex::weights() { return m_weights; }
-
-  inline const WeightContainer& GenVertex::weights() const
-  { return m_weights; }
-
-  inline void GenVertex::set_position( const FourVector& pos ) {
-    m_position = pos;
-  }
-
-  inline void GenVertex::set_id( int pid ) { m_id = pid; }
 
   //////////////
   // INLINES  //
