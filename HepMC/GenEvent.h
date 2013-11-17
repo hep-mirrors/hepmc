@@ -351,19 +351,21 @@ namespace HepMC {
     void define_units( std::string&, std::string& );
 
     /// @name Iterator ranges
-    /// @todo These currently don't work without also including GenRanges.h
     //@{
 
     /// Vertex range
-    GenEventVertexRange vertex_range();
-    /// Vertex range
-    ConstGenEventVertexRange vertex_range() const;
+    GenEventVertexRange vertex_range(); //< @deprecated Use vertices
+    ConstGenEventVertexRange vertex_range() const; //< @deprecated Use vertices
+    GenEventVertexRange vertices();
+    ConstGenEventVertexRange vertices() const;
     /// Particle range
-    GenEventParticleRange particle_range();
-    /// Particle range
-    ConstGenEventParticleRange particle_range() const;
+    GenEventParticleRange particle_range(); //< @deprecated Use particles
+    ConstGenEventParticleRange particle_range() const; //< @deprecated Use particles
+    GenEventParticleRange particles();
+    ConstGenEventParticleRange particles() const;
 
     //@}
+
 
   public:
 

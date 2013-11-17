@@ -19,6 +19,7 @@
 
 namespace HepMC {
 
+
   GenEvent::GenEvent( int signal_process_id,
                       int event_number,
                       GenVertex* signal_vertex,
@@ -52,6 +53,7 @@ namespace HepMC {
     ///
   }
 
+
   GenEvent::GenEvent( int signal_process_id, int event_number,
                       GenVertex* signal_vertex,
                       const WeightContainer& weights,
@@ -84,6 +86,7 @@ namespace HepMC {
     /// note: default values for m_event_scale, m_alphaQCD, m_alphaQED
     ///       are as suggested in hep-ph/0109068, "Generic Interface..."
   }
+
 
   GenEvent::GenEvent( Units::MomentumUnit mom,
                       Units::LengthUnit len,
@@ -119,6 +122,7 @@ namespace HepMC {
     ///
   }
 
+
   GenEvent::GenEvent( Units::MomentumUnit mom,
                       Units::LengthUnit len,
                       int signal_process_id, int event_number,
@@ -152,6 +156,7 @@ namespace HepMC {
     /// note: default values for m_event_scale, m_alphaQCD, m_alphaQED
     ///       are as suggested in hep-ph/0109068, "Generic Interface..."
   }
+
 
   GenEvent::GenEvent( const GenEvent& inevent )
     : m_signal_process_id    ( inevent.signal_process_id() ),
@@ -223,8 +228,8 @@ namespace HepMC {
     weights() = inevent.weights();
   }
 
-  void GenEvent::swap( GenEvent & other )
-  {
+
+  void GenEvent::swap( GenEvent & other ) {
     // if a container has a swap method, use that for improved performance
     std::swap(m_signal_process_id    , other.m_signal_process_id    );
     std::swap(m_event_number         , other.m_event_number         );
@@ -255,8 +260,8 @@ namespace HepMC {
     }
   }
 
-  GenEvent::~GenEvent()
-  {
+
+  GenEvent::~GenEvent() {
     /// Deep destructor.
     /// deletes all vertices/particles in this GenEvent
     /// deletes the associated HeavyIon and PdfInfo
@@ -266,13 +271,14 @@ namespace HepMC {
     delete m_pdf_info;
   }
 
-  GenEvent& GenEvent::operator=( const GenEvent& inevent )
-  {
+
+  GenEvent& GenEvent::operator=( const GenEvent& inevent ) {
     /// best practices implementation
     GenEvent tmp( inevent );
     swap( tmp );
     return *this;
   }
+
 
   void GenEvent::print( std::ostream& ostr ) const {
     /// dumps the content of this event to ostr
@@ -325,11 +331,13 @@ namespace HepMC {
          << "________________________________________" << std::endl;
   }
 
+
   void GenEvent::print_version( std::ostream& ostr ) const {
     ostr << "---------------------------------------------" << std::endl;
     writeVersion( ostr );
     ostr << "---------------------------------------------" << std::endl;
   }
+
 
   bool GenEvent::add_vertex( GenVertex* vtx ) {
     /// returns true if successful - generally will only return false
@@ -354,6 +362,7 @@ namespace HepMC {
     return ( m_vertex_barcodes.count(vtx->barcode()) ? true : false );
   }
 
+
   bool GenEvent::remove_vertex( GenVertex* vtx ) {
     /// this removes vtx from the event but does NOT delete it.
     /// returns True if an entry vtx existed in the table and was erased
@@ -362,8 +371,8 @@ namespace HepMC {
     return ( m_vertex_barcodes.count(vtx->barcode()) ? false : true );
   }
 
-  void GenEvent::clear()
-  {
+
+  void GenEvent::clear() {
     /// remove all information from the event
     /// deletes all vertices/particles in this evt
     ///
@@ -400,6 +409,7 @@ namespace HepMC {
     return;
   }
 
+
   void GenEvent::delete_all_vertices() {
     /// deletes all vertices in the vertex container
     /// (i.e. all vertices owned by this event)
@@ -427,8 +437,8 @@ namespace HepMC {
     }
   }
 
-  bool GenEvent::set_barcode( GenParticle* p, int suggested_barcode )
-  {
+
+  bool GenEvent::set_barcode( GenParticle* p, int suggested_barcode ) {
     if ( p->parent_event() != this ) {
       std::cerr << "GenEvent::set_barcode attempted, but the argument's"
                 << "\n parent_event is not this ... request rejected."
@@ -499,8 +509,8 @@ namespace HepMC {
     return insert_success;
   }
 
-  bool GenEvent::set_barcode( GenVertex* v, int suggested_barcode )
-  {
+
+  bool GenEvent::set_barcode( GenVertex* v, int suggested_barcode ) {
     if ( v->parent_event() != this ) {
       std::cerr << "GenEvent::set_barcode attempted, but the argument's"
                 << "\n parent_event is not this ... request rejected."
@@ -565,6 +575,7 @@ namespace HepMC {
     return insert_success;
   }
 
+
   /// test to see if we have two valid beam particles
   bool  GenEvent::valid_beam_particles() const {
     bool have1 = false;
@@ -582,6 +593,7 @@ namespace HepMC {
     return false;
   }
 
+
   /// construct the beam particle information using pointers to GenParticle
   /// returns false if either GenParticle* is null
   bool  GenEvent::set_beam_particles(GenParticle* bp1, GenParticle* bp2) {
@@ -597,22 +609,24 @@ namespace HepMC {
     return set_beam_particles(bp.first,bp.second);
   }
 
+
   void GenEvent::write_units( std::ostream & os ) const {
     os << " Momentum units:" << std::setw(8) << name(momentum_unit());
     os << "     Position units:" << std::setw(8) << name(length_unit());
     os << std::endl;
   }
 
-  void GenEvent::write_cross_section( std::ostream& os ) const
-  {
+
+  void GenEvent::write_cross_section( std::ostream& os ) const {
     // write the GenCrossSection information if the cross section was set
-    if( !cross_section() ) return;
-    if( cross_section()->is_set() ) {
+    if ( !cross_section() ) return;
+    if (  cross_section()->is_set() ) {
       os << " Cross Section: " << cross_section()->cross_section() ;
       os << " +/- " << cross_section()->cross_section_error() ;
       os << std::endl;
     }
   }
+
 
   bool GenEvent::use_momentum_unit( Units::MomentumUnit newunit ) {
     // currently not exception-safe.
@@ -621,16 +635,14 @@ namespace HepMC {
       const double factor = Units::conversion_factor( m_momentum_unit, newunit );
       // multiply all momenta by 'factor',
       // loop is entered only if particle list is not empty
-      for ( GenEvent::particle_iterator p = particles_begin();
-            p != particles_end(); ++p )
-        {
-          (*p)->convert_momentum(factor);
-        }
-      // ...
+      for ( GenEvent::particle_iterator p = particles_begin(); p != particles_end(); ++p ) {
+        (*p)->convert_momentum(factor);
+      }
       m_momentum_unit = newunit;
     }
     return true;
   }
+
 
   bool GenEvent::use_length_unit( Units::LengthUnit newunit ) {
     // currently not exception-safe.
@@ -656,24 +668,27 @@ namespace HepMC {
     return false;
   }
 
+
   bool GenEvent::use_length_unit( std::string& newunit ) {
-    if     ( newunit == "MM" ) return use_length_unit( Units::MM );
-    else if( newunit == "CM" ) return use_length_unit( Units::CM );
+    if      ( newunit == "MM" ) return use_length_unit( Units::MM );
+    else if ( newunit == "CM" ) return use_length_unit( Units::CM );
     else std::cerr << "GenEvent::use_length_unit ERROR: use either MM or CM\n";
     return false;
   }
 
+
   void GenEvent::define_units( std::string& new_m, std::string& new_l ) {
 
-    if     ( new_m == "MEV" ) m_momentum_unit = Units::MEV ;
-    else if( new_m == "GEV" ) m_momentum_unit = Units::GEV ;
+    if      ( new_m == "MEV" ) m_momentum_unit = Units::MEV ;
+    else if ( new_m == "GEV" ) m_momentum_unit = Units::GEV ;
     else std::cerr << "GenEvent::define_units ERROR: use either MEV or GEV\n";
 
-    if     ( new_l == "MM" ) m_position_unit = Units::MM ;
-    else if( new_l == "CM" ) m_position_unit = Units::CM ;
+    if      ( new_l == "MM" ) m_position_unit = Units::MM ;
+    else if ( new_l == "CM" ) m_position_unit = Units::CM ;
     else std::cerr << "GenEvent::define_units ERROR: use either MM or CM\n";
 
   }
+
 
   bool GenEvent::is_valid() const {
     /// A GenEvent is presumed valid if it has both associated
@@ -683,9 +698,9 @@ namespace HepMC {
     return true;
   }
 
+
   std::ostream & GenEvent::write_beam_particles(std::ostream & os,
-                                                std::pair<HepMC::GenParticle *,HepMC::GenParticle *> pr )
-  {
+                                                std::pair<HepMC::GenParticle *,HepMC::GenParticle *> pr ) {
     GenParticle* p = pr.first;
     if(!p) {
       detail::output( os, 0 );
@@ -702,8 +717,8 @@ namespace HepMC {
     return os;
   }
 
-  std::ostream & GenEvent::write_vertex(std::ostream & os, GenVertex const * v)
-  {
+
+  std::ostream & GenEvent::write_vertex(std::ostream & os, GenVertex const * v) {
     if ( !v || !os ) {
       std::cerr << "GenEvent::write_vertex !v||!os, "
                 << "v="<< v << " setting badbit" << std::endl;
@@ -751,8 +766,8 @@ namespace HepMC {
     return os;
   }
 
-  std::ostream & GenEvent::write_particle( std::ostream & os, GenParticle const * p )
-  {
+
+  std::ostream & GenEvent::write_particle( std::ostream & os, GenParticle const * p ) {
     if ( !p || !os ) {
       std::cerr << "GenEvent::write_particle !p||!os, "
                 << "p="<< p << " setting badbit" << std::endl;
@@ -778,4 +793,5 @@ namespace HepMC {
     return os;
   }
 
-} // HepMC
+
+}

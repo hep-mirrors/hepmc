@@ -1,5 +1,7 @@
 2013-11-17  Andy Buckley  <andy.buckley@cern.ch>
 
+	* Adding vertices() and particles() aliases on GenEvent.
+
 	* GenRanges clean-up and auto-including at the foot of GenEvent.h
 
 	* Lots of "proper" inlining and noting bugs and TODOs.
