@@ -11,11 +11,13 @@
 
 namespace HepMC {
 
+
   GenParticle::GenParticle( void ) :
     m_momentum(0), m_pdg_id(0), m_status(0), m_flow(this),
     m_polarization(0), m_production_vertex(0), m_end_vertex(0),
     m_barcode(0), m_generated_mass(0.)
   {}
+
 
   GenParticle::GenParticle( const FourVector& momentum,
                             int pdg_id, int status,
@@ -30,6 +32,7 @@ namespace HepMC {
     set_flow(itsflow);
     //s_counter++;
   }
+
 
   GenParticle::GenParticle( const GenParticle& inparticle ) :
     m_momentum( inparticle.momentum() ),
@@ -52,13 +55,14 @@ namespace HepMC {
     //s_counter++;
   }
 
+
   GenParticle::~GenParticle() {
     if ( parent_event() ) parent_event()->remove_barcode(this);
     //s_counter--;
   }
 
-  void GenParticle::swap( GenParticle & other)
-  {
+
+  void GenParticle::swap( GenParticle & other) {
     // if a container has a swap method, use that for improved performance
     m_momentum.swap( other.m_momentum );
     std::swap( m_pdg_id, other.m_pdg_id );
@@ -71,17 +75,18 @@ namespace HepMC {
     std::swap( m_generated_mass, other.m_generated_mass );
   }
 
+
   GenParticle& GenParticle::operator=( const GenParticle& inparticle ) {
     /// Shallow: does not copy the vertex pointers
     /// (note - impossible to copy vertex pointers which having the vertex
     ///         and particles in/out point-back to one another -- unless you
     ///         copy the entire tree -- which we don't want to do)
-
     // best practices implementation
     GenParticle tmp( inparticle );
     swap( tmp );
     return *this;
   }
+
 
   bool GenParticle::operator==( const GenParticle& a ) const {
     /// consistent with the definition of the copy constructor as a shallow
@@ -96,9 +101,11 @@ namespace HepMC {
     return true;
   }
 
+
   bool GenParticle::operator!=( const GenParticle& a ) const {
     return !( a == *this );
   }
+
 
   void GenParticle::print( std::ostream& ostr ) const {
     /// Dump this particle's full info to ostr, where by default
@@ -117,14 +124,15 @@ namespace HepMC {
     ostr << " Pol:" << polarization() << " F:" << m_flow << std::endl;
   }
 
+
   GenEvent* GenParticle::parent_event() const {
     if ( production_vertex() ) return production_vertex()->parent_event();
     if ( end_vertex() ) return end_vertex()->parent_event();
     return 0;
   }
 
-  void GenParticle::set_production_vertex_( GenVertex* prodvertex )
-  {
+
+  void GenParticle::set_production_vertex_( GenVertex* prodvertex ) {
     GenEvent* its_orig_event = parent_event();
     m_production_vertex = prodvertex;
     GenEvent* its_new_event = parent_event();
@@ -136,8 +144,8 @@ namespace HepMC {
     }
   }
 
-  void GenParticle::set_end_vertex_( GenVertex* decayvertex )
-  {
+
+  void GenParticle::set_end_vertex_( GenVertex* decayvertex ) {
     GenEvent* its_orig_event = parent_event();
     m_end_vertex = decayvertex;
     GenEvent* its_new_event = parent_event();
@@ -147,18 +155,9 @@ namespace HepMC {
     }
   }
 
-  bool GenParticle::suggest_barcode( int the_bar_code )
-  {
-    /// allows a barcode to be suggested for this particle.
-    /// In general it is better to let the event pick the barcode for
-    /// you, which is automatic.
-    /// Returns TRUE if the suggested barcode has been accepted (i.e. the
-    ///  suggested barcode has not already been used in the event,
-    ///  and so it was used).
-    /// Returns FALSE if the suggested barcode was rejected, or if the
-    ///  particle is not yet part of an event, such that it is not yet
-    ///  possible to know if the suggested barcode will be accepted).
-    if ( the_bar_code <0 ) {
+
+  bool GenParticle::suggest_barcode( int the_bar_code ) {
+    if ( the_bar_code < 0 ) {
       std::cerr << "GenParticle::suggest_barcode WARNING, particle bar "
                 << "\n codes MUST be positive integers. Negative  "
                 << "\n integers are reserved for vertices only. Your "
@@ -171,6 +170,7 @@ namespace HepMC {
     } else { set_barcode_( the_bar_code ); }
     return success;
   }
+
 
   /////////////
   // Static  //
@@ -230,16 +230,9 @@ namespace HepMC {
   }
 
 
-  double  GenParticle::generated_mass() const {
-    return m_generated_mass;
-  }
-
-  void   GenParticle::set_generated_mass( const double & m ) {
-    m_generated_mass = m;
-  }
-
   /// scale the momentum vector and generated mass
   /// this method is only for use by GenEvent
+  /// @todo Hide / remove
   void GenParticle::convert_momentum( const double & f ) {
     m_momentum = FourVector( f*m_momentum.px(),
                              f*m_momentum.py(),
@@ -248,5 +241,5 @@ namespace HepMC {
     if( m_generated_mass > 0. ) m_generated_mass = f*m_generated_mass;
   }
 
-} // HepMC
 
+}
