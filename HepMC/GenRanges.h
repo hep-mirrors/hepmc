@@ -1,22 +1,14 @@
 #ifndef HEPMC_GEN_EVENT_ITERATORS_H
 #define HEPMC_GEN_EVENT_ITERATORS_H
 
-//--------------------------------------------------------------------------
-//////////////////////////////////////////////////////////////////////////
-// garren@fnal.gov, May 2009
-//
-//////////////////////////////////////////////////////////////////////////
-//--------------------------------------------------------------------------
-
-#include <stdexcept>
-
 #include "HepMC/GenEvent.h"
 #include "HepMC/GenVertex.h"
+#include <stdexcept>
 
 namespace HepMC {
 
-  //! GenEventVertexRange acts like a collection of vertices
 
+  //! GenEventVertexRange acts like a collection of vertices
   ///
   /// \class  GenEventVertexRange
   /// HepMC::GenEventVertexRange is used to mimic a collection of
@@ -24,7 +16,6 @@ namespace HepMC {
   /// the Boost foreach funtion
   ///
   class GenEventVertexRange {
-
   public:
 
     /// the constructor requires a GenEvent
@@ -43,8 +34,8 @@ namespace HepMC {
 
   };
 
-  //! ConstGenEventVertexRange acts like a collection of vertices
 
+  //! ConstGenEventVertexRange acts like a collection of vertices
   ///
   /// \class  ConstGenEventVertexRange
   /// HepMC::ConstGenEventVertexRange is used to mimic a collection of
@@ -53,7 +44,6 @@ namespace HepMC {
   /// This is the const partner of GenEventVertexRange
   ///
   class ConstGenEventVertexRange {
-
   public:
 
     /// the constructor requires a const GenEvent
@@ -72,8 +62,8 @@ namespace HepMC {
 
   };
 
-  //! GenEventParticleRange acts like a collection of particles
 
+  //! GenEventParticleRange acts like a collection of particles
   ///
   /// \class  GenEventParticleRange
   /// HepMC::GenEventParticleRange is used to mimic a collection of
@@ -81,7 +71,6 @@ namespace HepMC {
   /// the Boost foreach funtion
   ///
   class GenEventParticleRange {
-
   public:
 
     /// the constructor requires a GenEvent
@@ -100,8 +89,8 @@ namespace HepMC {
 
   };
 
-  //! ConstGenEventParticleRange acts like a collection of particles
 
+  //! ConstGenEventParticleRange acts like a collection of particles
   ///
   /// \class  ConstGenEventParticleRange
   /// HepMC::ConstGenEventParticleRange is used to mimic a collection of
@@ -110,7 +99,6 @@ namespace HepMC {
   /// This is the const partner of GenEventParticleRange
   ///
   class ConstGenEventParticleRange {
-
   public:
 
     /// the constructor requires a const GenEvent
@@ -129,8 +117,8 @@ namespace HepMC {
 
   };
 
-  //! GenVertexParticleRange acts like a collection of particles
 
+  //! GenVertexParticleRange acts like a collection of particles
   ///
   /// \class  GenVertexParticleRange
   /// HepMC::GenVertexParticleRange is used to mimic a collection of
@@ -138,7 +126,6 @@ namespace HepMC {
   /// the Boost foreach funtion
   ///
   class GenVertexParticleRange {
-
   public:
 
     /// the constructor requires a GenVertex
@@ -159,8 +146,8 @@ namespace HepMC {
 
   };
 
-  //! GenParticleProductionRange acts like a collection of particles
 
+  //! GenParticleProductionRange acts like a collection of particles
   ///
   /// \class  GenParticleProductionRange
   /// HepMC::GenParticleProductionRange is used to mimic a collection of
@@ -168,7 +155,6 @@ namespace HepMC {
   /// Utilities such as the Boost foreach funtion will want to use this class.
   ///
   class GenParticleProductionRange {
-
   public:
 
     /// the constructor requires a GenParticle
@@ -190,8 +176,8 @@ namespace HepMC {
 
   };
 
-  class ConstGenParticleProductionRange {
 
+  class ConstGenParticleProductionRange {
   public:
 
     /// the constructor requires a GenParticle
@@ -213,8 +199,8 @@ namespace HepMC {
 
   };
 
-  //! GenParticleEndRange acts like a collection of particles
 
+  //! GenParticleEndRange acts like a collection of particles
   ///
   /// \class  GenParticleEndRange
   /// HepMC::GenParticleEndRange is used to mimic a collection of
@@ -222,7 +208,6 @@ namespace HepMC {
   /// Utilities such as the Boost foreach funtion will want to use this class.
   ///
   class GenParticleEndRange {
-
   public:
 
     /// the constructor requires a GenParticle
@@ -244,8 +229,8 @@ namespace HepMC {
 
   };
 
-  class ConstGenParticleEndRange {
 
+  class ConstGenParticleEndRange {
   public:
 
     /// the constructor requires a GenParticle
@@ -322,6 +307,7 @@ namespace HepMC {
       throw(std::range_error("ConstGenParticleEndRange: GenParticle has no end_vertex"));
     return m_particle.end_vertex()->particles_end(m_range);
   }
+
 
 } // HepMC
 

@@ -199,15 +199,26 @@ namespace HepMC {
     // access methods //
     ////////////////////
 
-    int signal_process_id() const; //!<  unique signal process id
-    int event_number() const; //!<  event number
-    int mpi() const;          //!<  number of multi parton interactions
-    double event_scale() const; //!< energy scale, see hep-ph/0109068
-    double alphaQCD() const; //!<  QCD coupling, see hep-ph/0109068
-    double alphaQED() const; //!<  QED coupling, see hep-ph/0109068
-    /// pointer to the vertex containing the signal process
-    GenVertex* signal_process_vertex() const;
-    /// test to see if we have two valid beam particles
+
+    /// An integer ID to specify this signal process (generator-dependent, 0 by default)
+    int signal_process_id() const { return m_signal_process_id; }
+    /// Event number
+    int event_number() const { return m_event_number; }
+    /// Number of multi parton interactions (-1 if not set)
+    /// @todo Remove?
+    int mpi() const { return m_mpi; }
+    /// Event energy scale, see hep-ph/0109068
+    /// @todo Ambiguous. Remove?
+    double event_scale() const { return m_event_scale; }
+    /// QCD coupling, see hep-ph/0109068
+    /// @todo Ambiguous. Remove?
+    double alphaQCD() const { return m_alphaQCD; }
+    /// QED coupling, see hep-ph/0109068
+    /// @todo Ambiguous. Remove?
+    double alphaQED() const { return m_alphaQED; }
+    /// Pointer to the vertex containing the signal process
+    GenVertex* signal_process_vertex() const { return m_signal_process_vertex; }
+    /// Test to see if we have two valid beam particles
     bool valid_beam_particles() const;
     /// pair of pointers to the two incoming beam particles
     std::pair<HepMC::GenParticle*,HepMC::GenParticle*> beam_particles() const;
@@ -215,35 +226,40 @@ namespace HepMC {
     /// A GenEvent is presumed valid if it has particles and/or vertices.
     bool is_valid() const;
 
-    /// direct access to the weights container is allowed.
+    /// Direct access to the weights container
+    ///
     /// Thus you can use myevt.weights()[2];
     /// to access element 2 of the weights.
     /// or use myevt.weights().push_back( mywgt ); to add an element.
     /// and you can set the weights with myevt.weights() = myvector;
-    WeightContainer&        weights(); //!< direct access to WeightContainer
-    const WeightContainer&  weights() const; //!< direct access to WeightContainer
+    WeightContainer& weights()  { return m_weights; }
+    /// Const access to WeightContainer
+    const WeightContainer& weights() const { return m_weights; }
 
-    /// access the GenCrossSection container if it exists
-    GenCrossSection const *     cross_section() const;
-    GenCrossSection*            cross_section();
-    /// access the HeavyIon container if it exists
-    HeavyIon const *         heavy_ion() const;
-    HeavyIon*                heavy_ion();
-    /// access the PdfInfo container if it exists
-    PdfInfo const *          pdf_info() const;
-    PdfInfo*                 pdf_info();
+    /// Access the GenCrossSection container if it exists
+    GenCrossSection const * cross_section() const { return m_cross_section; }
+    GenCrossSection* cross_section() { return m_cross_section; }
 
-    /// vector of integers containing information about the random state
-    const std::vector<long>& random_states() const;
+    /// Access the HeavyIon container if it exists
+    HeavyIon const * heavy_ion() const { return m_heavy_ion; }
+    HeavyIon* heavy_ion() { return m_heavy_ion; }
 
-    /// how many particle barcodes exist?
-    int     particles_size() const;
-    /// return true if there are no particle barcodes
-    bool    particles_empty() const;
-    /// how many vertex barcodes exist?
-    int     vertices_size() const;
-    /// return true if there are no vertex barcodes
-    bool    vertices_empty() const;
+    /// Access the PdfInfo container if it exists
+    PdfInfo const * pdf_info() const { return m_pdf_info; }
+    PdfInfo* pdf_info() { return m_pdf_info; }
+
+    /// Vector of integers containing information about the random state
+    const std::vector<long>& random_states() const { return m_random_states; }
+
+    /// How many particle barcodes exist?
+    int particles_size() const;
+    /// Return true if there are no particle barcodes
+    bool particles_empty() const;
+
+    /// How many vertex barcodes exist?
+    int vertices_size() const;
+    /// Return true if there are no vertex barcodes
+    bool vertices_empty() const;
 
     /// Write the unit information to an output stream.
     /// If the output stream is not defined, use std::cout.
@@ -256,7 +272,7 @@ namespace HepMC {
     /// Units used by the GenParticle momentum FourVector.
     Units::MomentumUnit momentum_unit() const;
     /// Units used by the GenVertex position FourVector.
-    Units::LengthUnit   length_unit()   const;
+    Units::LengthUnit length_unit() const;
 
     std::ostream& write(std::ostream&);
     std::istream& read(std::istream&);
@@ -265,42 +281,68 @@ namespace HepMC {
     // mutator methods //
     /////////////////////
 
-    bool    add_vertex( GenVertex* vtx );    //!< adds to evt and adopts
-    bool    remove_vertex( GenVertex* vtx ); //!< erases vtx from evt
-    void    clear();                         //!< empties the entire event
+    /// Adds to evt and adopts
+    bool add_vertex( GenVertex* vtx );
+    /// Erases vtx from evt
+    bool remove_vertex( GenVertex* vtx );
+    /// Empties the entire event
+    void clear();
 
-    void set_signal_process_id( int id ); //!< set unique signal process id
-    void set_event_number( int eventno ); //!< set event number
-    void set_mpi( int  ); //!< set number of multi parton interactions
-    void set_event_scale( double scale ); //!< set energy scale
-    void set_alphaQCD( double a ); //!< set QCD coupling
-    void set_alphaQED( double a ); //!< set QED coupling
+    /// Set unique signal process id
+    void set_signal_process_id( int id ) { m_signal_process_id = id; }
+    /// Set event number
+    void set_event_number( int eventno ) { m_event_number = eventno; }
+    /// Set number of multi parton interactions
+    void set_mpi( int nmpi ) { m_mpi = nmpi; }
+    /// Set energy scale
+    void set_event_scale( double scale ) { m_event_scale = scale; }
 
-    /// set pointer to the vertex containing the signal process
-    void set_signal_process_vertex( GenVertex* );
-    /// set incoming beam particles
+    /// Set QCD coupling
+    void set_alphaQCD( double a ) { m_alphaQCD = a; }
+    /// Set QED coupling
+    void set_alphaQED( double a ) { m_alphaQED = a; }
+
+    /// Set pointer to the vertex containing the signal process
+    void set_signal_process_vertex( GenVertex* vtx ) {
+      m_signal_process_vertex = vtx;
+      if ( m_signal_process_vertex ) add_vertex( m_signal_process_vertex );
+    }
+    /// Set incoming beam particles
     bool set_beam_particles(GenParticle*, GenParticle*);
-    /// use a pair of GenParticle*'s to set incoming beam particles
+    /// Sse a pair of GenParticle* to set incoming beam particles
     bool set_beam_particles(std::pair<HepMC::GenParticle*,HepMC::GenParticle*> const &);
-    /// provide random state information
-    void set_random_states( const std::vector<long>& randomstates );
 
-    /// provide a pointer to the GenCrossSection container
-    void set_cross_section( const GenCrossSection& );
-    /// provide a pointer to the HeavyIon container
-    void set_heavy_ion( const HeavyIon& ion );
-    /// provide a pointer to the PdfInfo container
-    void set_pdf_info( const PdfInfo& p );
+    /// Provide random state information
+    void set_random_states( const std::vector<long>& randomstates ) { m_random_states = randomstates; }
 
-    /// set the units using enums
+    /// Set a pointer to the GenCrossSection container
+    void set_cross_section( const GenCrossSection& xs ) {
+      delete m_cross_section;
+      m_cross_section = new GenCrossSection(xs);
+    }
+
+    /// Set a pointer to the HeavyIon container
+    void set_heavy_ion( const HeavyIon& ion ) {
+      delete m_heavy_ion;
+      m_heavy_ion = new HeavyIon(ion);
+    }
+
+    /// Set a pointer to the PdfInfo container
+    void set_pdf_info( const PdfInfo& p ) {
+      delete m_pdf_info;
+      m_pdf_info = new PdfInfo(p);
+    }
+
+
+    /// Set the units using enums
     /// This method will convert momentum and position data if necessary
     void use_units( Units::MomentumUnit, Units::LengthUnit );
-    /// set the units using strings
+    /// Set the units using strings
     /// the string must match the enum exactly
     /// This method will convert momentum and position data if necessary
     void use_units( std::string&, std::string& );
 
-    /// set the units using enums
+    /// Set the units using enums
     /// This method will NOT convert momentum and position data
     void define_units( Units::MomentumUnit, Units::LengthUnit );
     /// set the units using strings
@@ -308,16 +350,23 @@ namespace HepMC {
     /// This method will NOT convert momentum and position data
     void define_units( std::string&, std::string& );
 
-    /// vertex range
+    /// @name Iterator ranges
+    /// @todo These currently don't work without also including GenRanges.h
+    //@{
+
+    /// Vertex range
     GenEventVertexRange vertex_range();
-    /// vertex range
+    /// Vertex range
     ConstGenEventVertexRange vertex_range() const;
-    /// particle range
+    /// Particle range
     GenEventParticleRange particle_range();
-    /// particle range
+    /// Particle range
     ConstGenEventParticleRange particle_range() const;
 
+    //@}
+
   public:
+
     ///////////////////////////////
     // vertex_iterators          //
     ///////////////////////////////
@@ -325,104 +374,78 @@ namespace HepMC {
     //  not the reverse, which is consistent with STL,
     //  see Musser, Derge, Saini 2ndEd. p. 69,70.
 
-    //!  const vertex iterator
-
-    /// \class  vertex_const_iterator
-    /// HepMC::GenEvent::vertex_const_iterator
-    /// is used to iterate over all vertices in the event.
-    class vertex_const_iterator :
-      public std::iterator<std::forward_iterator_tag,HepMC::GenVertex*,ptrdiff_t>{
-      // Iterates over all vertices in this event
+    /// Const vertex iterator
+    ///
+    /// Used to iterate over all vertices in the event.
+    class vertex_const_iterator : public std::iterator<std::forward_iterator_tag,HepMC::GenVertex*,ptrdiff_t> {
     public:
       /// constructor requiring vertex information
-      vertex_const_iterator(
-                            const
-                            std::map<int,HepMC::GenVertex*,std::greater<int> >::const_iterator& i)
-        : m_map_iterator(i) {}
+      vertex_const_iterator(const std::map<int,HepMC::GenVertex*,std::greater<int> >::const_iterator& i) : m_map_iterator(i) {}
       vertex_const_iterator() {}
       /// copy constructor
-      vertex_const_iterator( const vertex_const_iterator& i )
-      { *this = i; }
+      vertex_const_iterator( const vertex_const_iterator& i ) { *this = i; }
       virtual ~vertex_const_iterator() {}
       /// make a copy
-      vertex_const_iterator&  operator=( const vertex_const_iterator& i )
-      { m_map_iterator = i.m_map_iterator; return *this; }
+      vertex_const_iterator&  operator=( const vertex_const_iterator& i ) { m_map_iterator = i.m_map_iterator; return *this; }
       /// return a pointer to a GenVertex
       GenVertex* operator*(void) const { return m_map_iterator->second; }
       /// Pre-fix increment
-      vertex_const_iterator&  operator++(void)  //Pre-fix increment
-      { ++m_map_iterator; return *this; }
+      vertex_const_iterator&  operator++(void) { ++m_map_iterator; return *this; }
       /// Post-fix increment
-      vertex_const_iterator   operator++(int)   //Post-fix increment
-      { vertex_const_iterator out(*this); ++(*this); return out; }
+      vertex_const_iterator   operator++(int){ vertex_const_iterator out(*this); ++(*this); return out; }
       /// equality
-      bool  operator==( const vertex_const_iterator& a ) const
-      { return m_map_iterator == a.m_map_iterator; }
+      bool operator==( const vertex_const_iterator& a ) const { return m_map_iterator == a.m_map_iterator; }
       /// inequality
-      bool  operator!=( const vertex_const_iterator& a ) const
-      { return !(m_map_iterator == a.m_map_iterator); }
+      bool operator!=( const vertex_const_iterator& a ) const { return !(m_map_iterator == a.m_map_iterator); }
+
     protected:
       /// const iterator to a vertex map
       std::map<int,HepMC::GenVertex*,std::greater<int> >::const_iterator
       m_map_iterator;
+
     private:
       /// Pre-fix increment -- is not allowed
-      vertex_const_iterator&  operator--(void);
+      vertex_const_iterator& operator--(void);
       /// Post-fix increment -- is not allowed
-      vertex_const_iterator   operator--(int);
+      vertex_const_iterator operator--(int);
     };
+
     friend class vertex_const_iterator;
     /// begin vertex iteration
-    vertex_const_iterator      vertices_begin() const
-    { return GenEvent::vertex_const_iterator(
-                                             m_vertex_barcodes.begin() ); }
+    vertex_const_iterator vertices_begin() const { return GenEvent::vertex_const_iterator(m_vertex_barcodes.begin() ); }
     /// end vertex iteration
-    vertex_const_iterator      vertices_end() const
-    { return GenEvent::vertex_const_iterator(
-                                             m_vertex_barcodes.end() ); }
+    vertex_const_iterator vertices_end() const { return GenEvent::vertex_const_iterator(m_vertex_barcodes.end() ); }
 
 
-    //!  non-const vertex iterator
-
-    /// \class  vertex_iterator
-    /// HepMC::GenEvent::vertex_iterator
-    /// is used to iterate over all vertices in the event.
-    class vertex_iterator :
-      public std::iterator<std::forward_iterator_tag,HepMC::GenVertex*,ptrdiff_t>{
-      // Iterates over all vertices in this event
+    /// Non-const vertex iterator
+    ///
+    /// Used to iterate over all vertices in the event.
+    class vertex_iterator : public std::iterator<std::forward_iterator_tag, HepMC::GenVertex*, ptrdiff_t> {
     public:
       /// constructor requiring vertex information
-      vertex_iterator(
-                      const
-                      std::map<int,HepMC::GenVertex*,std::greater<int> >::iterator& i )
+      vertex_iterator(const std::map<int,HepMC::GenVertex*,std::greater<int> >::iterator& i )
         : m_map_iterator( i ) {}
       vertex_iterator() {}
       /// copy constructor
       vertex_iterator( const vertex_iterator& i ) { *this = i; }
       virtual ~vertex_iterator() {}
       /// make a copy
-      vertex_iterator&  operator=( const vertex_iterator& i ) {
+      vertex_iterator& operator=( const vertex_iterator& i ) {
         m_map_iterator = i.m_map_iterator;
         return *this;
       }
       /// const vertex iterator
-      operator vertex_const_iterator() const
-      { return vertex_const_iterator(m_map_iterator); }
+      operator vertex_const_iterator() const { return vertex_const_iterator(m_map_iterator); }
       /// return a pointer to a GenVertex
-      GenVertex*        operator*(void) const
-      { return m_map_iterator->second; }
+      GenVertex* operator*() const { return m_map_iterator->second; }
       /// Pre-fix increment
-      vertex_iterator&  operator++(void)  //Pre-fix increment
-      { ++m_map_iterator;     return *this; }
+      vertex_iterator& operator++() { ++m_map_iterator; return *this; }
       /// Post-fix increment
-      vertex_iterator   operator++(int)   //Post-fix increment
-      { vertex_iterator out(*this); ++(*this); return out; }
+      vertex_iterator operator++(int)    { vertex_iterator out(*this); ++(*this); return out; }
       /// equality
-      bool              operator==( const vertex_iterator& a ) const
-      { return m_map_iterator == a.m_map_iterator; }
+      bool operator==( const vertex_iterator& a ) const { return m_map_iterator == a.m_map_iterator; }
       /// inequality
-      bool              operator!=( const vertex_iterator& a ) const
-      { return !(m_map_iterator == a.m_map_iterator); }
+      bool operator!=( const vertex_iterator& a ) const { return !(m_map_iterator == a.m_map_iterator); }
     protected:
       /// iterator to the vertex map
       std::map<int,HepMC::GenVertex*,std::greater<int> >::iterator m_map_iterator;
@@ -435,15 +458,11 @@ namespace HepMC {
     };
     friend class vertex_iterator;
     /// begin vertex iteration
-    vertex_iterator            vertices_begin()
-    { return GenEvent::vertex_iterator(
-                                       m_vertex_barcodes.begin() ); }
+    vertex_iterator vertices_begin() { return GenEvent::vertex_iterator(m_vertex_barcodes.begin() ); }
     /// end vertex iteration
-    vertex_iterator            vertices_end()
-    { return GenEvent::vertex_iterator(
-                                       m_vertex_barcodes.end() ); }
+    vertex_iterator vertices_end() { return GenEvent::vertex_iterator(m_vertex_barcodes.end() ); }
 
-  public:
+
     ///////////////////////////////
     // particle_iterator         //
     ///////////////////////////////
@@ -454,43 +473,28 @@ namespace HepMC {
     //      }
     //
 
-    //!  const particle iterator
-
-    /// \class  particle_const_iterator
-    /// HepMC::GenEvent::particle_const_iterator
-    /// is used to iterate over all particles in the event.
-    class particle_const_iterator :
-      public std::iterator<std::forward_iterator_tag,HepMC::GenParticle*,ptrdiff_t>{
-      // Iterates over all vertices in this event
+    /// Const particle iterator
+    ///
+    /// Used to iterate over all particles in the event.
+    class particle_const_iterator : public std::iterator<std::forward_iterator_tag,HepMC::GenParticle*,ptrdiff_t> {
     public:
-      /// iterate over particles
-      particle_const_iterator(
-                              const std::map<int,HepMC::GenParticle*>::const_iterator& i )
-        : m_map_iterator(i) {}
+      particle_const_iterator(const std::map<int,HepMC::GenParticle*>::const_iterator& i ) : m_map_iterator(i) {}
       particle_const_iterator() {}
       /// copy constructor
-      particle_const_iterator( const particle_const_iterator& i )
-      { *this = i; }
+      particle_const_iterator( const particle_const_iterator& i ) { *this = i; }
       virtual ~particle_const_iterator() {}
       /// make a copy
-      particle_const_iterator& operator=(
-                                         const particle_const_iterator& i )
-      { m_map_iterator = i.m_map_iterator; return *this; }
+      particle_const_iterator& operator=(const particle_const_iterator& i ) { m_map_iterator = i.m_map_iterator; return *this; }
       /// return a pointer to GenParticle
-      GenParticle*        operator*(void) const
-      { return m_map_iterator->second; }
+      GenParticle* operator*(void) const { return m_map_iterator->second; }
       /// Pre-fix increment
-      particle_const_iterator&  operator++(void)  //Pre-fix increment
-      { ++m_map_iterator; return *this; }
+      particle_const_iterator& operator++(void) { ++m_map_iterator; return *this; }
       /// Post-fix increment
-      particle_const_iterator   operator++(int)   //Post-fix increment
-      { particle_const_iterator out(*this); ++(*this); return out; }
+      particle_const_iterator operator++(int) { particle_const_iterator out(*this); ++(*this); return out; }
       /// equality
-      bool  operator==( const particle_const_iterator& a ) const
-      { return m_map_iterator == a.m_map_iterator; }
+      bool operator==( const particle_const_iterator& a ) const { return m_map_iterator == a.m_map_iterator; }
       /// inequality
-      bool  operator!=( const particle_const_iterator& a ) const
-      { return !(m_map_iterator == a.m_map_iterator); }
+      bool operator!=( const particle_const_iterator& a ) const { return !(m_map_iterator == a.m_map_iterator); }
     protected:
       /// const iterator to the GenParticle map
       std::map<int,HepMC::GenParticle*>::const_iterator m_map_iterator;
@@ -500,31 +504,24 @@ namespace HepMC {
       /// Post-fix increment
       particle_const_iterator   operator--(int);
     };
+
     friend class particle_const_iterator;
     /// begin particle iteration
-    particle_const_iterator      particles_begin() const
-    { return GenEvent::particle_const_iterator(
-                                               m_particle_barcodes.begin() ); }
+    particle_const_iterator particles_begin() const { return GenEvent::particle_const_iterator(m_particle_barcodes.begin() ); }
     /// end particle iteration
-    particle_const_iterator      particles_end() const
-    { return GenEvent::particle_const_iterator(
-                                               m_particle_barcodes.end() ); }
+    particle_const_iterator particles_end() const { return GenEvent::particle_const_iterator(m_particle_barcodes.end() ); }
 
-    //!  non-const particle iterator
 
-    /// \class  particle_iterator
-    /// HepMC::GenEvent::particle_iterator
-    /// is used to iterate over all particles in the event.
-    class particle_iterator :
-      public std::iterator<std::forward_iterator_tag,HepMC::GenParticle*,ptrdiff_t>{
-      // Iterates over all vertices in this event
+    /// Non-const particle iterator
+    ///
+    /// Used to iterate over all particles in the event.
+    class particle_iterator : public std::iterator<std::forward_iterator_tag,HepMC::GenParticle*,ptrdiff_t> {
     public:
-      /// iterate over particles
-      particle_iterator( const std::map<int,HepMC::GenParticle*>::iterator& i )
-        : m_map_iterator( i ) {}
+      particle_iterator( const std::map<int,HepMC::GenParticle*>::iterator& i ) : m_map_iterator( i ) {}
       particle_iterator() {}
       /// copy constructor
       particle_iterator( const particle_iterator& i ) { *this = i; }
+      /// @todo Why? Remove?
       virtual ~particle_iterator() {}
       /// make a copy
       particle_iterator&  operator=( const particle_iterator& i ) {
@@ -532,59 +529,56 @@ namespace HepMC {
         return *this;
       }
       /// const particle iterator
-      operator particle_const_iterator() const
-      { return particle_const_iterator(m_map_iterator); }
+      operator particle_const_iterator() const { return particle_const_iterator(m_map_iterator); }
       /// return pointer to GenParticle
-      GenParticle*        operator*(void) const
-      { return m_map_iterator->second; }
+      GenParticle* operator*(void) const { return m_map_iterator->second; }
       /// Pre-fix increment
-      particle_iterator&  operator++(void)
-      { ++m_map_iterator;     return *this; }
+      particle_iterator& operator++(void) { ++m_map_iterator; return *this; }
       /// Post-fix increment
-      particle_iterator   operator++(int)
-      { particle_iterator out(*this); ++(*this); return out; }
+      particle_iterator operator++(int) { particle_iterator out(*this); ++(*this); return out; }
       /// equality
-      bool              operator==( const particle_iterator& a ) const
-      { return m_map_iterator == a.m_map_iterator; }
+      bool operator==( const particle_iterator& a ) const { return m_map_iterator == a.m_map_iterator; }
       /// inequality
-      bool              operator!=( const particle_iterator& a ) const
-      { return !(m_map_iterator == a.m_map_iterator); }
+      bool operator!=( const particle_iterator& a ) const { return !(m_map_iterator == a.m_map_iterator); }
+
     protected:
       /// iterator for GenParticle map
       std::map<int,HepMC::GenParticle*>::iterator m_map_iterator;
+
     private:
       /// Pre-fix increment
       particle_iterator&  operator--(void);
       /// Post-fix increment
       particle_iterator   operator--(int);
     };
+
     friend class particle_iterator;
     /// begin particle iteration
-    particle_iterator particles_begin()
-    { return GenEvent::particle_iterator(
-                                         m_particle_barcodes.begin() ); }
+    particle_iterator particles_begin() { return GenEvent::particle_iterator(m_particle_barcodes.begin() ); }
     /// end particle iteration
-    particle_iterator particles_end()
-    { return GenEvent::particle_iterator(
-                                         m_particle_barcodes.end() ); }
+    particle_iterator particles_end() { return GenEvent::particle_iterator(m_particle_barcodes.end() ); }
 
-    ////////////////////////////////////////////////
+
   protected:
-    //
+
     // Following methods intended for use by GenParticle/Vertex classes:
     // In general there is no reason they should be used elsewhere.
-    /// set the barcode - intended for use by GenParticle
-    bool         set_barcode( GenParticle* p, int suggested_barcode =false );
-    /// set the barcode - intended for use by GenVertex
-    bool         set_barcode( GenVertex*   v, int suggested_barcode =false );
-    ///  intended for use by GenParticle
-    void         remove_barcode( GenParticle* p );
-    ///  intended for use by GenVertex
-    void         remove_barcode( GenVertex*   v );
+    /// @todo Hide/remove
 
-    void delete_all_vertices(); //!<delete all vertices owned by this event
+    /// Set the barcode -- intended for use by GenParticle
+    bool set_barcode( GenParticle* p, int suggested_barcode =false );
+    /// Set the barcode -- intended for use by GenVertex
+    bool set_barcode( GenVertex*   v, int suggested_barcode =false );
+    /// Remove the barcode -- intended for use by GenParticle
+    void remove_barcode( GenParticle* p ) { m_particle_barcodes.erase( p->barcode() ); }
+    /// Remove the barcode -- intended for use by GenVertex
+    void remove_barcode( GenVertex* v ) { m_vertex_barcodes.erase( v->barcode() ); }
+    /// Delete all vertices owned by this event
+    void delete_all_vertices();
 
-  private: // methods
+
+  private:
+
     /// internal method used when converting momentum units
     bool use_momentum_unit( Units::MomentumUnit );
     bool use_momentum_unit( std::string& );
@@ -593,10 +587,9 @@ namespace HepMC {
     bool use_length_unit( std::string& );
 
     // the following internal methods are used by read() and write()
-
+    /// @todo Remove and kill off silly int-reference crap
     /// send the beam particles to ASCII output
-    std::ostream & write_beam_particles( std::ostream &,
-                                         std::pair<HepMC::GenParticle *,HepMC::GenParticle *> );
+    std::ostream & write_beam_particles( std::ostream &, std::pair<HepMC::GenParticle *,HepMC::GenParticle *> );
     /// send a GenVertex to ASCII output
     std::ostream & write_vertex( std::ostream &, GenVertex const * );
     /// send a GenParticle to ASCII output
@@ -622,14 +615,13 @@ namespace HepMC {
     GenVertex*            m_signal_process_vertex;
     GenParticle*          m_beam_particle_1;
     GenParticle*          m_beam_particle_2;
-    WeightContainer       m_weights; // weights for this event first weight
-                                     // is used by default for hit and miss
+    WeightContainer       m_weights; // weights for this event; first weight is used by default for hit and miss
     std::vector<long> m_random_states; // container of rndm num
     // generator states
 
     std::map< int,HepMC::GenVertex*,std::greater<int> >   m_vertex_barcodes;
     std::map< int,HepMC::GenParticle*,std::less<int> >    m_particle_barcodes;
-    GenCrossSection*         m_cross_section;         // undefined by default
+    GenCrossSection*      m_cross_section;    // undefined by default
     HeavyIon*             m_heavy_ion;        // undefined by default
     PdfInfo*              m_pdf_info;         // undefined by default
     Units::MomentumUnit   m_momentum_unit;    // default value set by configure switch
@@ -666,114 +658,6 @@ namespace HepMC {
     return evt;
   }
 
-  ///////////////////////////
-  // INLINE Access Methods //
-  ///////////////////////////
-
-  ///  The integer ID that uniquely specifies this signal
-  ///  process, i.e. MSUB in Pythia. It is necessary to
-  ///  package this with each event rather than with the run
-  ///  because many processes may be generated within one run.
-  inline int GenEvent::signal_process_id() const
-  { return m_signal_process_id; }
-
-  inline int GenEvent::event_number() const { return m_event_number; }
-
-  /// Returns the number of multi parton interactions in the event.
-  /// This number is -1 if it is not set.
-  inline int GenEvent::mpi() const { return m_mpi; }
-
-  inline double GenEvent::event_scale() const { return m_event_scale; }
-
-  inline double GenEvent::alphaQCD() const { return m_alphaQCD; }
-
-  inline double GenEvent::alphaQED() const { return m_alphaQED; }
-
-  inline GenVertex* GenEvent::signal_process_vertex() const {
-    /// returns a (mutable) pointer to the signal process vertex
-    return m_signal_process_vertex;
-  }
-
-  inline WeightContainer& GenEvent::weights() { return m_weights; }
-
-  inline const WeightContainer& GenEvent::weights() const
-  { return m_weights; }
-
-  inline GenCrossSection const * GenEvent::cross_section() const
-  { return m_cross_section; }
-
-  inline GenCrossSection*  GenEvent::cross_section()
-  { return m_cross_section; }
-
-  inline HeavyIon const * GenEvent::heavy_ion() const
-  { return m_heavy_ion; }
-
-  inline HeavyIon*  GenEvent::heavy_ion()
-  { return m_heavy_ion; }
-
-  inline PdfInfo const * GenEvent::pdf_info() const
-  { return m_pdf_info; }
-
-  inline PdfInfo*  GenEvent::pdf_info()
-  { return m_pdf_info; }
-
-  ///  Vector of integers which specify the random number
-  ///  generator's state for this event. It is left to the
-  ///  generator to make use of this. We envision a vector of
-  ///  RndmStatesTags to be included with a run class which
-  ///  would specify the meaning of the random_states.
-  inline const std::vector<long>& GenEvent::random_states() const
-  { return m_random_states; }
-
-  inline void GenEvent::set_signal_process_id( int id )
-  { m_signal_process_id = id; }
-
-  inline void GenEvent::set_event_number( int eventno )
-  { m_event_number = eventno; }
-
-  /// Use this to set the number of multi parton interactions in each event.
-  inline void GenEvent::set_mpi( int nmpi )
-  { m_mpi = nmpi; }
-
-
-  inline void GenEvent::set_event_scale( double sc ) { m_event_scale = sc; }
-
-  inline void GenEvent::set_alphaQCD( double a ) { m_alphaQCD = a; }
-
-  inline void GenEvent::set_alphaQED( double a ) { m_alphaQED = a; }
-
-  inline void GenEvent::set_signal_process_vertex( GenVertex* vtx ) {
-    m_signal_process_vertex = vtx;
-    if ( m_signal_process_vertex ) add_vertex( m_signal_process_vertex );
-  }
-
-  inline void GenEvent::set_cross_section( const GenCrossSection& xs )
-  {
-    delete m_cross_section;
-    m_cross_section = new GenCrossSection(xs);
-  }
-
-  inline void GenEvent::set_heavy_ion( const HeavyIon& ion )
-  {
-    delete m_heavy_ion;
-    m_heavy_ion = new HeavyIon(ion);
-  }
-
-  inline void GenEvent::set_pdf_info( const PdfInfo& p )
-  {
-    delete m_pdf_info;
-    m_pdf_info = new PdfInfo(p);
-  }
-
-  inline void GenEvent::set_random_states( const std::vector<long>&
-                                           randomstates )
-  { m_random_states = randomstates; }
-
-  inline void GenEvent::remove_barcode( GenParticle* p )
-  { m_particle_barcodes.erase( p->barcode() ); }
-
-  inline void GenEvent::remove_barcode( GenVertex* v )
-  { m_vertex_barcodes.erase( v->barcode() ); }
 
   /// Each vertex or particle has a barcode, which is just an integer which
   /// uniquely identifies it inside the event (i.e. there is a one to one
