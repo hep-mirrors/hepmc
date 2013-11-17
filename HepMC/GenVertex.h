@@ -149,17 +149,17 @@ namespace HepMC {
     typedef std::vector<HepMC::GenParticle*>::const_iterator
     particles_out_const_iterator;
     /// begin iteration of incoming particles
-    particles_in_const_iterator particles_in_const_begin() const;
+    particles_in_const_iterator particles_in_const_begin() const { return m_particles_in.begin(); }
     /// end iteration of incoming particles
-    particles_in_const_iterator particles_in_const_end() const;
+    particles_in_const_iterator particles_in_const_end() const { return m_particles_in.end(); }
     /// begin iteration of outgoing particles
-    particles_out_const_iterator particles_out_const_begin() const;
+    particles_out_const_iterator particles_out_const_begin() const { return m_particles_out.begin(); }
     /// end iteration of outgoing particles
-    particles_out_const_iterator particles_out_const_end() const;
+    particles_out_const_iterator particles_out_const_end() const { return m_particles_out.end(); }
     /// number of incoming particles
-    int particles_in_size() const;
+    int particles_in_size() const { return m_particles_in.size(); }
     /// number of outgoing particles
-    int particles_out_size() const;
+    int particles_out_size() const { return m_particles_out.size(); }
 
   protected:
 
@@ -185,33 +185,32 @@ namespace HepMC {
     /// This is not a recursive iterator ... it is a building block
     /// for the public iterators and is intended for internal use only.
     /// The acceptable Iterator Ranges are: family, parents, children
-    class edge_iterator :
-      public std::iterator<std::forward_iterator_tag,HepMC::GenParticle*,ptrdiff_t>{
+    class edge_iterator : public std::iterator<std::forward_iterator_tag,HepMC::GenParticle*,ptrdiff_t>{
     public:
       edge_iterator();
       /// used to set limits on the iteration
       edge_iterator( const GenVertex& vtx, IteratorRange range =family );
       /// copy
       edge_iterator( const edge_iterator& p );
-      virtual        ~edge_iterator();
+      virtual ~edge_iterator();
       /// make a copy
       edge_iterator& operator=( const edge_iterator& p );
       /// return a pointer to a particle
-      GenParticle*      operator*(void) const;
+      GenParticle* operator*(void) const;
       /// Pre-fix increment
       edge_iterator& operator++(void); // Pre-fix increment
       /// Post-fix increment
       edge_iterator  operator++(int);   // Post-fix increment
       /// equality
-      bool           operator==( const edge_iterator& a ) const;
+      bool operator==( const edge_iterator& a ) const { return **this == *a; }
       /// inequality
-      bool           operator!=( const edge_iterator& a ) const;
+      bool operator!=( const edge_iterator& a ) const { return !(**this == *a); }
       /// true if parent of root vtx
-      bool           is_parent() const;
+      bool is_parent() const;
       /// true if child of root vtx
-      bool           is_child() const;
+      bool is_child() const;
       /// root vertex of this iteration
-      const GenVertex*  vertex_root() const;
+      const GenVertex* vertex_root() const { return m_vertex; }
     private:
       /// Pre-fix increment -- is not allowed
       edge_iterator& operator--(void);
@@ -221,25 +220,26 @@ namespace HepMC {
       const GenVertex*  m_vertex;
       IteratorRange  m_range;
       std::vector<HepMC::GenParticle*>::const_iterator m_set_iter;
-      bool           m_is_inparticle_iter;
-      bool           m_is_past_end;
+      bool m_is_inparticle_iter;
+      bool m_is_past_end;
     };
     friend class edge_iterator;
     /// size
-    int              edges_size( IteratorRange range = family ) const;
+    int edges_size( IteratorRange range = family ) const;
     /// begin range
-    edge_iterator    edges_begin( IteratorRange range = family) const;
+    edge_iterator edges_begin( IteratorRange range = family) const { return GenVertex::edge_iterator(*this, range); }
     /// end range
-    edge_iterator    edges_end( IteratorRange /* dummy_range */ ) const;
+    edge_iterator edges_end( IteratorRange range ) const { return GenVertex::edge_iterator(); }
+
 
   public:
+
     ///////////////////////////////
     // vertex_iterator           //
     ///////////////////////////////
 
     //!  vertex iterator
-
-    /// \class  vertex_iterator
+    ///
     /// Iterates over all vertices connected via a graph to this vertex.
     /// this is made friend to that it can access protected edge
     /// iterator the range can be IteratorRange= ( parents, children,
@@ -254,75 +254,71 @@ namespace HepMC {
     /// (by "chopping" the edges connecting to an already visited
     /// vertex) and returning the vertices in POST ORDER traversal.
     ///
-    class vertex_iterator :
-      public std::iterator<std::forward_iterator_tag,HepMC::GenVertex*,ptrdiff_t>{
+    class vertex_iterator : public std::iterator<std::forward_iterator_tag,HepMC::GenVertex*,ptrdiff_t>{
     public:
       vertex_iterator();
       /// used to set limits on the iteration
       vertex_iterator( GenVertex& vtx_root, IteratorRange range );
       /// next constructor is intended for internal use only
-      vertex_iterator( GenVertex& vtx_root, IteratorRange range,
-                       std::set<const HepMC::GenVertex*>& visited_vertices );
+      vertex_iterator( GenVertex& vtx_root, IteratorRange range, std::set<const HepMC::GenVertex*>& visited_vertices );
       /// copy
       vertex_iterator( const vertex_iterator& v_iter );
-      virtual             ~vertex_iterator();
+      virtual ~vertex_iterator();
       /// make a copy
-      vertex_iterator&    operator=( const vertex_iterator& );
+      vertex_iterator& operator=( const vertex_iterator& );
       /// return a pointer to a vertex
-      GenVertex*          operator*(void) const;
+      GenVertex* operator*(void) const;
       /// Pre-fix increment
-      vertex_iterator&    operator++(void);  //Pre-fix increment
+      vertex_iterator& operator++(void);  //Pre-fix increment
       /// Post-fix increment
-      vertex_iterator     operator++(int);   //Post-fix increment
+      vertex_iterator operator++(int);   //Post-fix increment
       /// equality
-      bool                operator==( const vertex_iterator& ) const;
+      bool operator==( const vertex_iterator& a ) const { return **this == *a; }
       /// inequality
-      bool                operator!=( const vertex_iterator& ) const;
+      bool operator!=( const vertex_iterator& a ) const { return !(**this == *a); }
       /// vertex that this iterator begins from
-      GenVertex*          vertex_root() const;
+      GenVertex* vertex_root() const { return m_vertex; }
       /// iterator range
-      IteratorRange       range() const;
+      IteratorRange range() const { return m_range; }
       /// intended for internal use only.
-      void                copy_with_own_set( const vertex_iterator&
-                                             v_iter,
-                                             std::set<const HepMC::GenVertex*>&
-                                             visited_vertices );
+      void copy_with_own_set( const vertex_iterator& v_iter, std::set<const HepMC::GenVertex*>& visited_vertices );
 
-    protected:                  // intended for internal use only
+    protected:
+      // intended for internal use only
       /// non-null if recursive iter. created
       GenVertex* follow_edge_();
       /// copy recursive iterator
-      void    copy_recursive_iterator_( const vertex_iterator*
+      void copy_recursive_iterator_( const vertex_iterator*
                                         recursive_v_iter );
     private:
       /// Pre-fix increment -- is not allowed
-      vertex_iterator&    operator--(void);
+      vertex_iterator& operator--(void);
       /// Post-fix increment -- is not allowed
-      vertex_iterator     operator--(int);
+      vertex_iterator operator--(int);
 
     private:
-      GenVertex*       m_vertex;   // the vertex associated to this iter
-      IteratorRange    m_range;
+      GenVertex* m_vertex;   // the vertex associated to this iter
+      IteratorRange m_range;
       std::set<const HepMC::GenVertex*>* m_visited_vertices;
-      bool             m_it_owns_set;  // true if it is responsible for
+      bool m_it_owns_set;  // true if it is responsible for
       // deleting the visited vertex set
-      edge_iterator    m_edge; // particle edge pointing to return vtx
+      edge_iterator m_edge; // particle edge pointing to return vtx
       vertex_iterator* m_recursive_iterator;
     };
     friend class vertex_iterator;
     /// begin vertex range
-    vertex_iterator     vertices_begin( IteratorRange range = relatives );
+    // this is not const because the it could return itself
+    vertex_iterator vertices_begin( IteratorRange range = relatives ) { return vertex_iterator( *this, range ); }
     /// end vertex range
-    vertex_iterator     vertices_end( IteratorRange /* dummy_range */ );
+    vertex_iterator vertices_end( IteratorRange range ) { return vertex_iterator(); }
 
-  public:
+
     ///////////////////////////////
     // particle_iterator         //
     ///////////////////////////////
 
     //!  particle iterator
-
-    /// \class  particle_iterator
+    ///
     /// Iterates over all particles connected via a graph.
     /// by iterating through all vertices in the m_range. For each
     /// vertex it returns orphaned parent particles
@@ -330,27 +326,26 @@ namespace HepMC {
     /// then children ... in this way each particle is associated
     /// to exactly one vertex and so it is returned exactly once.
     /// Is made friend so that it can access protected edge iterator
-    class particle_iterator :
-      public std::iterator<std::forward_iterator_tag,GenParticle*,ptrdiff_t>{
+    class particle_iterator : public std::iterator<std::forward_iterator_tag,GenParticle*,ptrdiff_t>{
     public:
       particle_iterator();
       /// used to set limits on the iteration
       particle_iterator( GenVertex& vertex_root, IteratorRange range );
       /// copy
       particle_iterator( const particle_iterator& );
-      virtual             ~particle_iterator();
+      virtual ~particle_iterator();
       /// make a copy
       particle_iterator&  operator=( const particle_iterator& );
       /// return a pointer to a particle
-      GenParticle*        operator*(void) const;
+      GenParticle* operator*(void) const;
       /// Pre-fix increment
       particle_iterator&  operator++(void);
       /// Post-fix increment
-      particle_iterator   operator++(int);
+      particle_iterator operator++(int);
       /// equality
-      bool operator==( const particle_iterator& ) const;
+      bool operator==( const particle_iterator& a ) const { return **this == *a; }
       /// inequality
-      bool operator!=( const particle_iterator& ) const;
+      bool operator!=( const particle_iterator& a ) const { return !(**this == *a); }
     protected:
       GenParticle* advance_to_first_(); //!< "first" particle
     private:
@@ -359,9 +354,9 @@ namespace HepMC {
     };
     friend class particle_iterator;
     /// begin particle range
-    particle_iterator particles_begin( IteratorRange range = relatives );
+    particle_iterator particles_begin( IteratorRange range = relatives ) { return particle_iterator( *this, range ); }
     /// end particle range
-    particle_iterator particles_end( IteratorRange );
+    particle_iterator particles_end( IteratorRange ) { return particle_iterator(); }
 
 
   protected:
@@ -382,7 +377,6 @@ namespace HepMC {
     FourVector              m_position;      //< 4-vec of vertex
     std::vector<HepMC::GenParticle*>  m_particles_in;  //< All incoming particles
     std::vector<HepMC::GenParticle*>  m_particles_out; //< All outgoing particles
-    /// @todo What's this? How's it different from the barcode? Remove?
     int m_id;
     /// @todo Are vertex weights used by anyone?! Remove?
     WeightContainer m_weights;
@@ -392,111 +386,6 @@ namespace HepMC {
   };
 
 
-  //////////////
-  // INLINES  //
-  //////////////
-
-  inline GenVertex::particles_in_const_iterator
-  GenVertex::particles_in_const_begin() const {
-    return m_particles_in.begin();
-  }
-
-  inline GenVertex::particles_in_const_iterator
-  GenVertex::particles_in_const_end() const {
-    return m_particles_in.end();
-  }
-
-  inline GenVertex::particles_out_const_iterator
-  GenVertex::particles_out_const_begin() const {
-    return m_particles_out.begin();
-  }
-
-  inline GenVertex::particles_out_const_iterator
-  GenVertex::particles_out_const_end() const {
-    return m_particles_out.end();
-  }
-
-  inline int GenVertex::particles_in_size() const {
-    return m_particles_in.size();
-  }
-
-  inline int GenVertex::particles_out_size() const {
-    return m_particles_out.size();
-  }
-
-  inline bool GenVertex::edge_iterator::operator==(
-                                                   const edge_iterator& a ) const {
-    return **this == *a;
-  }
-
-  inline bool GenVertex::edge_iterator::operator!=(
-                                                   const edge_iterator& a ) const {
-    return !(**this == *a);
-  }
-
-  inline const GenVertex* GenVertex::edge_iterator::vertex_root() const {
-    return m_vertex;
-  }
-
-  inline GenVertex::edge_iterator GenVertex::edges_begin( IteratorRange
-                                                          range ) const {
-    return GenVertex::edge_iterator(*this, range);
-  }
-
-  inline GenVertex::edge_iterator GenVertex::edges_end( IteratorRange
-                                                        /* dummy_range */ ) const {
-    return GenVertex::edge_iterator();
-  }
-
-  inline bool GenVertex::vertex_iterator::operator==(
-                                                     const vertex_iterator& a ) const {
-    return **this == *a;
-  }
-
-  inline bool GenVertex::vertex_iterator::operator!=(
-                                                     const vertex_iterator& a ) const {
-    return !(**this == *a);
-  }
-
-  inline GenVertex* GenVertex::vertex_iterator::vertex_root() const {
-    return m_vertex;
-  }
-
-  inline IteratorRange GenVertex::vertex_iterator::range() const {
-    return m_range;
-  }
-
-  inline GenVertex::vertex_iterator GenVertex::vertices_begin(
-                                                              IteratorRange range ){
-    // this is not const because the it could return itself
-    return vertex_iterator( *this, range );
-  }
-
-  inline GenVertex::vertex_iterator GenVertex::vertices_end(
-                                                            IteratorRange /* dummy_range */ ) {
-    return vertex_iterator();
-  }
-
-  inline bool GenVertex::particle_iterator::operator==(
-                                                       const particle_iterator& a ) const {
-    return **this == *a;
-  }
-
-  inline bool GenVertex::particle_iterator::operator!=(
-                                                       const particle_iterator& a ) const {
-    return !(**this == *a);
-  }
-
-  inline GenVertex::particle_iterator GenVertex::particles_begin(
-                                                                 IteratorRange range ) {
-    return particle_iterator( *this, range );
-  }
-
-  inline GenVertex::particle_iterator GenVertex::particles_end(
-                                                               IteratorRange /* dummy_range */ ){
-    return particle_iterator();
-  }
-
-} // HepMC
+}
 
 #endif  // HEPMC_GEN_VERTEX_H
