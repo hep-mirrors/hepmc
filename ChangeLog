@@ -1,3 +1,9 @@
+2013-11-17  Andy Buckley  <andy.buckley@cern.ch>
+
+	* GenRanges clean-up and auto-including at the foot of GenEvent.h
+
+	* Lots of "proper" inlining and noting bugs and TODOs.
+
 2013-11-16  Andy Buckley  <andy.buckley@cern.ch>
 
 	* Merging in code tiding changes from hg branch.

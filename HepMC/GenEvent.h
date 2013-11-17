@@ -1,6 +1,20 @@
 #ifndef HEPMC_GEN_EVENT_H
 #define HEPMC_GEN_EVENT_H
 
+#include "HepMC/GenVertex.h"
+#include "HepMC/GenParticle.h"
+#include "HepMC/WeightContainer.h"
+#include "HepMC/GenCrossSection.h"
+#include "HepMC/HeavyIon.h"
+#include "HepMC/PdfInfo.h"
+#include "HepMC/Units.h"
+#include "HepMC/HepMCDefs.h"
+#include <map>
+#include <string>
+#include <vector>
+#include <algorithm>
+#include <iostream>
+
 //////////////////////////////////////////////////////////////////////////
 // Matt.Dobbs@Cern.CH, September 1999, refer to:
 // M. Dobbs and J.B. Hansen, "The HepMC C++ Monte Carlo Event Record for
@@ -122,20 +136,6 @@ namespace HepMC {
 //   Using the barcode to encode extra information is an abuse of
 //   the barcode data member and causes confusion among users.
 //
-
-#include "HepMC/GenVertex.h"
-#include "HepMC/GenParticle.h"
-#include "HepMC/WeightContainer.h"
-#include "HepMC/GenCrossSection.h"
-#include "HepMC/HeavyIon.h"
-#include "HepMC/PdfInfo.h"
-#include "HepMC/Units.h"
-#include "HepMC/HepMCDefs.h"
-#include <map>
-#include <string>
-#include <vector>
-#include <algorithm>
-#include <iostream>
 
 namespace HepMC {
 
@@ -753,3 +753,7 @@ namespace HepMC {
 } // HepMC
 
 #endif  // HEPMC_GEN_EVENT_H
+
+
+// A bit shoddy, but the ranges include has to come after the main GenEvent stuff thanks to the iterator design
+#include "HepMC/GenRanges.h"
