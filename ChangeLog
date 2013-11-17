@@ -1,5 +1,7 @@
 2013-11-17  Andy Buckley  <andy.buckley@cern.ch>
 
+	* Added more iterator access methods on GenVertex.
+
 	* Adding vertices() and particles() aliases on GenEvent.
 
 	* GenRanges clean-up and auto-including at the foot of GenEvent.h

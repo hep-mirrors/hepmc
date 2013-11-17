@@ -138,28 +138,44 @@ namespace HepMC {
     /// outgoing particle range
     ConstGenParticleEndRange particles_out( GenParticle const &, IteratorRange range = relatives ) const;
 
-    ////////////////////
-    // Iterators      // users should use prefer to use particle_iterator
-    ////////////////////
+    /// @name Iterators
+    //@{
 
-    /// const iterator for incoming particles
-    typedef std::vector<HepMC::GenParticle*>::const_iterator
-    particles_in_const_iterator;
-    /// const iterator for outgoing particles
-    typedef std::vector<HepMC::GenParticle*>::const_iterator
-    particles_out_const_iterator;
-    /// begin iteration of incoming particles
-    particles_in_const_iterator particles_in_const_begin() const { return m_particles_in.begin(); }
-    /// end iteration of incoming particles
-    particles_in_const_iterator particles_in_const_end() const { return m_particles_in.end(); }
-    /// begin iteration of outgoing particles
-    particles_out_const_iterator particles_out_const_begin() const { return m_particles_out.begin(); }
-    /// end iteration of outgoing particles
-    particles_out_const_iterator particles_out_const_end() const { return m_particles_out.end(); }
-    /// number of incoming particles
+    /// Number of incoming particles
     int particles_in_size() const { return m_particles_in.size(); }
-    /// number of outgoing particles
+    /// Number of outgoing particles
     int particles_out_size() const { return m_particles_out.size(); }
+
+    /// Iterator for incoming particles
+    typedef std::vector<HepMC::GenParticle*>::const_iterator particles_in_iterator;
+    /// Const iterator for incoming particles
+    typedef std::vector<HepMC::GenParticle*>::const_iterator particles_in_const_iterator;
+
+    /// Begin iteration of incoming particles
+    particles_in_iterator particles_in_begin() { return m_particles_in.begin(); }
+    /// Begin const iteration of incoming particles
+    particles_in_const_iterator particles_in_const_begin() const { return m_particles_in.begin(); }
+    /// End iteration of incoming particles
+    particles_in_iterator particles_in_end() { return m_particles_in.end(); }
+    /// End const iteration of incoming particles
+    particles_in_const_iterator particles_in_const_end() const { return m_particles_in.end(); }
+
+    /// Iterator for outgoing particles
+    typedef std::vector<HepMC::GenParticle*>::const_iterator particles_out_iterator;
+    /// Const iterator for outgoing particles
+    typedef std::vector<HepMC::GenParticle*>::const_iterator particles_out_const_iterator;
+
+    /// Begin iteration of outgoing particles
+    particles_out_iterator particles_out_begin() { return m_particles_out.begin(); }
+    /// Begin const iteration of outgoing particles
+    particles_out_const_iterator particles_out_const_begin() const { return m_particles_out.begin(); }
+    /// End iteration of outgoing particles
+    particles_out_iterator particles_out_end() { return m_particles_out.end(); }
+    /// End const iteration of outgoing particles
+    particles_out_const_iterator particles_out_const_end() const { return m_particles_out.end(); }
+
+    //@}
+
 
   protected:
 
