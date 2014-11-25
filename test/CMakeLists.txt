@@ -7,14 +7,14 @@ macro( hepmc_test testname )
   find_file( ${testname}_source ${testname}.cc ${CMAKE_CURRENT_SOURCE_DIR}
 ${CMAKE_CURRENT_BINARY_DIR} )
   ADD_EXECUTABLE(${testname} ${${testname}_source} ${ARGN} )
- 
+
   if( ${CMAKE_SYSTEM_NAME} MATCHES "Windows" )
     message( STATUS "skipping ${testname}.sh on ${CMAKE_SYSTEM_NAME}")
   else()
-    # automake/autoconf variables for ${testname}.sh.in 
+    # automake/autoconf variables for ${testname}.sh.in
     set(srcdir ${CMAKE_CURRENT_SOURCE_DIR} )
     set(builddir ${CMAKE_CURRENT_BINARY_DIR} )
-    configure_file( ${testname}.sh.in 
+    configure_file( ${testname}.sh.in
                     ${CMAKE_CURRENT_BINARY_DIR}/${testname}.sh  @ONLY )
     add_test( ${testname}.sh ${CMAKE_CURRENT_BINARY_DIR}/${testname}.sh )
   endif()
@@ -40,18 +40,18 @@ endmacro( hepmc_simple_test )
 
 link_libraries( HepMC )
 
-set( HepMC_tests 
+set( HepMC_tests
 		 testHepMCIteration
 		 testMass
 		 testFlow
                  testPrintBug
 		 testPolarization )
-set( HepMC_simple_tests testSimpleVector 
+set( HepMC_simple_tests testSimpleVector
                 	testUnits
-			testMultipleCopies 
+			testMultipleCopies
 			testWeights )
 
-# automake/autoconf variables for *.cc.in 
+# automake/autoconf variables for *.cc.in
 set(srcdir ${CMAKE_CURRENT_SOURCE_DIR} )
 
 FILE( GLOB process_source *.cc.in )

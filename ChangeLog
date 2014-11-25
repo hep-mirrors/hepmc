@@ -1,8 +1,12 @@
 2014-11-25  Andy Buckley  <andy.buckley@cern.ch>
 
+	* Add rapidity and abs eta/rap methods to FourVector.
+
 	* More constness improvements (hacked implementation, but improves API).
 
 	* Add abs_pdg_id(), pid() and abspid() methods to GenParticle.
+
+	* Allow CMake in-tree builds.
 
 	* Add user-convenience HepMC/HepMC.h header.
 

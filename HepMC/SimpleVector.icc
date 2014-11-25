@@ -60,7 +60,7 @@ inline double FourVector::phi() const {
   return m_x == 0.0 && m_y == 0.0 ? 0.0 : std::atan2(m_y,m_x);
 }
 
-inline double  FourVector::rho() const { 
+inline double  FourVector::rho() const {
 return std::sqrt( m_x*m_x + m_y*m_y + m_z*m_z );
 }
 
@@ -73,14 +73,19 @@ inline bool FourVector::operator != (const FourVector & v) const {
 }
 
 inline double FourVector::pseudoRapidity() const {
-  double m1 = std::sqrt( m_x*m_x + m_y*m_y + m_z*m_z );
-  if ( m1==  0   ) return  0.0;   
-  if ( m1==  z() ) return  1.0E72;
-  if ( m1== -z() ) return -1.0E72;
+  double m1 = std::sqrt( x()*x() + y()*y() + z()*z() );
+  if ( m1 ==  0   ) return  0.0;
+  if ( m1 ==  z() ) return  1.0e72;
+  if ( m1 == -z() ) return -1.0e72;
   return 0.5*log( (m1+z())/(m1-z()) );
 }
 
-inline double FourVector::eta()    const { return pseudoRapidity();}
+inline double FourVector::rapidity() const {
+  if ( t() ==  0   ) return  0.0;
+  if ( t() ==  z() ) return  1.0e72;
+  if ( t() == -z() ) return -1.0e72;
+  return 0.5*log( (t()+z()) / (t()-z()) );
+}
 
 
 //////////////////////////////////////////////////////////////////////////
@@ -101,7 +106,7 @@ inline double ThreeVector::phi() const {
   return m_x == 0.0 && m_y == 0.0 ? 0.0 : std::atan2(m_y,m_x);
 }
 
-inline double ThreeVector::r()    const { 
+inline double ThreeVector::r()    const {
 return std::sqrt( m_x*m_x + m_y*m_y + m_z*m_z );
 }
 
@@ -111,13 +116,13 @@ inline void ThreeVector::set(double xin, double yin, double zin) {
   m_z = zin;
 }
 
-inline void ThreeVector::setPhi(double ph) { 
+inline void ThreeVector::setPhi(double ph) {
   double xy   = perp();
   setX(xy*std::cos(ph));
   setY(xy*std::sin(ph));
 }
 
-inline void ThreeVector::setTheta(double th) { 
+inline void ThreeVector::setTheta(double th) {
   double ma   = r();
   double ph   = phi();
   setX(ma*std::sin(th)*std::cos(ph));

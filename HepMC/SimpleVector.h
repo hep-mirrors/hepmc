@@ -22,6 +22,7 @@
 
 #include "HepMC/enable_if.h"
 #include "HepMC/is_arithmetic.h"
+#include <cmath>
 
 
 namespace HepMC {
@@ -114,18 +115,25 @@ namespace HepMC {
     /// Test for inequality
     bool operator != (const FourVector &) const;
 
-    /// Pseudorapidity, i.e. -ln(tan(theta/2))
+    /// Pseudorapidity, i.e. -ln(tan(theta/2)) == 0.5 ln[(|p|+pz) / (|p|-pz)] == atanh(pz/|p|)
     double pseudoRapidity() const;
     /// Alias for pseudorapidity
-    double eta() const;
+    double eta() const { return pseudoRapidity(); }
+    /// Absolute value of eta
+    double abseta() const { return std::abs(eta()); }
 
-    /// @todo Add rapidity() for use with momentum 4-vectors
+    /// Rapidity, i.e. 0.5 ln[(E+pz) / (E-pz)] == atanh(pz/E)
+    double rapidity() const;
+    double rap() const { return rapidity(); }
+    /// Absolute value of rapidity
+    double absrap() const { return std::abs(rap()); }
+
 
     /// @name Component value setters
     //@{
 
     /// Set x, y, z and t all at once
-    void set(double x, double y, double z, double  t);
+    void set(double x, double y, double z, double t);
 
     /// Set x component
     void setX(double xin) { m_x = xin; }
@@ -146,6 +154,7 @@ namespace HepMC {
     void setE(double tin)  { setT(tin); }
 
     //@}
+
 
   private:
 
