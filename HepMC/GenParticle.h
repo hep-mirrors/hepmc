@@ -135,6 +135,20 @@ namespace HepMC {
     /// Pointer to the event that owns this particle
     GenEvent* parent_event() const;
 
+    /// @brief Immediate incoming particles via production vertex
+    /// @note Less efficient than going via the production vertex since if there is no vertex we must return an empty vector -- by value.
+    std::vector<GenParticle*> parents();
+    /// @brief Immediate incoming particles via production vertex (const)
+    /// @note Less efficient than going via the production vertex since if there is no vertex we must return an empty vector -- by value.
+    const std::vector<GenParticle*> parents() const;
+
+    /// @brief Immediate outgoing particles via end vertex
+    /// @note Less efficient than going via the end vertex since if there is no vertex we must return an empty vector -- by value.
+    std::vector<GenParticle*> children();
+    /// @brief Immediate outgoing particles via end vertex (const)
+    /// @note Less efficient than going via the end vertex since if there is no vertex we must return an empty vector -- by value.
+    const std::vector<GenParticle*> children() const;
+
     /// @brief Return the generated mass
     ///
     /// Because of precision issues, the generated mass is not always the

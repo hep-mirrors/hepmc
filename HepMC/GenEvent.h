@@ -610,7 +610,7 @@ namespace HepMC {
   private: // data members
     int                   m_signal_process_id;
     int                   m_event_number;
-    int                   m_mpi;        // number of multi paricle interactions
+    int                   m_mpi;        // number of multi parton interactions
     double                m_event_scale;// energy scale, see hep-ph/0109068
     double                m_alphaQCD;   // QCD coupling, see hep-ph/0109068
     double                m_alphaQED;   // QED coupling, see hep-ph/0109068
@@ -618,8 +618,7 @@ namespace HepMC {
     GenParticle*          m_beam_particle_1;
     GenParticle*          m_beam_particle_2;
     WeightContainer       m_weights; // weights for this event; first weight is used by default for hit and miss
-    std::vector<long> m_random_states; // container of rndm num
-    // generator states
+    std::vector<long>     m_random_states; // container of rndm num generator states
 
     std::map< int,HepMC::GenVertex*,std::greater<int> >   m_vertex_barcodes;
     std::map< int,HepMC::GenParticle*,std::less<int> >    m_particle_barcodes;

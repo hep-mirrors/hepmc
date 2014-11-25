@@ -137,16 +137,37 @@ namespace HepMC {
     /// Const direct access to the weights container
     const WeightContainer& weights() const { return m_weights; }
 
-    /// Particle range
+
+    /// Immediate incoming particles
+    std::vector<GenParticle*>& parents() { return m_particles_in; }
+    /// Immediate incoming particles (const)
+    const std::vector<GenParticle*>& parents() const { return m_particles_in; }
+
+    /// Immediate outgoing particles
+    std::vector<GenParticle*>& children() { return m_particles_out; }
+    /// Immediate outgoing particles (const)
+    const std::vector<GenParticle*>& children() const { return m_particles_out; }
+
+
+    /// Particle ranges of various kinds
     GenVertexParticleRange particles( IteratorRange range = relatives );
+
     /// Incoming particle range
-    GenParticleProductionRange particles_in( GenParticle&, IteratorRange range = relatives );
+    /// @note The GenParticle arg is mysterious...
+    /// @deprecated Prefer to use parents()
+    GenParticleProductionRange particles_in(GenParticle&, IteratorRange range = relatives );
     /// Incoming particle range
-    ConstGenParticleProductionRange particles_in( GenParticle const &, IteratorRange range = relatives ) const;
+    /// @note The GenParticle arg is mysterious...
+    /// @deprecated Prefer to use parents()
+    ConstGenParticleProductionRange particles_in(const GenParticle&, IteratorRange range = relatives ) const;
+
     /// Outgoing particle range
     GenParticleEndRange particles_out( GenParticle&, IteratorRange range = relatives );
     /// Outgoing particle range
-    ConstGenParticleEndRange particles_out( GenParticle const &, IteratorRange range = relatives ) const;
+    /// @note The GenParticle arg is mysterious...
+    /// @deprecated Prefer to use parents()
+    ConstGenParticleEndRange particles_out( const GenParticle&, IteratorRange range = relatives ) const;
+
 
     /// @name Iterators
     //@{
@@ -268,9 +289,9 @@ namespace HepMC {
     ///
     /// Iterates over all vertices connected via a graph to this vertex.
     /// this is made friend to that it can access protected edge
-    /// iterator the range can be IteratorRange= ( parents, children,
-    /// family, ancestors, descendants, relatives )
-    /// example for range=descendants the iterator
+    /// iterator the range can be IteratorRange= ( PARENTS, CHILDREN,
+    /// FAMILY, ANCESTORS, DESCENDANTS, RELATIVES )
+    /// example for range=DESCENDANTS the iterator
     /// will return all vertices
     /// which are children (connected by an outgoing particle edge),
     /// grandchildren, great-grandchildren, etc. of this vertex

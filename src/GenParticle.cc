@@ -133,6 +133,24 @@ namespace HepMC {
   }
 
 
+
+  std::vector<GenParticle*> GenParticle::parents() {
+    return (production_vertex() != NULL) ? production_vertex()->parents() : std::vector<GenParticle*>();
+  }
+
+  const std::vector<GenParticle*> GenParticle::parents() const {
+    return (production_vertex() != NULL) ? production_vertex()->parents() : std::vector<GenParticle*>();
+  }
+
+  std::vector<GenParticle*> GenParticle::children() {
+    return (end_vertex() != NULL) ? end_vertex()->children() : std::vector<GenParticle*>();
+  }
+
+  const std::vector<GenParticle*> GenParticle::children() const {
+    return (end_vertex() != NULL) ? end_vertex()->children() : std::vector<GenParticle*>();
+  }
+
+
   void GenParticle::set_production_vertex_( GenVertex* prodvertex ) {
     GenEvent* its_orig_event = parent_event();
     m_production_vertex = prodvertex;

@@ -456,13 +456,12 @@ namespace HepMC {
   // use particle_iterator with IteratorRange = family, parents, or children
   //
 
-  GenVertex::edge_iterator::edge_iterator() : m_vertex(0), m_range(family),
+  GenVertex::edge_iterator::edge_iterator() : m_vertex(0), m_range(FAMILY),
                                               m_is_inparticle_iter(false), m_is_past_end(true)
   {}
 
-  GenVertex::edge_iterator::edge_iterator( const GenVertex& vtx,
-                                           IteratorRange range ) :
-    m_vertex(&vtx), m_range(family)
+  GenVertex::edge_iterator::edge_iterator( const GenVertex& vtx, IteratorRange range ) :
+    m_vertex(&vtx), m_range(FAMILY)
   {
     // Note: (26.1.2000) the original version of edge_iterator inheritted
     //       from set<GenParticle*>::const_iterator() rather than using
@@ -475,29 +474,29 @@ namespace HepMC {
     //       version as boolean members.
     //
     // default range is family, only other choices are children/parents
-    //    descendants/ancestors not allowed & recasted ot children/parents
-    if ( range == descendants || range == children ) m_range = children;
-    if ( range == ancestors   || range == parents  ) m_range = parents;
+    //    descendants/ancestors not allowed & recasted to children/parents
+    if ( range == DESCENDANTS || range == CHILDREN ) m_range = CHILDREN;
+    if ( range == ANCESTORS   || range == PARENTS  ) m_range = PARENTS;
     //
     if ( m_vertex->m_particles_in.empty() &&
          m_vertex->m_particles_out.empty() ) {
       // Case: particles_in and particles_out is empty.
       m_is_inparticle_iter = false;
       m_is_past_end = true;
-    } else if ( m_range == parents && m_vertex->m_particles_in.empty() ){
+    } else if ( m_range == PARENTS && m_vertex->m_particles_in.empty() ){
       // Case: particles in is empty and parents is requested.
       m_is_inparticle_iter = true;
       m_is_past_end = true;
-    } else if ( m_range == children && m_vertex->m_particles_out.empty() ){
+    } else if ( m_range == CHILDREN && m_vertex->m_particles_out.empty() ){
       // Case: particles out is empty and children is requested.
       m_is_inparticle_iter = false;
       m_is_past_end = true;
-    } else if ( m_range == children ) {
+    } else if ( m_range == CHILDREN ) {
       // Case: particles out is NOT empty, and children is requested
       m_set_iter = m_vertex->m_particles_out.begin();
       m_is_inparticle_iter = false;
       m_is_past_end = false;
-    } else if ( m_range == family && m_vertex->m_particles_in.empty() ) {
+    } else if ( m_range == FAMILY && m_vertex->m_particles_in.empty() ) {
       // Case: particles in is empty, particles out is NOT empty,
       //       and family is requested. Then skip ahead to partilces out.
       m_set_iter = m_vertex->m_particles_out.begin();
@@ -539,13 +538,13 @@ namespace HepMC {
     if ( m_is_past_end ) return *this;
     ++m_set_iter;
     // handle cases where m_set_iter points past the end
-    if ( m_range == family && m_is_inparticle_iter &&
+    if ( m_range == FAMILY && m_is_inparticle_iter &&
          m_set_iter == m_vertex->m_particles_in.end() ) {
       // at the end on in particle set, and range is family, so move to
       // out particle set
       m_set_iter = m_vertex->m_particles_out.begin();
       m_is_inparticle_iter = false;
-    } else if ( m_range == parents &&
+    } else if ( m_range == PARENTS &&
                 m_set_iter == m_vertex->m_particles_in.end() ) {
       // at the end on in particle set, and range is parents only, so
       // move into past the end state
@@ -590,10 +589,9 @@ namespace HepMC {
   }
 
   int GenVertex::edges_size( IteratorRange range ) const {
-    if ( range == children ) return m_particles_out.size();
-    if ( range == parents ) return m_particles_in.size();
-    if ( range == family ) return m_particles_out.size()
-                             + m_particles_in.size();
+    if ( range == CHILDREN ) return m_particles_out.size();
+    if ( range == PARENTS ) return m_particles_in.size();
+    if ( range == FAMILY ) return m_particles_out.size() + m_particles_in.size();
     return 0;
   }
 
@@ -789,7 +787,7 @@ namespace HepMC {
     // then only the iterator which owns the set is allowed to create
     // recursive iterators (i.e. recursivity is only allowed to go one
     // layer deep)
-    if ( m_range <= family && m_it_owns_set == 0 ) return 0;
+    if ( m_range <= FAMILY && m_it_owns_set == 0 ) return 0;
     //
     // M.Dobbs 2001-07-16
     // Take care of the very special-rare case where a particle might
@@ -838,12 +836,11 @@ namespace HepMC {
                                                    IteratorRange range ) {
     // General Purpose Constructor
     //
-    if ( range <= family ) {
+    if ( range <= FAMILY ) {
       m_edge = GenVertex::edge_iterator( vertex_root, range );
     } else {
       m_vertex_iterator = GenVertex::vertex_iterator(vertex_root, range);
-      m_edge = GenVertex::edge_iterator( **m_vertex_iterator,
-                                         m_vertex_iterator.range() );
+      m_edge = GenVertex::edge_iterator( **m_vertex_iterator, m_vertex_iterator.range() );
     }
     advance_to_first_();
   }
