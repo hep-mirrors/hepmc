@@ -4,6 +4,7 @@ includedir = $(prefix)/include
 COPY_P = @COPY_P@
 
 pkginclude_HEADERS = \
+	HepMC.h	\
 	CompareGenEvent.h	\
 	Flow.h		\
 	GenEvent.h	\

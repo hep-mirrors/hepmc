@@ -1,7 +1,8 @@
 
-set( pkginclude_HEADERS 
+set( pkginclude_HEADERS
+		    HepMC.h
 		    CompareGenEvent.h
-		    Flow.h	
+		    Flow.h
 		    GenEvent.h
 		    GenParticle.h
 		    GenVertex.h
@@ -25,7 +26,7 @@ set( pkginclude_HEADERS
 		    WeightContainer.h
 		    SearchVector.h
 		    SimpleVector.h
-		    SimpleVector.icc	
+		    SimpleVector.icc
 		    StreamHelpers.h
 		    StreamInfo.h
 		    enable_if.h
@@ -36,5 +37,5 @@ set( pkginclude_HEADERS
 		    HepMCDefs.h
 		    )
 
-INSTALL (FILES ${pkginclude_HEADERS}  
+INSTALL (FILES ${pkginclude_HEADERS}
          DESTINATION include/HepMC )

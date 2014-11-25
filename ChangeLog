@@ -1,3 +1,7 @@
+2014-11-25  Andy Buckley  <andy.buckley@cern.ch>
+
+	* Add user-convenience HepMC/HepMC.h header.
+
 2013-11-17  Andy Buckley  <andy.buckley@cern.ch>
 
 	* Added more iterator access methods on GenVertex.
