@@ -63,7 +63,7 @@ namespace HepMC {
 
   public:
     /// default constructor
-    GenVertex( const FourVector& position =FourVector(0,0,0,0), int id = 0,
+    GenVertex( const FourVector& position=FourVector(0,0,0,0), int id = 0,
                const WeightContainer& weights = std::vector<double>() );
     GenVertex( const GenVertex& invertex );            //!< shallow copy
     virtual    ~GenVertex();
@@ -74,6 +74,7 @@ namespace HepMC {
     bool operator!=( const GenVertex& a ) const; //!< inequality
     void print( std::ostream& ostr = std::cout ) const; //!< print vertex information
 
+    /// @todo Remove
     double check_momentum_conservation() const;//!< |Sum (three_mom_in-three_mom_out)|
 
     /// add incoming particle
@@ -82,7 +83,7 @@ namespace HepMC {
     void add_particle_out( GenParticle* outparticle );
     /// remove_particle finds *particle in the in and/or out list and
     ///  removes it from these lists ... it DOES NOT DELETE THE PARTICLE
-    ///  or its relations. You could delete the particle too as follows:
+    ///  or its relations. You can simultaneously delete the particle, too:
     ///      delete vtx->remove_particle( particle );
     GenParticle* remove_particle( GenParticle* particle ); //!< remove a particle
 
@@ -95,19 +96,25 @@ namespace HepMC {
     // access methods //
     ////////////////////
 
-    /// pointer to the event that owns this vertex
+    /// Pointer to the event that owns this vertex
     GenEvent* parent_event() const { return m_event; }
-    /// vertex position
-    ThreeVector point3d() const { return ThreeVector(m_position.x(),m_position.y(),m_position.z()); }
-    /// vertex position and time
+
+    /// Vertex position
+    ThreeVector point3d() const { return ThreeVector(m_position.x(), m_position.y(), m_position.z()); }
+    /// Vertex position and time
     const FourVector& position() const { return m_position; }
-    /// set vertex position and time
+    /// Set vertex position and time
     void set_position(const FourVector& pos=FourVector(0,0,0,0)) { m_position = pos; }
+
     /// Vertex IDs are used to encode the sort of transition represented: see docs
     int id() const { return m_id; }
     /// Set the vertex ID
     void set_id( int id ) { m_id = id; }
 
+    /// @todo Add "status" as (preferred) synonym for id()?
+
+    /// @brief Get the vertex barcode
+    ///
     /// The barcode is the vertex's reference number, every vertex in the
     /// event has a unique barcode. Vertex barcodes are negative numbers,
     /// particle barcodes are positive numbers.
@@ -116,26 +123,25 @@ namespace HepMC {
     /// HepMC as a unique identifier for the particles and vertices.
     /// Using the barcode to encode extra information is an abuse of
     /// the barcode data member and causes confusion among users.
-    ///
     int barcode() const { return m_barcode; }
 
-    /// In general there is no reason to "suggest_barcode"
+    /// Try to manually set the barcode: discouraged but widespread
     bool suggest_barcode( int the_bar_code );
 
-    /// direct access to the weights container is allowed.
+    /// Direct access to the weights container is allowed.
     WeightContainer& weights() { return m_weights; }
-    /// const direct access to the weights container
+    /// Const direct access to the weights container
     const WeightContainer& weights() const { return m_weights; }
 
-    /// particle range
+    /// Particle range
     GenVertexParticleRange particles( IteratorRange range = relatives );
-    /// incoming particle range
+    /// Incoming particle range
     GenParticleProductionRange particles_in( GenParticle&, IteratorRange range = relatives );
-    /// incoming particle range
+    /// Incoming particle range
     ConstGenParticleProductionRange particles_in( GenParticle const &, IteratorRange range = relatives ) const;
-    /// outgoing particle range
+    /// Outgoing particle range
     GenParticleEndRange particles_out( GenParticle&, IteratorRange range = relatives );
-    /// outgoing particle range
+    /// Outgoing particle range
     ConstGenParticleEndRange particles_out( GenParticle const &, IteratorRange range = relatives ) const;
 
     /// @name Iterators

@@ -59,10 +59,15 @@ namespace HepMC {
 
   /// GenVertexParticleRange acts like a collection of particles
   struct GenVertexParticleRange {
-    /// @todo Mk const ref?
     GenVertexParticleRange(GenVertex& v, IteratorRange range = relatives ) : m_vertex(v), m_range(range) {}
+    typedef GenVertex::particle_iterator iterator;
     GenVertex::particle_iterator begin();
     GenVertex::particle_iterator end();
+
+    /// @note This const iterator type doesn't exist and would be a mess to implement. We give up: use HepMC3 when it's available!
+    // typedef GenVertex::particle_const_iterator const_iterator;
+    // GenVertex::particle_const_iterator begin() const;
+    // GenVertex::particle_const_iterator end() const;
   private:
     GenVertexParticleRange& operator=( GenVertexParticleRange & ); //< forbidden
     GenVertex & m_vertex;

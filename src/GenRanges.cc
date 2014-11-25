@@ -43,8 +43,13 @@ namespace HepMC {
   GenEvent::particle_const_iterator ConstGenEventParticleRange::begin() const { return m_event.particles_begin(); }
   GenEvent::particle_const_iterator ConstGenEventParticleRange::end()   const { return m_event.particles_end(); }
 
+
   GenVertex::particle_iterator GenVertexParticleRange::begin() { return m_vertex.particles_begin(m_range); }
   GenVertex::particle_iterator GenVertexParticleRange::end()   { return m_vertex.particles_end(m_range); }
+
+  /// @note This const iterator type doesn't exist and would be a mess to implement. We give up: use HepMC3 when it's available!
+  // GenVertex::particle_const_iterator GenVertexParticleRange::begin() const { return m_vertex.particles_const_begin(m_range); }
+  // GenVertex::particle_const_iterator GenVertexParticleRange::end() const   { return m_vertex.particles_const_end(m_range); }
 
 
   GenVertex::particle_iterator GenParticleProductionRange::begin() {

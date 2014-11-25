@@ -44,7 +44,6 @@ namespace HepMC {
   /// Creation and use of this information is optional.
   ///
   class HeavyIon {
-
   public:
     // ---  birth/death:
     //
