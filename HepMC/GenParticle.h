@@ -88,7 +88,6 @@ namespace HepMC {
     void print( std::ostream& ostr = std::cout ) const;
 
     /// Conversion operator to 4-vector
-    /// @todo Remove?
     operator HepMC::FourVector() const { return m_momentum; }
 
     ////////////////////

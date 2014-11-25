@@ -1,5 +1,7 @@
 2014-11-25  Andy Buckley  <andy.buckley@cern.ch>
 
+	* Add status() and set_status() aliases for Vertex::[set_]id().
+
 	* Add rapidity and abs eta/rap methods to FourVector.
 
 	* More constness improvements (hacked implementation, but improves API).

@@ -100,6 +100,8 @@ namespace HepMC {
     GenEvent* parent_event() const { return m_event; }
 
     /// Vertex position
+    /// @note Return by value, constructed from 4-vector components; position() is more efficient.
+    /// @deprecated Will be removed in HepMC3
     ThreeVector point3d() const { return ThreeVector(m_position.x(), m_position.y(), m_position.z()); }
     /// Vertex position and time
     const FourVector& position() const { return m_position; }
@@ -108,10 +110,12 @@ namespace HepMC {
 
     /// Vertex IDs are used to encode the sort of transition represented: see docs
     int id() const { return m_id; }
+    /// Alias for id()
+    int status() const { return id(); }
     /// Set the vertex ID
     void set_id( int id ) { m_id = id; }
-
-    /// @todo Add "status" as (preferred) synonym for id()?
+    /// Set the vertex ID (alias)
+    void set_status( int id ) { set_id(id); }
 
     /// @brief Get the vertex barcode
     ///
