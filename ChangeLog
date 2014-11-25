@@ -1,5 +1,11 @@
 2014-11-25  Andy Buckley  <andy.buckley@cern.ch>
 
+	* Improving IO_AsciiParticles usability -- can now write to non-file streams.
+
+	* Providing children() / parents() functions on GenVertex and GenParticle.
+
+	* Providing preferred upper-case versions of IteratorRange enum values.
+
 	* Add status() and set_status() aliases for Vertex::[set_]id().
 
 	* Add rapidity and abs eta/rap methods to FourVector.

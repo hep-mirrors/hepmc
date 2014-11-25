@@ -12,15 +12,29 @@
 
 namespace HepMC {
 
-  IO_AsciiParticles::IO_AsciiParticles( const char* filename, std::ios::openmode mode )
+
+  IO_AsciiParticles::IO_AsciiParticles( std::iostream& iostr, std::ios::openmode mode)
     : m_precision(2),
       m_mode(mode), m_finished_first_event_io(0)
   {
-    if(std::string(filename) == std::string("cout")) {
+      m_outstream = &iostr;
+      m_file = 0;
+      m_outstream->precision(m_precision);
+      // we use decimal to store integers, because it is smaller than hex!
+      m_outstream->setf(std::ios::dec,std::ios::basefield);
+      m_outstream->setf(std::ios::scientific,std::ios::floatfield);
+  }
+
+
+  IO_AsciiParticles::IO_AsciiParticles( const std::string& filename, std::ios::openmode mode )
+    : m_precision(2),
+      m_mode(mode), m_finished_first_event_io(0)
+  {
+    if (filename == "cout") {
       m_outstream = &(std::cout);
       m_file = 0;
     } else {
-      m_file = new std::fstream(filename, mode);
+      m_file = new std::fstream(filename.c_str(), mode);
       m_outstream = m_file;
       if ( (m_mode&std::ios::out && m_mode&std::ios::in) ||
            (m_mode&std::ios::app && m_mode&std::ios::in) ) {
@@ -42,7 +56,7 @@ namespace HepMC {
   }
 
   IO_AsciiParticles::~IO_AsciiParticles() {
-    if(m_file) {
+    if (m_file) {
       m_file->close();
       delete m_file;
     }

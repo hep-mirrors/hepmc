@@ -35,7 +35,8 @@ namespace HepMC {
     virtual ~IO_BaseClass() {}
 
 
-    /// @todo Add setprecision()
+    // /// Set output stream precision()
+    // virtual void set_precision(int iprec);
 
     /// write this GenEvent
     virtual void write_event( const GenEvent* ) =0;

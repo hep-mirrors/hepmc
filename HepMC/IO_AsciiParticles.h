@@ -45,18 +45,18 @@ namespace HepMC {
   //! Event input/output in ASCII format for eye and machine reading
   ///
   /// Strategy for reading or writing events as machine readable ASCII to a
-  /// file. When instantiating, the mode of file to be created must be
+  /// file or stream. When instantiating, the mode of file to be created must be
   /// specified.
   ///
   class IO_AsciiParticles : public IO_BaseClass {
   public:
 
     /// Constructor taking an IO stream name and std::ios mode
-    IO_AsciiParticles( std::iostream iostr,
+    IO_AsciiParticles( std::iostream& iostr,
                        std::ios::openmode mode=std::ios::out );
 
     /// Constructor requiring a file name and std::ios mode
-    IO_AsciiParticles( const char* filename="IO_AsciiParticles.dat",
+    IO_AsciiParticles( const std::string& filename,
                        std::ios::openmode mode=std::ios::out );
 
     /// Virtual destructor to allow inheritance
@@ -75,21 +75,20 @@ namespace HepMC {
     void write_comment( const std::string comment );
 
     /// Set output precision
-    /// @todo Violates standard HepMC method naming: put a setprecision/set_precision on IO_BaseClass?
-    void setPrecision(int iprec);
+    void set_precision(int iprec) { m_precision = iprec; }
 
     /// @todo Need extra std:: IO functions, too
 
     /// Check the state of the IO stream
     /// @todo See STL documentation for meaning and usage of rdstate
-    int rdstate() const;
+    int rdstate() const { return (int)m_file->rdstate(); }
 
     /// Clear the IO stream
-    void clear();
+    void clear() { if (m_file) m_file->clear(); }
 
     /// Write to an ostream
-    /// @todo Is this useful? Why not specify the ostream in the constructor if you want to write to the terminal? Deprecate?
-    void print( std::ostream& ostr = std::cout ) const;
+    /// @deprecated Specify the ostream in the constructor if you want to write to the terminal.
+    void print(std::ostream& ostr=std::cout) const;
 
 
   protected: // for internal use only
@@ -111,14 +110,6 @@ namespace HepMC {
 
   };
 
-
-  //////////////
-  // Inlines  //
-  //////////////
-
-  inline int  IO_AsciiParticles::rdstate() const { return (int)m_file->rdstate(); }
-  inline void IO_AsciiParticles::clear() { m_file->clear(); }
-  inline void IO_AsciiParticles::setPrecision(int iprec) { m_precision=iprec; }
 
 } // HepMC
 
