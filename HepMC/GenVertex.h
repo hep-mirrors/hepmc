@@ -376,9 +376,11 @@ namespace HepMC {
     };
     friend class particle_iterator;
     /// begin particle range
-    particle_iterator particles_begin( IteratorRange range = relatives ) { return particle_iterator( *this, range ); }
+    particle_iterator particles_begin( IteratorRange range ) { return particle_iterator( *this, range ); }
+    particle_iterator particles_begin( IteratorRange range ) const { return particle_iterator( const_cast<GenVertex&>(*this), range ); } ///< Ewww
     /// end particle range
     particle_iterator particles_end( IteratorRange ) { return particle_iterator(); }
+    particle_iterator particles_end( IteratorRange ) const { return particle_iterator(); }
 
 
   protected:

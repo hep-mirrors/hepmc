@@ -5,7 +5,7 @@
 
 #include "HepMC/IO_HERWIG.h"
 #include "HepMC/GenEvent.h"
-#include <cstdio>       // needed for formatted output using sprintf 
+#include <cstdio>       // needed for formatted output using sprintf
 
 namespace HepMC {
 
@@ -18,7 +18,7 @@ namespace HepMC {
 	// These arrays are copied from Lynn Garren's stdhep 5.01-5.06.
 	//   see http://cepa.fnal.gov/psm/stdhep/
 	// Translation from HERWIG particle ID's to PDG particle ID's.
-	m_herwig_to_pdg_id[1] =1; 
+	m_herwig_to_pdg_id[1] =1;
 	m_herwig_to_pdg_id[2] =2;
 	m_herwig_to_pdg_id[3] =3;
 	m_herwig_to_pdg_id[4] =4;
@@ -26,29 +26,29 @@ namespace HepMC {
 	m_herwig_to_pdg_id[6] =6;
 	m_herwig_to_pdg_id[7] =7;
 	m_herwig_to_pdg_id[8] =8;
-       
+
 	m_herwig_to_pdg_id[11] =11;
 	m_herwig_to_pdg_id[12] =12;
 	m_herwig_to_pdg_id[13] =13;
 	m_herwig_to_pdg_id[14] =14;
 	m_herwig_to_pdg_id[15] =15;
 	m_herwig_to_pdg_id[16] =16;
-       
+
 	m_herwig_to_pdg_id[21] =21;
 	m_herwig_to_pdg_id[22] =22;
 	m_herwig_to_pdg_id[23] =23;
 	m_herwig_to_pdg_id[24] =24;
 	m_herwig_to_pdg_id[25] =25;
 	m_herwig_to_pdg_id[26] =51; // <-- H_L0 (redundant with h0(25))
-       
+
 	m_herwig_to_pdg_id[32] =32;
 	m_herwig_to_pdg_id[35] =35;
 	m_herwig_to_pdg_id[36] =36;
 	m_herwig_to_pdg_id[37] =37;
 	m_herwig_to_pdg_id[39] =39;
- 
+
 	m_herwig_to_pdg_id[40] =40; //Charybdis Black Hole
-      
+
 	m_herwig_to_pdg_id[81] =81;
 	m_herwig_to_pdg_id[82] =82;
 	m_herwig_to_pdg_id[83] =83;
@@ -59,7 +59,7 @@ namespace HepMC {
 	m_herwig_to_pdg_id[88] =88;
 	m_herwig_to_pdg_id[89] =89;
 	m_herwig_to_pdg_id[90] =90;
-       
+
 	m_herwig_to_pdg_id[91] =91;
 	m_herwig_to_pdg_id[92] =92;
 	m_herwig_to_pdg_id[93] =93;
@@ -82,14 +82,14 @@ namespace HepMC {
 
     IO_HERWIG::~IO_HERWIG(){}
 
-    void IO_HERWIG::print( std::ostream& ostr ) const { 
+    void IO_HERWIG::print( std::ostream& ostr ) const {
         ostr << "IO_HERWIG: reads an event from the FORTRAN Herwig HEPEVT "
-             << "common block. \n" 
-	     << " trust_mothers_before_daughters = " 
+             << "common block. \n"
+	     << " trust_mothers_before_daughters = "
 	     << m_trust_mothers_before_daughters
 	     << " trust_both_mothers_and_daughters = "
 	     << m_trust_both_mothers_and_daughters
-	     << " print_inconsistency_errors = " 
+	     << " print_inconsistency_errors = "
 	     << m_print_inconsistency_errors << std::endl;
     }
 
@@ -99,8 +99,8 @@ namespace HepMC {
 	//
 	// 0. Test that evt pointer is not null and set event number
 	if ( !evt ) {
-	    std::cerr 
-		<< "IO_HERWIG::fill_next_event error - passed null event." 
+	    std::cerr
+		<< "IO_HERWIG::fill_next_event error - passed null event."
 		<< std::endl;
 	    return false;
 	}
@@ -112,15 +112,15 @@ namespace HepMC {
 	evt->set_event_number( HEPEVT_Wrapper::event_number() );
 	// Herwig units are GeV and mm
 	// It would be nice to set the units right here,
-	// but this could cause problems with existing code that 
+	// but this could cause problems with existing code that
 	// might convert GeV to MeV without calling the appropriate HepMC method
 
 	//
 	// 2. create a particle instance for each HEPEVT entry and fill a map
-	//    create a vector which maps from the HEPEVT particle index to the 
+	//    create a vector which maps from the HEPEVT particle index to the
 	//    GenParticle address
 	//    (+1 in size accounts for hepevt_particle[0] which is unfilled)
-	std::vector<GenParticle*> hepevt_particle( 
+	std::vector<GenParticle*> hepevt_particle(
 	                                HEPEVT_Wrapper::number_entries()+1 );
 	hepevt_particle[0] = 0;
 	for ( int i1 = 1; i1 <= HEPEVT_Wrapper::number_entries(); ++i1 ) {
@@ -128,7 +128,7 @@ namespace HepMC {
 	}
 	std::set<GenVertex*> new_vertices;
 	//
-	// Here we assume that the first two particles in the list 
+	// Here we assume that the first two particles in the list
 	// are the incoming beam particles.
 	// Best make sure this is done before any rearranging...
 	evt->set_beam_particles( hepevt_particle[1], hepevt_particle[2] );
@@ -152,7 +152,7 @@ namespace HepMC {
 	    GenVertex* hard_vtx = new GenVertex();
 	    hard_vtx->add_particle_in( hepevt_particle[index_121] );
 	    hard_vtx->add_particle_in( hepevt_particle[index_122] );
-	    // evt->add_vertex( hard_vtx ); // not necessary, its done in 
+	    // evt->add_vertex( hard_vtx ); // not necessary, its done in
 	                                    // set_signal_process_vertex
 	    //BPK - Atlas -> index_hard retained if it is a boson
 	    int index_hard = 0;
@@ -160,7 +160,7 @@ namespace HepMC {
 	      if ( HEPEVT_Wrapper::status(i)==120 ) index_hard=i;
 	      if ( index_hard!=0 ) break;
 	    }
-	    
+
 	    if ( index_hard!=0) {
 	      hard_vtx->add_particle_out( hepevt_particle[index_hard] );
 	      GenVertex* hard_vtx2 = new GenVertex();
@@ -181,21 +181,21 @@ namespace HepMC {
 	//
 	// 4. loop over HEPEVT particles AGAIN, this time creating vertices
 	for ( int i = 1; i <= HEPEVT_Wrapper::number_entries(); ++i ) {
-	    // We go through and build EITHER the production or decay 
+	    // We go through and build EITHER the production or decay
 	    // vertex for each entry in hepevt, depending on the switch
 	    // m_trust_mothers_before_daughters (new 2001-02-28)
 	    // Note: since the HEPEVT pointers are bi-directional, it is
 	    ///      sufficient to do one or the other.
 	    //
 	    // 3. Build the production_vertex (if necessary)
-	    if ( m_trust_mothers_before_daughters || 
+	    if ( m_trust_mothers_before_daughters ||
 		 m_trust_both_mothers_and_daughters ) {
 		build_production_vertex( i, hepevt_particle, evt );
 	    }
 	    //
-	    // 4. Build the end_vertex (if necessary) 
+	    // 4. Build the end_vertex (if necessary)
 	    //    Identical steps as for production vertex
-	    if ( !m_trust_mothers_before_daughters || 
+	    if ( !m_trust_mothers_before_daughters ||
 		 m_trust_both_mothers_and_daughters ) {
 		build_end_vertex( i, hepevt_particle, evt );
 	    }
@@ -217,8 +217,8 @@ namespace HepMC {
 		//	  << "particle" << std::endl;
 		//hepevt_particle[i3]->print();
 		delete hepevt_particle[i3];
-	    } else if ( hepevt_particle[i3] && 
-			!hepevt_particle[i3]->end_vertex() && 
+	    } else if ( hepevt_particle[i3] &&
+			!hepevt_particle[i3]->end_vertex() &&
 			!hepevt_particle[i3]->production_vertex() ) {
 		GenVertex* prod_vtx = new GenVertex();
 		prod_vtx->add_particle_out( hepevt_particle[i3] );
@@ -228,11 +228,11 @@ namespace HepMC {
 	return true;
     }
 
-    void IO_HERWIG::build_production_vertex(int i, 
-					    std::vector<GenParticle*>& 
+    void IO_HERWIG::build_production_vertex(int i,
+					    std::vector<GenParticle*>&
 					    hepevt_particle,
 					    GenEvent* evt ) {
-	/// 
+	///
 	/// for particle in HEPEVT with index i, build a production vertex
 	/// if appropriate, and add that vertex to the event
 	GenParticle* p = hepevt_particle[i];
@@ -246,17 +246,17 @@ namespace HepMC {
 	    if ( ++mother > HEPEVT_Wrapper::last_parent(i) ) mother = 0;
 	}
 	// b. if no suitable production vertex exists - and the particle
-	// has atleast one mother or position information to store - 
+	// has atleast one mother or position information to store -
 	// make one
-	FourVector prod_pos( HEPEVT_Wrapper::x(i), HEPEVT_Wrapper::y(i), 
-				   HEPEVT_Wrapper::z(i), HEPEVT_Wrapper::t(i) 
-	                         ); 
-	if ( !prod_vtx && (HEPEVT_Wrapper::number_parents(i)>0 
+	FourVector prod_pos( HEPEVT_Wrapper::x(i), HEPEVT_Wrapper::y(i),
+				   HEPEVT_Wrapper::z(i), HEPEVT_Wrapper::t(i)
+	                         );
+	if ( !prod_vtx && (HEPEVT_Wrapper::number_parents(i)>0
 			   || prod_pos!=FourVector(0,0,0,0)) )
 	{
 	    prod_vtx = new GenVertex();
 	    prod_vtx->add_particle_out( p );
-	    evt->add_vertex( prod_vtx ); 
+	    evt->add_vertex( prod_vtx );
 	}
 	// c. if prod_vtx doesn't already have position specified, fill it
 	if ( prod_vtx && prod_vtx->position()==FourVector(0,0,0,0) ) {
@@ -271,17 +271,17 @@ namespace HepMC {
 		prod_vtx->add_particle_in( hepevt_particle[mother] );
 	    } else if (hepevt_particle[mother]->end_vertex() != prod_vtx ) {
 		// problem scenario --- the mother already has a decay
-		// vertex which differs from the daughter's produciton 
+		// vertex which differs from the daughter's produciton
 		// vertex. This means there is internal
 		// inconsistency in the HEPEVT event record. Print an
 		// error
-		// Note: we could provide a fix by joining the two 
+		// Note: we could provide a fix by joining the two
 		//       vertices with a dummy particle if the problem
 		//       arrises often with any particular generator.
 		if ( m_print_inconsistency_errors ) {
 		  std::cerr
 		    << "HepMC::IO_HERWIG: inconsistent mother/daugher "
-		    << "information in HEPEVT event " 
+		    << "information in HEPEVT event "
 		    << HEPEVT_Wrapper::event_number()
 		    << ". \n I recommend you try "
 		    << "inspecting the event first with "
@@ -301,9 +301,9 @@ namespace HepMC {
     }
 
     void IO_HERWIG::build_end_vertex
-    ( int i, std::vector<GenParticle*>& hepevt_particle, GenEvent* evt ) 
+    ( int i, std::vector<GenParticle*>& hepevt_particle, GenEvent* evt )
     {
-	/// 
+	///
 	/// for particle in HEPEVT with index i, build an end vertex
 	/// if appropriate, and add that vertex to the event
 	//    Identical steps as for build_production_vertex
@@ -323,7 +323,7 @@ namespace HepMC {
 	    end_vtx->add_particle_in( p );
 	    evt->add_vertex( end_vtx );
 	}
-	// c+d. loop over daughters to make sure their production vertices 
+	// c+d. loop over daughters to make sure their production vertices
 	//    point back to the current vertex.
 	//    We get the vertex position from the daughter as well.
 	daughter = HEPEVT_Wrapper::first_child(i);
@@ -331,28 +331,28 @@ namespace HepMC {
 	    if ( !hepevt_particle[daughter]->production_vertex() ) {
 		// if end vertex of the mother isn't specified, do it now
 		end_vtx->add_particle_out( hepevt_particle[daughter] );
-		// 
+		//
 		// 2001-03-29 M.Dobbs, fill vertex the position.
 		if ( end_vtx->position()==FourVector(0,0,0,0) ) {
-		    FourVector prod_pos( HEPEVT_Wrapper::x(daughter), 
-					       HEPEVT_Wrapper::y(daughter), 
-					       HEPEVT_Wrapper::z(daughter), 
-					       HEPEVT_Wrapper::t(daughter) 
+		    FourVector prod_pos( HEPEVT_Wrapper::x(daughter),
+					       HEPEVT_Wrapper::y(daughter),
+					       HEPEVT_Wrapper::z(daughter),
+					       HEPEVT_Wrapper::t(daughter)
 			);
 		    if ( prod_pos != FourVector(0,0,0,0) ) {
 			end_vtx->set_position( prod_pos );
 		    }
 		}
-	    } else if (hepevt_particle[daughter]->production_vertex() 
+	    } else if (hepevt_particle[daughter]->production_vertex()
 		       != end_vtx){
 		// problem scenario --- the daughter already has a prod
-		// vertex which differs from the mother's end 
+		// vertex which differs from the mother's end
 		// vertex. This means there is internal
 		// inconsistency in the HEPEVT event record. Print an
 		// error
 		if ( m_print_inconsistency_errors ) std::cerr
 		    << "HepMC::IO_HERWIG: inconsistent mother/daugher "
-		    << "information in HEPEVT event " 
+		    << "information in HEPEVT event "
 		    << HEPEVT_Wrapper::event_number()
 		    << ". \n I recommend you try "
 		    << "inspecting the event first with "
@@ -371,20 +371,20 @@ namespace HepMC {
 
     GenParticle* IO_HERWIG::build_particle( int index ) {
 	/// Builds a particle object corresponding to index in HEPEVT
-	// 
-	GenParticle* p 
-	    = new GenParticle( FourVector( HEPEVT_Wrapper::px(index), 
-						 HEPEVT_Wrapper::py(index), 
-						 HEPEVT_Wrapper::pz(index), 
+	//
+	GenParticle* p
+	    = new GenParticle( FourVector( HEPEVT_Wrapper::px(index),
+						 HEPEVT_Wrapper::py(index),
+						 HEPEVT_Wrapper::pz(index),
 						 HEPEVT_Wrapper::e(index) ),
-			       HEPEVT_Wrapper::id(index), 
+			       HEPEVT_Wrapper::id(index),
 			       HEPEVT_Wrapper::status(index) );
-        p->setGeneratedMass( HEPEVT_Wrapper::m(index) );
+        p->set_generated_mass( HEPEVT_Wrapper::m(index) );
 	p->suggest_barcode( index );
 	return p;
     }
 
-    int IO_HERWIG::find_in_map( const std::map<GenParticle*,int>& m, 
+    int IO_HERWIG::find_in_map( const std::map<GenParticle*,int>& m,
 				GenParticle* p) const {
         std::map<GenParticle*,int>::const_iterator iter = m.find(p);
         if ( iter == m.end() ) return 0;
@@ -396,7 +396,7 @@ namespace HepMC {
 	///  and converts it into the HEPEVT common block in the standard format
 	///
 	///  This means it:
-	///    - removes the color structure, which herwig overloads 
+	///    - removes the color structure, which herwig overloads
 	///      into the mother/daughter fields
 	///    - zeros extra entries for hard subprocess, etc.
 	///
@@ -419,11 +419,11 @@ namespace HepMC {
 	if ( HEPEVT_Wrapper::number_entries() <= 0 ) return;
 
 	// Find the index of the beam-beam collision and of the hard subprocess
-	// Later we will assume that 
-	//              101 ---> 121 \. 
+	// Later we will assume that
+	//              101 ---> 121 \.
 	//                             X  Hard subprocess
 	//              102 ---> 122 /
-	// 
+	//
 	int index_collision = 0;
 	int index_hard = 0;
 	int index_101 = 0;
@@ -438,7 +438,7 @@ namespace HepMC {
 	    if ( HEPEVT_Wrapper::status(i)==120 ) index_hard=i;
 	    if ( HEPEVT_Wrapper::status(i)==121 ) index_121=i;
 	    if ( HEPEVT_Wrapper::status(i)==122 ) index_122=i;
-	    if ( index_collision!=0 && index_hard!=0 && index_101!=0 && 
+	    if ( index_collision!=0 && index_hard!=0 && index_101!=0 &&
 		 index_102!=0 && index_121!=0 && index_122!=0 ) break;
 	}
 
@@ -449,8 +449,8 @@ namespace HepMC {
 	// in the hard subprocess.
 	//
 	// We cannot specify daughters of the incoming hard process particles
-	// because they have some daughters (their showered versions) which 
-	// are not adjacent in the particle record, so we cannot properly 
+	// because they have some daughters (their showered versions) which
+	// are not adjacent in the particle record, so we cannot properly
 	// set the daughter indices in hepevt.
 	//
 	if (index_121) HEPEVT_Wrapper::set_parents(index_121, index_101, 0 );
@@ -462,8 +462,8 @@ namespace HepMC {
 	      i <= HEPEVT_Wrapper::last_child(index_hard); i++ ) {
 	    //BPK - Atlas ->
 	    if (index_hard && HEPEVT_Wrapper::id(index_hard) == 0 ) {
-	      HEPEVT_Wrapper::set_parents( 
-		  i, HEPEVT_Wrapper::first_parent(index_hard), 
+	      HEPEVT_Wrapper::set_parents(
+		  i, HEPEVT_Wrapper::first_parent(index_hard),
 		  HEPEVT_Wrapper::last_parent(index_hard) );
             //BPK -> inconsistency in HWHGUP, desc from hard vert should point to it.
             } else if (  HEPEVT_Wrapper::first_parent(i)!=index_hard) {
@@ -496,7 +496,7 @@ namespace HepMC {
 	    //       ----------- Fix ID codes ----------
 	    //       particles with ID=94 are mirror images of their mothers:
 	    if ( HEPEVT_Wrapper::id(i)==94 ) {
-		HEPEVT_Wrapper::set_id( 
+		HEPEVT_Wrapper::set_id(
 		    i, HEPEVT_Wrapper::id( HEPEVT_Wrapper::first_parent(i) ) );
 	    }
 
@@ -519,7 +519,7 @@ namespace HepMC {
 	    //  Whenever the mother points to the hard process, it is referring
 	    //  to a color flow, so we zero it.
 	    if ( HEPEVT_Wrapper::last_parent(i)==index_hard ) {
-		HEPEVT_Wrapper::set_parents( 
+		HEPEVT_Wrapper::set_parents(
 		    i, HEPEVT_Wrapper::first_parent(i), 0 );
 	    }
 
@@ -529,20 +529,20 @@ namespace HepMC {
 		HEPEVT_Wrapper::set_parents( i, 0, 0 );
 	    }
 	    if ( HEPEVT_Wrapper::last_parent(i) >= i ) {
-		HEPEVT_Wrapper::set_parents( 
+		HEPEVT_Wrapper::set_parents(
 		    i, HEPEVT_Wrapper::first_parent(i), 0 );
 	    }
 
 	    // Whenever the second mother/daughter has a lower index than the
 	    // first, it means the second mother/daughter contains color
 	    // info. Purge it.
-	    if ( HEPEVT_Wrapper::last_parent(i) <= 
+	    if ( HEPEVT_Wrapper::last_parent(i) <=
 		 HEPEVT_Wrapper::first_parent(i) ) {
-		HEPEVT_Wrapper::set_parents( 
+		HEPEVT_Wrapper::set_parents(
 		    i, HEPEVT_Wrapper::first_parent(i), 0 );
 	    }
 
-	    if ( HEPEVT_Wrapper::last_child(i) <= 
+	    if ( HEPEVT_Wrapper::last_child(i) <=
 		 HEPEVT_Wrapper::first_child(i) ) {
 		HEPEVT_Wrapper::set_children(
 		    i, HEPEVT_Wrapper::first_child(i), 0 );
@@ -558,7 +558,7 @@ namespace HepMC {
 	    }
 
 	    // Recognise clusters.
-	    // Case 1: cluster has particle parents.  
+	    // Case 1: cluster has particle parents.
 	    // Clusters normally DO point to its two
 	    // correct mothers, but those 2 mothers are rarely adjacent in the
 	    // event record ... so the mother information might say something
@@ -572,12 +572,12 @@ namespace HepMC {
 	    // Case 2: cluster has a soft process centre of mass (stat=170)
 	    // as parent. This is ok, keep it.
 	    //
-	    // Note if we were going directly to HepMC, then we could 
+	    // Note if we were going directly to HepMC, then we could
 	    //  use this information properly!
 
 	    if ( HEPEVT_Wrapper::id(i)==91 ) {
 		// if the cluster comes from a SOFT (id=0,stat=170)
-		if ( HEPEVT_Wrapper::status(HEPEVT_Wrapper::first_parent(i)) 
+		if ( HEPEVT_Wrapper::status(HEPEVT_Wrapper::first_parent(i))
 		     == 170 ) {
 		    ; // In this case the mothers are ok
 		} else {
@@ -585,8 +585,8 @@ namespace HepMC {
 		}
 	    }
 	}
-	
-	//     ---------- Loop over the particles individually and look 
+
+	//     ---------- Loop over the particles individually and look
 	//                for mother/daughter inconsistencies.
 	// We consider a mother daughter relationship to be valid
 	// ONLy when the mother points to the daughter AND the
@@ -608,11 +608,11 @@ namespace HepMC {
 	    if ( first_is_acceptable ) {
 		for ( int j = ifirst; j<=ilast; j++ ) {
 		    // these are the acceptable outcomes
-		    if ( HEPEVT_Wrapper::first_child(j)==i ) {;} 
+		    if ( HEPEVT_Wrapper::first_child(j)==i ) {;}
 		    // watch out
-		    else if ( HEPEVT_Wrapper::first_child(j) <=i && 
+		    else if ( HEPEVT_Wrapper::first_child(j) <=i &&
 			      HEPEVT_Wrapper::last_child(j) >=i ) {;}
-		    else if ( HEPEVT_Wrapper::first_child(j) ==0 && 
+		    else if ( HEPEVT_Wrapper::first_child(j) ==0 &&
 			      HEPEVT_Wrapper::last_child(j) ==0 ) {;}
 
 		    // Error Condition:
@@ -656,12 +656,12 @@ namespace HepMC {
 	    if ( is_acceptable ) {
 		for ( int j = ifirst; j<=ilast; j++ ) {
 		    // these are the acceptable outcomes
-		    if ( HEPEVT_Wrapper::first_parent(j)==i ) {;} 
-		    else if ( HEPEVT_Wrapper::first_parent(j) <=i && 
+		    if ( HEPEVT_Wrapper::first_parent(j)==i ) {;}
+		    else if ( HEPEVT_Wrapper::first_parent(j) <=i &&
 			      HEPEVT_Wrapper::last_parent(j) >=i ) {;}
-		    else if ( HEPEVT_Wrapper::first_parent(j) ==0 && 
+		    else if ( HEPEVT_Wrapper::first_parent(j) ==0 &&
 			      HEPEVT_Wrapper::last_parent(j) ==0 ) {;}
-		    else { is_acceptable = false; } // error condition 
+		    else { is_acceptable = false; } // error condition
 		}
 	    }
 	    // if any one of the children gave a bad outcome, zero all children
@@ -694,19 +694,19 @@ namespace HepMC {
 	    } else {
 		ilast += 1;
 		if ( ilast != i ) {
-		    HEPEVT_Wrapper::set_status(ilast, 
+		    HEPEVT_Wrapper::set_status(ilast,
 					       HEPEVT_Wrapper::status(i) );
 		    HEPEVT_Wrapper::set_id(ilast, HEPEVT_Wrapper::id(i) );
 		    HEPEVT_Wrapper::set_parents(
-			ilast, 
+			ilast,
 			HEPEVT_Wrapper::first_parent(i),
 			HEPEVT_Wrapper::last_parent(i) );
 		    HEPEVT_Wrapper::set_children(
-			ilast, 
+			ilast,
 			HEPEVT_Wrapper::first_child(i),
 			HEPEVT_Wrapper::last_child(i) );
 		    HEPEVT_Wrapper::set_momentum(
-			ilast, 
+			ilast,
 			HEPEVT_Wrapper::px(i), HEPEVT_Wrapper::py(i),
 			HEPEVT_Wrapper::pz(i), HEPEVT_Wrapper::e(i)  );
 		    HEPEVT_Wrapper::set_mass(ilast, HEPEVT_Wrapper::m(i) );
@@ -719,23 +719,23 @@ namespace HepMC {
 	}
 
 	// M. Dobbs (from Borut) - April 26, to fix tauolo/herwig past
-	// the end problem with daughter pointers: 
+	// the end problem with daughter pointers:
 	// HEPEVT_Wrapper::set_number_entries( ilast );
 
-	// Finally we need to re-map the mother/daughter pointers.	
+	// Finally we need to re-map the mother/daughter pointers.
 	for ( int i=1; i <=ilast; i++ ) {
 
 	    HEPEVT_Wrapper::set_parents(
-		i, 
+		i,
 		mymap[HEPEVT_Wrapper::first_parent(i)],
 		mymap[HEPEVT_Wrapper::last_parent(i)] );
 	    HEPEVT_Wrapper::set_children(
-		i, 
+		i,
 		mymap[HEPEVT_Wrapper::first_child(i)],
 		mymap[HEPEVT_Wrapper::last_child(i)] );
 	}
 	// M. Dobbs (from Borut, part B) - April 26, to fix tauolo/herwig past
-	// the end problem with daughter pointers: 
+	// the end problem with daughter pointers:
 	HEPEVT_Wrapper::set_number_entries( ilast );
     }
 
@@ -753,7 +753,7 @@ namespace HepMC {
     int IO_HERWIG::translate_herwig_to_pdg_id( int id ) const {
 	/// This routine is copied from Lynn Garren's stdhep 5.01.
 	///   see http:///cepa.fnal.gov/psm/stdhep/
- 
+
 	                                       // example -9922212
 	int hwtran = id;                       //         -9922212
 	int ida    = abs(id);                  //          9922212
@@ -775,7 +775,7 @@ namespace HepMC {
 		std::cerr << "IO_HERWIG::translate_herwig_to_pdg_id " << id
 			  << "nonallowed ion" << std::endl;
 	    }
-	} 
+	}
 	else if (ida < 100) {
 	    // Higgs, etc.
 	    hwtran = m_herwig_to_pdg_id[ida];
@@ -793,10 +793,10 @@ namespace HepMC {
 	else if ( i1!=0 && i3!=0 && j1==4 ) {;}
 	// spin 3/2 baryons
 	else if ( i1!=0 && i2!=0 && i3==0 ) {
-	    // mesons 
+	    // mesons
 	    // check for illegal antiparticles
 	    if ( i1==i2 && id<0) hwtran=0;
-	} 
+	}
 	else if ( i2!=0 && i3!=0 && i1==0 ) {;}
 	// diquarks
 	else {
@@ -808,8 +808,8 @@ namespace HepMC {
 	if ( id==-130 || id==-310 ) hwtran=0;
 
 	if ( hwtran==0 && ida!=0 && m_print_inconsistency_errors ) {
-	    std::cerr 
-		<< "IO_HERWIG::translate_herwig_to_pdg_id HERWIG particle " 
+	    std::cerr
+		<< "IO_HERWIG::translate_herwig_to_pdg_id HERWIG particle "
 		<< id << " translates to zero." << std::endl;
 	}
 
@@ -817,7 +817,3 @@ namespace HepMC {
     }
 
 } // HepMC
-
-
-
-

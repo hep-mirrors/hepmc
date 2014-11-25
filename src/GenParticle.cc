@@ -8,15 +8,16 @@
 #include "HepMC/GenVertex.h"
 #include "HepMC/GenParticle.h"
 #include <iomanip>
+#include <limits>
 
 namespace HepMC {
 
 
   GenParticle::GenParticle( void ) :
     m_momentum(0), m_pdg_id(0), m_status(0), m_flow(this),
-    m_polarization(0), m_production_vertex(0), m_end_vertex(0),
+    m_polarization(0), m_production_vertex(NULL), m_end_vertex(NULL),
     m_barcode(0), m_generated_mass(0.)
-  {}
+  { }
 
 
   GenParticle::GenParticle( const FourVector& momentum,

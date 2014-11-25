@@ -1,5 +1,9 @@
 2014-11-25  Andy Buckley  <andy.buckley@cern.ch>
 
+	* More constness improvements (hacked implementation, but improves API).
+
+	* Add abs_pdg_id(), pid() and abspid() methods to GenParticle.
+
 	* Add user-convenience HepMC/HepMC.h header.
 
 2013-11-17  Andy Buckley  <andy.buckley@cern.ch>

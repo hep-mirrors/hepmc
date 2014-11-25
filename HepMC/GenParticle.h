@@ -48,13 +48,11 @@ namespace HepMC {
   class GenParticleEndRange;
   class ConstGenParticleEndRange;
 
-  //! The GenParticle class contains information about generated particles
+  /// @brief The GenParticle class contains information about generated particles
   ///
-  /// \class GenParticle
-  /// HepMC::GenParticle
-  /// contains momentum, generated mass, particle ID, decay status,
-  /// flow, polarization, pointers to production and decay vertices
-  /// and a unique barcode identfier.
+  /// HepMC::GenParticle contains momentum, generated mass, particle ID, decay
+  /// status, flow, polarization, pointers to production and decay vertices and
+  /// a unique barcode identifier.
   ///
   class GenParticle {
 
@@ -99,41 +97,57 @@ namespace HepMC {
 
     /// Get the 4-momentum
     const FourVector& momentum() const { return m_momentum; }
+
+    /// Get the particle ID code (preferred simpler name)
+    int pid() const { return m_pdg_id; }
     /// Get the particle ID code
-    int pdg_id() const { return m_pdg_id; }
+    int pdg_id() const { return pid(); }
+
+    /// Get the absolute value of the particle ID code (preferred simpler name)
+    int abspid() const { return std::abs(pid()); }
+    /// Get the absolute value of the particle ID code
+    int abs_pdg_id() const { return abspid(); }
+
     /// Get the particle status
     int status() const { return m_status; }
 
     /// Particle flow
-    /// @todo Should be handled as a pointer, since optional
+    /// @todo Should be handled as a pointer, since optional... but too late now
+    /// @deprecated Flow will be removed in HepMC3 -- stop using it!
     const Flow& flow() const { return m_flow; }
     /// Particle flow index
     int flow( int code_index ) const { return m_flow.icode( code_index ); }
+
     /// Polarization information
-    /// @todo Should be handled as a pointer, since optional
+    /// @deprecated Polarization will be removed in HepMC3 -- stop using it!
+    /// @todo Should be handled as a pointer, since optional... but too late now
     const Polarization& polarization() const { return m_polarization; }
 
     /// Pointer to the production vertex
-    /// @todo Should be const -> const and have a non-const version
-    GenVertex* production_vertex() const { return m_production_vertex; }
+    GenVertex* production_vertex() { return m_production_vertex; }
+    /// Pointer to the production vertex (const)
+    const GenVertex* production_vertex() const { return m_production_vertex; }
+
     /// Pointer to the decay vertex
-    /// @todo Should be const -> const and have a non-const version
-    GenVertex* end_vertex() const { return m_end_vertex; }
+    GenVertex* end_vertex() { return m_end_vertex; }
+    /// Pointer to the decay vertex (const)
+    const GenVertex* end_vertex() const { return m_end_vertex; }
+
     /// Pointer to the event that owns this particle
     GenEvent* parent_event() const;
 
-    /// Return generated mass if set, otherwise calculated mass
+    /// @brief Return the generated mass
     ///
     /// Because of precision issues, the generated mass is not always the
     /// same as the mass calculated from the momentum 4 vector.
     ///
-    /// @todo BUG: The implementation does not test for a validly set gen_mass, nor call the calculated mass. Fix... and rename?
+    /// @note There is no invalid value; the default is 0.0 which cannot be distinguished from true masslessness! Oops. This will be improve in HepMC3.
     double generated_mass() const { return m_generated_mass; }
 
     /// An alias to generated_mass() included for backwards compatibility with CLHEP HepMC
     /// @deprecated Use generated_mass()
     /// @todo REMOVE
-    double generatedMass() const { return generated_mass(); }
+    // double generatedMass() const { return generated_mass(); }
 
     /// Return the particle barcode
     ///
@@ -144,14 +158,16 @@ namespace HepMC {
     /// @note Barcodes are primarily intended for internal use within HepMC as a
     /// unique identifier for the particles and vertices.  Using the barcode to
     /// encode extra information is not recommended and cannot be guaranteed to work.
+    ///
+    /// @note Barcodes will change a lot in HepMC3!
     int barcode() const { return m_barcode; }
 
     /// Check if the particle is undecayed. Returns true if status==1
-    /// @todo Also check that the end_vertex is null
+    /// @todo Also check that the end_vertex is null?
     bool is_undecayed() const { return status() == 1; }
 
     /// Check if the particle is undecayed. Returns true if status==2
-    /// @todo Also check that the end_vertex is not null
+    /// @todo Also check that the end_vertex is not null?
     bool has_decayed() const { return status() == 2; }
 
     /// Check if this is a beam particle.  Returns true if status==4
@@ -171,6 +187,7 @@ namespace HepMC {
     /// Outgoing particle range
     ConstGenParticleEndRange particles_out( IteratorRange range = relatives ) const;
 
+
     /////////////////////
     // Mutator methods //
     /////////////////////
@@ -185,11 +202,15 @@ namespace HepMC {
     /// Returns FALSE if the suggested barcode was rejected, or if the
     ///  particle is not yet part of an event, such that it is not yet
     ///  possible to know if the suggested barcode will be accepted).
+    ///
+    /// @deprecated Will be removed in HepMC3
     bool suggest_barcode( int the_bar_code );
 
     /// Set standard 4 momentum
     void set_momentum( const FourVector& vec4 ) { m_momentum = vec4; }
 
+    /// Set the particle ID code (preferred shorter name)
+    void set_pid( int id ) { m_pdg_id = id; }
     /// Set the particle ID code
     void set_pdg_id( int id ) { m_pdg_id = id; }
 
@@ -217,15 +238,14 @@ namespace HepMC {
 
     /// @brief Set the generated mass
     ///
-    /// @todo Need a default invalid value (-1?)
-    /// @todo Get rid of the silly double reference
-    void set_generated_mass( const double& m ) { m_generated_mass = m; }
+    /// @note There is no invalid value; the default is 0.0 which cannot be distinguished from true masslessness! Oops.
+    void set_generated_mass(double m) { m_generated_mass = m; }
 
     /// Alias for backwards compatibility with CLHEP HepMC
     /// @deprecated Use set_generated_mass
     /// @todo Get rid of the silly double reference
     /// @todo REMOVE
-    void setGeneratedMass( const double& m ) { set_generated_mass(m); }
+    // void setGeneratedMass( const double& m ) { set_generated_mass(m); }
 
 
   protected: // for internal use only by friend GenVertex class

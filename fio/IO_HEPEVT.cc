@@ -33,11 +33,11 @@ namespace HepMC {
 	/// return T/F =success/failure
 	///
 	/// For HEPEVT commons built with the luhepc routine of Pythia 5.7
-	///  the children pointers are not always correct (i.e. there is 
-	///  oftentimes an internal inconsistency between the parents and 
+	///  the children pointers are not always correct (i.e. there is
+	///  oftentimes an internal inconsistency between the parents and
 	///  children pointers). The parent pointers always seem to be correct.
 	/// Thus the switch trust_mothers_before_daughters=1 is appropriate for
-	///  pythia. NOTE: you should also set the switch MSTP(128) = 2 in 
+	///  pythia. NOTE: you should also set the switch MSTP(128) = 2 in
 	///                pythia (not the default!), so that pythia doesn't
 	///                store two copies of resonances in the event record.
 	/// The situation is opposite for the HEPEVT which comes from Isajet
@@ -45,18 +45,18 @@ namespace HepMC {
 	//
 	// 1. test that evt pointer is not null and set event number
 	if ( !evt ) {
-	    std::cerr 
-		<< "IO_HEPEVT::fill_next_event error - passed null event." 
+	    std::cerr
+		<< "IO_HEPEVT::fill_next_event error - passed null event."
 		<< std::endl;
 	    return false;
 	}
 	evt->set_event_number( HEPEVT_Wrapper::event_number() );
 	//
 	// 2. create a particle instance for each HEPEVT entry and fill a map
-	//    create a vector which maps from the HEPEVT particle index to the 
+	//    create a vector which maps from the HEPEVT particle index to the
 	//    GenParticle address
 	//    (+1 in size accounts for hepevt_particle[0] which is unfilled)
-	std::vector<GenParticle*> hepevt_particle( 
+	std::vector<GenParticle*> hepevt_particle(
 	                                HEPEVT_Wrapper::number_entries()+1 );
 	hepevt_particle[0] = 0;
 	for ( int i1 = 1; i1 <= HEPEVT_Wrapper::number_entries(); ++i1 ) {
@@ -64,7 +64,7 @@ namespace HepMC {
 	}
 	std::set<GenVertex*> new_vertices;
 	//
-	// Here we assume that the first two particles in the list 
+	// Here we assume that the first two particles in the list
 	// are the incoming beam particles.
 	if( trust_beam_particles() ) {
 	evt->set_beam_particles( hepevt_particle[1], hepevt_particle[2] );
@@ -72,21 +72,21 @@ namespace HepMC {
 	//
 	// 3.+4. loop over HEPEVT particles AGAIN, this time creating vertices
 	for ( int i = 1; i <= HEPEVT_Wrapper::number_entries(); ++i ) {
-	    // We go through and build EITHER the production or decay 
+	    // We go through and build EITHER the production or decay
 	    // vertex for each entry in hepevt, depending on the switch
 	    // m_trust_mothers_before_daughters (new 2001-02-28)
 	    // Note: since the HEPEVT pointers are bi-directional, it is
 	    ///      sufficient to do one or the other.
 	    //
 	    // 3. Build the production_vertex (if necessary)
-	    if ( m_trust_mothers_before_daughters || 
+	    if ( m_trust_mothers_before_daughters ||
 		 m_trust_both_mothers_and_daughters ) {
 		build_production_vertex( i, hepevt_particle, evt );
 	    }
 	    //
-	    // 4. Build the end_vertex (if necessary) 
+	    // 4. Build the end_vertex (if necessary)
 	    //    Identical steps as for production vertex
-	    if ( !m_trust_mothers_before_daughters || 
+	    if ( !m_trust_mothers_before_daughters ||
 		 m_trust_both_mothers_and_daughters ) {
 		build_end_vertex( i, hepevt_particle, evt );
 	    }
@@ -97,7 +97,7 @@ namespace HepMC {
 	//  These particles need to be attached to a vertex, or else they
 	//  will never become part of the event. check for this situation
 	for ( int i3 = 1; i3 <= HEPEVT_Wrapper::number_entries(); ++i3 ) {
-	    if ( !hepevt_particle[i3]->end_vertex() && 
+	    if ( !hepevt_particle[i3]->end_vertex() &&
 			!hepevt_particle[i3]->production_vertex() ) {
 		GenVertex* prod_vtx = new GenVertex();
 		prod_vtx->add_particle_out( hepevt_particle[i3] );
@@ -126,23 +126,23 @@ namespace HepMC {
 	      v != evt->vertices_end(); ++v ) {
 	    // all "mothers" or particles_in are kept adjacent in the list
 	    // so that the mother indices in hepevt can be filled properly
-	    for ( GenVertex::particles_in_const_iterator p1 
+	    for ( GenVertex::particles_in_const_iterator p1
 		      = (*v)->particles_in_const_begin();
 		  p1 != (*v)->particles_in_const_end(); ++p1 ) {
 		++particle_counter;
-		if ( particle_counter > 
-		     HEPEVT_Wrapper::max_number_entries() ) break; 
+		if ( particle_counter >
+		     HEPEVT_Wrapper::max_number_entries() ) break;
 		index_to_particle[particle_counter] = *p1;
 		particle_to_index[*p1] = particle_counter;
 	    }
-	    // daughters are entered only if they aren't a mother of 
+	    // daughters are entered only if they aren't a mother of
 	    // another vtx
-	    for ( GenVertex::particles_out_const_iterator p2 
+	    for ( GenVertex::particles_out_const_iterator p2
 		      = (*v)->particles_out_const_begin();
 		  p2 != (*v)->particles_out_const_end(); ++p2 ) {
 		if ( !(*p2)->end_vertex() ) {
 		    ++particle_counter;
-		    if ( particle_counter > 
+		    if ( particle_counter >
 			 HEPEVT_Wrapper::max_number_entries() ) {
 			break;
 		    }
@@ -154,7 +154,7 @@ namespace HepMC {
 	if ( particle_counter > HEPEVT_Wrapper::max_number_entries() ) {
 	    particle_counter = HEPEVT_Wrapper::max_number_entries();
 	}
-	// 	
+	//
 	// fill the HEPEVT event record
 	HEPEVT_Wrapper::set_event_number( evt->event_number() );
 	HEPEVT_Wrapper::set_number_entries( particle_counter );
@@ -163,10 +163,10 @@ namespace HepMC {
 	    HEPEVT_Wrapper::set_id( i, index_to_particle[i]->pdg_id() );
 	    FourVector m = index_to_particle[i]->momentum();
 	    HEPEVT_Wrapper::set_momentum( i, m.px(), m.py(), m.pz(), m.e() );
-	    HEPEVT_Wrapper::set_mass( i, index_to_particle[i]->generatedMass() );
+	    HEPEVT_Wrapper::set_mass( i, index_to_particle[i]->generated_mass() );
 	    // there should ALWAYS be particles in any vertex, but some generators
 	    // are making non-kosher HepMC events
-	    if ( index_to_particle[i]->production_vertex() && 
+	    if ( index_to_particle[i]->production_vertex() &&
 	         index_to_particle[i]->production_vertex()->particles_in_size()) {
 		FourVector p = index_to_particle[i]->
 				     production_vertex()->position();
@@ -188,11 +188,11 @@ namespace HepMC {
 	}
     }
 
-    void IO_HEPEVT::build_production_vertex(int i, 
-					    std::vector<HepMC::GenParticle*>& 
+    void IO_HEPEVT::build_production_vertex(int i,
+					    std::vector<HepMC::GenParticle*>&
 					    hepevt_particle,
 					    GenEvent* evt ) {
-	/// 
+	///
 	/// for particle in HEPEVT with index i, build a production vertex
 	/// if appropriate, and add that vertex to the event
 	GenParticle* p = hepevt_particle[i];
@@ -206,12 +206,12 @@ namespace HepMC {
 	    if ( ++mother > HEPEVT_Wrapper::last_parent(i) ) mother = 0;
 	}
 	// b. if no suitable production vertex exists - and the particle
-	// has atleast one mother or position information to store - 
+	// has atleast one mother or position information to store -
 	// make one
-	FourVector prod_pos( HEPEVT_Wrapper::x(i), HEPEVT_Wrapper::y(i), 
-				   HEPEVT_Wrapper::z(i), HEPEVT_Wrapper::t(i) 
-	                         ); 
-	if ( !prod_vtx && (HEPEVT_Wrapper::number_parents(i)>0 
+	FourVector prod_pos( HEPEVT_Wrapper::x(i), HEPEVT_Wrapper::y(i),
+				   HEPEVT_Wrapper::z(i), HEPEVT_Wrapper::t(i)
+	                         );
+	if ( !prod_vtx && (HEPEVT_Wrapper::number_parents(i)>0
 			   || prod_pos!=FourVector(0,0,0,0)) )
 	{
 	    prod_vtx = new GenVertex();
@@ -231,16 +231,16 @@ namespace HepMC {
 		prod_vtx->add_particle_in( hepevt_particle[mother] );
 	    } else if (hepevt_particle[mother]->end_vertex() != prod_vtx ) {
 		// problem scenario --- the mother already has a decay
-		// vertex which differs from the daughter's produciton 
+		// vertex which differs from the daughter's produciton
 		// vertex. This means there is internal
 		// inconsistency in the HEPEVT event record. Print an
 		// error
-		// Note: we could provide a fix by joining the two 
+		// Note: we could provide a fix by joining the two
 		//       vertices with a dummy particle if the problem
 		//       arrises often with any particular generator.
 		if ( m_print_inconsistency_errors ) std::cerr
 		    << "HepMC::IO_HEPEVT: inconsistent mother/daugher "
-		    << "information in HEPEVT event " 
+		    << "information in HEPEVT event "
 		    << HEPEVT_Wrapper::event_number()
 		    << ". \n I recommend you try "
 		    << "inspecting the event first with "
@@ -254,9 +254,9 @@ namespace HepMC {
     }
 
     void IO_HEPEVT::build_end_vertex
-    ( int i, std::vector<HepMC::GenParticle*>& hepevt_particle, GenEvent* evt ) 
+    ( int i, std::vector<HepMC::GenParticle*>& hepevt_particle, GenEvent* evt )
     {
-	/// 
+	///
 	/// for particle in HEPEVT with index i, build an end vertex
 	/// if appropriate, and add that vertex to the event
 	//    Identical steps as for build_production_vertex
@@ -276,7 +276,7 @@ namespace HepMC {
 	    end_vtx->add_particle_in( p );
 	    evt->add_vertex( end_vtx );
 	}
-	// c+d. loop over daughters to make sure their production vertices 
+	// c+d. loop over daughters to make sure their production vertices
 	//    point back to the current vertex.
 	//    We get the vertex position from the daughter as well.
 	daughter = HEPEVT_Wrapper::first_child(i);
@@ -284,28 +284,28 @@ namespace HepMC {
 	    if ( !hepevt_particle[daughter]->production_vertex() ) {
 		// if end vertex of the mother isn't specified, do it now
 		end_vtx->add_particle_out( hepevt_particle[daughter] );
-		// 
+		//
 		// 2001-03-29 M.Dobbs, fill vertex the position.
 		if ( end_vtx->position()==FourVector(0,0,0,0) ) {
-		    FourVector prod_pos( HEPEVT_Wrapper::x(daughter), 
-					       HEPEVT_Wrapper::y(daughter), 
-					       HEPEVT_Wrapper::z(daughter), 
-					       HEPEVT_Wrapper::t(daughter) 
+		    FourVector prod_pos( HEPEVT_Wrapper::x(daughter),
+					       HEPEVT_Wrapper::y(daughter),
+					       HEPEVT_Wrapper::z(daughter),
+					       HEPEVT_Wrapper::t(daughter)
 			);
 		    if ( prod_pos != FourVector(0,0,0,0) ) {
 			end_vtx->set_position( prod_pos );
 		    }
 		}
-	    } else if (hepevt_particle[daughter]->production_vertex() 
+	    } else if (hepevt_particle[daughter]->production_vertex()
 		       != end_vtx){
 		// problem scenario --- the daughter already has a prod
-		// vertex which differs from the mother's end 
+		// vertex which differs from the mother's end
 		// vertex. This means there is internal
 		// inconsistency in the HEPEVT event record. Print an
 		// error
 		if ( m_print_inconsistency_errors ) std::cerr
 		    << "HepMC::IO_HEPEVT: inconsistent mother/daugher "
-		    << "information in HEPEVT event " 
+		    << "information in HEPEVT event "
 		    << HEPEVT_Wrapper::event_number()
 		    << ". \n I recommend you try "
 		    << "inspecting the event first with "
@@ -324,20 +324,20 @@ namespace HepMC {
 
     GenParticle* IO_HEPEVT::build_particle( int index ) {
 	/// Builds a particle object corresponding to index in HEPEVT
-	// 
-	GenParticle* p 
-	    = new GenParticle( FourVector( HEPEVT_Wrapper::px(index), 
-						 HEPEVT_Wrapper::py(index), 
-						 HEPEVT_Wrapper::pz(index), 
+	//
+	GenParticle* p
+	    = new GenParticle( FourVector( HEPEVT_Wrapper::px(index),
+						 HEPEVT_Wrapper::py(index),
+						 HEPEVT_Wrapper::pz(index),
 						 HEPEVT_Wrapper::e(index) ),
-			       HEPEVT_Wrapper::id(index), 
+			       HEPEVT_Wrapper::id(index),
 			       HEPEVT_Wrapper::status(index) );
-        p->setGeneratedMass( HEPEVT_Wrapper::m(index) );
+        p->set_generated_mass( HEPEVT_Wrapper::m(index) );
 	p->suggest_barcode( index );
 	return p;
     }
 
-    int IO_HEPEVT::find_in_map( const std::map<HepMC::GenParticle*,int>& m, 
+    int IO_HEPEVT::find_in_map( const std::map<HepMC::GenParticle*,int>& m,
 				GenParticle* p) const {
         std::map<GenParticle*,int>::const_iterator iter = m.find(p);
         if ( iter == m.end() ) return 0;
@@ -345,6 +345,3 @@ namespace HepMC {
     }
 
 } // HepMC
-
-
-
