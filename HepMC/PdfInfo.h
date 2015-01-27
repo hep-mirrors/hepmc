@@ -146,6 +146,12 @@ namespace HepMC {
 
   };
 
+
+
+  /// Alias for forward compatibility
+  typedef PdfInfo GenPdfInfo;
+
+
   /// @name PdfInfo free functions
   //@{
 

@@ -166,6 +166,11 @@ namespace HepMC {
 
   };
 
+
+  /// Alias for forward compatibility
+  typedef HeavyIon GenHeavyIon;
+
+
   // Free Functions
 
   /// Write the contents of HeavyIon to an output stream.
