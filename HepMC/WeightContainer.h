@@ -15,7 +15,7 @@
 #include <iostream>
 #include <vector>
 #include <string>
-#include <map>
+#include <algorithm>
 
 namespace HepMC {
 
@@ -26,194 +26,143 @@ namespace HepMC {
   /// This class has both map-like and vector-like functionality.
   /// Named weights are now supported.
   class WeightContainer {
+
     friend class GenEvent;
 
   public:
-    /// defining the size type used by vector and map
-    typedef std::size_t size_type;
-    /// iterator for the weight container
-    typedef std::vector<double>::iterator iterator;
-    /// const iterator for the weight container
-    typedef std::vector<double>::const_iterator const_iterator;
 
-    /// default constructor
-    explicit WeightContainer( size_type n = 0, double value = 0. );
-    /// construct from a vector of weights
-    WeightContainer( const std::vector<double>& weights );
-    /// copy
-    WeightContainer( const WeightContainer& in );
-    ~WeightContainer();
+    /// Default constructor of an empty WeightContainer
+    WeightContainer() {  }
 
-    /// swap
-    void swap( WeightContainer & other);
-    /// copy assignment
-    WeightContainer& operator=( const WeightContainer& );
-    /// alternate assignment using a vector of doubles
-    WeightContainer& operator=( const std::vector<double>& in );
+    /// Constructor from an array of weight values
+    WeightContainer(const std::vector<double>& wgts);
 
-    /// print weights
-    void          print( std::ostream& ostr = std::cout ) const;
-    /// write weights in a readable table
-    void          write( std::ostream& ostr = std::cout ) const;
+    /// Constructor from arrays of names and weight values
+    WeightContainer( const std::vector<std::string>& keys, const std::vector<double>& wgts )
+      : m_weights(wgts), m_names(keys)
+    {  }
 
-    /// size of weight container
-    size_type     size() const;
-    /// return true if weight container is empty
-    bool          empty() const;
-    /// push onto weight container
-    void          push_back( const double& );
-    /// pop from weight container
-    void          pop_back();
-    /// clear the weight container
-    void          clear();
+    /// Constructor from array of pairs of names and weight values
+    WeightContainer( const std::vector< std::pair<std::string,double> >& keys_wgts ) {
+      for (size_t i = 0; i < keys_wgts.size(); ++i)
+        push_back(keys_wgts[i]);
+    }
 
-    /// check to see if a name exists in the map
-    bool          has_key( const std::string& s ) const;
+    /// Copy constructor
+    WeightContainer( const WeightContainer& other )
+      : m_weights(other.m_weights), m_names(other.m_names)
+    {  }
 
-    /// access the weight container
-    double&       operator[]( size_type n );  // unchecked access
-    /// access the weight container
-    const double& operator[]( size_type n ) const;
-    /// access the weight container
-    double&       operator[]( const std::string& s );  // unchecked access
-    /// access the weight container
+
+    /// Copy assignment
+    WeightContainer& operator = ( const WeightContainer& wc ) {
+      WeightContainer tmp(wc);
+      swap(tmp);
+      return *this;
+    }
+
+    /// Alternate assignment using a vector of doubles
+    WeightContainer& operator = ( const std::vector<double>& in ) {
+      WeightContainer tmp(in);
+      swap(tmp);
+      return *this;
+    }
+
+    /// Alternate assignment using a vector of pairs
+    WeightContainer& operator = ( const std::vector< std::pair<std::string,double> >& in ) {
+      WeightContainer tmp(in);
+      swap(tmp);
+      return *this;
+    }
+
+
+
+    /// Print weights
+    void print(std::ostream& ostr=std::cout) const;
+    /// Write weights in a readable table
+    void write(std::ostream& ostr=std::cout) const;
+
+
+    /// Size of weight container
+    size_t size() const { return m_weights.size(); }
+    /// Return true if weight container is empty
+    bool empty() const { return m_weights.empty(); }
+
+
+    /// See the available names
+    const std::vector<std::string>& keys() { return m_names; }
+    /// Get the name of the given weight index
+    const std::string& key(size_t n) { return m_names[n]; }
+    /// Get the index of the given key name (-1 if it doesn't exist)
+    size_t index(const std::string& key);
+    /// Check to see if a name exists
+    bool has_key(const std::string& key) const { return std::find(m_names.begin(), m_names.end(), key) != m_names.end(); }
+
+
+    /// Push onto weight container with a key name and weight value
+    void push_back(const std::string& key, double wgt);
+    /// Push onto weight container with a paired key name and weight value
+    void push_back(const std::pair<std::string,double>& key_wgt) { push_back(key_wgt.first, key_wgt.second); }
+    /// Push onto weight container with a weight value and optional key name
+    void push_back(double wgt, const std::string& key="") { push_back(key, wgt); }
+
+    /// Set a key and weight value for a specific index
+    void set(size_t n, const std::string& key, double wgt);
+    /// Set a key and weight value for a specific index
+    void set(size_t n, const std::pair<std::string,double>& key_wgt) { set(n, key_wgt.first, key_wgt.second); }
+    /// Set a value (and optional key) for a specific index
+    void set(size_t n, double wgt, const std::string& key="") { set(n, key, wgt); }
+
+    /// Get the weight value at index n, with optional default return value
+    double get(size_t n, double def=0) const;
+    /// Get the weight value of key, with optional default return value
+    double get(const std::string& key, double def=0) const;
+
+
+    /// Swap
+    void swap( WeightContainer& other) {
+      m_weights.swap( other.m_weights );
+      m_names.swap( other.m_names );
+    }
+
+    /// Clear the weight container
+    void clear() {
+      m_weights.clear();
+      m_names.clear();
+    }
+
+
+    /// Access the weight container by index
+    double&       operator[]( size_t n ) { return m_weights[n]; }
+    /// Access the weight container by index
+    const double& operator[]( size_t n ) const { return m_weights[n]; }
+    /// Access the weight container by string key
+    double&       operator[]( const std::string& s );
+    /// Access the weight container by string key
     const double& operator[]( const std::string& s ) const;
 
-    /// equality
-    bool operator==( const WeightContainer & ) const;
-    /// inequality
-    bool operator!=( const WeightContainer & ) const;
+    /// Equality
+    bool operator == ( const WeightContainer& other) const;
+    /// Inequality
+    bool operator != ( const WeightContainer& other) const { return !(*this == other ); }
 
-    /// returns the first element
-    double&       front();
-    /// returns the first element
-    const double& front() const;
-    /// returns the last element
-    double&       back();
-    /// returns the last element
-    const double& back() const;
+    /// Returns the first (nominal) weight
+    double& front() { return m_weights.front(); }
+    /// Returns the first (nominal) weight (const)
+    const double& front() const { return m_weights.front(); }
 
-    /// begining of the weight container
-    iterator            begin();
-    /// end of the weight container
-    iterator            end();
-    /// begining of the weight container
-    const_iterator      begin() const;
-    /// end of the weight container
-    const_iterator      end() const;
 
   private:
-    // for internal use only
 
-    /// maplike iterator for the weight container
-    /// for internal use only
-    typedef std::map<std::string,size_type>::iterator       map_iterator;
-    /// const iterator for the weight container
-    /// for internal use only
-    typedef std::map<std::string,size_type>::const_iterator const_map_iterator;
-    /// begining of the weight container
-    /// for internal use only
-    map_iterator            map_begin();
-    /// end of the weight container
-    /// for internal use only
-    map_iterator            map_end();
-    /// begining of the weight container
-    /// for internal use only
-    const_map_iterator      map_begin() const;
-    /// end of the weight container
-    /// for internal use only
-    const_map_iterator      map_end() const;
+    std::vector<double> m_weights;
+    std::vector<std::string> m_names;
 
-    /// used by the constructors to set initial names
-    /// for internal use only
-    void set_default_names( size_type n );
-
-  private:
-    std::vector<double>          m_weights;
-    std::map<std::string,size_type> m_names;
   };
 
-  ///////////////////////////
-  // INLINES               //
-  ///////////////////////////
 
-  inline WeightContainer::WeightContainer( const WeightContainer& in )
-    : m_weights(in.m_weights), m_names(in.m_names)
-  {}
+  /// Alias for backward compatibility
+  typedef WeightContainer GenWeights;
 
-  inline WeightContainer::~WeightContainer() {}
-
-  inline void WeightContainer::swap( WeightContainer & other)
-  {
-    m_weights.swap( other.m_weights );
-    m_names.swap( other.m_names );
-  }
-
-  inline WeightContainer& WeightContainer::operator=
-  ( const WeightContainer& in ) {
-    /// best practices implementation
-    WeightContainer tmp( in );
-    swap( tmp );
-    return *this;
-  }
-
-  inline WeightContainer& WeightContainer::operator=
-  ( const std::vector<double>& in ) {
-    /// best practices implementation
-    WeightContainer tmp( in );
-    swap( tmp );
-    return *this;
-  }
-
-  inline WeightContainer::size_type WeightContainer::size() const { return m_weights.size(); }
-
-  inline bool WeightContainer::empty() const { return m_weights.empty(); }
-
-  inline void WeightContainer::clear()
-  {
-    m_weights.clear();
-    m_names.clear();
-  }
-
-  inline double& WeightContainer::operator[]( size_type n )
-  { return m_weights[n]; }
-
-  inline const double& WeightContainer::operator[]( size_type n ) const
-  { return m_weights[n]; }
-
-  inline double& WeightContainer::front() { return m_weights.front(); }
-
-  inline const double& WeightContainer::front() const
-  { return m_weights.front(); }
-
-  inline double& WeightContainer::back() { return m_weights.back(); }
-
-  inline const double& WeightContainer::back() const
-  { return m_weights.back(); }
-
-  inline WeightContainer::iterator WeightContainer::begin()
-  { return m_weights.begin(); }
-
-  inline WeightContainer::iterator WeightContainer::end()
-  { return m_weights.end(); }
-
-  inline WeightContainer::const_iterator WeightContainer::begin() const
-  { return m_weights.begin(); }
-
-  inline WeightContainer::const_iterator WeightContainer::end() const
-  { return m_weights.end(); }
-
-  inline WeightContainer::map_iterator WeightContainer::map_begin()
-  { return m_names.begin(); }
-
-  inline WeightContainer::map_iterator WeightContainer::map_end()
-  { return m_names.end(); }
-
-  inline WeightContainer::const_map_iterator WeightContainer::map_begin() const
-  { return m_names.begin(); }
-
-  inline WeightContainer::const_map_iterator WeightContainer::map_end() const
-  { return m_names.end(); }
 
 } // HepMC
 

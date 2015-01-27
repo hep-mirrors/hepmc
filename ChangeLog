@@ -1,3 +1,9 @@
+2015-01-26  Andy Buckley  <andy.buckley@cern.ch>
+
+	* Adding forward-compatibility GenWeights, GenPdfInfo, and GenHeavyIon typedef aliases.
+
+	* Restructuring WeightContainer to work as intended -- weight names are now queryable.
+
 2014-11-25  Andy Buckley  <andy.buckley@cern.ch>
 
 	* Improving IO_AsciiParticles usability -- can now write to non-file streams.
