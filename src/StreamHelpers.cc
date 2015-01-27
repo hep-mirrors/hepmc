@@ -67,10 +67,13 @@ namespace HepMC {
       if (!iline) { throw IO_Exception("read_vertex input stream encountered invalid data"); }
       iline >> weights_size;
       if (!iline) { throw IO_Exception("read_vertex input stream encountered invalid data"); }
-      WeightContainer weights(weights_size);
+      WeightContainer weights;
+      double tmp;
       for ( int i1 = 0; i1 < weights_size; ++i1 ) {
-        iline >> weights[i1];
+        iline >> tmp;
         if (!iline) { throw IO_Exception("read_vertex input stream encountered invalid data"); }
+        /// @todo What about the names?
+        weights.push_back(tmp);
       }
       v->set_position( FourVector(x,y,z,t) );
       v->set_id( id );

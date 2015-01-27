@@ -33,8 +33,8 @@ int main() {
    //double v1 = vec[0];
    w = vec;
    assert( w.size() == 15 );
-   w.pop_back();
-   assert( w.size() == 14 );
+   // w.pop_back();
+   // assert( w.size() == 14 );
 
    // new functionality
    // std::size_t vs = vec.size();

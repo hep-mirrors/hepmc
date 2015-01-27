@@ -38,9 +38,9 @@ namespace HepMC {
   }
 
 
-  size_t WeightContainer::index(const std::string& key) {
+  size_t WeightContainer::index(const std::string& key) const {
     if (!has_key(key)) return size(); //< Invalid, cf. end()
-    return std::distance(m_names.begin(), std::find(m_names.begin(), m_names.end()));
+    return std::distance(m_names.begin(), std::find(m_names.begin(), m_names.end(), key));
   }
 
 
@@ -56,7 +56,7 @@ namespace HepMC {
       for (size_t i = 0; i < n+1-size(); ++i) push_back(0);
     }
     // Set the key and value for index n
-    if (!key.empty) m_names[n] = key;
+    if (!key.empty()) m_names[n] = key;
     m_weights[n] = wgt;
   }
 
@@ -92,24 +92,14 @@ namespace HepMC {
 
 
   void WeightContainer::print(std::ostream& ostr) const {
-    // print a name, weight pair
-    for ( const_map_iterator m = map_begin(); m != map_end(); ++m ) {
-      ostr << "(" << m->first << "," << m_weights[m->second] << ") ";
-    }
+    for (size_t i = 0; i < size(); ++i)
+      ostr << "(" << key(i) << "," << get(i) << ") ";
     ostr << std::endl;
   }
 
   void WeightContainer::write(std::ostream& ostr) const {
-    size_type count = 0;
-    for ( const_iterator w = begin(); w != end(); ++w ) {
-      std::string name;
-      for (const_map_iterator m = map_begin(); m != map_end(); ++m )
-        if (m->second == count ) name = m->first;
-      ostr << "Weight " << std::setw(4) << count
-           << " with name " << std::setw(10) <<  name
-           << " is " << *w << std::endl;
-      ++count;
-    }
+    for (size_t i = 0; i < size(); ++i)
+      ostr << "Weight " << std::setw(4) << i << " with name " << std::setw(10) << key(i) << " is " << get(i) << std::endl;
   }
 
 

@@ -112,9 +112,8 @@ namespace HepMC {
     // we need to iterate over the map so that the weights printed
     // here will be in the same order as the names printed next
     os << ' ' << (int)weights().size() ;
-    for ( WeightContainer::const_map_iterator w = weights().map_begin();
-          w != weights().map_end(); ++w ) {
-      detail::output( os, m_weights[w->second] );
+    for (std::vector<double>::const_iterator w = weights().values().begin(); w != weights().values().end(); ++w ) {
+      detail::output(os, *w);
     }
     detail::output( os,'\n');
     // now add names for weights
@@ -122,14 +121,13 @@ namespace HepMC {
     // is not empty
     if ( ! weights().empty() ) {
       os << "N " << weights().size() << " " ;
-      for ( WeightContainer::const_map_iterator w = weights().map_begin();
-            w != weights().map_end(); ++w ) {
-        detail::output( os,'"');
-        os << w->first;
-        detail::output( os,'"');
-        detail::output( os,' ');
+      for (std::vector<std::string>::const_iterator n = weights().keys().begin(); n != weights().keys().end(); ++n) {
+        detail::output(os, '"');
+        os << *n;
+        detail::output(os, '"');
+        detail::output(os, ' ');
       }
-      detail::output( os,'\n');
+      detail::output(os, '\n');
     }
     //
     // Units

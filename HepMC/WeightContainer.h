@@ -83,6 +83,8 @@ namespace HepMC {
     void write(std::ostream& ostr=std::cout) const;
 
 
+    /// Indexing type
+    typedef size_t size_type;
     /// Size of weight container
     size_t size() const { return m_weights.size(); }
     /// Return true if weight container is empty
@@ -94,6 +96,8 @@ namespace HepMC {
     /// Get the available key names (const)
     const std::vector<std::string>& keys() const { return m_names; }
     /// Get the name of the given weight index
+    std::string& key(size_t n) { return m_names[n]; }
+    /// Get the name of the given weight index (const)
     const std::string& key(size_t n) const { return m_names[n]; }
     /// Get the index of the given key name (-1 if it doesn't exist)
     size_t index(const std::string& key) const;

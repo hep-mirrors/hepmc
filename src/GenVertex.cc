@@ -11,10 +11,8 @@
 
 namespace HepMC {
 
-  GenVertex::GenVertex( const FourVector& position,
-                        int id, const WeightContainer& weights )
-    : m_position(position), m_id(id), m_weights(weights), m_event(0),
-      m_barcode(0)
+  GenVertex::GenVertex( const FourVector& position, int id, const WeightContainer& weights )
+    : m_position(position), m_id(id), m_weights(weights), m_event(0), m_barcode(0)
   {  }
 
   GenVertex::GenVertex( const GenVertex& invertex )
@@ -217,8 +215,8 @@ namespace HepMC {
     // print the weights if there are any
     if ( ! weights().empty() ) {
       ostr << " Wgts(" << weights().size() << ")=";
-      for ( WeightContainer::const_iterator wgt = weights().begin();
-            wgt != weights().end(); wgt++ ) { ostr << *wgt << " "; }
+      for ( WeightContainer::size_type iwgt = 0; iwgt < weights().size(); ++iwgt)
+        ostr << weights()[iwgt] << " ";
       ostr << std::endl;
     }
     // print out all the incoming, then outgoing particles
