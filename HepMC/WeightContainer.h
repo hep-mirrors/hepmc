@@ -38,38 +38,38 @@ namespace HepMC {
     WeightContainer(const std::vector<double>& wgts);
 
     /// Constructor from arrays of names and weight values
-    WeightContainer( const std::vector<std::string>& keys, const std::vector<double>& wgts )
+    WeightContainer(const std::vector<std::string>& keys, const std::vector<double>& wgts )
       : m_weights(wgts), m_names(keys)
     {  }
 
     /// Constructor from array of pairs of names and weight values
-    WeightContainer( const std::vector< std::pair<std::string,double> >& keys_wgts ) {
+    WeightContainer(const std::vector< std::pair<std::string,double> >& keys_wgts ) {
       for (size_t i = 0; i < keys_wgts.size(); ++i)
         push_back(keys_wgts[i]);
     }
 
     /// Copy constructor
-    WeightContainer( const WeightContainer& other )
+    WeightContainer(const WeightContainer& other)
       : m_weights(other.m_weights), m_names(other.m_names)
     {  }
 
 
     /// Copy assignment
-    WeightContainer& operator = ( const WeightContainer& wc ) {
+    WeightContainer& operator = (const WeightContainer& wc) {
       WeightContainer tmp(wc);
       swap(tmp);
       return *this;
     }
 
     /// Alternate assignment using a vector of doubles
-    WeightContainer& operator = ( const std::vector<double>& in ) {
+    WeightContainer& operator = (const std::vector<double>& in) {
       WeightContainer tmp(in);
       swap(tmp);
       return *this;
     }
 
     /// Alternate assignment using a vector of pairs
-    WeightContainer& operator = ( const std::vector< std::pair<std::string,double> >& in ) {
+    WeightContainer& operator = (const std::vector< std::pair<std::string,double> >& in) {
       WeightContainer tmp(in);
       swap(tmp);
       return *this;
@@ -89,14 +89,22 @@ namespace HepMC {
     bool empty() const { return m_weights.empty(); }
 
 
-    /// See the available names
-    const std::vector<std::string>& keys() { return m_names; }
+    /// Get the available key names
+    std::vector<std::string>& keys() { return m_names; }
+    /// Get the available key names (const)
+    const std::vector<std::string>& keys() const { return m_names; }
     /// Get the name of the given weight index
-    const std::string& key(size_t n) { return m_names[n]; }
+    const std::string& key(size_t n) const { return m_names[n]; }
     /// Get the index of the given key name (-1 if it doesn't exist)
-    size_t index(const std::string& key);
+    size_t index(const std::string& key) const;
     /// Check to see if a name exists
     bool has_key(const std::string& key) const { return std::find(m_names.begin(), m_names.end(), key) != m_names.end(); }
+
+
+    /// Get the list of values
+    std::vector<double>& values() { return m_weights; }
+    /// Get the list of values (const)
+    const std::vector<double>& values() const { return m_weights; }
 
 
     /// Push onto weight container with a key name and weight value
@@ -133,11 +141,11 @@ namespace HepMC {
 
 
     /// Access the weight container by index
-    double&       operator[]( size_t n ) { return m_weights[n]; }
+    double& operator[]( size_t n ) { return m_weights[n]; }
     /// Access the weight container by index
     const double& operator[]( size_t n ) const { return m_weights[n]; }
     /// Access the weight container by string key
-    double&       operator[]( const std::string& s );
+    double& operator[]( const std::string& s );
     /// Access the weight container by string key
     const double& operator[]( const std::string& s ) const;
 

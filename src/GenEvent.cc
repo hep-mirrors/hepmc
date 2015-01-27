@@ -744,23 +744,18 @@ namespace HepMC {
     detail::output( os, num_orphans_in );
     detail::output( os, (int)v->particles_out_size() );
     detail::output( os, (int)v->weights().size() );
-    for ( WeightContainer::const_iterator w = v->weights().begin();
-          w != v->weights().end(); ++w ) {
+    for (std::vector<double>::const_iterator w = v->weights().values().begin(); w != v->weights().values().end(); ++w) {
       detail::output( os, *w );
     }
     detail::output( os,'\n');
     // incoming particles
-    for ( GenVertex::particles_in_const_iterator p2
-            = v->particles_in_const_begin();
-          p2 != v->particles_in_const_end(); ++p2 ) {
+    for (GenVertex::particles_in_const_iterator p2 = v->particles_in_const_begin(); p2 != v->particles_in_const_end(); ++p2 ) {
       if ( !(*p2)->production_vertex() ) {
         write_particle( os, *p2 );
       }
     }
     // outgoing particles
-    for ( GenVertex::particles_out_const_iterator p3
-            = v->particles_out_const_begin();
-          p3 != v->particles_out_const_end(); ++p3 ) {
+    for (GenVertex::particles_out_const_iterator p3 = v->particles_out_const_begin(); p3 != v->particles_out_const_end(); ++p3 ) {
       write_particle( os, *p3 );
     }
     return os;
