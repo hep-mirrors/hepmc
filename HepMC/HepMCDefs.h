@@ -55,9 +55,9 @@
 #define HEPMC_HAS_ITERATOR_RANGES
 #endif
 
-// the HepMC::WeightContainer class allows named weights
+// the HepMC::WeightContainer class allows named weights (version 2)
 #ifndef HEPMC_HAS_NAMED_WEIGHTS
-#define HEPMC_HAS_NAMED_WEIGHTS
+#define HEPMC_HAS_NAMED_WEIGHTS 2
 #endif
 
 // the HepMC::HeavyIon class contains centrality
