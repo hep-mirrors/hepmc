@@ -11,15 +11,15 @@
 
 namespace HepMC {
 
-  GenVertex::GenVertex( const FourVector& position, int id, const WeightContainer& weights )
-    : m_position(position), m_id(id), m_weights(weights), m_event(0), m_barcode(0)
+  GenVertex::GenVertex( const FourVector& position, int status, const WeightContainer& weights )
+    : m_position(position), m_status(status), m_weights(weights), m_event(0), m_barcode(0)
   {  }
 
   GenVertex::GenVertex( const GenVertex& invertex )
     : m_position( invertex.position() ),
       m_particles_in(),
       m_particles_out(),
-      m_id( invertex.id() ),
+      m_status( invertex.status() ),
       m_weights( invertex.weights() ),
       m_event(0),
       m_barcode(0)
@@ -68,7 +68,7 @@ namespace HepMC {
     m_position.swap( other.m_position );
     m_particles_in.swap( other.m_particles_in );
     m_particles_out.swap( other.m_particles_out );
-    std::swap( m_id, other.m_id );
+    std::swap( m_status, other.m_status );
     m_weights.swap( other.m_weights );
     std::swap( m_event, other.m_event );
     std::swap( m_barcode, other.m_barcode );
@@ -146,9 +146,9 @@ namespace HepMC {
         ostr << "Vertex:";
         ostr.width(9);
         ostr << barcode();
-        ostr << " ID:";
+        ostr << " status:";
         ostr.width(5);
-        ostr << id();
+        ostr << status();
         ostr << " (X,cT)=";
         ostr.width(9);
         ostr.precision(2);
@@ -168,9 +168,9 @@ namespace HepMC {
         ostr << "GenVertex:";
         ostr.width(9);
         ostr << barcode();
-        ostr << " ID:";
+        ostr << " status:";
         ostr.width(5);
-        ostr << id();
+        ostr << status();
         ostr << " (X,cT):0";
         ostr << std::endl;
       }
@@ -182,9 +182,9 @@ namespace HepMC {
         ostr << "Vertex:";
         ostr.width(9);
         ostr << (void*)this;
-        ostr << " ID:";
+        ostr << " status:";
         ostr.width(5);
-        ostr << id();
+        ostr << status();
         ostr << " (X,cT)=";
         ostr.width(9);
         ostr.precision(2);
@@ -204,9 +204,9 @@ namespace HepMC {
         ostr << "GenVertex:";
         ostr.width(9);
         ostr << (void*)this;
-        ostr << " ID:";
+        ostr << " status:";
         ostr.width(5);
-        ostr << id();
+        ostr << status();
         ostr << " (X,cT):0";
         ostr << std::endl;
       }
