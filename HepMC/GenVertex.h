@@ -108,14 +108,14 @@ namespace HepMC {
     /// Set vertex position and time
     void set_position(const FourVector& pos=FourVector(0,0,0,0)) { m_position = pos; }
 
-    /// Vertex IDs are used to encode the sort of transition represented: see docs
-    int id() const { return m_id; }
-    /// Alias for id()
-    int status() const { return id(); }
-    /// Set the vertex ID
-    void set_id( int id ) { m_id = id; }
-    /// Set the vertex ID (alias)
-    void set_status( int id ) { set_id(id); }
+    /// Vertex statuses are used to encode the sort of transition represented: see docs. Used to be 'id'
+    int status() const { return m_status; }
+    /// Backward compatibility alias for status()
+    int id() const { return id(); }
+    /// Set the vertex status
+    void set_status( int id ) { m_status = id; }
+    /// Set the vertex status (alias)
+    void set_id( int id ) { set_id(id); }
 
     /// @brief Get the vertex barcode
     ///
@@ -426,8 +426,8 @@ namespace HepMC {
     FourVector              m_position;      //< 4-vec of vertex
     std::vector<HepMC::GenParticle*>  m_particles_in;  //< All incoming particles
     std::vector<HepMC::GenParticle*>  m_particles_out; //< All outgoing particles
-    int m_id;
-    /// @todo Are vertex weights used by anyone?! Remove?
+    int m_status;
+    /// @todo Are vertex weights used by anyone?! Removed in HepMC3
     WeightContainer m_weights;
     GenEvent* m_event;
     int m_barcode;

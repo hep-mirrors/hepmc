@@ -1,5 +1,7 @@
 2015-02-15  Andy Buckley  <andy.buckley@cern.ch>
 
+	* Make GenVertex::status() the canonical form, with id() as the alias.
+
 	* HEPMC_HAS_NAMED_WEIGHTS #define changed from implicit value 1 to
 	explict value 2, to allow detection of new capabilities.
 
