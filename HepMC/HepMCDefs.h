@@ -60,6 +60,11 @@
 #define HEPMC_HAS_NAMED_WEIGHTS 2
 #endif
 
+// The HepMC::GenVertex class has a status() member
+#ifndef HEPMC_VERTEX_HAS_STATUS
+#define HEPMC_VERTEX_HAS_STATUS
+#endif
+
 // the HepMC::HeavyIon class contains centrality
 #ifndef HEPMC_HEAVY_ION_HAS_CENTRALITY
 #define HEPMC_HEAVY_ION_HAS_CENTRALITY
