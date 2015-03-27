@@ -434,6 +434,9 @@ namespace HepMC {
 
   };
 
+  /// Forward-compatibility typedef
+  typedef GenVertex* GenVertexPtr;
+
 
 }
 

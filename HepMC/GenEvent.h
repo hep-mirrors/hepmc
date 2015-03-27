@@ -630,6 +630,10 @@ namespace HepMC {
 
   };
 
+  /// Forward-compatibility typedef
+  typedef GenEvent* GenEventPtr;
+
+
 
   ///////////////////////////
   // IO Free Functions     //

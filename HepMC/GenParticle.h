@@ -287,6 +287,10 @@ namespace HepMC {
 
   };
 
+  /// Forward-compatibility typedef
+  typedef GenParticle* GenParticlePtr;
+
+
 
 } // HepMC
 

@@ -1,6 +1,10 @@
 2015-03-27  Andy Buckley  <andy.buckley@cern.ch>
 
+	* Adding forward compatibility typedefs GenEventPtr, GenParticlePtr and GenVertexPtr.
+
 	* Providing HEPMC_VERSION_CODE integer macro for preprocessed version requirements.
+
+	* Adding HEPMC_HAS_CONSISTENT_CONST and HEPMC_HAS_SIMPLE_RANGE macros.
 
 2015-02-15  Andy Buckley  <andy.buckley@cern.ch>
 
