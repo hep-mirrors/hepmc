@@ -1,3 +1,7 @@
+2015-03-27  Andy Buckley  <andy.buckley@cern.ch>
+
+	* Providing HEPMC_VERSION_CODE integer macro for preprocessed version requirements.
+
 2015-02-15  Andy Buckley  <andy.buckley@cern.ch>
 
 	* Make GenVertex::status() the canonical form, with id() as the alias.
