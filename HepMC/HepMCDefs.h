@@ -55,6 +55,16 @@
 #define HEPMC_HAS_ITERATOR_RANGES
 #endif
 
+// particles and vertices can be retrieved as vectors of pointers as well as the verbose iterators
+#ifndef HEPMC_HAS_SIMPLE_RANGES
+#define HEPMC_HAS_SIMPLE_RANGES 1
+#endif
+
+// particles and vertices iterators have appropriate constness in method declarations and return types
+#ifndef HEPMC_HAS_CONSISTENT_CONST
+#define HEPMC_HAS_CONSISTENT_CONST 1
+#endif
+
 // the HepMC::WeightContainer class allows named weights (version 2)
 #ifndef HEPMC_HAS_NAMED_WEIGHTS
 #define HEPMC_HAS_NAMED_WEIGHTS 2
@@ -73,6 +83,11 @@
 // define the version of HepMC.
 #ifndef HEPMC_VERSION
 #define HEPMC_VERSION "2.07.00.a01"
+#endif
+
+// define the integer version of HepMC X.Y.Z = 1000000*X + 1000*Y + Z
+#ifndef HEPMC_VERSION_CODE
+#define HEPMC_VERSION_CODE 2007000
 #endif
 
 #endif  // HEPMC_DEFS_H
