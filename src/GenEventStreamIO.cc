@@ -204,8 +204,6 @@ namespace HepMC {
       }
     }
 
-    std::cout << "X1" << std::endl;
-
     int signal_process_vertex = 0;
     int num_vertices = 0, bp1 = 0, bp2 = 0;
     bool units_line = false;
