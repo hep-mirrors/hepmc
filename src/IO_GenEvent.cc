@@ -151,9 +151,9 @@ namespace HepMC {
     }
     //
     // write event listing key before first event only.
-    write_HepMC_IO_block_begin(*m_ostr);
-    // explicit cast is necessary
-    GenEvent e = *evt;
+    write_HepMC_IO_block_begin(*m_ostr); //< what a point/object mess of API signatures...
+    // explicit cast is necessary... but at least we now avoid copying the whole blimmin' event!
+    GenEvent& e = const_cast<GenEvent&>(*evt);
     *m_ostr << e ;
   }
 

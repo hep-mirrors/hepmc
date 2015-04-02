@@ -19,6 +19,7 @@
 
 namespace HepMC {
 
+
   //! Container for the Weights associated with an event or vertex.
 
   ///
@@ -38,8 +39,8 @@ namespace HepMC {
     WeightContainer(const std::vector<double>& wgts);
 
     /// Constructor from arrays of names and weight values
-    WeightContainer(const std::vector<std::string>& keys, const std::vector<double>& wgts )
-      : m_weights(wgts), m_names(keys)
+    WeightContainer(const std::vector<std::string>& keynames, const std::vector<double>& wgts )
+      : m_weights(wgts), m_names(keynames)
     {  }
 
     /// Constructor from array of pairs of names and weight values

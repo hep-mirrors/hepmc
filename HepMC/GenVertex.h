@@ -63,7 +63,7 @@ namespace HepMC {
 
   public:
     /// default constructor
-    GenVertex( const FourVector& position=FourVector(0,0,0,0), int id = 0,
+    GenVertex( const FourVector& position=FourVector(0,0,0,0), int status=0,
                const WeightContainer& weights = std::vector<double>() );
     GenVertex( const GenVertex& invertex );            //!< shallow copy
     virtual    ~GenVertex();
@@ -111,10 +111,12 @@ namespace HepMC {
     /// Vertex statuses are used to encode the sort of transition represented: see docs. Used to be 'id'
     int status() const { return m_status; }
     /// Backward compatibility alias for status()
-    int id() const { return id(); }
+    /// @deprecated 'id' is a reserved name in HepMC3 -- use 'status' instead
+    int id() const { return status(); }
     /// Set the vertex status
-    void set_status( int id ) { m_status = id; }
+    void set_status( int status ) { m_status = status; }
     /// Set the vertex status (alias)
+    /// @deprecated 'id' is a reserved name in HepMC3 -- use 'status' instead
     void set_id( int id ) { set_id(id); }
 
     /// @brief Get the vertex barcode

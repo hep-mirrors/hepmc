@@ -72,7 +72,6 @@ namespace HepMC {
   std::ostream& GenEvent::write( std::ostream& os )
   {
     /// Writes evt to an output stream.
-
     //
     StreamInfo & info = get_stream_info(os);
     //
@@ -87,10 +86,10 @@ namespace HepMC {
       //
       info.set_finished_first_event(true);
     }
+
     //
     // output the event data including the number of primary vertices
     //  and the total number of vertices
-    //std::vector<long> random_states = random_states();
     os << 'E';
     detail::output( os, event_number() );
     detail::output( os, mpi() );
@@ -101,6 +100,7 @@ namespace HepMC {
     detail::output( os,   ( signal_process_vertex() ?
                             signal_process_vertex()->barcode() : 0 )   );
     detail::output( os, vertices_size() ); // total number of vertices.
+
     write_beam_particles( os, beam_particles() );
     // random state
     detail::output( os, (int)m_random_states.size() );
@@ -111,11 +111,13 @@ namespace HepMC {
     // weights
     // we need to iterate over the map so that the weights printed
     // here will be in the same order as the names printed next
+
     os << ' ' << (int)weights().size() ;
     for (std::vector<double>::const_iterator w = weights().values().begin(); w != weights().values().end(); ++w ) {
       detail::output(os, *w);
     }
     detail::output( os,'\n');
+
     // now add names for weights
     // note that this prints a new line if and only if the weight container
     // is not empty
@@ -129,6 +131,7 @@ namespace HepMC {
       }
       detail::output(os, '\n');
     }
+
     //
     // Units
     os << "U " << name(momentum_unit());
@@ -141,14 +144,15 @@ namespace HepMC {
     // write HeavyIon and PdfInfo if they have been set
     if( m_heavy_ion ) os << heavy_ion() ;
     if( m_pdf_info ) os << pdf_info() ;
-    //
+
     // Output all of the vertices - note there is no real order.
-    for ( GenEvent::vertex_const_iterator v = vertices_begin();
-          v != vertices_end(); ++v ) {
+    for ( GenEvent::vertex_const_iterator v = vertices_begin(); v != vertices_end(); ++v ) {
       write_vertex(os, *v);
     }
+
     return os;
   }
+
 
   std::istream& GenEvent::read( std::istream& is )
   {

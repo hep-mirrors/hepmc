@@ -725,14 +725,14 @@ namespace HepMC {
       os.clear(std::ios::badbit);
       return os;
     }
+
     // First collect info we need
     // count the number of orphan particles going into v
     int num_orphans_in = 0;
-    for ( GenVertex::particles_in_const_iterator p1
-            = v->particles_in_const_begin();
-          p1 != v->particles_in_const_end(); ++p1 ) {
+    for ( GenVertex::particles_in_const_iterator p1 = v->particles_in_const_begin(); p1 != v->particles_in_const_end(); ++p1 ) {
       if ( !(*p1)->production_vertex() ) ++num_orphans_in;
     }
+
     //
     os << 'V';
     detail::output( os, v->barcode() ); // v's unique identifier
@@ -744,9 +744,11 @@ namespace HepMC {
     detail::output( os, num_orphans_in );
     detail::output( os, (int)v->particles_out_size() );
     detail::output( os, (int)v->weights().size() );
+
     for (std::vector<double>::const_iterator w = v->weights().values().begin(); w != v->weights().values().end(); ++w) {
       detail::output( os, *w );
     }
+
     detail::output( os,'\n');
     // incoming particles
     for (GenVertex::particles_in_const_iterator p2 = v->particles_in_const_begin(); p2 != v->particles_in_const_end(); ++p2 ) {

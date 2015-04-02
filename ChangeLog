@@ -1,3 +1,8 @@
+2015-04-02  Andy Buckley  <andy.buckley@cern.ch>
+
+	* IO_GenEvent.cc: Remove unnecessary copying of the *whole*
+	GenEvent during write, since a reference is just fine!
+
 2015-03-27  Andy Buckley  <andy.buckley@cern.ch>
 
 	* Adding forward compatibility typedefs GenEventPtr, GenParticlePtr and GenVertexPtr.
