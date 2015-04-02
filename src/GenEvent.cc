@@ -189,8 +189,7 @@ namespace HepMC {
     std::map<const GenVertex*,GenVertex*> map_in_to_new;
     for ( GenEvent::vertex_const_iterator v = inevent.vertices_begin();
           v != inevent.vertices_end(); ++v ) {
-      GenVertex* newvertex = new GenVertex(
-                                           (*v)->position(), (*v)->id(), (*v)->weights() );
+      GenVertex* newvertex = new GenVertex( (*v)->position(), (*v)->status(), (*v)->weights() );
       newvertex->suggest_barcode( (*v)->barcode() );
       map_in_to_new[*v] = newvertex;
       add_vertex( newvertex );
@@ -736,7 +735,7 @@ namespace HepMC {
     //
     os << 'V';
     detail::output( os, v->barcode() ); // v's unique identifier
-    detail::output( os, v->id() );
+    detail::output( os, v->status() );
     detail::output( os, v->position().x() );
     detail::output( os, v->position().y() );
     detail::output( os, v->position().z() );

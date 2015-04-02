@@ -117,7 +117,7 @@ namespace HepMC {
     void set_status( int status ) { m_status = status; }
     /// Set the vertex status (alias)
     /// @deprecated 'id' is a reserved name in HepMC3 -- use 'status' instead
-    void set_id( int id ) { set_id(id); }
+    void set_id( int id ) { set_status(id); }
 
     /// @brief Get the vertex barcode
     ///

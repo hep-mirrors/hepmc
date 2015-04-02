@@ -186,7 +186,7 @@ namespace HepMC {
       if ( ioendtype == info.io_type() ) {
         find_file_type(is);
         // are we at the end of the file?
-        if( !is ) return is;
+        if ( !is ) return is;
       } else if ( ioendtype > 0 ) {
         std::cerr << "streaming input: end key does not match start key "
                   << "setting badbit." << std::endl;
@@ -195,7 +195,7 @@ namespace HepMC {
       } else if ( !info.has_key() ) {
         find_file_type(is);
         // are we at the end of the file?
-        if( !is ) return is;
+        if ( !is ) return is;
       } else {
         std::cerr << "streaming input: end key not found "
                   << "setting badbit." << std::endl;
@@ -203,6 +203,8 @@ namespace HepMC {
         return is;
       }
     }
+
+    std::cout << "X1" << std::endl;
 
     int signal_process_vertex = 0;
     int num_vertices = 0, bp1 = 0, bp2 = 0;
@@ -255,7 +257,7 @@ namespace HepMC {
             catch (IO_Exception& e) {
               detail::find_event_end( is );
             }
-            if(ion.is_valid()) {
+            if (ion.is_valid()) {
               set_heavy_ion( ion );
             }
           }
@@ -272,7 +274,7 @@ namespace HepMC {
             catch (IO_Exception& e) {
               detail::find_event_end( is );
             }
-            if(pdf.is_valid()) {
+            if (pdf.is_valid()) {
               set_pdf_info( pdf );
             }
           }
