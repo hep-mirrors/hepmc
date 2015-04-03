@@ -154,6 +154,15 @@ namespace HepMC {
     /// Access the weight container by string key
     const double& operator[]( const std::string& s ) const;
 
+    /// Access the weight container by index
+    double& at( size_t n ) { return m_weights[n]; }
+    /// Access the weight container by index
+    const double& at( size_t n ) const { return m_weights[n]; }
+    /// Access the weight container by string key
+    double& at( const std::string& s );
+    /// Access the weight container by string key
+    const double& at( const std::string& s ) const;
+
     /// Equality
     bool operator == ( const WeightContainer& other) const;
     /// Inequality
@@ -173,8 +182,8 @@ namespace HepMC {
   };
 
 
-  /// Alias for backward compatibility
-  typedef WeightContainer GenWeights;
+  // /// Alias for forward compatibility
+  // typedef WeightContainer GenWeights;
 
 
 } // HepMC

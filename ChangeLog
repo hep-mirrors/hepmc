@@ -1,3 +1,8 @@
+2015-04-03  Andy Buckley  <andy.buckley@cern.ch>
+
+	* Adding weight and weight names accessors to GenEvent, for
+	forward compatibility.
+
 2015-04-02  Andy Buckley  <andy.buckley@cern.ch>
 
 	* IO_GenEvent.cc: Remove unnecessary copying of the *whole*

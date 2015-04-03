@@ -226,15 +226,28 @@ namespace HepMC {
     /// A GenEvent is presumed valid if it has particles and/or vertices.
     bool is_valid() const;
 
-    /// Direct access to the weights container
+    /// @name Event weights
+    //@{
+
+    /// @brief Direct access to the weights container
     ///
-    /// Thus you can use myevt.weights()[2];
-    /// to access element 2 of the weights.
-    /// or use myevt.weights().push_back( mywgt ); to add an element.
-    /// and you can set the weights with myevt.weights() = myvector;
-    WeightContainer& weights()  { return m_weights; }
+    /// You can use e.g. myevt.weights()[2] to access element 2 of the weights,
+    /// or use myevt.weights().push_back(w) to add an element.
+    /// @todo Just return the vector, to block non-forward-compatible direct access to the map-like container?
+    WeightContainer& weights() { return m_weights; }
     /// Const access to WeightContainer
     const WeightContainer& weights() const { return m_weights; }
+    /// Get event weight accessed by index (or the canonical/first one if there is no argument)
+    /// @note It's the user's responsibility to ensure that the given index exists!
+    double weight(size_t index=0) const { return weights().at(index); }
+    /// Get event weight accessed by weight name
+    /// @note It's the user's responsibility to ensure that the given name exists!
+    double weight(const std::string& name) const { return weights()[name]; }
+    /// Get event weight names, if there are some
+    const std::vector<std::string>& weight_names() const { return weights().keys(); }
+
+    //@}
+
 
     /// Access the GenCrossSection container if it exists
     GenCrossSection const * cross_section() const { return m_cross_section; }
