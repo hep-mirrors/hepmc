@@ -12,47 +12,47 @@
 
 // the HeavyIon class is available in HepMC
 #ifndef HEPMC_HAS_HEAVY_ION
-#define HEPMC_HAS_HEAVY_ION
+#define HEPMC_HAS_HEAVY_ION 1
 #endif
 
 // the IO_Ascii class is NOT available in HepMC
 #ifndef HEPMC_IO_ASCII_REMOVED
-#define HEPMC_IO_ASCII_REMOVED
+#define HEPMC_IO_ASCII_REMOVED 1
 #endif
 
 // the ParticleData class is NOT available in HepMC
 #ifndef HEPMC_PARTICLE_DATA_REMOVED
-#define HEPMC_PARTICLE_DATA_REMOVED
+#define HEPMC_PARTICLE_DATA_REMOVED 1
 #endif
 
 // the IO_GenEvent class is available in HepMC
 #ifndef HEPMC_HAS_IO_GENEVENT
-#define HEPMC_HAS_IO_GENEVENT
+#define HEPMC_HAS_IO_GENEVENT 1
 #endif
 
 // the PdfInfo class is available in HepMC
 #ifndef HEPMC_HAS_PDF_INFO
-#define HEPMC_HAS_PDF_INFO
+#define HEPMC_HAS_PDF_INFO 1
 #endif
 
 // HepMC uses SimpleVector (FourVector) to store momentum and position
 #ifndef HEPMC_HAS_SIMPLE_VECTOR
-#define HEPMC_HAS_SIMPLE_VECTOR
+#define HEPMC_HAS_SIMPLE_VECTOR 1
 #endif
 
 // units are defined in HepMC
 #ifndef HEPMC_HAS_UNITS
-#define HEPMC_HAS_UNITS
+#define HEPMC_HAS_UNITS 1
 #endif
 
 // the GenCrossSection class is available in HepMC
 #ifndef HEPMC_HAS_CROSS_SECTION
-#define HEPMC_HAS_CROSS_SECTION
+#define HEPMC_HAS_CROSS_SECTION 1
 #endif
 
 // the iterator range classes are available in HepMC
 #ifndef HEPMC_HAS_ITERATOR_RANGES
-#define HEPMC_HAS_ITERATOR_RANGES
+#define HEPMC_HAS_ITERATOR_RANGES 1
 #endif
 
 // particles and vertices can be retrieved as vectors of pointers as well as the verbose iterators
@@ -72,12 +72,12 @@
 
 // The HepMC::GenVertex class has a status() member
 #ifndef HEPMC_VERTEX_HAS_STATUS
-#define HEPMC_VERTEX_HAS_STATUS
+#define HEPMC_VERTEX_HAS_STATUS 1
 #endif
 
 // the HepMC::HeavyIon class contains centrality
 #ifndef HEPMC_HEAVY_ION_HAS_CENTRALITY
-#define HEPMC_HEAVY_ION_HAS_CENTRALITY
+#define HEPMC_HEAVY_ION_HAS_CENTRALITY 1
 #endif
 
 // define the version of HepMC.
