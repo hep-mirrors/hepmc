@@ -135,8 +135,8 @@ namespace HepMC {
                                        std::ostream& ostr = std::cout );
     static bool is_double_precision();  //!< True if common block uses double
 
-    /// check for problems with HEPEVT common block
-    static bool check_hepevt_consistency( std::ostream& ostr = std::cout );
+    /// check for problems with HEPEVT common block (via printout only)
+    static void check_hepevt_consistency( std::ostream& ostr = std::cout );
 
     /// set all entries in HEPEVT to zero
     static void zero_everything();

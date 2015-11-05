@@ -85,7 +85,7 @@ namespace HepMC {
   }
 
 
-  bool HEPEVT_Wrapper::check_hepevt_consistency( std::ostream& os ) {
+  void HEPEVT_Wrapper::check_hepevt_consistency( std::ostream& os ) {
     /// This method inspects the HEPEVT common block and looks for
     /// inconsistencies in the mother/daughter pointers
     bool isConsistent=true;
