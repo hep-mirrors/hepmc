@@ -13,16 +13,19 @@
 #    You may have to change PYTHIA8_HOME and/or other variables
 #
   HepMCdir      = @prefix@
+  prefix              =  @prefix@
+  exec_prefix         =  @exec_prefix@
+  HepMC_libdir        =  @libdir@
+  HepMC_incdir        =  @includedir@
   HEPMCLOCATION = $(HepMCdir)
-  HepMClib      = -L$(HEPMCLOCATION)/lib -Wl,-rpath -Wl,$(HEPMCLOCATION)/lib \
-                  -lHepMC
+  HepMClib      = -L$(HepMC_libdir) -Wl,-rpath -Wl,$(HepMC_libdir) -lHepMC
   Pythia_LIB	= -L$(PYTHIA8_HOME)/lib -Wl,-rpath -Wl,$(PYTHIA8_HOME)/lib \
                   -lpythia8 -llhapdfdummy -lhepmcinterface
 
 ################################################################################ Compiler options
 #
   CXX           = @CXX@
-  INCLUDES 	= -I$(HEPMCLOCATION)/include -I$(PYTHIA8_HOME)/include
+  INCLUDES 	= -I$(HepMC_incdir) -I$(PYTHIA8_HOME)/include -I$(PYTHIA8_HOME)/include/Pythia8 -I$(PYTHIA8_HOME)/include/Pythia8Plugins
   CXXFLAGS      =  @AM_CXXFLAGS@ @CXXFLAGS@ -Wshadow -fbounds-check $(INCLUDES)
 ifeq "$(CXX)" "g++"
    FLAGS 	= $(DFLG) -fno-second-underscore $(INCDIR)
@@ -34,10 +37,10 @@ endif
 
 UNAME = $(shell uname)
 ifneq "$(UNAME)" "Darwin"
-  LINK_LIBS     += -Wl,-rpath -Wl,$(HepMCdir)/lib
+  LINK_LIBS     += -Wl,-rpath -Wl,@libdir@
 endif
 
-  HDRS          = $(HepMCdir)/include/HepMC/*.h *.h
+  HDRS          = $(HepMC_incdir)/*.h *.h
   EXAMPLES	=  main31.exe main32.exe
 
 ###############################################################################

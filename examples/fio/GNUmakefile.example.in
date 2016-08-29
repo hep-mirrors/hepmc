@@ -12,8 +12,12 @@
 #    You may have to change GENSERdir and/or other variables
 #
   HepMCdir             = @prefix@
-  HepMClib             = -L$(HepMCdir)/lib -lHepMC
-  HepMCfiolib          = -L$(HepMCdir)/lib -lHepMCfio
+  prefix              =  @prefix@
+  exec_prefix         =  @exec_prefix@
+  HepMC_libdir        =  @libdir@
+  HepMC_incdir        =  @includedir@
+  HepMClib             = -L$(HepMC_libdir) -lHepMC
+  HepMCfiolib          = -L$(HepMC_libdir) -lHepMCfio
   GENSERdir            = @GENSERdir@
   Pythia_LIB	= -L$(GENSERdir)/lib -Wl,-rpath -Wl,$(GENSERdir)/lib \
                   -lpythia6_403 -lpythia6_403_dumm -lpythia6_403_pdfdumm
@@ -24,7 +28,7 @@
 #
   CXX           = @CXX@
   F77		= @F77@
-  INCLUDES 	= -I$(HepMCdir)/include -I$(CLHEPdir)/include
+  INCLUDES 	= -I$(HepMC_incdir) -I$(CLHEPdir)/include
   CXXFLAGS      =  @AM_CXXFLAGS@ @CXXFLAGS@ $(INCLUDES)
 ifeq "$(CXX)" "g++"
    FLAGS 	= $(DFLG) -fno-second-underscore $(INCDIR)
@@ -36,7 +40,7 @@ endif
 
 UNAME = $(shell uname)
 ifneq "$(UNAME)" "Darwin"
-  LINK_LIBS     += -Wl,-rpath -Wl,$(HepMCdir)/lib
+  LINK_LIBS     += -Wl,-rpath -Wl,$(HepMC_libdir)
 endif
 
 ifeq "$(UNAME)" "Linux"
@@ -49,7 +53,7 @@ endif
 
   initpydata_OBJ= initpydata.o
   pythia_OBJ    = initPythia.o initpydata.o
-  HDRS          = $(HepMCdir)/include/HepMC/*.h *.h
+  HDRS          = $(HepMC_incdir)/*.h *.h
   EXAMPLES	= example_MyHerwig.exe	\
 		  example_MyPythia.exe	\
 		  example_MyPythiaOnlyToHepMC.exe	\

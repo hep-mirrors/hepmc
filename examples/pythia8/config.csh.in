@@ -1,7 +1,9 @@
 #!/bin/csh
+set prefix     =@prefix@
+set exec_prefix=@exec_prefix@
 if( ! $?LD_LIBRARY_PATH ) then
-  setenv LD_LIBRARY_PATH @prefix@/lib
+  setenv LD_LIBRARY_PATH @libdir@
 else
-  setenv LD_LIBRARY_PATH ${LD_LIBRARY_PATH}:@prefix@/lib
+  setenv LD_LIBRARY_PATH ${LD_LIBRARY_PATH}:@libdir@
 endif
 setenv PYTHIA8DATA ${PYTHIA8_HOME}/xmldoc
