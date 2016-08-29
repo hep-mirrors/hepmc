@@ -20,6 +20,8 @@
 #include "HepMC/IO_GenEvent.h"
 #include "HepMC/GenEvent.h"
 #include "HepMC/HEPEVT_Wrapper.h"
+//AV HERWIG requires this routine
+extern "C" void hwaend_() {}
 
 int main() { 
     //

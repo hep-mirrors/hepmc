@@ -167,15 +167,15 @@ namespace HepMC {
                    << (*part)->momentum().e() << " ";
 
       xmassi = (*part)->generated_mass();
-      if(fabs(xmassi) < 0.0001) xmassi =0.;
-      m_outstream->setf(std::ios::fixed);
+      if(fabs(xmassi) < MINIMAL_HEPMC_IO_ASCIIPARTICLE_MASS) xmassi =0.;
+      m_outstream->unsetf(std::ios::floatfield);
       m_outstream->precision(3);
       m_outstream->width(8);
       *m_outstream << xmassi << " ";
       m_outstream->setf(std::ios::scientific,std::ios::floatfield);
       m_outstream->precision(m_precision);
 
-      m_outstream->setf(std::ios::fixed);
+      m_outstream->unsetf(std::ios::floatfield);
       m_outstream->precision(3);
       m_outstream->width(6);
       etai = (*part)->momentum().eta();

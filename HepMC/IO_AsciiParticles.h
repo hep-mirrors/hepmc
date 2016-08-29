@@ -34,7 +34,7 @@
 #include <map>
 #include <vector>
 #include "HepMC/IO_BaseClass.h"
-
+#define MINIMAL_HEPMC_IO_ASCIIPARTICLE_MASS 0.0001
 namespace HepMC {
 
   /// @todo Why not just #include GenEvent.h, since it will definitely be needed if using an IO_* class?

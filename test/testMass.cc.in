@@ -13,6 +13,7 @@
 #include <ostream>
 
 #include "HepMC/IO_GenEvent.h"
+#include "HepMC/IO_AsciiParticles.h"
 #include "HepMC/GenEvent.h"
 #include "HepMC/Version.h"
 
@@ -131,7 +132,7 @@ void massInfo( const HepMC::GenEvent* e, std::ostream& os )
        gm = (*p)->generated_mass();
        m = (*p)->momentum().m();
        d = fabs(m-gm);
-       if( d > 1.0e-5 ) {
+       if( d > 1.0e-5 && gm>MINIMAL_HEPMC_IO_ASCIIPARTICLE_MASS) {
 	    os << "Event " << e->event_number()
 	       << " Particle " << (*p)->barcode() 
 	       << " " << (*p)->pdg_id()
