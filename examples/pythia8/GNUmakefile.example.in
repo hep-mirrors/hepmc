@@ -2,8 +2,9 @@
 # Makefile for building a HepMC PYTHIA8 example
 #
 # Lynn Garren garren@fnal.gov
-#
+# Andrii Verbytskyi andriish@mpp.mpg.de
 # main31 and main32 have been copied from PYTHIA 8.157
+# AV adopted for PYTHIA 8.2
 # you must source either config.csh or config.sh first
 #
 # ./main31.exe
@@ -12,21 +13,31 @@
 ################################################################################ Define directory paths 
 #    You may have to change PYTHIA8_HOME and/or other variables
 #
-  HepMCdir      = @prefix@
+  HepMCdir            =  @prefix@
   prefix              =  @prefix@
   exec_prefix         =  @exec_prefix@
   HepMC_libdir        =  @libdir@
   HepMC_incdir        =  @includedir@
-  HEPMCLOCATION = $(HepMCdir)
-  HepMClib      = -L$(HepMC_libdir) -Wl,-rpath -Wl,$(HepMC_libdir) -lHepMC
-  Pythia_LIB	= -L$(PYTHIA8_HOME)/lib -Wl,-rpath -Wl,$(PYTHIA8_HOME)/lib \
-                  -lpythia8 -llhapdfdummy -lhepmcinterface
+  HEPMCLOCATION       =  $(HepMCdir)
+  HepMClib            = -L$(HepMC_libdir) -Wl,-rpath -Wl,$(HepMC_libdir) -lHepMC
+  Pythia_LIB          = -L$(PYTHIA8_HOME)/lib -L$(PYTHIA8_HOME)/lib64 -Wl,-rpath -Wl,$(PYTHIA8_HOME)/lib -Wl,-rpath -Wl,$(PYTHIA8_HOME)/lib64 \
+                         -lpythia8 
 
 ################################################################################ Compiler options
 #
   CXX           = @CXX@
-  INCLUDES 	= -I$(HepMC_incdir) -I$(PYTHIA8_HOME)/include -I$(PYTHIA8_HOME)/include/Pythia8 -I$(PYTHIA8_HOME)/include/Pythia8Plugins
-  CXXFLAGS      =  @AM_CXXFLAGS@ @CXXFLAGS@ -Wshadow -fbounds-check $(INCLUDES)
+  CXXCPP        = @CXXCPP@ -x c++
+  INCLUDES      = -I$(HepMC_incdir) -I$(PYTHIA8_HOME)/include -I$(PYTHIA8_HOME)/include/Pythia8 -I$(PYTHIA8_HOME)/include/Pythia8Plugins
+  CXXFLAGS      = @AM_CXXFLAGS@ @CXXFLAGS@ -Wshadow -fbounds-check $(INCLUDES)
+#Yes, this is ugly, but Pythia has float constant as version.
+  PYTHIA_VERSION_INTEGER=$(shell echo 'PYTHIA_VERSION' | $(CXXCPP)  $(INCLUDES) -include Pythia.h - | tail -n 1 | sed 's/\.//g')
+  PYTHIA_VERSION_MAJOR=$(shell echo ${PYTHIA_VERSION_INTEGER}/100 | bc)
+  CXXFLAGS+=-DPYTHIA_VERSION_INTEGER=$(PYTHIA_VERSION_INTEGER)
+
+ifeq "$(PYTHIA_VERSION_MAJOR)" "81"
+   Pythia_LIB+=-llhapdfdummy -lhepmcinterface
+endif
+
 ifeq "$(CXX)" "g++"
    FLAGS 	= $(DFLG) -fno-second-underscore $(INCDIR)
 else
@@ -41,23 +52,20 @@ ifneq "$(UNAME)" "Darwin"
 endif
 
   HDRS          = $(HepMC_incdir)/*.h *.h
-  EXAMPLES	=  main31.exe main32.exe
+  EXAMPLES      =  main31.exe main32.exe
 
 ###############################################################################
 #
 .SUFFIXES:      .o .cc .exe
 
-all:	$(EXAMPLES)
+all: $(EXAMPLES)
+
 
 main31.exe: main31.o
-	$(CXX) $(CXXFLAGS) -o $@ main31.o \
-	$(Pythia_LIB) \
-	$(HepMClib)
+	$(CXX) $(CXXFLAGS) -o $@ main31.o  $(HepMClib) $(Pythia_LIB) 
 
 main32.exe: main32.o
-	$(CXX) $(CXXFLAGS) -o $@ main32.o \
-	$(Pythia_LIB) \
-	$(HepMClib)
+	$(CXX) $(CXXFLAGS) -o $@ main32.o $(HepMClib) $(Pythia_LIB) 
 
 ###############################################################################
 #

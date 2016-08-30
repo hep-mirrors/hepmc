@@ -103,7 +103,7 @@ namespace HepMC {
     /// Get the index of the given key name (-1 if it doesn't exist)
     size_t index(const std::string& key) const;
     /// Check to see if a name exists
-    bool has_key(const std::string& key) const { return std::find(m_names.begin(), m_names.end(), key) != m_names.end(); }
+    bool has_key(const std::string& i_key) const { return std::find(m_names.begin(), m_names.end(), i_key) != m_names.end(); }
 
 
     /// Get the list of values
@@ -117,14 +117,14 @@ namespace HepMC {
     /// Push onto weight container with a paired key name and weight value
     void push_back(const std::pair<std::string,double>& key_wgt) { push_back(key_wgt.first, key_wgt.second); }
     /// Push onto weight container with a weight value and optional key name
-    void push_back(double wgt, const std::string& key="") { push_back(key, wgt); }
+    void push_back(double wgt, const std::string& i_key="") { push_back(i_key, wgt); }
 
     /// Set a key and weight value for a specific index
     void set(size_t n, const std::string& key, double wgt);
     /// Set a key and weight value for a specific index
     void set(size_t n, const std::pair<std::string,double>& key_wgt) { set(n, key_wgt.first, key_wgt.second); }
     /// Set a value (and optional key) for a specific index
-    void set(size_t n, double wgt, const std::string& key="") { set(n, key, wgt); }
+    void set(size_t n, double wgt, const std::string& i_key="") { set(n, i_key, wgt); }
 
     /// Get the weight value at index n, with optional default return value
     double get(size_t n, double def=0) const;

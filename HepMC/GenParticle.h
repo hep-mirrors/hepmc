@@ -228,7 +228,7 @@ namespace HepMC {
     void set_pdg_id( int id ) { m_pdg_id = id; }
 
     /// Set the status code
-    void set_status( int status = 0 ) { m_status = status; }
+    void set_status( int i_status = 0 ) { m_status = i_status; }
 
     /// Set the particle flow object
     /// @todo -> ptr

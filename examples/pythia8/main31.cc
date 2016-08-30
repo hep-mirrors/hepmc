@@ -13,7 +13,14 @@
 // Therefore large event samples may be impractical.
 
 #include "Pythia.h"
+#if PYTHIA_VERSION_INTEGER > 8199
+#include "HepMC2.h"
+//* The include below should be used for recent Pythia8.
+//* However, PYTHIA_VERSION is defined as float, so it is not that 
+//* easy to work with it.
+#else
 #include "HepMCInterface.h"
+#endif
 
 #include "HepMC/GenEvent.h"
 #include "HepMC/IO_GenEvent.h"
@@ -32,7 +39,11 @@ using namespace Pythia8;
 int main() {
 
   // Interface for conversion from Pythia8::Event to HepMC one. 
+#if PYTHIA_VERSION_INTEGER > 8199
+  HepMC::Pythia8ToHepMC ToHepMC;
+#else  
   HepMC::I_Pythia8 ToHepMC;
+#endif 
   //  ToHepMC.set_crash_on_problem();
 
   // Specify file where HepMC events will be stored.
@@ -44,9 +55,15 @@ int main() {
 
   // Generator. Process selection. LHC initialization. Histogram.
   Pythia pythia;
+  pythia.readString("Beams:idA = 2212");  //                 ! first beam, p = 2212, pbar = -2212
+  pythia.readString("Beams:idB = 2212");  //                 ! second beam, p = 2212, pbar = -2212
+  pythia.readString("Beams:eCM = 14000.");//                 ! CM energy of collision
+  
+  pythia.readString("HardQCD:all = on");    
   pythia.readString("HardQCD:all = on");    
   pythia.readString("PhaseSpace:pTHatMin = 20.");    
-  pythia.init( 2212, 2212, 14000.);
+  pythia.init();
+  //pythia.init( 2212, 2212, 14000.);
   Hist mult("charged multiplicity", 100, -0.5, 799.5);
 
   // Begin event loop. Generate event. Skip if error. List first one.
@@ -84,7 +101,11 @@ int main() {
 
   // End of event loop. Statistics. Histogram. 
   }
+#if PYTHIA_VERSION_INTEGER > 8199
+  pythia.stat();
+#else  
   pythia.statistics();
+#endif  
   cout << mult; 
 
   // Done.

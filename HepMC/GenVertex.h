@@ -114,10 +114,10 @@ namespace HepMC {
     /// @deprecated 'id' is a reserved name in HepMC3 -- use 'status' instead
     int id() const { return status(); }
     /// Set the vertex status
-    void set_status( int status ) { m_status = status; }
+    void set_status( int i_status ) { m_status = i_status; }
     /// Set the vertex status (alias)
     /// @deprecated 'id' is a reserved name in HepMC3 -- use 'status' instead
-    void set_id( int id ) { set_status(id); }
+    void set_id( int i_id ) { set_status(i_id); }
 
     /// @brief Get the vertex barcode
     ///
