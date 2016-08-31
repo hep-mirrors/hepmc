@@ -16,9 +16,6 @@
 #include "Pythia.h"
 #if PYTHIA_VERSION_INTEGER > 8199
 #include "HepMC2.h"
-//* The include below should be used for recent Pythia8.
-//* However, PYTHIA_VERSION is defined as float, so it is not that 
-//* easy to work with it.
 #else
 #include "HepMCInterface.h"
 #endif
