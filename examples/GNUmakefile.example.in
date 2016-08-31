@@ -58,8 +58,12 @@ endif
 
 PLATFORM=$(shell uname)
 
-ifeq "$(PLATFORM)" "Linux"
+ifeq "$(UNAME)" "Linux"
+ifeq "$(F77)" "gfortran"
+    LINK_LIBS     += -lgfortran
+else
     LINK_LIBS     += -lg2c 
+endif
 endif
 
 ################################################################################ definition of the compiler options

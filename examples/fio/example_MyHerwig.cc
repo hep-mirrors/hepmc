@@ -20,8 +20,12 @@
 #include "HepMC/IO_GenEvent.h"
 #include "HepMC/GenEvent.h"
 #include "HepMC/HEPEVT_Wrapper.h"
-//AV HERWIG requires this routine
+/*Dummy routines*/
 extern "C" void hwaend_() {}
+extern "C" void upinit_() {}
+extern "C" void upevnt_() {}
+extern "C" void structm_(double X,double QSCA,double UPV,double DNV,double USEA,double DSEA,double STR,double CHM,double BOT,double TOP,double GLU) {}
+extern "C" void pdfset_(char a[20][20], double[20]){}
 
 int main() { 
     //
