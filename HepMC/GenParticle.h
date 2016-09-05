@@ -155,12 +155,13 @@ namespace HepMC {
     /// same as the mass calculated from the momentum 4 vector.
     ///
     /// @note There is no invalid value; the default is 0.0 which cannot be distinguished from true masslessness! Oops. This will be improve in HepMC3.
-    double generated_mass() const { return m_generated_mass; }
+        double               generated_mass() const; //!< mass as generated
 
     /// An alias to generated_mass() included for backwards compatibility with CLHEP HepMC
     /// @deprecated Use generated_mass()
     /// @todo REMOVE
-    // double generatedMass() const { return generated_mass(); }
+    /// @todo Keep it for API
+   double generatedMass() const { return generated_mass(); }
 
     /// Return the particle barcode
     ///
@@ -252,13 +253,14 @@ namespace HepMC {
     /// @brief Set the generated mass
     ///
     /// @note There is no invalid value; the default is 0.0 which cannot be distinguished from true masslessness! Oops.
-    void set_generated_mass(double m) { m_generated_mass = m; }
+    void set_generated_mass(const double& m);
 
     /// Alias for backwards compatibility with CLHEP HepMC
     /// @deprecated Use set_generated_mass
     /// @todo Get rid of the silly double reference
     /// @todo REMOVE
-    // void setGeneratedMass( const double& m ) { set_generated_mass(m); }
+    /// @todo Keep it for API
+    void setGeneratedMass( const double& m ) { set_generated_mass(m); }
 
 
   protected: // for internal use only by friend GenVertex class

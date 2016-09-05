@@ -54,6 +54,35 @@ namespace HepMC {
     m_outstream->setf(std::ios::dec,std::ios::basefield);
     m_outstream->setf(std::ios::scientific,std::ios::floatfield);
   }
+// Deprecated(???) constructor.
+  IO_AsciiParticles::IO_AsciiParticles( const char* filename, std::ios::openmode mode ) 
+  : m_precision(2),
+    m_mode(mode), m_finished_first_event_io(0)
+  {
+    if(std::string(filename) == std::string("cout")) {
+      m_outstream = &(std::cout);
+      m_file = 0;
+    } else {
+      m_file = new std::fstream(filename, mode);
+      m_outstream = m_file;
+      if ( (m_mode&std::ios::out && m_mode&std::ios::in) ||
+           (m_mode&std::ios::app && m_mode&std::ios::in) ) {
+	    std::cerr << "IO_AsciiParticles::IO_AsciiParticles Error, open of file requested "
+                  << "of input AND output type. Not allowed. Closing file."
+                  << std::endl;
+        m_file->close();
+        delete m_file;
+	return;
+      }
+    }
+    // precision 16 (# digits following decimal point) is the minimum that
+    // will capture the full information stored in a double
+    // with precision <= 2 the width of output will be < 80 characters
+    m_outstream->precision(m_precision);
+    // we use decimal to store integers, because it is smaller than hex!
+    m_outstream->setf(std::ios::dec,std::ios::basefield);
+    m_outstream->setf(std::ios::scientific,std::ios::floatfield);
+  }
 
   IO_AsciiParticles::~IO_AsciiParticles() {
     if (m_file) {
