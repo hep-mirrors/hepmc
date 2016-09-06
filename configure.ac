@@ -4,7 +4,7 @@
 # ----------------------------------------------------------------------
 
 AC_PREREQ(2.59)
-AC_INIT([HepMC],[2.06.09],[https://savannah.cern.ch/projects/hepmc/],[HepMC])
+AC_INIT([HepMC],[2.07.03],[https://savannah.cern.ch/projects/hepmc/],[HepMC])
 AC_CANONICAL_TARGET
 AM_INIT_AUTOMAKE(1.9 foreign)
 AC_CONFIG_SRCDIR([src/GenEvent.cc])
@@ -62,7 +62,7 @@ AC_SUBST(CLHEPdir)
 
 AC_ARG_WITH(GENSER,
    AC_HELP_STRING([--with-GENSER],[--with-GENSER=$GENSER_DIR: GENSER is used in the examples]),
-   [GENSERdir=${withval}],[GENSERdir=" "])
+   [GENSERdir=${withval}],[GENSERdir=""])
 AC_SUBST(GENSERdir)
 
 # ----------------------------------------------------------------------

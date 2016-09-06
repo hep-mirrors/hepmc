@@ -149,9 +149,9 @@ int main() {
 		if ( (*p)->end_vertex() ) {
 		    for ( HepMC::GenVertex::particle_iterator des
 			      =(*p)->end_vertex()->
-			      particles_begin(HepMC::DESCENDANTS);
+			      particles_begin(HepMC::descendants);
 			  des != (*p)->end_vertex()->
-			      particles_end(HepMC::DESCENDANTS);
+			      particles_end(HepMC::descendants);
 			  ++des ) {
 			std::cout << "\t\t";
 			(*des)->print();

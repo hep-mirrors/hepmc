@@ -1,7 +1,7 @@
 //////////////////////////////////////////////////////////////////////////
 // Matt.Dobbs@Cern.CH, November 2000, refer to:
 // M. Dobbs and J.B. Hansen, "The HepMC C++ Monte Carlo Event Record for
-// High Energy Physics", Computer Physics Communications (to be published).
+// High Energy Physics",  Comput.Phys.Commun. 134 (2001) 41-46.
 //
 // Container for the Weights associated with an event or vertex.
 // Basically just an interface to STL vector with extra map-like attributes
@@ -41,7 +41,7 @@ void WeightContainer::set_default_names( size_type n )
     { 
 	name.str(std::string());
 	name << count;
-	//FIXME! m_names[name.str()] = count;
+	m_names.push_back(name.str());
     }
 }
 
@@ -62,17 +62,10 @@ void WeightContainer::pop_back()
 {
     // this needs to remove the last entry in the vector 
     // and ALSO the associated map entry
-/*FIXME!
-    size_type vit = size() - 1;
-    for ( map_iterator m = m_names.begin(); m != m_names.end(); ++m ) 
-    { 
-        if( m->second == vit ) { 
-	    m_names.erase(m->first); 
-	    continue;
-	}
-    }
+
+     m_names.pop_back(); 
     m_weights.pop_back(); 
-*/
+
 }
 
   void WeightContainer::push_back(const std::string& key, double wgt) {
