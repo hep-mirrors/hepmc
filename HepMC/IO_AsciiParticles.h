@@ -54,6 +54,9 @@ namespace HepMC {
     /// Constructor taking an IO stream name and std::ios mode
     IO_AsciiParticles( std::iostream& iostr,
                        std::ios::openmode mode=std::ios::out );
+   /// Deprecated(???) constructor requiring a file name and std::ios mode
+	IO_AsciiParticles( const char* filename="IO_AsciiParticles.dat", 
+		  std::ios::openmode mode=std::ios::out );
 
     /// Constructor requiring a file name and std::ios mode
     IO_AsciiParticles( const std::string& filename,

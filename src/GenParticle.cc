@@ -249,6 +249,14 @@ namespace HepMC {
   }
 
 
+    double  GenParticle::generated_mass() const {
+        return m_generated_mass;
+    }
+
+    void   GenParticle::set_generated_mass( const double & m ) {
+        m_generated_mass = m;
+    }
+
   /// scale the momentum vector and generated mass
   /// this method is only for use by GenEvent
   /// @todo Hide / remove

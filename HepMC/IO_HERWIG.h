@@ -4,7 +4,7 @@
 //////////////////////////////////////////////////////////////////////////
 // Matt.Dobbs@Cern.CH, October 2002, refer to:
 // M. Dobbs and J.B. Hansen, "The HepMC C++ Monte Carlo Event Record for
-// High Energy Physics", Computer Physics Communications (to be published).
+// High Energy Physics",  Comput.Phys.Commun. 134 (2001) 41-46.
 //
 // IO class for reading the (non-standard) HEPEVT common block from
 //  the Herwig monte carlo program.

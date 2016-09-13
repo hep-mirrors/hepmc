@@ -4,7 +4,7 @@
 //////////////////////////////////////////////////////////////////////////
 // Matt.Dobbs@Cern.CH, January 2000, refer to:
 // M. Dobbs and J.B. Hansen, "The HepMC C++ Monte Carlo Event Record for
-// High Energy Physics", Computer Physics Communications (to be published).
+// High Energy Physics",  Comput.Phys.Commun. 134 (2001) 41-46.
 //
 // particle's flow object
 // keeps track of an arbitrary number of flow patterns within a graph

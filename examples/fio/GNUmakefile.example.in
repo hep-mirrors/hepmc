@@ -106,7 +106,7 @@ ifeq "$(GENSERdir)" ""
 	@echo "GENSERdir is not set, please edit makefile and provide pythia6 and herwig6 libraries"
 	@echo "To compile pythia6 and herwig6 localy, dowload the following sources"
 	@echo "pythia-6.4.28.f herwig6521.f HERWIG65.INC herwig6521.inc"
-	@echo "Compile them with make local_pythia6 and make local_herwig6"
+	@echo "Compile them with make -f GNUmakefile.example local_pythia6 local_herwig6"
 endif
 
 ifeq "$(GENSERdir)" ""
