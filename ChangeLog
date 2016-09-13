@@ -1,4 +1,14 @@
   --------------------------  HepMC2.07-beta00  --------------------------
+2016-09-06 Andrii Vebytskyi <andrii.verbytskyi@mpp.mpg.de>
+	* Attepms to provide compatibility with 2.06
+	* Add publication reference in CPC.
+	* Small fixes in examples.
+
+2016-09-01 Andrii Vebytskyi <andrii.verbytskyi@mpp.mpg.de>
+
+	* Make examples working with recent Pythia8 and Herwig6.
+	Fix compiller warnings. Fix some tests. Fix configure scripts.
+	Small fix to IO_AsciiParticles. Implements fixes from EPEL 2.06 version.
 
 2015-05-08  Andy Buckley  <andy.buckley@cern.ch>
 
