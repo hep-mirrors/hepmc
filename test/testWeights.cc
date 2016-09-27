@@ -24,7 +24,7 @@ int main() {
    assert( w[1] == 4.56 );
    assert( w.size() == 2 );
    assert( !w.empty() );
-
+   
    std::vector<double> vec;
    for( int i = 0; i < 15; ++i ) {
        double x = (double)i + 0.14*(double)i;
@@ -33,21 +33,21 @@ int main() {
    double v1 = vec[0];
    w = vec;
    assert( w.size() == 15 );
-   // w.pop_back();
-   // assert( w.size() == 14 );
+   w.pop_back();
+   assert( w.size() == 14 );
 
    // new functionality
    std::size_t vs = vec.size();
    std::string nm = "tau";
    w[nm] = 3.1;
-   //assert( w.size() == (vs) );
+   assert( w.size() == (vs) );
    w["my_pdf"] = 11.3445;
    //w['PDF_SET_3'] = 10.33;
    assert( w[nm] == 3.1 );
    assert( w[0] == v1 );
    assert( w.size() == (vs+1) );
    assert( w[vs-1] == 3.1 );
-
+   
    const HepMC::WeightContainer wc = w;
    assert( wc[nm] == 3.1 );
    // lookup a nonexistent name

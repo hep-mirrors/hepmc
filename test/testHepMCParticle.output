@@ -1,5 +1,5 @@
 0 Run  HepMC::IO_AsciiParticles eye-readable events output
-#      HepMC::Version 2.07.00.a01
+#      HepMC::Version 2.07.00.a02
   #  stat pdg  moth1   px        py         pz     energy    mass      eta
 9 Event
 929 particles
