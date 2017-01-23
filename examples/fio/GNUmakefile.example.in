@@ -7,24 +7,33 @@
 # I.E.: syntax for compiling the example_MyPythia.cc example:
 #       gmake example_MyPythia.exe
 # or simply   gmake all     to compile all examples.
-#
+# AV: update for 2.07
 ################################################################################ Define directory paths 
 #    You may have to change GENSERdir and/or other variables
 #
-  HepMCdir             = @prefix@
-  HepMClib             = -L$(HepMCdir)/lib -lHepMC
-  HepMCfiolib          = -L$(HepMCdir)/lib -lHepMCfio
+  HepMCdir             =  @prefix@
+  prefix               =  @prefix@
+  exec_prefix          =  @exec_prefix@
+  HepMC_libdir         =  @libdir@
+  HepMC_incdir         =  @includedir@
+  HepMClib             = -L$(HepMC_libdir) -lHepMC
+  HepMCfiolib          = -L$(HepMC_libdir) -lHepMCfio
   GENSERdir            = @GENSERdir@
+ifeq "$(GENSERdir)" ""
+  Pythia_LIB	= -L./ -lpythia6
+  Herwig_LIB	= -L./ -lherwig6
+else
+# Old CERN style
   Pythia_LIB	= -L$(GENSERdir)/lib -Wl,-rpath -Wl,$(GENSERdir)/lib \
                   -lpythia6_403 -lpythia6_403_dumm -lpythia6_403_pdfdumm
   Herwig_LIB	= -L$(GENSERdir)/lib -Wl,-rpath -Wl,$(GENSERdir)/lib \
                   -lherwig6_510 -lherwig6_510_dumm -lherwig6_510_pdfdumm
-
+endif
 ################################################################################ Compiler options
 #
-  CXX           = @CXX@
-  F77		= @F77@
-  INCLUDES 	= -I$(HepMCdir)/include -I$(CLHEPdir)/include
+  CXX       = @CXX@
+  F77       = @F77@
+  INCLUDES  = -I$(HepMC_incdir) -I$(CLHEPdir)/include
   CXXFLAGS      =  @AM_CXXFLAGS@ @CXXFLAGS@ $(INCLUDES)
 ifeq "$(CXX)" "g++"
    FLAGS 	= $(DFLG) -fno-second-underscore $(INCDIR)
@@ -36,7 +45,7 @@ endif
 
 UNAME = $(shell uname)
 ifneq "$(UNAME)" "Darwin"
-  LINK_LIBS     += -Wl,-rpath -Wl,$(HepMCdir)/lib
+  LINK_LIBS     += -Wl,-rpath -Wl,$(HepMC_libdir)
 endif
 
 ifeq "$(UNAME)" "Linux"
@@ -49,13 +58,13 @@ endif
 
   initpydata_OBJ= initpydata.o
   pythia_OBJ    = initPythia.o initpydata.o
-  HDRS          = $(HepMCdir)/include/HepMC/*.h *.h
-  EXAMPLES	= example_MyHerwig.exe	\
-		  example_MyPythia.exe	\
+  HDRS          = $(HepMC_incdir)/*.h *.h
+  EXAMPLES	= example_MyPythia.exe	\
 		  example_MyPythiaOnlyToHepMC.exe	\
 		  example_PythiaStreamIO.exe	\
 		  testPythiaCopies.exe	\
-		  testHerwigCopies.exe
+		  testHerwigCopies.exe \
+		  example_MyHerwig.exe	
 
 ################################################################################ definition of the compiler options
 #	-I location of directory containing include files
@@ -90,7 +99,28 @@ endif
 ###############################################################################
 #
 .SUFFIXES:      .o .cxx .f .exe
-all:	$(EXAMPLES)
+all:	warngenser $(EXAMPLES)
+
+warngenser:
+ifeq "$(GENSERdir)" ""
+	@echo "GENSERdir is not set, please edit makefile and provide pythia6 and herwig6 libraries"
+	@echo "To compile pythia6 and herwig6 localy, dowload the following sources"
+	@echo "pythia-6.4.28.f herwig6521.f HERWIG65.INC herwig6521.inc"
+	@echo "Compile them with make -f GNUmakefile.example local_pythia6 local_herwig6"
+endif
+
+ifeq "$(GENSERdir)" ""
+#http://www.hepforge.org/archive/pythia6/pythia-6.4.28.f.gz
+local_pythia6:  pythia-6.4.28.f
+	$(F77) $(FLAGS)  -fPIC -shared  pythia-6.4.28.f -o libpythia6.so
+
+#http://www.hep.phy.cam.ac.uk/theory/webber/Herwig/herwig6521.f
+#http://www.hep.phy.cam.ac.uk/theory/webber/Herwig/HERWIG65.INC
+#http://www.hep.phy.cam.ac.uk/theory/webber/Herwig/herwig6521.inc
+local_herwig6:  herwig6521.f
+	$(F77) $(FLAGS)  -fPIC -shared  herwig6521.f -o libherwig6.so
+endif
+
 
 example_MyHerwig.exe: example_MyHerwig.o
 	@echo "Building $@ ..."

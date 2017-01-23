@@ -14,7 +14,11 @@
 // Therefore large event samples may be impractical.
 
 #include "Pythia.h"
+#if PYTHIA_VERSION_INTEGER > 8199
+#include "HepMC2.h"
+#else
 #include "HepMCInterface.h"
+#endif
 
 #include "HepMC/GenEvent.h"   
 #include "HepMC/IO_GenEvent.h"
@@ -53,7 +57,11 @@ int main(int argc, char* argv[]) {
   cout << " HepMC events will be written to file " << argv[2] << endl;
 
   // Interface for conversion from Pythia8::Event to HepMC one. 
+#if PYTHIA_VERSION_INTEGER > 8199
+  HepMC::Pythia8ToHepMC ToHepMC;
+#else  
   HepMC::I_Pythia8 ToHepMC;
+#endif 
   //  ToHepMC.set_crash_on_problem();
 
   // Specify file where HepMC events will be stored.
@@ -134,7 +142,11 @@ int main(int argc, char* argv[]) {
 
   // End of event loop. Statistics. 
   }
+#if PYTHIA_VERSION_INTEGER > 8199
+  pythia.stat();
+#else  
   pythia.statistics();
+#endif 
 
   // Done.
   return 0;
