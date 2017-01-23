@@ -88,7 +88,7 @@ namespace HepMC {
 //                       This is NOT beam pileup.  Set to -1 by default.
 // beam_particles()      A pair of pointers to the incoming beam particles.
 // signal_process_vertex() pointer to the vertex containing the signal process
-// weights()             Vector of doubles which specify th weight of the evnt,
+// weights()             Vector of doubles which specify the weight of the evnt,
 //                       the first entry will be the "event weight" used for
 //                       hit and miss etc., but a general vector is used to
 //                       allow for reweighting etc. We envision a list of
