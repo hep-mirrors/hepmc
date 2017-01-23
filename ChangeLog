@@ -1,6 +1,13 @@
+2017-01-23  Andy Buckley  <andy.buckley@cern.ch>
+
+	* Change forward Gen{Event,Particle,Vertex}Ptr typedefs to
+	#defines to deal with constness semantics problems.
+
 2016-09-27 Andrii Vebytskyi <andrii.verbytskyi@mpp.mpg.de>
 	* Tests are working
-  --------------------------  HepMC2.07-beta00  --------------------------
+
+--------------------------  HepMC2.07-beta00  --------------------------
+
 2016-09-06 Andrii Vebytskyi <andrii.verbytskyi@mpp.mpg.de>
 	* Attepms to provide compatibility with 2.06
 	* Add publication reference in CPC.

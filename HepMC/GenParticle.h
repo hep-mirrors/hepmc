@@ -289,8 +289,8 @@ namespace HepMC {
 
   };
 
-  /// Forward-compatibility typedef
-  typedef GenParticle* GenParticlePtr;
+  /// Forward-compatibility define (typedefs don't work right with the const keyword)
+  #define GenParticlePtr GenParticle*
 
 
 

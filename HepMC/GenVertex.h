@@ -180,7 +180,7 @@ namespace HepMC {
     int particles_out_size() const { return m_particles_out.size(); }
 
     /// Iterator for incoming particles
-    typedef std::vector<HepMC::GenParticle*>::const_iterator particles_in_iterator;
+    typedef std::vector<HepMC::GenParticle*>::iterator particles_in_iterator;
     /// Const iterator for incoming particles
     typedef std::vector<HepMC::GenParticle*>::const_iterator particles_in_const_iterator;
 
@@ -194,7 +194,7 @@ namespace HepMC {
     particles_in_const_iterator particles_in_const_end() const { return m_particles_in.end(); }
 
     /// Iterator for outgoing particles
-    typedef std::vector<HepMC::GenParticle*>::const_iterator particles_out_iterator;
+    typedef std::vector<HepMC::GenParticle*>::iterator particles_out_iterator;
     /// Const iterator for outgoing particles
     typedef std::vector<HepMC::GenParticle*>::const_iterator particles_out_const_iterator;
 
@@ -436,8 +436,8 @@ namespace HepMC {
 
   };
 
-  /// Forward-compatibility typedef
-  typedef GenVertex* GenVertexPtr;
+  /// Forward-compatibility define (typedefs don't work right with the const keyword)
+  #define GenVertexPtr GenVertex*
 
 
 }

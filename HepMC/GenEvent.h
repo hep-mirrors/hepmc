@@ -643,8 +643,8 @@ namespace HepMC {
 
   };
 
-  /// Forward-compatibility typedef
-  typedef GenEvent* GenEventPtr;
+  /// Forward-compatibility define (typedefs don't work right with the const keyword)
+  #define GenEventPtr GenEvent*
 
 
 
