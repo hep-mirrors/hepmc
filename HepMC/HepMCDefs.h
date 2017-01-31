@@ -82,7 +82,7 @@
 
 // define the version of HepMC.
 #ifndef HEPMC_VERSION
-#define HEPMC_VERSION "2.07.00.a02"
+#define HEPMC_VERSION "2.07.00"
 #endif
 
 // define the integer version of HepMC X.Y.Z = 1000000*X + 1000*Y + Z
