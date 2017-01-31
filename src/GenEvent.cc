@@ -279,6 +279,15 @@ namespace HepMC {
   }
 
 
+  std::vector<HepMC::GenParticle*> GenEvent::beams() const {
+    std::vectorHepMC::GenParticle*> rtn;
+    if (!valid_beam_particles()) return rtn;
+    rtn.push_back(beam_particles().first);
+    rtn.push_back(beam_particles().second);
+    return rtn;
+  }
+
+
   void GenEvent::print( std::ostream& ostr ) const {
     /// dumps the content of this event to ostr
     ///   to dump to cout use: event.print();

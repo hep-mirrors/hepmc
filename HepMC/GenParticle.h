@@ -155,7 +155,7 @@ namespace HepMC {
     /// same as the mass calculated from the momentum 4 vector.
     ///
     /// @note There is no invalid value; the default is 0.0 which cannot be distinguished from true masslessness! Oops. This will be improve in HepMC3.
-        double               generated_mass() const; //!< mass as generated
+    double generated_mass() const; //!< mass as generated
 
     /// An alias to generated_mass() included for backwards compatibility with CLHEP HepMC
     /// @deprecated Use generated_mass()
@@ -163,7 +163,9 @@ namespace HepMC {
     /// @todo Keep it for API
    double generatedMass() const { return generated_mass(); }
 
-    /// Return the particle barcode
+    /// @brief Return the particle barcode
+    ///
+    /// @deprecated Prefer the id() method, for forward compatibility.
     ///
     /// The barcode is the particle's reference number: every vertex in an
     /// event has a unique barcode. Particle barcodes are positive numbers,
@@ -173,8 +175,14 @@ namespace HepMC {
     /// unique identifier for the particles and vertices.  Using the barcode to
     /// encode extra information is not recommended and cannot be guaranteed to work.
     ///
-    /// @note Barcodes will change a lot in HepMC3!
+    /// @note Barcodes are replaced with ID codes in HepMC3.
     int barcode() const { return m_barcode; }
+    /// Alias for barcode which will keep working in HepMC3
+    /// @note The ID is not quite the same as barcode in HepMC3: it is just an automatic identifier, with no semantic meaning
+    int id() const { return m_barcode; }
+
+    std::vector<HepMC::GenParticle*> beams() const {
+
 
     /// Check if the particle is undecayed. Returns true if status==1
     /// @todo Also check that the end_vertex is null?

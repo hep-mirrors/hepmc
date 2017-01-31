@@ -221,7 +221,11 @@ namespace HepMC {
     /// Test to see if we have two valid beam particles
     bool valid_beam_particles() const;
     /// pair of pointers to the two incoming beam particles
+    /// @deprecated Prefer forward-compatible beams()
     std::pair<HepMC::GenParticle*,HepMC::GenParticle*> beam_particles() const;
+    /// Access the beam particles as a vector
+    /// @note Compatible with HepMC3
+    std::vector<HepMC::GenParticle*> beams() const;
     /// check GenEvent for validity
     /// A GenEvent is presumed valid if it has particles and/or vertices.
     bool is_valid() const;

@@ -140,34 +140,33 @@ namespace HepMC {
     const WeightContainer& weights() const { return m_weights; }
 
 
-    /// Immediate incoming particles
-    std::vector<GenParticle*>& parents() { return m_particles_in; }
-    /// Immediate incoming particles (const)
-    const std::vector<GenParticle*>& parents() const { return m_particles_in; }
-
-    /// Immediate outgoing particles
-    std::vector<GenParticle*>& children() { return m_particles_out; }
-    /// Immediate outgoing particles (const)
-    const std::vector<GenParticle*>& children() const { return m_particles_out; }
-
-
     /// Particle ranges of various kinds
     GenVertexParticleRange particles( IteratorRange range = relatives );
 
+    /// Immediate incoming particles
+    std::vector<GenParticle*>& particles_in() { return m_particles_in; }
+    /// Immediate incoming particles (const)
+    const std::vector<GenParticle*>& particles_in() const { return m_particles_in; }
+
+    /// Immediate outgoing particles
+    std::vector<GenParticle*>& particles_out() { return m_particles_out; }
+    /// Immediate outgoing particles (const)
+    const std::vector<GenParticle*>& particles_out() const { return m_particles_out; }
+
+
+
     /// Incoming particle range
-    /// @note The GenParticle arg is mysterious...
-    /// @deprecated Prefer to use parents()
+    /// @deprecated Prefer to use parents() etc.
     GenParticleProductionRange particles_in(GenParticle&, IteratorRange range = relatives );
     /// Incoming particle range
-    /// @note The GenParticle arg is mysterious...
-    /// @deprecated Prefer to use parents()
+    /// @deprecated Prefer to use parents() etc.
     ConstGenParticleProductionRange particles_in(const GenParticle&, IteratorRange range = relatives ) const;
 
     /// Outgoing particle range
+    /// @deprecated Prefer to use children() etc.
     GenParticleEndRange particles_out( GenParticle&, IteratorRange range = relatives );
     /// Outgoing particle range
-    /// @note The GenParticle arg is mysterious...
-    /// @deprecated Prefer to use parents()
+    /// @deprecated Prefer to use children() etc.
     ConstGenParticleEndRange particles_out( const GenParticle&, IteratorRange range = relatives ) const;
 
 
