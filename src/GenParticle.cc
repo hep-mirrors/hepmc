@@ -135,20 +135,34 @@ namespace HepMC {
 
 
   std::vector<GenParticle*> GenParticle::parents() {
-    return (production_vertex() != NULL) ? production_vertex()->parents() : std::vector<GenParticle*>();
+    return (production_vertex() != NULL) ? production_vertex()->particles_in() : std::vector<GenParticle*>();
   }
 
   const std::vector<GenParticle*> GenParticle::parents() const {
-    return (production_vertex() != NULL) ? production_vertex()->parents() : std::vector<GenParticle*>();
+    return (production_vertex() != NULL) ? production_vertex()->particles_in() : std::vector<GenParticle*>();
   }
 
   std::vector<GenParticle*> GenParticle::children() {
-    return (end_vertex() != NULL) ? end_vertex()->children() : std::vector<GenParticle*>();
+    return (end_vertex() != NULL) ? end_vertex()->particles_out() : std::vector<GenParticle*>();
   }
 
   const std::vector<GenParticle*> GenParticle::children() const {
-    return (end_vertex() != NULL) ? end_vertex()->children() : std::vector<GenParticle*>();
+    return (end_vertex() != NULL) ? end_vertex()->particles_out() : std::vector<GenParticle*>();
   }
+
+
+  GenParticleProductionRange GenParticle::ancestors() { return GenParticleProductionRange(*this,HepMC::ancestors); }
+  ConstGenParticleProductionRange GenParticle::ancestors() const { return ConstGenParticleProductionRange(*this,HepMC::ancestors); }
+  GenParticleEndRange GenParticle::descendants() { return GenParticleEndRange(*this,HepMC::descendants); }
+  ConstGenParticleEndRange GenParticle::descendants() const { return ConstGenParticleEndRange(*this,HepMC::descendants); }
+
+
+  /// @todo Add a particles(p, itrange)
+  GenParticleProductionRange GenParticle::particles_in( IteratorRange range ) { return GenParticleProductionRange(*this,range); }
+  ConstGenParticleProductionRange GenParticle::particles_in( IteratorRange range ) const { return ConstGenParticleProductionRange(*this,range); }
+  GenParticleEndRange GenParticle::particles_out( IteratorRange range ) { return GenParticleEndRange(*this,range); }
+  ConstGenParticleEndRange GenParticle::particles_out( IteratorRange range ) const { return ConstGenParticleEndRange(*this,range); }
+
 
 
   void GenParticle::set_production_vertex_( GenVertex* prodvertex ) {

@@ -280,12 +280,23 @@ namespace HepMC {
 
 
   std::vector<HepMC::GenParticle*> GenEvent::beams() const {
-    std::vectorHepMC::GenParticle*> rtn;
+    std::vector<HepMC::GenParticle*> rtn;
     if (!valid_beam_particles()) return rtn;
     rtn.push_back(beam_particles().first);
     rtn.push_back(beam_particles().second);
     return rtn;
   }
+
+
+  GenEventVertexRange GenEvent::vertex_range() { return GenEventVertexRange(*this); }
+  ConstGenEventVertexRange GenEvent::vertex_range() const { return ConstGenEventVertexRange(*this); }
+  GenEventVertexRange GenEvent::vertices() { return vertex_range(); }
+  ConstGenEventVertexRange GenEvent::vertices() const { return vertex_range(); }
+
+  GenEventParticleRange GenEvent::particle_range() { return GenEventParticleRange(*this); }
+  ConstGenEventParticleRange GenEvent::particle_range() const { return ConstGenEventParticleRange(*this); }
+  GenEventParticleRange GenEvent::particles() { return particle_range(); }
+  ConstGenEventParticleRange GenEvent::particles() const { return particle_range(); }
 
 
   void GenEvent::print( std::ostream& ostr ) const {

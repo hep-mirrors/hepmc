@@ -137,6 +137,14 @@ namespace HepMC {
     return !( a == *this );
   }
 
+
+  GenVertexParticleRange GenVertex::particles( IteratorRange range ) { return GenVertexParticleRange(*this, range); }
+  GenParticleProductionRange GenVertex::particles_in( GenParticle& p, IteratorRange range ) { return GenParticleProductionRange(p,range); }
+  ConstGenParticleProductionRange GenVertex:: particles_in( GenParticle const & p, IteratorRange range ) const { return ConstGenParticleProductionRange(p,range); }
+  GenParticleEndRange GenVertex::particles_out( GenParticle& p, IteratorRange range ) { return GenParticleEndRange(p,range); }
+  ConstGenParticleEndRange GenVertex::particles_out( GenParticle const & p, IteratorRange range ) const { return ConstGenParticleEndRange(p,range); }
+
+
   void GenVertex::print( std::ostream& ostr ) const {
     // find the current stream state
     std::ios_base::fmtflags orig = ostr.flags();

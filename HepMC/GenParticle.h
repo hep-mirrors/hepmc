@@ -135,6 +135,7 @@ namespace HepMC {
     /// Pointer to the event that owns this particle
     GenEvent* parent_event() const;
 
+
     /// @brief Immediate incoming particles via production vertex
     /// @note Less efficient than going via the production vertex since if there is no vertex we must return an empty vector -- by value.
     std::vector<GenParticle*> parents();
@@ -148,6 +149,17 @@ namespace HepMC {
     /// @brief Immediate outgoing particles via end vertex (const)
     /// @note Less efficient than going via the end vertex since if there is no vertex we must return an empty vector -- by value.
     const std::vector<GenParticle*> children() const;
+
+    /// @brief All incoming particles via production vertex
+    GenParticleProductionRange ancestors();
+    /// @brief All incoming particles via production vertex (const)
+    ConstGenParticleProductionRange ancestors() const;
+
+    /// @brief All outgoing particles via end vertex
+    GenParticleEndRange descendants();
+    /// @brief All outgoing particles via end vertex (const)
+    ConstGenParticleEndRange descendants() const;
+
 
     /// @brief Return the generated mass
     ///
@@ -181,8 +193,6 @@ namespace HepMC {
     /// @note The ID is not quite the same as barcode in HepMC3: it is just an automatic identifier, with no semantic meaning
     int id() const { return m_barcode; }
 
-    std::vector<HepMC::GenParticle*> beams() const {
-
 
     /// Check if the particle is undecayed. Returns true if status==1
     /// @todo Also check that the end_vertex is null?
@@ -201,12 +211,16 @@ namespace HepMC {
     bool is_beam() const { return status() == 4; }
 
     /// Incoming particle range
+    /// @deprecated Prefer parents() and ancestors()
     GenParticleProductionRange particles_in( IteratorRange range = relatives );
     /// Incoming particle range
+    /// @deprecated Prefer parents() and ancestors()
     ConstGenParticleProductionRange particles_in( IteratorRange range = relatives ) const;
     /// Outgoing particle range
+    /// @deprecated Prefer children() and descendants()
     GenParticleEndRange particles_out( IteratorRange range = relatives );
     /// Outgoing particle range
+    /// @deprecated Prefer children() and descendants()
     ConstGenParticleEndRange particles_out( IteratorRange range = relatives ) const;
 
 

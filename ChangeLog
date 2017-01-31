@@ -1,5 +1,7 @@
 2017-01-31  Andy Buckley  <andy.buckley@cern.ch>
 
+	* Add GenParticle::ancestors() and descendants() methods.
+
 	* Provide a GenEvent::beams() method, returning a vector, for HepMC3 compatibility.
 
 	* Add a GenParticle::id() forward-compatibility alias for barcode().
