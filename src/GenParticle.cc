@@ -116,12 +116,12 @@ namespace HepMC {
          << " (P,E)=" << momentum().px() << "," << momentum().py()
          << "," << momentum().pz() << "," << momentum().e()
          << " Stat:" << status();
-    if ( production_vertex() && production_vertex()->barcode()!=0 ) {
+    if ( production_vertex() ) {
       ostr << " PV:" << production_vertex()->barcode();
-    } else ostr << " PV:" << production_vertex();
-    if ( end_vertex() && end_vertex()->barcode()!=0 ) {
+    } else ostr << " PV:" << 0;
+    if ( end_vertex()) {
       ostr << " EV:" << end_vertex()->barcode();
-    } else ostr << " EV:" << end_vertex();
+    } else ostr << " EV:" << 0;
     ostr << " Pol:" << polarization() << " F:" << m_flow << std::endl;
   }
 
