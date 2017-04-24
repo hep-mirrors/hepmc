@@ -35,6 +35,8 @@ namespace HepMC {
       // get the vertex line
       std::string line;
       std::getline(is,line);
+      if(line.find_first_not_of("\t .+-eE1234567890",line.find_first_of("V")+1)!=std::string::npos)  
+      {  throw IO_Exception("read_vertex input stream encountered invalid data"); }
       std::istringstream iline(line);
       std::string firstc;
       iline >> firstc;

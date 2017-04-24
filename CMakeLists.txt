@@ -15,7 +15,7 @@
 
 # use cmake 2.6 or later
 cmake_minimum_required (VERSION 2.6)
-
+set(CMAKE_VERBOSE_MAKEFILE ON)
 # project name and version
 project(HepMC)
 set( version 2.07.00 )
@@ -66,6 +66,8 @@ include(HepMCParseVersion)
 # because we want to move these libraries about,
 # do not embed full path in shared libraries or executables
 set (CMAKE_SKIP_RPATH)
+
+set(CMAKE_CXX_FLAGS     "${CMAKE_CXX_FLAGS}     -ffast-math")
 
 ENABLE_TESTING()
 

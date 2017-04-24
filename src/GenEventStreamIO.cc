@@ -693,6 +693,8 @@ namespace HepMC {
       // get the next line
       std::string line;
       std::getline(is,line);
+      if(line.find_first_not_of("\t .+-eE1234567890",line.find_first_of("P")+1)!=std::string::npos)  
+      {  delete p; throw IO_Exception("read_particle input stream encountered invalid data"); }
       std::istringstream iline(line);
       std::string firstc;
       iline >> firstc;
