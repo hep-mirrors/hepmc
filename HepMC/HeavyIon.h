@@ -32,6 +32,10 @@
 //                HepMC code
 //////////////////////////////////////////////////////////////////////////
 
+#include <ostream>
+#include <istream>
+#include <utility>
+
 namespace HepMC {
 
 
