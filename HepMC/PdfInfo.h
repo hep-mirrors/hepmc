@@ -7,6 +7,9 @@
 // Additional PDF information
 //////////////////////////////////////////////////////////////////////////
 
+#include <istream>
+#include <ostream>
+
 namespace HepMC {
 
   /// Additional PDF information for a GenEvent
