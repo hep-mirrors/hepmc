@@ -43,10 +43,11 @@ namespace HepMC {
   class GenVertex;
   class GenEvent;
 
-  class GenParticleProductionRange;
-  class ConstGenParticleProductionRange;
-  class GenParticleEndRange;
-  class ConstGenParticleEndRange;
+  struct GenParticleProductionRange;
+  struct ConstGenParticleProductionRange;
+  struct GenParticleEndRange;
+  struct ConstGenParticleEndRange;
+
 
   /// @brief The GenParticle class contains information about generated particles
   ///

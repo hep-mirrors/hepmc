@@ -32,11 +32,11 @@
 
 namespace HepMC {
 
-  class GenVertexParticleRange;
-  class GenParticleProductionRange;
-  class ConstGenParticleProductionRange;
-  class GenParticleEndRange;
-  class ConstGenParticleEndRange;
+  struct GenVertexParticleRange;
+  struct GenParticleProductionRange;
+  struct ConstGenParticleProductionRange;
+  struct GenParticleEndRange;
+  struct ConstGenParticleEndRange;
 
   class GenParticle;
   class GenEvent;

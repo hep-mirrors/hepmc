@@ -139,10 +139,10 @@ namespace HepMC {
 
 namespace HepMC {
 
-  class GenEventVertexRange;
-  class ConstGenEventVertexRange;
-  class GenEventParticleRange;
-  class ConstGenEventParticleRange;
+  struct GenEventVertexRange;
+  struct ConstGenEventVertexRange;
+  struct GenEventParticleRange;
+  struct ConstGenEventParticleRange;
 
   //! The GenEvent class is the core of HepMC
 
