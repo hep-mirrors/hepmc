@@ -139,6 +139,7 @@ namespace HepMC {
 
 
   GenVertexParticleRange GenVertex::particles( IteratorRange range ) { return GenVertexParticleRange(*this, range); }
+  GenVertexParticleRange GenVertex::particles( IteratorRange range ) const { return GenVertexParticleRange(const_cast<GenVertex&>(*this), range); } ///< Hack for const version
   GenParticleProductionRange GenVertex::particles_in( GenParticle& p, IteratorRange range ) { return GenParticleProductionRange(p,range); }
   ConstGenParticleProductionRange GenVertex:: particles_in( GenParticle const & p, IteratorRange range ) const { return ConstGenParticleProductionRange(p,range); }
   GenParticleEndRange GenVertex::particles_out( GenParticle& p, IteratorRange range ) { return GenParticleEndRange(p,range); }

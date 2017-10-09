@@ -142,6 +142,8 @@ namespace HepMC {
 
     /// Particle ranges of various kinds
     GenVertexParticleRange particles( IteratorRange range = relatives );
+    GenVertexParticleRange particles( IteratorRange range = relatives ) const;
+
 
     /// Immediate incoming particles
     std::vector<GenParticle*>& particles_in() { return m_particles_in; }

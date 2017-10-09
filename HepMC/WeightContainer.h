@@ -94,7 +94,7 @@ namespace HepMC {
     bool empty() const { return m_weights.empty(); }
 
     ///Compatibility, pop from weight container
-	void          pop_back();
+	void pop_back();
     /// Get the available key names
     std::vector<std::string>& keys() { return m_names; }
     /// Get the available key names (const)

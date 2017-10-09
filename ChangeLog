@@ -1,3 +1,7 @@
+2017-10-09  Andy Buckley  <andy.buckley@cern.ch>
+
+	* Provide a const version of GenVertex::particles().
+
 2017-01-31  Andy Buckley  <andy.buckley@cern.ch>
 
 	* Add GenParticle::ancestors() and descendants() methods.
