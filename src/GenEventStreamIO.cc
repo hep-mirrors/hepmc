@@ -465,8 +465,8 @@ namespace HepMC {
     if(!iline) detail::find_event_end( is );
     std::vector<double> wgt(weights_size);
     for ( WeightContainer::size_type ii = 0; ii < weights_size; ++ii ) {
-      iline >> wgt[ii];
       if(!iline) detail::find_event_end( is );
+      iline >> wgt[ii];
     }
     // weight names will be added later if they exist
     if( weights_size > 0 ) m_weights = wgt;
@@ -693,7 +693,7 @@ namespace HepMC {
       // get the next line
       std::string line;
       std::getline(is,line);
-      if(line.find_first_not_of("\t .+-eE1234567890",line.find_first_of("P")+1)!=std::string::npos)  
+      if(line.find_first_not_of("\t .+-eE1234567890",line.find_first_of("P")+1)!=std::string::npos)
       {  delete p; throw IO_Exception("read_particle input stream encountered invalid data"); }
       std::istringstream iline(line);
       std::string firstc;
