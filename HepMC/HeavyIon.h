@@ -23,7 +23,7 @@
 //                                        (as in phobos nucl-ex/0510031)
 //      float sigma_inel_NN           // nucleon-nucleon inelastic
 //                                        (including diffractive) cross-section
-//      float centrality              // centrality (fraction of geometric cross section)
+//      float centrality              // centrality (prcentile of geometric cross section)
 //
 //////////////////////////////////////////////////////////////////////////
 // Mar. 25, 2013: add centrality by request from Korinna Zapp
@@ -66,7 +66,7 @@ namespace HepMC {
         m_event_plane_angle(0),
         m_eccentricity(0),
         m_sigma_inel_NN(0),
-        m_centrality(0)
+        m_centrality(-1.0)
     {}
 
     /// The first 6 values must be provided.
@@ -116,7 +116,7 @@ namespace HepMC {
     float eccentricity()                 const { return m_eccentricity;  }
     /// nucleon-nucleon inelastic (including diffractive) cross-section
     float sigma_inel_NN()                const { return m_sigma_inel_NN; }
-    /// centrality (fraction of geometric cross section)
+    /// centrality (percentile of geometric cross section. Negaitve if not set.)
     float centrality()                const { return m_centrality; }
 
     /// verify that the instance contains non-zero information
@@ -149,7 +149,7 @@ namespace HepMC {
     void   set_eccentricity(const float &f)          { m_eccentricity=f;  }
     /// set nucleon-nucleon inelastic cross-section
     void   set_sigma_inel_NN(const float &f)         { m_sigma_inel_NN=f; }
-    /// set centrality
+    /// set centrality percentile [0:100]
     void   set_centrality(const float &f)         { m_centrality=f; }
 
   private: // data members
@@ -287,7 +287,7 @@ namespace HepMC {
     if( m_event_plane_angle != 0 ) return true;
     if( m_eccentricity != 0 ) return true;
     if( m_sigma_inel_NN != 0 ) return true;
-    if( m_centrality != 0 ) return true;
+    if( m_centrality >= 0 ) return true;
     return false;
   }
 
