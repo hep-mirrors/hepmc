@@ -200,6 +200,7 @@ namespace HepMC {
       m_outstream->unsetf(std::ios::floatfield);
       m_outstream->precision(3);
       m_outstream->width(8);
+	  m_outstream->unsetf(std::ios_base::floatfield);
       *m_outstream << xmassi << " ";
       m_outstream->setf(std::ios::scientific,std::ios::floatfield);
       m_outstream->precision(m_precision);
@@ -210,6 +211,7 @@ namespace HepMC {
       etai = (*part)->momentum().eta();
       if(etai > 999.)etai = 999.;
       if(etai < -999.)etai = -999.;
+	  m_outstream->unsetf(std::ios_base::floatfield);
       *m_outstream << etai << std::endl;
       m_outstream->setf(std::ios::scientific,std::ios::floatfield);
       m_outstream->precision(m_precision);

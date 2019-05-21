@@ -27,6 +27,10 @@ extern "C" void upevnt_() {}
 extern "C" void structm_(double X,double QSCA,double UPV,double DNV,double USEA,double DSEA,double STR,double CHM,double BOT,double TOP,double GLU) {}
 extern "C" void pdfset_(char a[20][20], double[20]){}
 
+extern "C" void hwaend_() {}
+
+extern "C" void hwaend_() {}
+
 int main() { 
     //
     //........................................HEPEVT

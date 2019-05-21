@@ -1,3 +1,7 @@
+2019-05-21  Andy Buckley  <andy.buckley@cern.ch>
+
+	* Apply a few remaining patches from Linux distribution packagings.
+
 2019-05-13  Andy Buckley  <andy.buckley@cern.ch>
 
 	* Fix a bug in line-end parsing, which led reading of multiweight

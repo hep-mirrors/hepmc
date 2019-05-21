@@ -12,17 +12,19 @@
 #include "HepMC/GenEvent.h"
 #include "HepMC/CompareGenEvent.h"
 #include "HepMC/HEPEVT_Wrapper.h"
+
 /*Dummy routines*/
 extern "C" void hwaend_() {}
 extern "C" void upinit_() {}
 extern "C" void upevnt_() {}
 extern "C" void structm_(double X,double QSCA,double UPV,double DNV,double USEA,double DSEA,double STR,double CHM,double BOT,double TOP,double GLU) {}
 extern "C" void pdfset_(char a[20][20], double[20]){}
-int main() { 
+
+int main() {
     //
     //........................................HEPEVT
     // Herwig 6.4 uses HEPEVT with 4000 entries and 8-byte floating point
-    //  numbers. We need to explicitly pass this information to the 
+    //  numbers. We need to explicitly pass this information to the
     //  HEPEVT_Wrapper.
     //
     HepMC::HEPEVT_Wrapper::set_max_number_entries(4000);
@@ -33,7 +35,7 @@ int main() {
     hwproc.PBEAM1 = 7000.; // energy of beam1
     hwproc.PBEAM2 = 7000.; // energy of beam2
     // 1610 = gg->H--> WW, 1706 = qq-->ttbar, 2510 = ttH -> ttWW
-    hwproc.IPROC = 1706; // qq -> ttbar production 
+    hwproc.IPROC = 1706; // qq -> ttbar production
     hwproc.MAXEV = 50; // number of events
     // tell it what the beam particles are:
     for ( unsigned int i = 0; i < 8; ++i ) {
@@ -57,7 +59,7 @@ int main() {
     //
     //........................................EVENT LOOP
     for ( int i = 1; i <= hwproc.MAXEV; i++ ) {
-	if ( i%50==1 ) std::cout << "Processing Event Number " 
+	if ( i%50==1 ) std::cout << "Processing Event Number "
 				 << i << std::endl;
 	// initialise event
 	hwuine();
@@ -80,7 +82,7 @@ int main() {
 	// finish event
 	hwufne();
 	HepMC::GenEvent* evt = hepevtio.read_next_event();
-	// herwig uses GeV and mm 
+	// herwig uses GeV and mm
 	evt->use_units( HepMC::Units::GEV, HepMC::Units::MM);
 	// set cross section information
 	evt->set_cross_section( HepMC::getHerwigCrossSection(i) );
@@ -94,10 +96,10 @@ int main() {
 	ec.print(out2);
 	HepMC::GenEvent* evt4 = new HepMC::GenEvent(*evt);
 	evt4->print(out3);
- 	if( !compareGenEvent(evt,evt4) ) { 
+ 	if( !compareGenEvent(evt,evt4) ) {
 	   std::cerr << "testHerwigCopies: GenEvent comparison fails at event "
 	             << evt->event_number() << std::endl;
-	   return -1; 
+	   return -1;
 	}
 
 	// we also need to delete the created event from memory
