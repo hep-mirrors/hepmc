@@ -464,8 +464,8 @@ std::istream & GenEvent::process_event_line( std::istream & is,
     if(!iline) detail::find_event_end( is );
     std::vector<double> wgt(weights_size);
     for ( WeightContainer::size_type ii = 0; ii < weights_size; ++ii ) {
-        iline >> wgt[ii];
-        if(!iline) detail::find_event_end( is );
+      if(!iline) detail::find_event_end( is );
+      iline >> wgt[ii];
     }
     // weight names will be added later if they exist
     if( weights_size > 0 ) m_weights = wgt;

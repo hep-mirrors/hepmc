@@ -1,3 +1,11 @@
+  --------------------------  HepMC-2.06.10  --------------------------
+
+2019-06-26  Lynn Garren
+
+     * src/GenEventStreamIO.cc: Reorder to fix parsing bug with multiple weights
+
+     * HepMC/HeavyIon.h, src/HeavyIon.cc: Backport centrality from 2.07
+
   --------------------------  HepMC-2.06.09  --------------------------
 
 2012-06-05  Lynn Garren
@@ -9,14 +17,14 @@
 
 2012-02-16  Lynn Garren
 
-     * src/GenEventStreamIO.cc: make sure we check the stream units 
+     * src/GenEventStreamIO.cc: make sure we check the stream units
        if there is no unit line in the event header
      * test/testHepMC.cc.in: verify unit behavior
 
 2012-02-10  Lynn Garren
 
      * cmake/Modules/HepMCVariables.cmake: deal with Windows
-     
+
      * HepMC/GenEvent.h: add define_units()
 
   --------------------------  HepMC-2.06.07  --------------------------
@@ -30,7 +38,7 @@
 2012-01-05  Lynn Garren
 
      * src/GenEvent.cc: fix a typo in error report for GenEvent::use_length_unit
-     
+
      * examples/pythia8: add main31 and main32 from pythia8
 
 2012-01-05  Lynn Garren
@@ -53,7 +61,7 @@
 2011-10-31  Lynn Garren
 
      * remove fio/PythiaWrapper.cc
-     * HepMC/PythiaWrapper.h: HepMC::GenCrossSection getPythiaCrossSection() 
+     * HepMC/PythiaWrapper.h: HepMC::GenCrossSection getPythiaCrossSection()
        is now an inline method
 
 2011-10-25  Lynn Garren
@@ -75,7 +83,7 @@
 2011-01-04  Lynn Garren
 
       * src/HeavyIon.cc, src/PdfInfo.cc: throw if there is an invalid line type
-      * test/testHepMC.cc.in, test/testStreamIO.cc.in, test/testHepMCVarious.input: 
+      * test/testHepMC.cc.in, test/testStreamIO.cc.in, test/testHepMCVarious.input:
         provoke a problem with HeavyIon  (see bug #76527)
 
   --------------------------  HepMC-2.06.03  --------------------------
@@ -91,7 +99,7 @@
   --------------------------  HepMC-2.06.02  --------------------------
 2010-08-18  Lynn Garren
 
-      * src/GenEventStreamIO.cc, StreamHelpers.cc: 
+      * src/GenEventStreamIO.cc, StreamHelpers.cc:
         cleanup unassociated event remnants if corrupt data is found
 
 2010-07-30  Lynn Garren & Andy Buckley
@@ -102,10 +110,10 @@
   --------------------------  HepMC-2.06.01  --------------------------
 2010-06-01  Lynn Garren
 
-      * HepMC/GenRanges.h: remove ConstGenVertexParticleRange since 
-        there is neither a GenVertex::particle_const_iterator nor a 
-        GenVertex::vertex_const_iterator 
-      * HepMC/GenVertex.h: remove unimplemented 
+      * HepMC/GenRanges.h: remove ConstGenVertexParticleRange since
+        there is neither a GenVertex::particle_const_iterator nor a
+        GenVertex::vertex_const_iterator
+      * HepMC/GenVertex.h: remove unimplemented
         ConstGenVertexParticleRange particles()
 
 
@@ -127,9 +135,9 @@
 2010-05-11  Lynn Garren
 
       * rename HepMC/GenEventIterators.h to HepMC/GenRanges.h
-      
+
       * src/GenEventStreamIO.cc: fix a bug reading unnamed (old style) weights
-      
+
       * test/testHepMC: add more weight testing
 
   --------------------------  HepMC-2.06.00.b01  --------------------------
@@ -137,11 +145,11 @@
 2010-04-05  Lynn Garren
 
       * HepMC/StreamInfo.h: add reading_event_header flag for use by streaming input
-      * src/GenEventStreamIO.cc: Input no longer expects a fixed order of 
+      * src/GenEventStreamIO.cc: Input no longer expects a fixed order of
         header lines and will ignore lines that are not of a known type.
 
       * HepMC/HerwigWrapper.h: add hwbeam
-      * rename PythiaWrapper6_2.h to PythiaWrapper6_4.h 
+      * rename PythiaWrapper6_2.h to PythiaWrapper6_4.h
         Add structs for more common blocks.
 
 2010-04-02  Lynn Garren
@@ -149,7 +157,7 @@
       * HepMC/IteratorRange.h: put the enum in its own header
       * HepMC/GenEvent.h: add vertex_range() and particle_range()
       * HepMC/GenParticle.h: add particles_in(range) and particles_out(range)
-      * HepMC/GenVertex.h: add particles(range), 
+      * HepMC/GenVertex.h: add particles(range),
         particles_in(GenParticle,range), and particles_out(GenParticle,range)
       * test/testHepMCIteration.cc: use the new methods
 
@@ -183,36 +191,36 @@
 2010-01-28  Lynn Garren
 
       * HepMC/GenEventIterators.h: This new header defines a set of classes
-        which provide the appropriate iterators ranges.  They can be used to 
+        which provide the appropriate iterators ranges.  They can be used to
 	simplify code and also work directly with such utilities as std::foreach.
-	These new classes are 
-	GenEventVertexRange, ConstGenEventVertexRange, 
-	GenEventParticleRange, ConstGenEventParticleRange, 
-	GenVertexParticleRange, 
+	These new classes are
+	GenEventVertexRange, ConstGenEventVertexRange,
+	GenEventParticleRange, ConstGenEventParticleRange,
+	GenVertexParticleRange,
 	GenParticleProductionRange, and GenParticleEndRange
       * test/testHepMCIteration.cc: use the new iterator clases and
         also illustrate the use of std::for_each
- 
+
 2010-01-26  Lynn Garren
 
       * test/testHepMCIteration: illustrate use of std::for_each
- 
+
 2010-01-25  Lynn Garren
 
       * HepMC/WeightContainer.h: add map-like functionality, allowing users to
-        name weights, while retaining the original vector interface for 
+        name weights, while retaining the original vector interface for
 	complete backwards compatibility
 	If a name is not specified for a particular weight, the default
 	name is the weight's vector index.
 	Also add == and != operators.
       * HepMC/GenEvent.h: add a private method used by the stream I/O
       * src/GenEventStreamIO.cc: add a new line for weight names
-        The weight name line is optional when reading input and is 
+        The weight name line is optional when reading input and is
 	written only if the event weights object is not empty.
       * test/testWeights.cc: add tests for WeightContainer
       * test/testHepMC: test I/O of named weights
       * examples/testPythiaCopies.cc: set some arbitrary weights
- 
+
 2010-01-09  Lynn Garren
 
       * removed ParticleDataTable.h and all supporting references.
@@ -225,9 +233,9 @@
       * src/GenEvent.cc: output the cross section (if it exists) when printing an event
       * src/GenVertex.cc, GenParticle.cc: save and restore output stream state
         when calling print methods
-	
+
       * examples: Calculate Pythia and Herwig cross sections using
-        getPythiaCrossSection from examples/PythiaHelper.h and 
+        getPythiaCrossSection from examples/PythiaHelper.h and
 	getHerwigCrossSection from examples/HerwigHelper.h.
         Set the units explicitly.
       * test/testHepMC.cc.in: call write_cross_section()
@@ -246,11 +254,11 @@
 
 2009-05-19  Lynn Garren
 
-	* HepMC/GenCrossSection: new class to contain the generated 
+	* HepMC/GenCrossSection: new class to contain the generated
 	cross section and cross section error.  This information is
 	considered temporary and could change on an event by event basis.
-	* write GenCrossSection information with GenEvent whenever the 
-	cross section has been set.  
+	* write GenCrossSection information with GenEvent whenever the
+	cross section has been set.
 	* GenEvent.h: add pointer to a CrossSection (null by default).
 
 	* examples: add example_PythiaStreamIO.cc,
@@ -270,18 +278,18 @@
 	* IO_GenEvent: add precision() to set output precision (default is 16).
 	IO_GenEvent uses the GenEvent streaming input and output operators.
 	Many of the protected methods are no longer useful and have been removed.
-	
-	
+
+
 	* IO_Exception class added for use when throwing errors.
 	If invalid data is encountered when reading an event, input will
-	read to the end of the event instead of failing and return an 
+	read to the end of the event instead of failing and return an
 	empty GenEvent or null pointer.
-	
+
 	* StreamHelpers.h: Define functions used by streaming I/O.
 	All are in the detail namespace.
-	
-	* StreamInfo: Special class containing extra information needed 
-	to process HepMC ascii I/O.  This class is initialized by a call 
+
+	* StreamInfo: Special class containing extra information needed
+	to process HepMC ascii I/O.  This class is initialized by a call
 	to a custom iomanip when any I/O stream is initialized and deleted
 	by the stream destructor.  Each stream has a separate instance.
 
@@ -292,7 +300,7 @@
 	write_HepMC_IO_block_begin, and write_HepMC_IO_block_end.
 
 2009-03-02  Lynn Garren
-	
+
 	* HeavyIon:  Add streaming input and output operators.
 	Add is_valid() method.
 
@@ -304,13 +312,13 @@
 	* HepMC/SimpleVector: remove FourVector::mag() and ThreeVector::mag()
 	Change test/testSimpleVector.cc and test/testMass.cc to reflect this.
 
-	* HepMC/HepMCDefs.h: New header containing HEPMC_HAS_UNITS and 
-	similar macros so users can check for various code features.  
+	* HepMC/HepMCDefs.h: New header containing HEPMC_HAS_UNITS and
+	similar macros so users can check for various code features.
 	HepMC/GenEvent.h includes HepMCDefs.h.
 	* HepMC/Version.h: Use new HEPMC_VERSION macro.
-	
-	* HepMC/GenParticle: add is_undecayed(), has_decayed(), 
-	and is_beam_particle() convenience methods.  
+
+	* HepMC/GenParticle: add is_undecayed(), has_decayed(),
+	and is_beam_particle() convenience methods.
 	Test these methods in test/testHepMC.
 
 2009-01-28  Lynn Garren
@@ -322,15 +330,15 @@
   --------------------------  HepMC-2.04.01  --------------------------
 
 2008-12-15  Lynn Garren
-	
-	* src/CommonIO.cc: add space requested by -Wextra 
+
+	* src/CommonIO.cc: add space requested by -Wextra
 	The -Wextra flag is not a default compiler flag, request it with
 	configure ... CXXFLAGS="-Wextra"
 
 2008-12-11  Lynn Garren
 
 	* test/testHepMCIteration.cc.in: add loop over children to the test
-	
+
 	* src/IO_Ascii.cc, IO_GenEvent.cc: fix error messages
 
 2008-06-24  Lynn Garren
@@ -345,26 +353,26 @@
 	* doc/HepMC2_user_manual.tex: expand description of Ascii IO format
 
 2008-05-29  Lynn Garren
-	
+
 	* configure.ac: Use libtool versioning for libraries
 
 2008-05-27  Lynn Garren
-	
+
 	* configure.ac: Throw an error immediately if units are not specified.
 
   --------------------------  HepMC-2.04.00.beta2  --------------------------
 
 2008-05-21  Lynn Garren
-	
-	* HepMC/GenEvent.h: Duplicate the existing constructors with new 
+
+	* HepMC/GenEvent.h: Duplicate the existing constructors with new
 	constructors that have momentum and length as the first 2 arguments.
 
-	* examples: all examples except example_BuildEventFromScratch, 
+	* examples: all examples except example_BuildEventFromScratch,
         testHerwigCopies, and testPythiaCopies use default units
-	
+
 	* HepMC/IO_GenEvent.h: add use_input_units() method
-	This method is needed ONLY if a) the input stream has no 
-	unit information and b) it is known that the units of the input 
+	This method is needed ONLY if a) the input stream has no
+	unit information and b) it is known that the units of the input
 	stream do not match the default units.
 
 2008-05-20  Lynn Garren
@@ -372,15 +380,15 @@
 	* revamp Units design completely
 	Replace MomentumUnits.h and PositionUnits.h with Units.h
 	Allowed unit designations are GEV, MEV, MM, and CM
-	
+
 	* configure.ac: User MUST specify both --with-momentum_units=XX
 	and --with-length_units=YY.  There are no defaults.
-	
+
 	* HepMC/GenEvent.h: unit data members are now enums
 
 2008-05-12  Lynn Garren
 
-	* HepMC/Pdfinfo.h: Input parton flavour codes id1 and id2 are expected 
+	* HepMC/Pdfinfo.h: Input parton flavour codes id1 and id2 are expected
 	to obey the PDG code conventions, especially g = 21.
 
   --------------------------  HepMC-2.04.00.beta  --------------------------
@@ -389,7 +397,7 @@
 
 	* configure.ac: use separate makefiles (VCMakefile.in) for Visual C++
 	The custom makefiles are invoked by default when using Visual C++.
-	* doc: Stop building postscript copies of the manuals, just 
+	* doc: Stop building postscript copies of the manuals, just
 	build and distribute PDF copies of the manuals.
 
 2008-04-29  Lynn Garren
@@ -398,8 +406,8 @@
 
 2008-04-25  Lynn Garren
 
-	* cleanup examples: combine example_MyPythia.cc, 
-	example_MyPythiaRead.cc, example_MyPythiaWithEventSelection.cc, 
+	* cleanup examples: combine example_MyPythia.cc,
+	example_MyPythiaRead.cc, example_MyPythiaWithEventSelection.cc,
 	example_PythiaParticle.cc, and example_ReadMyPythia.cc into one example with multiple subsets.
 	* add tests to list of examples in the reference manual
 
@@ -424,20 +432,20 @@
 
 	* HepMC/MomentumUnits.h: enum HepMCmomentumUnits{ UNKNOWN = 0, MEV, GEV };
 	Recommended usage: MomentumUnits::GEV
-	* HepMC/PositionUnits.h: enum HepMCpositionUnits{ unknown = 0, MM, CM } 
+	* HepMC/PositionUnits.h: enum HepMCpositionUnits{ unknown = 0, MM, CM }
 	Recommended usage: PositionUnits::MM
 
 2008-04-17  Lynn Garren
 
 	* Rename configure.in to configure.ac, which is now the common usage.
-	* configure.ac: Major restructuring.  Using libtool. 
+	* configure.ac: Major restructuring.  Using libtool.
 	Only Linux, MacOSX, and Windows are explicitly supported.
 	All Makefile.am's have been restructured to use libtool.
 
 2008-04-01  Lynn Garren
 
 
-	* HepMC/IO_GenEvent.h: replace const char* filename with 
+	* HepMC/IO_GenEvent.h: replace const char* filename with
 	  const std::string& in the constructor accepting a filename.
 
 2008-03-31  Lynn Garren
@@ -473,13 +481,13 @@
 
 	* HepMC/PdfInfo.h: add pdf_id1(), pdf_id2(), set_pdf_id1(), and
 	  set_pdf_id2() for the pdf set id numbers
-	
-	* IO_GenEvent: get and put unit information in a new line 
+
+	* IO_GenEvent: get and put unit information in a new line
 	  The first character of the unit line is "U".
 	* IO_GenEvent: process the new PdfInfo data members
-	
+
 	* test/testUnits.cc: new test for MomentumUnits and PositionUnits
-	
+
   --------------------------  HepMC-2.03.08  --------------------------
 
 2008-04-23  Lynn Garren
@@ -499,36 +507,36 @@
 	* HepMC/ParticleData.h: minor bug fix for gcc 4.3.0
 	* src/IO_ExtendedAscii.cc: minor bug fix for gcc 4.3.0
 	* src/IO_GenEvent.cc: minor bug fix for gcc 4.3.0
-	
+
   --------------------------  HepMC-2.03.06  --------------------------
 
 2008-03-12  Lynn Garren
-	
+
 	* test: reduce size of input files
-	
+
 	* IO_HEPEVT: add trust_beam_particles and set_trust_beam_particles
 	  methods so the user can specify that no beam particles are available.
 	  This fixes a problem with pythia6 input when the user chooses "none".
 
 2008-03-11  Lynn Garren
 
-	* src/GenEvent.cc: The GenVertex pointer to the parent event was 
+	* src/GenEvent.cc: The GenVertex pointer to the parent event was
 	  not properly moved when the operator= method was used to copy
 	  a GenEvent.  That bug is now fixed.
-	* GenVertex: added protected change_parent_event_ method for swap 
+	* GenVertex: added protected change_parent_event_ method for swap
 	  as part of bug fix.
 	* test/testMultipleCopies.cc.in: Add explicit tests for operator=
 	  and swap.
-	  
+
 	* examples: minor tweaks for readability
 
   --------------------------  HepMC-2.03.05  --------------------------
 
 2008-02-22  Lynn Garren
 
-	* fio/IO_HEPEVT.cc:  According to standard HepMC design, all vertices 
+	* fio/IO_HEPEVT.cc:  According to standard HepMC design, all vertices
 	in an event are expected to contain particles.  If, for instance, the
-	first two particles have no parents, then they should simply not have 
+	first two particles have no parents, then they should simply not have
 	a production vertex.  However, in at least one instance empty production
 	vertices were created for the first two particles. IO_HEPEVT now
 	protects against this.
@@ -536,7 +544,7 @@
 
 2008-02-18  Lynn Garren
 
-	* HepMC/HEPEVT_Wrapper.h: fix calculation of the total size 
+	* HepMC/HEPEVT_Wrapper.h: fix calculation of the total size
 	of the common block
 
   --------------------------  HepMC-2.03.04  --------------------------
@@ -544,15 +552,15 @@
 2008-02-05  Lynn Garren
 
 	* test: use /bin/bash instead of /bin/sh in shell scripts
-	
+
 	* GenEvent, GenVertex, GenParticle: remove static counters
-	These counters were only for the debugging convenience of the 
+	These counters were only for the debugging convenience of the
 	HepMC code developer.  They were not accessible by users.
 
 2008-02-04  Lynn Garren
 
 	* fio/IO_HERWIG.cc: fix for Z0 mother-daughter problem (from Atlas)
-	
+
 	* HepMC/SimpleVector.h: Remove simple math methods
 
 2007-01-29  Lynn Garren
@@ -573,8 +581,8 @@
 
 	* test/testMultipleCopies.cc.in: verify that two copies of
 	the same GenEvent object are, indeed, the same
-	
-	* test/testHepMCIteration: use a different output file name so the 
+
+	* test/testHepMCIteration: use a different output file name so the
 	test will work if you build on top of the source code
 
 
@@ -595,9 +603,9 @@
 
 2007-12-14  Lynn Garren
 
-	* doc: The HepMC 1 and HepMC 2 user manuals have been merged 
+	* doc: The HepMC 1 and HepMC 2 user manuals have been merged
 	into a single manual.
-	
+
 	* HepMC/IO_GenEvent.h: check operator methods for consistency
 
 2007-12-07  Lynn Garren
@@ -612,13 +620,13 @@
 
 2007-12-03  Lynn Garren
 
-	* HepMC/CommonIO.h, src/CommonIO.cc: 
+	* HepMC/CommonIO.h, src/CommonIO.cc:
 	  new header for shared IO methods and keys
-	
+
 	* src/IO_GenEvent.cc: use CommonIO
 	  search for any of several allowed input data types
 
-	* HepMC/IO_GenEvent.h: disable write_particle_data_table and 
+	* HepMC/IO_GenEvent.h: disable write_particle_data_table and
 	  fill_particle_data_table - that is best done outside HepMC
 
   --------------------------  HepMC-2.03.01  --------------------------
@@ -635,7 +643,7 @@
 
 2007-10-30  Lynn Garren
 
-	* examples/example_ReadMyPythia.cc: New example to read the file 
+	* examples/example_ReadMyPythia.cc: New example to read the file
 	  written by example_MyPythia.
 
 	* doc: remove the latex subdirectory after building the reference library
@@ -644,7 +652,7 @@
 	  If you don't specify an ostream, the default is std::cout.
 
 	* GenVertex: Store particles in vectors instead of sets.
-	  Root IO does not properly restore the state of the particle 
+	  Root IO does not properly restore the state of the particle
 	  serial number counter, so the previous solution to retaining
 	  consistent particle ordering within a vertex had to be revisited.
 
@@ -653,12 +661,12 @@
 	* HepMC/SearchVector.h: Utilities to facilitate working with the
 	  vector of particles.
 
-	* HepMC/TempParticleMap.h: Temporary particle container that 
-	  allows us to maintain particle ordering when reading an event 
+	* HepMC/TempParticleMap.h: Temporary particle container that
+	  allows us to maintain particle ordering when reading an event
 	  with IO_Ascii and IO_ExtendedAscii.
 
 	* Use fully qualified names (e.g., HepMC::GenParticle) inside class
-	  templates (e.g., std::map<>) wherever they are used within a 
+	  templates (e.g., std::map<>) wherever they are used within a
 	  header so that rootcint can make the dictionary.
 
   --------------------------  HepMC-2.02.01  --------------------------
@@ -683,7 +691,7 @@
 
 	* test: use /bin/bash instead of /bin/sh in shell scripts
 
-	* doc: The HepMC 1 and HepMC 2 user manuals have been merged 
+	* doc: The HepMC 1 and HepMC 2 user manuals have been merged
 	into a single manual.
 
 2008-02-04  Lynn Garren
@@ -691,8 +699,8 @@
 	* fio/IO_HERWIG.cc: fix for Z0 mother-daughter problem (from Atlas)
 
 2008-01-14  Lynn Garren
-	
-	* test/testHepMCIteration: use a different output file name so the 
+
+	* test/testHepMCIteration: use a different output file name so the
 	test will work if you build on top of the source code
 
 2007-12-17  Lynn Garren
@@ -704,7 +712,7 @@
         * Use fully qualified names (e.g., HepMC::GenParticle) inside class
           templates (e.g., std::map<>) wherever they are used within a
           header so that rootcint can make the dictionary.
-	  
+
 	* src/IO_ExtendedAscii.cc: make sure all info is filled when reading
 
 	* configure.in: add support for g++-*
@@ -715,7 +723,7 @@
 2007-10-23  Lynn Garren
 
 	* GenVertex: Store particles in vectors instead of sets.
-	  Root IO does not properly restore the state of the particle 
+	  Root IO does not properly restore the state of the particle
 	  serial number counter, so the previous solution to retaining
 	  consistent particle ordering within a vertex had to be revisited.
 
@@ -725,8 +733,8 @@
 	* HepMC/SearchVector.h: Utilities to facilitate working with the
 	  vector of particles.
 
-	* HepMC/TempParticleMap.h: Temporary particle container that 
-	  allows us to maintain particle ordering when reading an event 
+	* HepMC/TempParticleMap.h: Temporary particle container that
+	  allows us to maintain particle ordering when reading an event
 	  with IO_Ascii and IO_ExtendedAscii.
 
   --------------------------  HepMC-2.01.07  --------------------------
@@ -734,7 +742,7 @@
 2007-10-19  Lynn Garren
 
 	* Use fully qualified names (e.g., HepMC::GenParticle) inside class
-	  templates (e.g., std::map<>) wherever they are used within a 
+	  templates (e.g., std::map<>) wherever they are used within a
 	  header so that rootcint can make the dictionary.
 
   --------------------------  HepMC-2.01.06  --------------------------
@@ -742,7 +750,7 @@
 2007-08-07  Lynn Garren
 
 	* HepMC/GenEvent.h, GenVertex.h,GenParticle.h : add swap method
-	* src/GenEvent.cc, GenVertex.cc, GenParticle.cc: 
+	* src/GenEvent.cc, GenVertex.cc, GenParticle.cc:
 	  use best practices for assignment and copy constructor
 
 	* HepMC/SimpleVector.h: add swap method
@@ -798,8 +806,8 @@
 
 2007-06-21  Lynn Garren
 
-	* HepMC/GenEvent.h: add methods to set and access the number of 
-	  multi particle interactions in the event.  
+	* HepMC/GenEvent.h: add methods to set and access the number of
+	  multi particle interactions in the event.
 	  The default value of this number is -1.
 	* src/IO_ExtendedAscii.cc: read and write MPI information
 
@@ -825,7 +833,7 @@
 
 2007-06-01  Lynn Garren
 
-	* HepMC/GenEvent.h, src/GenEvent.cc: change interface such that 
+	* HepMC/GenEvent.h, src/GenEvent.cc: change interface such that
 	  GenEvent makes its own copy of HeavyIon and PdfInfo
 
 
@@ -841,7 +849,7 @@
 
 	* bootstrap, configure.in, doc/Makefile.am:
 	  To avoid problems with different versions of latex, just build
-	  the documents during the bootstrap step.  
+	  the documents during the bootstrap step.
 	* doc/buildDoc.sh: builds the documents if doxygen and latex are present
 
 2007-04-20  Lynn Garren
@@ -867,9 +875,9 @@
 
 2007-01-30 Lynn Garren
 
-	* examples/example_BuildEventFromScratch.cc: add example of 
+	* examples/example_BuildEventFromScratch.cc: add example of
 	  conversion from SimpleVector to HepLorentzVector
-	* examples/VectorConversion.h: VectorConversion.h is meant as a 
+	* examples/VectorConversion.h: VectorConversion.h is meant as a
 	  template for user code converting to the vector of your choice.
 
 2007-01-29 Lynn Garren
@@ -900,14 +908,14 @@
 2006-08-23 Lynn Garren
 
 	* install examples in $(prefix)/examples/HepMC
-	
+
 	* check for latex and build documents if latex is present
 
 	--------------------  HepMC-02-00-00  ---------------------------------
 
 2006-08-22 Lynn Garren
 
-	* src/IO_ExtendedAscii.cc: read and write generated mass as part of 
+	* src/IO_ExtendedAscii.cc: read and write generated mass as part of
 	  particle line.
 
 2006-08-18 Lynn Garren
@@ -916,19 +924,19 @@
 
 2006-08-01 Lynn Garren
 
-	* HepMC/is_arithmetic.h, HepMC/enable_if.h supplied by Walter Brown 
+	* HepMC/is_arithmetic.h, HepMC/enable_if.h supplied by Walter Brown
 	  for a clean template constructor implementation.
 
 2006-07-23 Lynn Garren
 
 	* HepMC/SimpleVector.h: add a templated constructor for both FourVector
-          and ThreeVector that will take any lorentz vector which has the 
-          x(), y(), z(), and t() methods.  This should enable existing code 
+          and ThreeVector that will take any lorentz vector which has the
+          x(), y(), z(), and t() methods.  This should enable existing code
           that uses CLHEP Vector classes to keep working.
 
 2006-07-19 Lynn Garren
 
-	* replace CLHEP/Vector/LorentzVector.h and CLHEP/Vector/ThreeVector.h  
+	* replace CLHEP/Vector/LorentzVector.h and CLHEP/Vector/ThreeVector.h
 	  with HepMC/SimpleVector.h
 	  implement some of the basic vector properties so user code won't break
 
@@ -938,7 +946,7 @@
 2006-08-08 Lynn Garren
 
 	* HepMC/IO_ExtendedAscii.h: Extended format writes PdfInfo and HeavyIon
-	  if they are present in the event.  This is otherwise identical 
+	  if they are present in the event.  This is otherwise identical
 	  to IO_Ascii.h.
 
 2006-07-30 Lynn Garren
@@ -946,7 +954,7 @@
 	* HepMC/HEPEVT_Wrapper.h: fix for 64bit machines
 
 2006-07-26 Lynn Garren
-	
+
 	* HepMC/PdfInfo.h implements information requested by CMS
 	* GenEvent.h, GenEvent.cc make sure m_pdf_info is initialized to 0
 
@@ -962,7 +970,7 @@
 
 	* GenEvent.cc, GenParticle.cc,  GenVertex.cc use standard C++ output
 	* testPrintBug new test for output problems with gcc 4.x
-	* HepMC/HepMC_CLHEP20.h defines several typedefs needed when compiling 
+	* HepMC/HepMC_CLHEP20.h defines several typedefs needed when compiling
 	   with CLHEP 2.0.x
 	* HEPEVT_Wrapper.h, HerwigWrapper6_4.h, PythiaWrapper6_2.h
 	   need extern "C" statements for gcc 4.x
@@ -996,7 +1004,7 @@
 2006-01-12 Lynn Garren
 
 	HepPDT 1.26 is available at https://savannah.cern.ch/projects/hepmc/
-	
+
 	* HepMC/HeavyIon.h implements information requested by CMS
 	* HepMC/GenParticle.h has pointer (null by default) to HeavyIon
 	* code providing interfaces to Fortran common blocks has been moved
@@ -1007,14 +1015,14 @@
 	--------------------  HepMC-01-02-21  ---------------------------------
 
 2005-04-27 Matt Dobbs and Giorgos
-	* src/IO_HERWIG.cxx implemented a bug fix suggested by borut, 
+	* src/IO_HERWIG.cxx implemented a bug fix suggested by borut,
 	which keeps the remapping of daughters/motherrs from going "over
-	the end" on herwig events (was noticed in the tauola events for 
+	the end" on herwig events (was noticed in the tauola events for
 	rome DC).
 
 2004-08-04  David Quarrie  <David.Quarrie@cern.ch>
 
-	* cmt/requirements: Change dependencies on CERNLIB and CLHEP 
+	* cmt/requirements: Change dependencies on CERNLIB and CLHEP
         to AtlasCERNLIB and AtlasCLHEP to avoid name clashes
 
 
@@ -1039,17 +1047,17 @@
 	algorithms.
 
 	Thanks to Ulrik Egede for pointing this out.
-	
-	* HepMC/GenVertex.h, .cxx HepMC/GenEvent.h, .cxx: changed 
+
+	* HepMC/GenVertex.h, .cxx HepMC/GenEvent.h, .cxx: changed
 	std::forward_iterator<GenParticle*,ptrdiff_t>
 	to
 	std::iterator<std::forward_iterator_tag,GenParticle*,ptrdiff_t>
 	for standard
 	compliance, and removed #define statements.
-	
+
 	* HepMC/IO_Ascii.h,.cxx: changed open_mode to openmode for standard
 	compliance, and removed #define statements.
-	
+
 
 2003-12-17  David Rousseau  <droussea@lxplus072.cern.ch>
 
@@ -1071,14 +1079,14 @@
 
 2003-04-21  Matt Dobbs  <Matt.Dobbs@Cern.CH>
 
-	* src/IO_HERWIG.cxx: 
+	* src/IO_HERWIG.cxx:
 	minor changes to handling of herwig event record
-	
+
 	--------------------  HepMC-01-02-11  ----(gcc 3.2 compatible)---------
 
 2003-03-10  Matt Dobbs  <Matt.Dobbs@Cern.CH>
 
-	* HepMC/IO_BaseClass.h: 
+	* HepMC/IO_BaseClass.h:
 	Fixed bug reported by Peter Loch, wherein the virtual destructor
 	for IO_BaseClass was missing.
 
@@ -1106,7 +1114,7 @@
 	map with the new barcode, but HepMC forgets to erase the old
 	entry... such that the vertex now appears twice in the map.  This
 	is fixed, and the corresponding error for particles is also fixed.
-	
+
 2002-10-31  Matt Dobbs  <Matt.Dobbs@Cern.CH>
 
 	* HepMC/IO_HERWIG.h: modified IO_HERWIG to include a switch
@@ -1124,13 +1132,13 @@
 	* HepMC/IO_HERWIG.h: New class for reading the Herwig version of
 	the HEPEVT common block is added. READ THE COMMENTS IN THE .h file
 	carefully before using it!
-	
+
 
 2002-07-29  Matt Dobbs  <Matt.Dobbs@Cern.CH>
 	--------------------  HepMC-01-02-03  ----(4.0.2)------------
 
 	* src/GenVertex.cxx (HepMC): remove_particle()
-	* HepMC/GenVertex.h: 
+	* HepMC/GenVertex.h:
 	removed confusing comment about the use of GenVertex::remove_particle()
 	in .h file, and clarified the comment in .cxx file.
 
@@ -1141,8 +1149,8 @@
 	since the particles are stored in set<>, this is not always true
 	-- making the results of the operator= method unreliable.
 	This is fixed by mapping the vertices explicitly.
-	
-	* src/IO_PDG_ParticleDataTable.cxx (HepMC): 
+
+	* src/IO_PDG_ParticleDataTable.cxx (HepMC):
 	added a line in read_entry that ignores empty lines (previously
 	empty lines in the pdg data table generated a cerr message).
 	This change was requested by Davida Costanzo.
@@ -1150,8 +1158,8 @@
 
 2002-03-02  Matt Dobbs  <Matt.Dobbs@Cern.CH>
 	--------------------  HepMC-01-02-02  ----(3.0.1)------------
-	
-	* src/GenVertex.cxx (HepMC): 
+
+	* src/GenVertex.cxx (HepMC):
 	GenVertex::edge_iterator::edge_iterator( .. )
 	Extra error protection added in the constructor.
 	Sometimes the edge_iterator fails when we have a vertex with no
@@ -1159,7 +1167,7 @@
 	with the ATLAS framework, it does happen. New code identifies the
 	scenario explicitly, and catches the error, which has to do with
 	the past-the-end value of the edge_iterator.
-	
+
 	* test/test_iterators.cxx: new test program added for iterators,
 	to test for the above problems.
 
@@ -1167,20 +1175,20 @@
 2002-02-19  Matt Dobbs  <Matt.Dobbs@Cern.CH>
 
         CHANGES TO ALLOW HEPMC TO COMPILE WITH SOLARIS CC 5.2
-	
+
 	* cmt/requirements: added the line
 	macro_append cppflags "" Solaris      " -D__SUNPRO_CC "
 	to handle Solaris CC 5.2 features.
-	
-	* HepMC/ParticleDataTable.h: 
+
+	* HepMC/ParticleDataTable.h:
 	turns on MISSING_FORWARD_ITERATOR when __SUNPRO_CC is defined.
 	This defines forward_iterator as iterator
 
-	* HepMC/GenVertex.h: 
-	same as ParticleDataTable.h, but also turns on 
-	NEED_SOLARIS_FRIEND_FEATURE when __SUNPRO_CC is defined. 
+	* HepMC/GenVertex.h:
+	same as ParticleDataTable.h, but also turns on
+	NEED_SOLARIS_FRIEND_FEATURE when __SUNPRO_CC is defined.
 
-	* src/Polarization.cxx (HepMC): 
+	* src/Polarization.cxx (HepMC):
 	replaced abs() with theta = ( theta>0 ? theta : -theta );
 	for compatibility with Solaris.
 
@@ -1188,13 +1196,13 @@
 	--------------------  HepMC-01-02-01  ----(3.0.0)------------
 
 	* HepMC/GenEvent.h: bug discovered by <srinir@bnl.gov> with help
-	from Paolo and Hong. 
+	from Paolo and Hong.
 	The GenEvent::particle_iterator, const_particle_iterator,
 	              vertex_iterator, const_vertex_iterator
 	had methods like:
-	  bool operator !=(const particle_iterator& a) const 
+	  bool operator !=(const particle_iterator& a) const
 	  {  return !(**this == *a); }
-	which doesn't work because you are not allowed to de-reference 
+	which doesn't work because you are not allowed to de-reference
 	the end() iterator  [the above coding is a relic of the old
 	              walking iterators which did not inherit from
 	              forward_iterstor, and for which *end() was well
@@ -1204,19 +1212,19 @@
 
 	Note: this does NOT affect the GenVertex::***_iterator's, since
 	for those iterators *end() is well defined.
-	
+
 
 2002-01-23  Matt Dobbs  <Matt.Dobbs@Cern.CH>
 	--------------------  HepMC-01-02-00  --------------------
 	                  ( Public Version 1.2 )
 
 	User manual, webpage, and public version updated.
-	
+
 	The CLHEP names branch, called HepMC-00-00-96-CLHEP, has
 	been moved to the head of the main trunk in cvs, and commited.
 	Thus the main trunk is the only development branch.
 
-	
+
 2002-01-22  Matt Dobbs  <Matt.Dobbs@Cern.CH>
 	--------------------  HepMC-01-01-12  --------------------
 
@@ -1230,23 +1238,23 @@
 2002-01-21  Matt Dobbs  <Matt.Dobbs@Cern.CH>
 	--------------------  HepMC-01-01-07  --------------------
 
-	* HepMC/GenEvent.cxx (delete_all_vertices): 
+	* HepMC/GenEvent.cxx (delete_all_vertices):
 	Possible bug reported here by ATLfast group. Added extra error
 	checking, and changed the deleting of the vertices such that each
 	one is explicitly erased from the map.
 
-	 
+
 2002-01-18  Matt Dobbs  <Matt.Dobbs@Cern.CH>
 
   More changes for Windoes MS Visual C++ compatibility:
 
-	* HepMC/PythiaWrapper6_2.h, HepMC/PythiaWrapper6_152.h: 
+	* HepMC/PythiaWrapper6_2.h, HepMC/PythiaWrapper6_152.h:
 	included new wrapper methods like call_pyinit, which hide the
 	funny syntax necessary to call fortran routines from C++.
-	* examples/example_MyPythiaWithEventSelection.cxx: 
-	* examples/example_MyPythiaOnlyToHepMC.cxx: 
-	* examples/example_MyPythia.cxx: 
-	* examples/Benchmarks_f77/example_PythiaToLCWrite.cxx: 
+	* examples/example_MyPythiaWithEventSelection.cxx:
+	* examples/example_MyPythiaOnlyToHepMC.cxx:
+	* examples/example_MyPythia.cxx:
+	* examples/Benchmarks_f77/example_PythiaToLCWrite.cxx:
 	modified to use the call_*** pythia methods.
 
 
@@ -1255,7 +1263,7 @@
 
 	* Makefile.standalone: updated to use cernlib 2001 and pythia6152
 
-	* examples/example_UsingIterators.cxx: 
+	* examples/example_UsingIterators.cxx:
 	The input file was from the old non-barcodes version, and so
 	didn't work. Replaced it with a proper input file.
 
@@ -1266,28 +1274,28 @@ fully backwards compatible(!).
 
 	* HepMC/GenEvent.h, HepMC/GenVertex.h: change forward_iterator to
 	simply iterator (which in the STL standard apparently implies
-	forward_iterator) 
+	forward_iterator)
 
 	In Visual c++, a for (int i ... ) {} statement does not scope out
 	the i variable ... so had to modify the code to ensure no
 	variables were used twice in the same method:
-	* src/IO_Ascii.cxx (HepMC): 
+	* src/IO_Ascii.cxx (HepMC):
 	  in lines 155, 161, 175 "int i" is repeated
 	  in lines 293, 314, 321 "int i" is repeated
           in lines 293, 314, 321 "p" is repeated
-	* src/IO_HEPEVT.cxx (HepMC): 
+	* src/IO_HEPEVT.cxx (HepMC):
 	  in lines 59,65,88 "i" is repeated
           in lines 118, 129 "p" is repeated
-	* src/IO_PDG_ParticleDataTable.cxx (HepMC): 
+	* src/IO_PDG_ParticleDataTable.cxx (HepMC):
 	  in lines 80, 103, 124 "id_i" is repeated
-	* src/GenVertex.cxx (HepMC): 
-	  in lines: 64 and 72; 168 and 178; 195 and 201; 260 and 273; 
+	* src/GenVertex.cxx (HepMC):
+	  in lines: 64 and 72; 168 and 178; 195 and 201; 260 and 273;
 	            322 and 331   variable "part" is repeated
 
 	* have verified all STL calls for set, map, less, greater, cout,
 	endl, list, cerr, ios, iostream, flush are properly prefixed with
-	std:: 
-	
+	std::
+
 	* HepMC/GenEvent.h: bug fix:
 	added a std::greater<int> qualifier to the m_map_iterator of the
 	vertex iterators.
@@ -1295,7 +1303,7 @@ fully backwards compatible(!).
 	* HepMC/GenVertex.h: bug fix:
 	made the GenVertex::particle_iterator a friend of GenVertex.
 
-	* HepMC/GenEvent.h, HepMC/GenVertex.h: 
+	* HepMC/GenEvent.h, HepMC/GenVertex.h:
 	move all of the friend class declarations
 	into statements separate from the class declaration, i.e.
 	  class edge_iterator { ... };
@@ -1303,19 +1311,19 @@ fully backwards compatible(!).
 	instead of
 	  friend class edge_iterator{ ... };
 	Change all   std::ptrdiff_t   to  ptrdiff_t
-	
+
 	* HepMC/IO_Ascii.h: ios::openmode changed to ios::open_mode in the
 	constructor, for compatibility with windows Visual C++.
 
 	* Change #include <iostream.h> to #include <iostream>
 	Note: this will spoil compatibility with HPUX 10.2 CC.
-	
-	
+
+
 2001-11-29  Matt Dobbs  <Matt.Dobbs@Cern.CH>
 	--------------------  HepMC-01-01-05  --------------------
 	* Fix typo in user manual "particle barcodes are positive"
 
-	
+
 2001-11  Matt Dobbs  <Matt.Dobbs@Cern.CH>
 	--------------------  HepMC-01-01-04  --------------------
 	* update user manual to explain barcodes. NO changes to code.
@@ -1324,28 +1332,28 @@ fully backwards compatible(!).
 2001-11-10  Matt Dobbs  <Matt.Dobbs@Cern.CH>
 	--------------------  HepMC-01-01-03  --------------------
 	* cmt/requirements: jetset74 requirement removed, as requested by
-	I.Hinchliffe. 
+	I.Hinchliffe.
 
 2001-11-04  Matt Dobbs  <Matt.Dobbs@Cern.CH>
 	--------------------  HepMC-01-01-02  --------------------
 	* HepMC/GenVertex.h: removed merge_vertex() method.
 
-	* HepMC/IO_HEPEVT.h: 
+	* HepMC/IO_HEPEVT.h:
 	removed the merge_vertices possibility, but added a
 	build_production_vertex possibility to build_end_vertex.
 
 	--------------------  HepMC-01-01-01  --------------------
-	* src/HEPEVT_Wrapper.cxx (HepMC): 
+	* src/HEPEVT_Wrapper.cxx (HepMC):
 	new method check_hepevt_consistency() added.
 	new method zero_everything() added.
 
 2001-11-02  Matt Dobbs  <Matt.Dobbs@Cern.CH>
-	
+
 	--------------------  HepMC-01-01-00  --------------------
-	* src/IO_HEPEVT.cxx (HepMC): 
+	* src/IO_HEPEVT.cxx (HepMC):
 	Modified such that the HEPEVT indices are used for the particle
 	barcodes.
-	* HepMC/IO_Ascii.h: 
+	* HepMC/IO_Ascii.h:
 	Modifed to properly read/write the barcodes and the
 	GenEvent new data members.
 
@@ -1368,13 +1376,13 @@ fully backwards compatible(!).
 	GenPartcle::set_production_vertex_()
 	GenPartcle::set_end_vertex_(}
 
-	* HepMC/GenEvent.h: 
+	* HepMC/GenEvent.h:
 	New data members and access methods are added for consistency with
 	the HepUP standard, see hep-ph/0109068
 	double GenEvent::m_event_scale
 	double GenEvent::m_alphaQCD
 	double GenEvent::m_alphaQED
-	
+
 	* src/IO_HEPEVT.cxx (HepMC): Fixed some const warnings with the
 	 GenEvent::vertex_iterator usage.
 
@@ -1382,23 +1390,23 @@ fully backwards compatible(!).
 
 	--------------------  HepMC-01-00-01  --------------------
 	* cmt/requirements: changed use CERNLIB v2001 External  to  use
-	CERNLIB CERNLIB-01-* External   as per r.d.'s request 
+	CERNLIB CERNLIB-01-* External   as per r.d.'s request
 
-2001-10-10  Matt Dobbs  <Matt.Dobbs@Cern.CH> 
+2001-10-10  Matt Dobbs  <Matt.Dobbs@Cern.CH>
 
         --------------------  HepMC-01-00-00  --------------------
-	Identical to HepMC-00-03-08.  This tag name follows atlas 
+	Identical to HepMC-00-03-08.  This tag name follows atlas
 	naming conventions ... increment the major tag when code is NOT
         backwards compatible. Since Atlas is moving from tag
 	HepMC-00-01-12 (old atlas names) to HepMC-00-03-08 (clhep names)
 	this change is not backwards compatible.
-	
+
 2001-09-05  Matt Dobbs  <Matt.Dobbs@Cern.CH>
         ------- below this line is tag HepMC-00-03-08 ----------
 	(clhep names version to be used in atlas. The changes have not
 	been made in the HepMC-00-01-** branch)
-	
-	* src/IO_HEPEVT.h (HepMC): 
+
+	* src/IO_HEPEVT.h (HepMC):
 	* src/IO_HEPEVT.cxx (HepMC): When inconsistent info between
 	mother and daughters is found in the
 	IO_HEPEVT::build_production_vertex method, IO_HEPEVT will no
@@ -1410,12 +1418,12 @@ fully backwards compatible(!).
 	* cmt/requirements: added to the CLHEP names branch (its just a
 	direct copy of what is in the trunk ATLAS names).
 
-	
+
 2001-07-17  Matt Dobbs  <Matt.Dobbs@Cern.CH>
 	(note: HepMC-00-01-24 is an accidental tag which should be ignored)
 	----- below this line is  HepMC-00-01-23, HepMC-00-03-07 -----
 
-	* src/GenVertex.cxx (HepMC): 
+	* src/GenVertex.cxx (HepMC):
 	GenVertex::vertex_iterator::follow_edge_()  added extra error
 	checking for the very special-rare case where a particle might
 	point to the same vertex for both production and end.
@@ -1429,7 +1437,7 @@ fully backwards compatible(!).
 	This involves a change -lpythia6136 to -lpythia6152 -lpythiad
 	Note that for xample_MyPythiaWithEventSelection.cxx 1/100 or
 	36/1000 events pass cuts (with 6.136 it was 3/100 or 37/1000).
-	
+
 	* HepMC/GenParticle.h: now has a parent_event() access method,
 	which returns the parent_event of the particle's container
 	vertex's event.
@@ -1444,10 +1452,10 @@ fully backwards compatible(!).
 	* HepMC/GenEvent.h, src/GenEvent.cxx (HepMC): added logic to
 	GenEvent::remove_vertex and GenEvent::add_vertex. The vtx's
 	m_event pointer is set to point back to the event.
-	
-	* HepMC/ParticleData.h: 
-	* HepMC/GenEvent.h: 
-	* HepMC/GenParticle.h: 
+
+	* HepMC/ParticleData.h:
+	* HepMC/GenEvent.h:
+	* HepMC/GenParticle.h:
 	* HepMC/GenVertex.h: made method counter() protected. It was never
 	intended as public, merely as a method for detecting memory
 	leaks. If no-one complains (they shouldn't, it was commented
@@ -1455,16 +1463,16 @@ fully backwards compatible(!).
 
 2001-03-29  Matt Dobbs  <Matt.Dobbs@Cern.CH>
 
-	* src/IO_HEPEVT.cxx (HepMC): 
+	* src/IO_HEPEVT.cxx (HepMC):
 	When m_trust_mothers_before_daughters=0, the vertex position is
 	now filled. In ISAJET sometimes disjoint vertex structures exist,
 	in this case a merger of vertices is done, which accounts for it.
 
-	* HepMC/GenVertex.h: 
-	* src/GenVertex.cxx (HepMC): 
+	* HepMC/GenVertex.h:
+	* src/GenVertex.cxx (HepMC):
 	Added a            void merge_vertex_contents( GenVertex* v_in );
-	method which takes all the contents of v_in and places it in 
-	the vertex. It does not delete v_in, nor does it remove 
+	method which takes all the contents of v_in and places it in
+	the vertex. It does not delete v_in, nor does it remove
 	v_in from an event.
 	It will mainly be used by IO_HEPEVT, but it is forseen that users
 	may want to use it when reducing the overall size of the event
@@ -1472,18 +1480,18 @@ fully backwards compatible(!).
 
 2001-02-28  Matt Dobbs  <Matt.Dobbs@Cern.CH>
 
-	* Makefile.standalone: 
+	* Makefile.standalone:
 	using
 	  HepMCdir = $(shell pwd)
 	instead of
 	  HepMCdir = /afs/cern.ch/user/m/mdobbs/HepMC/myCheckoutV1.01
 	for better portability.
 
-	* src/GenVertex.cxx (HepMC): added extra protection to the 
+	* src/GenVertex.cxx (HepMC): added extra protection to the
 	GenVertex::edge_iterator::edge_iterator constructor to give
 	sensible result for the special case when a vertex has incoming
 	particles, but none outgoing and the user requests a children
-	iterator.  The old version would have 
+	iterator.  The old version would have
 	m_set_iter points to m_particles_in.begin() and so the first
 	dereference might be wrong.
 
@@ -1491,11 +1499,11 @@ fully backwards compatible(!).
 	flexibility in handling the possible inconsistencies arrising
 	from the bi-directional pointers in HEPEVT. The switches are:
 		bool m_trust_mothers_before_daughters;
-		bool m_print_inconsistency_errors; 
-	which are described by comments in the code. Also makes minor 
+		bool m_print_inconsistency_errors;
+	which are described by comments in the code. Also makes minor
 	changes to src/IO_HEPEVT.cxx
 
-	* HepMC/Typedef_Version0names.h: 
+	* HepMC/Typedef_Version0names.h:
 	This header file added. It contains typedef statements which
 	should allow the new version 1.XX class names to be used with code
 	written with the old version 0.XX class names.
@@ -1505,28 +1513,28 @@ fully backwards compatible(!).
 	or in his code using #define HEPMC_SHORT_NAMES
 	Note that since the header file names also changed, this ALSO
 	requires changing the include statements in the user code.
-	
+
 	* doc/latex_user_manual/physicist_visualization.eps
 	fixed a mis-labelling in this figure... the labels were all
 	shifted and intermingled... its now right. Unfortunately
 	the mislabelled version appears in the CPC publication.
 	also affects doc/latex_user_manual/HepMC_user_manual.ps
-	
+
 ******************************************************
 Everything below this line corresponds to Version 1.01
-******************************************************	
+******************************************************
 
 2001-01-11  Matt Dobbs  <Matt.Dobbs@Cern.CH>
 
-	* examples/example_UsingIterators.cxx: 
+	* examples/example_UsingIterators.cxx:
 	Changed the class IsFinalState such that a particle must have no
 	end vertex AND have status==1 to be considered stable.
 	Does not effect package, only this specific example.
 
-	* HepMC/IO_BaseClass.h: 
+	* HepMC/IO_BaseClass.h:
 	Bug reported by Lynn Garren
 	"There appears to be a problem with const-ness in HepMC/IO_BaseClass.h.
-	I have made the following changes in order to compile HepMC 1.0 
+	I have made the following changes in order to compile HepMC 1.0
 	with g++.
 	virtual const GenEvent*& operator<<( GenEvent*& );
 		becomes
@@ -1539,7 +1547,7 @@ Everything below this line corresponds to Version 1.01
 	...
 	These changes are implemented by Matt in the atlas repository.
 
-	* HepMC/HEPEVT_Wrapper.h: 
+	* HepMC/HEPEVT_Wrapper.h:
 	Bug reported by Andreas Dell'Acqua
 		HEPEVT_Wrapper::last_child
 		HEPEVT_Wrapper::last_parent
@@ -1556,20 +1564,20 @@ Everything below this line corresponds to Version 1.01
 	some time. This fix is for HEPEVT_Wrapper::last_child():
 	// Returns the Index of the LAST child in the HEPEVT record
 	// for particle with Index index.
-	// If there is only one child, the last child is forced to 
+	// If there is only one child, the last child is forced to
 	// be the same as the first child.
 	// If there are no children for this particle, both the first_child
 	// and the last_child with return 0.
 	// Error checking is done to ensure the child is always
 	// within range ( 0 <= parent <= nhep )
 
-	* src/IO_HEPEVT.cxx (HepMC): 
+	* src/IO_HEPEVT.cxx (HepMC):
 	only comments in IO_HEPEVT::build_particle have changed. No change
 	to code.
 
 ******************************************************
 Everything below this line corresponds to Version 1.0
-******************************************************	
+******************************************************
 
 2000-11-10  Matt Dobbs  <Matt.Dobbs@Cern.CH>
 
@@ -1580,36 +1588,36 @@ Everything below this line corresponds to Version 1.0
 
 	user manual and online documentaion are updated to reflect this.
 
-	* HepMC/PythiaWrapper6_152.h: 
+	* HepMC/PythiaWrapper6_152.h:
 	A new wrapper for Pythia 6.1 is created to replace the old Pythia
 	5.7 wrapper. It works with the versions of Pythia in both
 	CERNlib2000 and CERNlib2001 (versions 6.136 and 6.152 and probably
 	any Pythia 6).
 	A pointer file:
-	* HepMC/PythiaWrapper.h: 
+	* HepMC/PythiaWrapper.h:
 	is created so the used doesn't have to worry about pythia version
 	numbers. A test file is located at:
 	* test/test_PythiaWrapper.cxx
 
 	All examples are updated to use Pythia 6.
 
-	
+
 2000-11-09  Matt Dobbs  <Matt.Dobbs@Cern.CH>
 
-	* HepMC/WeightContainer.h: 
+	* HepMC/WeightContainer.h:
 	Created this class to house the weights in the vertex and event
 	classes. It is just an interface to std::vertex<double>.
 
 	The vertex class is modifid to use this. Required changes to:
-	* HepMC/Vertex.h: 
-	* src/Vertex.cxx: 
-	* src/IO_Ascii.cxx (HepMC): 
+	* HepMC/Vertex.h:
+	* src/Vertex.cxx:
+	* src/IO_Ascii.cxx (HepMC):
 
 ******************************************************
 Everything below this line corresponds to Version 0.94
-******************************************************	
+******************************************************
 
-	
+
 2000-07-05  Matt Dobbs  <Matthew.Adam.Dobbs@Cern.CH>
 
 	* HepMC/HEPEVT_Wrapper.h: Completely new wrapper for HEPEVT_Common
@@ -1625,15 +1633,15 @@ Everything below this line corresponds to Version 0.94
 	to the extra 5 seconds reported in the HepMC user manual for the
 	old HEPEVT wrapper ... so the difference is small compared to the
 	old wrapper considering the added functionality.
-	(all examples have been tested and they Run!)	
+	(all examples have been tested and they Run!)
 
 	* HepMC/HEPEVT_Common.h: Deleted, this common is now defined
 	inside HEPEVT_Wrapper.h
-	
+
 	* src/HEPEVT_Wrapper.cxx (HepMC): This file is created since it is
 	necessary to instantiate the static members of HEPEVT_Wrapper in a
 	.cxx file.
-	
+
 	* Makefile.Standalone: modified to build src/HEPEVT_Wrapper.cxx into
 	the HepMC library
 
@@ -1651,7 +1659,7 @@ Everything below this line corresponds to Version 0.94
 
 	* PACKAGE: added linkset HepMC -lib:HepMC
 	(Modified GNUmakefile.in to use libHepMC.so as HepMC linkset)
-	
+
 2000-07-04  Matt Dobbs  <Matthew.Adam.Dobbs@Cern.CH>
 
 	* examples/GNUmakefile.in: $(top_srcdir) replaced by
@@ -1661,12 +1669,12 @@ Everything below this line corresponds to Version 0.94
 	is now explicitly specified with $(top_srcdir)/src/*.cxx
 	This makefile now builds oth a shared library libHepMC.so and
 	libHepMC.a (requested by Ian H.)
-	* the initpydata.f routine is no longer compiled into the the 
+	* the initpydata.f routine is no longer compiled into the the
 	HepMC library, but is still packaged with the other routines.
 	The user needs to link to it explicitly. See the GNUmakefile.in
 	in the examples directory for an example of how to do this.
 	(requested by Ian H.)
-	* ./src is replaced with $(top_srcdir)/src everywhere in the 
+	* ./src is replaced with $(top_srcdir)/src everywhere in the
 	GNUmakefile.in
 
 	Files changed this time:
@@ -1680,7 +1688,7 @@ Everything below this line corresponds to Version 0.94
 	  which fills the passed event, and also returns true if successful.
 	- GeneratorEvent* read_next_event() is now make concrete. it
 	  creates a new event, fills it using the above abstract method,
-	  and returns the event 
+	  and returns the event
 	This change is backwards compatible since the method
 	read_next_event() has identical behavior.
 	Identical changes are made for the methods:
@@ -1688,7 +1696,7 @@ Everything below this line corresponds to Version 0.94
 	- ParticleDataTable* read_particle_data_table()
 	The methods are updated [ i.e. GeneratorEvent* read_next_event()
 	is changed to bool fill_next_event( GeneratorEvent* evt ), etc. ]
-	in: 
+	in:
 	- IO_HEPEVT.h
 	- IO_Ascii.h
 	- IO_PDG_ParticleDataTable.h
@@ -1696,30 +1704,30 @@ Everything below this line corresponds to Version 0.94
 	- IO_Ascii.cxx
 	- IO_PDG_ParticleDataTable.cxx
 	(This change requested by Ian Hinchliffe and Marjorie Shapiro.)
-	
+
 
 2000-04-24  Matt Dobbs  <Matthew.Adam.Dobbs@Cern.CH>
 
 	* HepMC/HEPEVT_Wrapper.h: set_momentum and set_position now
 	properly cast input doubles as type HEPEVT_Precision,
-	previously they were hardwired as cast to double, this 
+	previously they were hardwired as cast to double, this
 	meant writing to real*4 hepevt would fail.
-	
+
 ******************************************************
 Everything below this line corresponds to Version 0.91
-******************************************************	
-	
+******************************************************
+
 2000-04-11  Matt Dobbs  <Matthew.Adam.Dobbs@Cern.CH>
 
 	* doc/latex_user_manual/HepMC_user_manual.tex: User manual is
-	updated to replect changes since V0.9 
+	updated to replect changes since V0.9
 	- HEPEVT and position in [mm]
 
 2000-04-06  Matt Dobbs  <Matthew.Adam.Dobbs@Cern.CH>
 
 	* examples/example_MyPythia.cxx
 	* examples/example_MyPythiaOnlyToHepMC.cxx
-	* examples/example_MyPythiaWithEventSelection.cxx: 
+	* examples/example_MyPythiaWithEventSelection.cxx:
 	By commenting out the initpydata call (which may be required on
 	some systems to initialize the Pythia PYDATA block data as
 	external) the MyPythia examples now run on HPUX (and still on
@@ -1731,7 +1739,7 @@ Everything below this line corresponds to Version 0.91
 
 	The changes below will have no effect on the user or package, they
 	just serve to remove warnings when compiling.
-	
+
 	* HepMC/Vertex.h: 313:342:364: warning: unused parameter `enum
 	::HepMC::IteratorRange dummy_range' (all dummy range parameters
 	now appear as particles_end( IteratorRange /* dummy_range */ ) )
@@ -1741,10 +1749,10 @@ Everything below this line corresponds to Version 0.91
 	new char[key_length +1]; and deleted before returning)
 
 	* HepMC/IO_PDG_ParticleDataTable.h: 53: warning: control reaches
-	end of non-void function read_next_event() 
-	(this is a dummy function anyway -- return 0) 
+	end of non-void function read_next_event()
+	(this is a dummy function anyway -- return 0)
 	* HepMC/IO_HEPEVT.h:55: (as above)
-	
+
 	* src/Flow.cxx (HepMC): 26: warning: default argument given for
 	parameter 1 of `void ::HepMC::Flow::print(class ostream & = cout)
 	const' (done)
@@ -1763,16 +1771,16 @@ Everything below this line corresponds to Version 0.91
 
 	* HepMC/Flow.h:21: warning: multiline `//' comment
 	(added space after \ to remove compiler warning)
-	
+
 	* HepMC/Particle.h: removed =0 in the inline declaration
-	inline void Particle::set_flow( int code_index, int code = 0 ) 
+	inline void Particle::set_flow( int code_index, int code = 0 )
 	(caused warning).
-	
+
 
 2000-04-04  Matt Dobbs  <Matthew.Adam.Dobbs@Cern.CH>
 
-	* HepMC/HEPEVT_Wrapper.h:  HepMC/HEPEVT_Common.h: 
-	replace the classes HEPEVT_BaseClass.h HEPEVT_Double2000.h 
+	* HepMC/HEPEVT_Wrapper.h:  HepMC/HEPEVT_Common.h:
+	replace the classes HEPEVT_BaseClass.h HEPEVT_Double2000.h
 	HEPEVT_Double4000.h HEPEVT_Real2000.h HEPEVT_Real4000.h
 
 	Using different classes for each of the HEPEVT common block
@@ -1795,12 +1803,12 @@ Everything below this line corresponds to Version 0.91
 	* HepMC/IO_HEPEVT.h: This class now extracts information from the
 	fortran HEPEVT common using HEPEVT_Wrapper instead of having to
 	pass it a class which inherits from the obsolete HEPEVT_BaseClass.
-	
+
 2000-04-03  Matt Dobbs  <Matthew.Adam.Dobbs@Cern.CH>
 
 	* HepMC/PythiaWrapper5_720.h: Credit for writing the wrapper is
-	to Silvia Resconi. 
-	Inclusion of HEPEVT wrapper header file is not necessary --- hence 
+	to Silvia Resconi.
+	Inclusion of HEPEVT wrapper header file is not necessary --- hence
 	removed.
 
 2000-03-31  Matt Dobbs  <Matthew.Adam.Dobbs@Cern.CH>
@@ -1811,26 +1819,26 @@ Everything below this line corresponds to Version 0.91
 	when it read from HEPEVT, and othertimes used [cm] (as when it
 	transformed a width into a lifetime. Now all is consitent and [mm]
 	is used everywhere as it should be.
-	* HepMC/Vertex.h: src/ParticleData.cxx: 
+	* HepMC/Vertex.h: src/ParticleData.cxx:
 	Changed comments which say clifetime is in [cm], to say
 	clifetime is in [mm].
 
-	* Makefile (CLHEPdir): 
-	Changed 
+	* Makefile (CLHEPdir):
+	Changed
 	CLHEPdir      = /afs/cern.ch/sw/lhcxx/specific/Linux/CLHEP/pro
 	to
 	CLHEPdir      = /afs/cern.ch/sw/lhcxx/specific/@sys/CLHEP/dev
 	to make it platform independent for CERN users.
 	And some cosmetic changes to the Makefile.
 
-	* HepMC/IO_BaseClass.h: 
+	* HepMC/IO_BaseClass.h:
 	Using the compiler options -ansi -pedantic cause this error:
 	no match for `::HepMC::IO_Ascii & << ::HepMC::GeneratorEvent *&'
 	Even though it recognizes:
-	operator <<(::HepMC::IO_BaseClass &, 
+	operator <<(::HepMC::IO_BaseClass &,
 	            const ::HepMC::GeneratorEvent *&) <near match>
 	as the "best <near match>".
-	
+
 	To fix this I make operator<<, operator>> members of the
 	IO_BaseClass rather than friends, and I add versions where the
 	argument of operator<< is not constant.
@@ -1845,7 +1853,7 @@ Everything below this line corresponds to Version 0.91
 
 	* This change log documents changes since Version 9 of HepMC was
 	"released" February 11, 2000
-	
+
 pre 2000-02-16  Matt Dobbs  <Matthew.Adam.Dobbs@Cern.CH>
 Changes Before Version 0.9 (i.e. changes in going from V0.1 -->0.9)
 	    HepMC improvements:
@@ -1867,4 +1875,3 @@ Changes Before Version 0.9 (i.e. changes in going from V0.1 -->0.9)
 	     -implement lujet strategy (not done!)
 	     -update documentation -- enumerating recent changes.  (done)
 	     -user manual written
-	

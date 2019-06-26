@@ -20,69 +20,76 @@
 //      float impact_parameter        // Impact Parameter(fm) of collision
 //      float event_plane_angle       // Azimuthal angle of event plane
 //      float eccentricity            // eccentricity of participating nucleons
-//                                        in the transverse plane 
-//                                        (as in phobos nucl-ex/0510031) 
-//      float sigma_inel_NN           // nucleon-nucleon inelastic 
+//                                        in the transverse plane
+//                                        (as in phobos nucl-ex/0510031)
+//      float sigma_inel_NN           // nucleon-nucleon inelastic
 //                                        (including diffractive) cross-section
+//      float centrality              // centrality (prcentile of geometric cross section)
 //
 //////////////////////////////////////////////////////////////////////////
+// Mar. 25, 2013: add centrality by request from Korinna Zapp
 // Feb. 17, 2006: adjust names according to suggestions from Heavy Ion users
 // Feb.  7, 2006: first pass at making method names consistent with existing
 //                HepMC code
 //////////////////////////////////////////////////////////////////////////
 
+#include <ostream>
+#include <istream>
+#include <utility>
+
 namespace HepMC {
 
 
-//! The HeavyIon class stores information about heavy ions
+  //! The HeavyIon class stores information about heavy ions
 
-///
-/// \class  HeavyIon
-/// HepMC::HeavyIon provides
-/// additional information storage for Heavy Ion generators in GenEvent.
-/// Creation and use of this information is optional. 
-///
-class HeavyIon {
-
-public:
-  // ---  birth/death:
-  //
-  /// default constructor
-  HeavyIon()
-    : m_Ncoll_hard(0), 
-      m_Npart_proj(0),
-      m_Npart_targ(0),
-      m_Ncoll(0),
-      m_spectator_neutrons(0),
-      m_spectator_protons(0),
-      m_N_Nwounded_collisions(0),
-      m_Nwounded_N_collisions(0),
-      m_Nwounded_Nwounded_collisions(0),
-      m_impact_parameter(0),
-      m_event_plane_angle(0),
-      m_eccentricity(0),
-      m_sigma_inel_NN(0)
+  ///
+  /// \class  HeavyIon
+  /// HepMC::HeavyIon provides
+  /// additional information storage for Heavy Ion generators in GenEvent.
+  /// Creation and use of this information is optional.
+  ///
+  class HeavyIon {
+  public:
+    // ---  birth/death:
+    //
+    /// default constructor
+    HeavyIon()
+      : m_Ncoll_hard(0),
+        m_Npart_proj(0),
+        m_Npart_targ(0),
+        m_Ncoll(0),
+        m_spectator_neutrons(0),
+        m_spectator_protons(0),
+        m_N_Nwounded_collisions(0),
+        m_Nwounded_N_collisions(0),
+        m_Nwounded_Nwounded_collisions(0),
+        m_impact_parameter(0),
+        m_event_plane_angle(0),
+        m_eccentricity(0),
+        m_sigma_inel_NN(0),
+        m_centrality(-1.0)
     {}
 
-  /// The first 6 values must be provided.
-  HeavyIon( int nh, int np, int nt, int nc, int ns, int nsp,
-                   int nnw=0, int nwn=0, int nwnw=0, 
-		   float im=0., float pl=0., float ec=0., float s=0. );
+    /// The first 6 values must be provided.
+    HeavyIon( int nh, int np, int nt, int nc, int ns, int nsp,
+              int nnw=0, int nwn=0, int nwnw=0,
+              float im=0., float pl=0., float ec=0., float s=0.,
+              float fc=0. );
 
-  ~HeavyIon() {}
-    
-  // ---  copying:
-  //
-  HeavyIon( HeavyIon const & orig );	//!< copy constructor
-  HeavyIon &  operator = ( HeavyIon const & rhs ); //!< make a copy
-  void swap( HeavyIon & other );	//!< swap two HeavyIon objects
+    ~HeavyIon() {}
 
-  // ---  equivalence:
-  //
-  bool    operator==( const HeavyIon& ) const; //!< check for equality
-  bool    operator!=( const HeavyIon& ) const; //!< check for inequality
+    // ---  copying:
+    //
+    HeavyIon( HeavyIon const & orig );  //!< copy constructor
+    HeavyIon &  operator = ( HeavyIon const & rhs ); //!< make a copy
+    void swap( HeavyIon & other );  //!< swap two HeavyIon objects
 
-  // ---  accessors:
+    // ---  equivalence:
+    //
+    bool    operator==( const HeavyIon& ) const; //!< check for equality
+    bool    operator!=( const HeavyIon& ) const; //!< check for inequality
+
+    // ---  accessors:
     /// Number of hard scatterings
     int   Ncoll_hard()                   const { return m_Ncoll_hard; }
     /// Number of projectile participants
@@ -110,6 +117,8 @@ public:
     float eccentricity()                 const { return m_eccentricity;  }
     /// nucleon-nucleon inelastic (including diffractive) cross-section
     float sigma_inel_NN()                const { return m_sigma_inel_NN; }
+    /// centrality (percentile of geometric cross section. Negaitve if not set.)
+    float centrality()                const { return m_centrality; }
 
     /// verify that the instance contains non-zero information
     bool  is_valid()                     const;
@@ -142,6 +151,8 @@ public:
     void   set_eccentricity(const float &f)          { m_eccentricity=f;  }
     /// set nucleon-nucleon inelastic cross-section
     void   set_sigma_inel_NN(const float &f)         { m_sigma_inel_NN=f; }
+    /// set centrality percentile [0:100]
+    void   set_centrality(const float &f)         { m_centrality=f; }
 
 private: // data members
     int   m_Ncoll_hard; 
@@ -157,6 +168,7 @@ private: // data members
     float m_event_plane_angle;
     float m_eccentricity; 
     float m_sigma_inel_NN;
+    float m_centrality;
 
 };
 
@@ -175,10 +187,10 @@ std::istream & operator >> (std::istream &, HeavyIon *);
   /// the number of nucleon-nucleon collisions,
   /// the number of spectator neutrons, and
   /// the number of spectator protons.
-inline HeavyIon::HeavyIon( int nh, int np, int nt, int nc, int ns, int nsp,
-                   int nnw, int nwn, int nwnw, 
-		   float im, float pl, float ec, float s )
-    : m_Ncoll_hard(nh), 
+  inline HeavyIon::HeavyIon( int nh, int np, int nt, int nc, int ns, int nsp,
+                             int nnw, int nwn, int nwnw,
+                             float im, float pl, float ec, float s, float c )
+    : m_Ncoll_hard(nh),
       m_Npart_proj(np),
       m_Npart_targ(nt),
       m_Ncoll(nc),
@@ -190,8 +202,9 @@ inline HeavyIon::HeavyIon( int nh, int np, int nt, int nc, int ns, int nsp,
       m_impact_parameter(im),
       m_event_plane_angle(pl),
       m_eccentricity(ec),
-      m_sigma_inel_NN(s)
-   {}
+      m_sigma_inel_NN(s),
+      m_centrality(c)
+  {}
 
 inline HeavyIon::HeavyIon( HeavyIon const & orig )
     : m_Ncoll_hard(orig.m_Ncoll_hard), 
@@ -206,50 +219,52 @@ inline HeavyIon::HeavyIon( HeavyIon const & orig )
       m_impact_parameter(orig.m_impact_parameter),
       m_event_plane_angle(orig.m_event_plane_angle),
       m_eccentricity(orig.m_eccentricity),
-      m_sigma_inel_NN(orig.m_sigma_inel_NN)
-   {}
+      m_sigma_inel_NN(orig.m_sigma_inel_NN),
+      m_centrality(orig.m_centrality)
+  {}
 
-inline HeavyIon &  HeavyIon::operator = ( HeavyIon const & rhs ) 
-{
-  HeavyIon temp( rhs );
-  swap( temp );
-  return *this;
-}
+  inline HeavyIon &  HeavyIon::operator = ( HeavyIon const & rhs )
+  {
+    HeavyIon temp( rhs );
+    swap( temp );
+    return *this;
+  }
 
-inline void HeavyIon::swap( HeavyIon & other ) 
-{
-  std::swap(m_Ncoll_hard, other.m_Ncoll_hard); 
-  std::swap(m_Npart_proj, other.m_Npart_proj);
-  std::swap(m_Npart_targ, other.m_Npart_targ);
-  std::swap(m_Ncoll, other.m_Ncoll);
-  std::swap(m_N_Nwounded_collisions, other.m_N_Nwounded_collisions);
-  std::swap(m_Nwounded_N_collisions, other.m_Nwounded_N_collisions);
-  std::swap(m_Nwounded_Nwounded_collisions, other.m_Nwounded_Nwounded_collisions);
-  std::swap(m_spectator_neutrons, other.m_spectator_neutrons);
-  std::swap(m_spectator_protons, other.m_spectator_protons);
-  std::swap(m_impact_parameter, other.m_impact_parameter);
-  std::swap(m_event_plane_angle, other.m_event_plane_angle);
-  std::swap(m_eccentricity, other.m_eccentricity);
-  std::swap(m_sigma_inel_NN, other.m_sigma_inel_NN);
-}
+  inline void HeavyIon::swap( HeavyIon & other )
+  {
+    std::swap(m_Ncoll_hard, other.m_Ncoll_hard);
+    std::swap(m_Npart_proj, other.m_Npart_proj);
+    std::swap(m_Npart_targ, other.m_Npart_targ);
+    std::swap(m_Ncoll, other.m_Ncoll);
+    std::swap(m_N_Nwounded_collisions, other.m_N_Nwounded_collisions);
+    std::swap(m_Nwounded_N_collisions, other.m_Nwounded_N_collisions);
+    std::swap(m_Nwounded_Nwounded_collisions, other.m_Nwounded_Nwounded_collisions);
+    std::swap(m_spectator_neutrons, other.m_spectator_neutrons);
+    std::swap(m_spectator_protons, other.m_spectator_protons);
+    std::swap(m_impact_parameter, other.m_impact_parameter);
+    std::swap(m_event_plane_angle, other.m_event_plane_angle);
+    std::swap(m_eccentricity, other.m_eccentricity);
+    std::swap(m_sigma_inel_NN, other.m_sigma_inel_NN);
+    std::swap(m_centrality, other.m_centrality);
+  }
 
-inline bool    HeavyIon::operator==( const HeavyIon& a ) const
-{
+  inline bool    HeavyIon::operator==( const HeavyIon& a ) const {
     /// equality requires that each member match
-    return ( a.Ncoll_hard() == this->Ncoll_hard() 
-             && a.Npart_proj() == this->Npart_proj() 
-             && a.Npart_targ() == this->Npart_targ() 
-	     && a.Ncoll() == this->Ncoll() 
-             && a.N_Nwounded_collisions() == this->N_Nwounded_collisions() 
-	     && a.Nwounded_N_collisions() == this->Nwounded_N_collisions() 
-             && a.Nwounded_Nwounded_collisions() == this->Nwounded_Nwounded_collisions() 
-	     && a.spectator_neutrons() == this->spectator_neutrons() 
-             && a.spectator_protons() == this->spectator_protons() 
-	     && a.impact_parameter() == this->impact_parameter() 
-	     && a.event_plane_angle() == this->event_plane_angle()
-	     && a.eccentricity() == this->eccentricity() 
-	     && a.sigma_inel_NN() == this->sigma_inel_NN() );
-}
+    return ( a.Ncoll_hard() == this->Ncoll_hard()
+             && a.Npart_proj() == this->Npart_proj()
+             && a.Npart_targ() == this->Npart_targ()
+             && a.Ncoll() == this->Ncoll()
+             && a.N_Nwounded_collisions() == this->N_Nwounded_collisions()
+             && a.Nwounded_N_collisions() == this->Nwounded_N_collisions()
+             && a.Nwounded_Nwounded_collisions() == this->Nwounded_Nwounded_collisions()
+             && a.spectator_neutrons() == this->spectator_neutrons()
+             && a.spectator_protons() == this->spectator_protons()
+             && a.impact_parameter() == this->impact_parameter()
+             && a.event_plane_angle() == this->event_plane_angle()
+             && a.eccentricity() == this->eccentricity()
+             && a.sigma_inel_NN() == this->sigma_inel_NN()
+             && a.centrality() == this->centrality() );
+  }
 
 inline bool    HeavyIon::operator!=( const HeavyIon& a ) const
 {
@@ -272,6 +287,7 @@ inline bool  HeavyIon::is_valid() const
     if( m_event_plane_angle != 0 ) return true;
     if( m_eccentricity != 0 ) return true;
     if( m_sigma_inel_NN != 0 ) return true;
+    if( m_centrality >= 0 ) return true;
     return false;
 }
 

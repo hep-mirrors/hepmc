@@ -31,21 +31,22 @@ std::ostream & operator << (std::ostream & os, HeavyIon const * ion)
     os << 'H';
     // HeavyIon* is set to 0 by default
     if ( !ion  ) {
-	detail::output( os, 0 );
-	detail::output( os, 0 );
-	detail::output( os, 0 );
-	detail::output( os, 0 );
-	detail::output( os, 0 );
-	detail::output( os, 0 );
-	detail::output( os, 0 );
-	detail::output( os, 0 );
-	detail::output( os, 0 );
-	detail::output( os, 0. );
-	detail::output( os, 0. );
-	detail::output( os, 0. );
-	detail::output( os, 0. );
-	detail::output( os,'\n');
-	return os;
+      detail::output( os, 0 );
+      detail::output( os, 0 );
+      detail::output( os, 0 );
+      detail::output( os, 0 );
+      detail::output( os, 0 );
+      detail::output( os, 0 );
+      detail::output( os, 0 );
+      detail::output( os, 0 );
+      detail::output( os, 0 );
+      detail::output( os, 0. );
+      detail::output( os, 0. );
+      detail::output( os, 0. );
+      detail::output( os, 0. );
+      detail::output( os, 0. );
+      detail::output( os,'\n');
+      return os;
     }
     //
     detail::output( os, ion->Ncoll_hard() );
@@ -90,9 +91,9 @@ std::istream & operator >> (std::istream & is, HeavyIon * ion)
 	throw IO_Exception("HeavyIon input stream encounterd invalid data");
     } 
     // read values into temp variables, then create a new HeavyIon object
-    int nh =0, np =0, nt =0, nc =0, 
-        neut = 0, prot = 0, nw =0, nwn =0, nwnw =0;
-    float impact = 0., plane = 0., xcen = 0., inel = 0.; 
+    int nh =0, np =0, nt =0, nc =0,
+      neut = 0, prot = 0, nw =0, nwn =0, nwnw =0;
+    float impact = 0., plane = 0., xcen = 0., inel = 0., cent=0.;
     iline >> nh ;
     if(!iline) throw IO_Exception("HeavyIon input stream encounterd invalid data");
     iline >> np ;
@@ -119,6 +120,10 @@ std::istream & operator >> (std::istream & is, HeavyIon * ion)
     if(!iline) throw IO_Exception("HeavyIon input stream encounterd invalid data");
     iline >> inel;
     if(!iline) throw IO_Exception("HeavyIon input stream encounterd invalid data");
+    // centrality was added in HepMC 2.06.10
+    // since we don't know if this event has centrality, set to zero if not found.
+    iline >> cent;
+    if(!iline) cent=0.;
     if( nh == 0 ) {
         return is;
     }
@@ -136,6 +141,7 @@ std::istream & operator >> (std::istream & is, HeavyIon * ion)
     ion->set_event_plane_angle(plane);
     ion->set_eccentricity(xcen);
     ion->set_sigma_inel_NN(inel);
+    ion->set_centrality(cent);
 
     return is;
 }
