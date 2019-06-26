@@ -21,6 +21,8 @@
 #include "HepMC/GenEvent.h"
 #include "HepMC/HEPEVT_Wrapper.h"
 
+extern "C" void hwaend_() {}
+
 int main() { 
     //
     //........................................HEPEVT

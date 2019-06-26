@@ -186,7 +186,7 @@ namespace HepMC {
 	       << "\n relationships ... but all other information "
 	       << "\n (4-vectors etc) will be correctly transferred."
 	       << "\n In order for HepMC to be able to interpret the mother/"
-	       << "\n daughter hierachy, it MUST be given consistent input."
+	       << "\n daughter hierarchy, it MUST be given consistent input."
 	       << "\n This is one of the design criteria of HepMC: "
 	       << "\n consistency is enforced by the code.";
 	    os << "\nThere is a switch in IO_HEPEVT, set-able using "

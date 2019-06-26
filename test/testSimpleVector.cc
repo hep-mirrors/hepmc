@@ -14,7 +14,7 @@ int main()
   
   HepMC::ThreeVector v3copy( v3 );
    
-  double eps = 1.e-15; // allowed differnce between doubles
+  double eps = 4.e-15; // allowed difference between doubles
   int numbad = 0;
  
   double x = v3.x();

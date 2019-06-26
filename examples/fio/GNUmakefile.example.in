@@ -12,18 +12,16 @@
 #    You may have to change GENSERdir and/or other variables
 #
   HepMCdir             = @prefix@
-  HepMClib             = -L$(HepMCdir)/lib -lHepMC
-  HepMCfiolib          = -L$(HepMCdir)/lib -lHepMCfio
+  HepMClib             = -lHepMC
+  HepMCfiolib          = -lHepMCfio
   GENSERdir            = @GENSERdir@
-  Pythia_LIB	= -L$(GENSERdir)/lib -Wl,-rpath -Wl,$(GENSERdir)/lib \
-                  -lpythia6_403 -lpythia6_403_dumm -lpythia6_403_pdfdumm
-  Herwig_LIB	= -L$(GENSERdir)/lib -Wl,-rpath -Wl,$(GENSERdir)/lib \
-                  -lherwig6_510 -lherwig6_510_dumm -lherwig6_510_pdfdumm
+  Pythia_LIB	= -lpythia6
+  Herwig_LIB	= -lherwig6
 
 ################################################################################ Compiler options
 #
   CXX           = @CXX@
-  F77		= @F77@
+  F77		= gfortran
   INCLUDES 	= -I$(HepMCdir)/include -I$(CLHEPdir)/include
   CXXFLAGS      =  @AM_CXXFLAGS@ @CXXFLAGS@ $(INCLUDES)
 ifeq "$(CXX)" "g++"
