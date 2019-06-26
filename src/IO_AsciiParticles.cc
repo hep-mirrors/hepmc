@@ -14,7 +14,7 @@
 
 namespace HepMC {
 
-  IO_AsciiParticles::IO_AsciiParticles( const char* filename, std::ios::openmode mode ) 
+  IO_AsciiParticles::IO_AsciiParticles( const char* filename, std::ios::openmode mode )
   : m_precision(2),
     m_mode(mode), m_finished_first_event_io(0)
   {
@@ -50,9 +50,9 @@ namespace HepMC {
     }
   }
 
-  void IO_AsciiParticles::print( std::ostream& ostr ) const { 
-    ostr << "IO_AsciiParticles: formated ascii file IO for eye and machine reading.\n" 
-         << "\tFile openmode: " << m_mode 
+  void IO_AsciiParticles::print( std::ostream& ostr ) const {
+    ostr << "IO_AsciiParticles: formated ascii file IO for eye and machine reading.\n"
+         << "\tFile openmode: " << m_mode
          << " file state: " << m_outstream->rdstate()
          << " bad:" << (m_outstream->rdstate()&std::ios::badbit)
          << " eof:" << (m_outstream->rdstate()&std::ios::eofbit)
@@ -94,12 +94,12 @@ namespace HepMC {
 		    evt->signal_process_vertex()->barcode() : 0 )   );
 	output( evt->vertices_size() ); // total number of vertices.
 	output( (int)random_states.size() );
-	for ( std::vector<long int>::iterator rs = random_states.begin(); 
+	for ( std::vector<long int>::iterator rs = random_states.begin();
 	      rs != random_states.end(); ++rs ) {
 	    output( *rs );
 	}
 	output( (int)evt->weights().size() );
-	for ( WeightContainer::const_iterator w = evt->weights().begin(); 
+	for ( WeightContainer::const_iterator w = evt->weights().begin();
 	      w != evt->weights().end(); ++w ) {
 	    output( *w );
 	}
@@ -183,8 +183,8 @@ namespace HepMC {
 	//
 	// test that evt pointer is not null
 	if ( !evt ) {
-	    std::cerr 
-		<< "IO_AsciiParticles::fill_next_event error - passed null event." 
+	    std::cerr
+		<< "IO_AsciiParticles::fill_next_event error - passed null event."
 		<< std::endl;
 	    return false;
 	}
@@ -221,4 +221,3 @@ namespace HepMC {
   }
 
 } // HepMC
-

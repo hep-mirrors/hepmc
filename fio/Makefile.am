@@ -10,6 +10,8 @@ libHepMCfio_la_SOURCES = \
 
 lib_LTLIBRARIES = libHepMCfio.la
 
+libHepMCfio_la_LIBADD = $(top_builddir)/src/libHepMC.la
+
 if BUILD_VISUAL
   lib_shared = HepMC.$(SHEXT)
 else

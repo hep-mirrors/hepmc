@@ -57,7 +57,7 @@ void WeightContainer::pop_back()
     { 
         if( m->second == vit ) { 
 	    m_names.erase(m->first); 
-	    continue;
+	    break;
 	}
     }
     m_weights.pop_back(); 
