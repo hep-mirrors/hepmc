@@ -20,11 +20,11 @@ int main()
   double x = v3.x();
   double y = v3.y();
   double z = v3.z();
-  double p2 = v3.perp2();
+  // double p2 = v3.perp2();
   double pt = v3.perp();
   double r = v3.r();
-  double th = v3.theta();
-  double ph = v3.phi();
+  // double th = v3.theta();
+  // double ph = v3.phi();
   double mag = std::sqrt(x*x + y*y + z*z);
   double pperp = std::sqrt(x*x + y*y);
 
@@ -74,12 +74,12 @@ int main()
    y = vectorcopy.y();
    z = vectorcopy.z();
   double t = vectorcopy.t();
-  
-   p2 = v4.perp2();
-   pt = v4.perp();
-   th = v4.theta();
-   ph = v4.phi();
-   r = v4.rho();
+
+  // p2 = v4.perp2();
+  pt = v4.perp();
+  // th = v4.theta();
+  // ph = v4.phi();
+  r = v4.rho();
   double masssq1 = v4.m2();
   double mass1 = v4.m();
   double pr1 = v4.pseudoRapidity();
