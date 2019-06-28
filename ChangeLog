@@ -1,6 +1,12 @@
   --------------------------  HepMC-2.06.10  --------------------------
+2019-06-28  Andrii Verbytskyi
+      * version bump
 
-2019-06-26  Lynn Garren
+      * tests/Makefile.am, fix tests
+
+      * User reference and manual are back
+
+2019-06-26  Andy Buckley
 
      * src/GenEventStreamIO.cc: Reorder to fix parsing bug with multiple weights
 
