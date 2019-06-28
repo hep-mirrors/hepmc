@@ -28,9 +28,9 @@ testFlow_SOURCES           = testFlow.cc
 testPolarization_SOURCES   = testPolarization.cc
 testWeights_SOURCES        = testWeights.cc
 testHepMC_SOURCES          = testHepMC.cc testHepMCMethods.cc
-testMass_SOURCES           = testMass.cc
+testMass_SOURCES           = testMass.cc IsGoodEvent.h testHepMCMethods.h
 testStreamIO_SOURCES       = testStreamIO.cc testHepMCMethods.cc
-testHepMCIteration_SOURCES = testHepMCIteration.cc
+testHepMCIteration_SOURCES = testHepMCIteration.cc testHepMCIteration.h
 testMultipleCopies_SOURCES = testMultipleCopies.cc
 testPrintBug_SOURCES       = testPrintBug.cc
 
