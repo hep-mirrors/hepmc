@@ -1,4 +1,10 @@
   --------------------------  HepMC-2.06.10  --------------------------
+2019-07-11  Andy Buckley
+
+      * HepMC/HEPEVT_Wrapper.h: increased maximum number of entries for event record
+
+      * src/HeavyIon.cc: Remove condition on nh != 0
+
 2019-06-28  Andrii Verbytskyi
       * version bump
 
