@@ -25,7 +25,7 @@ std::ostream & operator << (std::ostream & os, HeavyIon const * ion)
     if ( !os ) {
 	std::cerr << "HeavyIon output stream !os, "
 		  << " setting badbit" << std::endl;
-	os.clear(std::ios::badbit); 
+	os.clear(std::ios::badbit);
 	return os;
     }
     os << 'H';
@@ -72,10 +72,10 @@ std::ostream & operator << (std::ostream & os, HeavyIon const * ion)
 std::istream & operator >> (std::istream & is, HeavyIon * ion)
 {
     // make sure the stream is valid
-    if ( !is ) { 
+    if ( !is ) {
       std::cerr << "HeavyIon input stream setting badbit." << std::endl;
-      is.clear(std::ios::badbit); 
-      return is; 
+      is.clear(std::ios::badbit);
+      return is;
     }
     // get the HeavyIon line
     std::string line;
@@ -83,13 +83,13 @@ std::istream & operator >> (std::istream & is, HeavyIon * ion)
     std::istringstream iline(line);
     std::string firstc;
     iline >> firstc;
-    // test to be sure the next entry is of type "H" 
-    if( firstc != "H" ) { 
-	std::cerr << "HeavyIon input stream invalid line type: " 
+    // test to be sure the next entry is of type "H"
+    if( firstc != "H" ) {
+	std::cerr << "HeavyIon input stream invalid line type: "
 	          << firstc << std::endl;
 	// The most likely problem is that we have found a HepMC block line
 	throw IO_Exception("HeavyIon input stream encounterd invalid data");
-    } 
+    }
     // read values into temp variables, then create a new HeavyIon object
     int nh =0, np =0, nt =0, nc =0,
       neut = 0, prot = 0, nw =0, nwn =0, nwnw =0;
@@ -124,10 +124,7 @@ std::istream & operator >> (std::istream & is, HeavyIon * ion)
     // since we don't know if this event has centrality, set to zero if not found.
     iline >> cent;
     if(!iline) cent=0.;
-    if( nh == 0 ) {
-        return is;
-    }
-    
+
     ion->set_Ncoll_hard(nh);
     ion->set_Npart_proj(np);
     ion->set_Npart_targ(nt);
