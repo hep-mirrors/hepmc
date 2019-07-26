@@ -20,8 +20,10 @@ bool compareGenEvent( GenEvent*, GenEvent* );
 bool compareSignalProcessVertex( GenEvent*, GenEvent* );
 bool compareBeamParticles( GenEvent*, GenEvent* );
 bool compareWeights( GenEvent*, GenEvent* );
-bool compareVertices( GenEvent*, GenEvent* );
+bool compareHeavyIons( GenEvent*, GenEvent* );
+bool comparePdfInfo( GenEvent*, GenEvent* );
 bool compareParticles( GenEvent*, GenEvent* );
+bool compareVertices( GenEvent*, GenEvent* );
 bool compareVertex( GenVertex* v1, GenVertex* v2 );
 
 } // HepMC
