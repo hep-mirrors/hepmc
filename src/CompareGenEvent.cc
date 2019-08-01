@@ -48,14 +48,8 @@ bool compareGenEvent( GenEvent* e1, GenEvent* e2)
        std::cerr << "compareGenEvent: random states differ " << std::endl;
        return false; 
    }
-   if( e1->heavy_ion() != e2->heavy_ion() ) { 
-       std::cerr << "compareGenEvent: heavy ions differ " << std::endl;
-       return false; 
-   }
-   if( e1->pdf_info() != e2->pdf_info() ) { 
-       std::cerr << "compareGenEvent: pdf info differs " << std::endl;
-       return false; 
-   }
+   if ( !compareHeavyIons( e1, e2 ) ) { return false; }
+   if ( !comparePdfInfo( e1, e2 ) ) { return false; }
    if ( !compareParticles( e1, e2 ) ) { return false; }
    if ( !compareVertices( e1, e2 ) ) { return false; }
    return true;
@@ -95,6 +89,32 @@ bool compareWeights( GenEvent* e1, GenEvent* e2 ) {
    return false;
 }
 
+bool compareHeavyIons( GenEvent* e1, GenEvent* e2 ) {
+   // compare heavy ions
+   HeavyIon* h1 = e1->heavy_ion();
+   HeavyIon* h2 = e2->heavy_ion();
+   if( h1 && h2 ) {
+       if( (*h1) != (*h2) ) {
+	   std::cerr << "compareHeavyIons: heavy ions differ " << std::endl;
+	   return false;
+       }
+   }
+   return true;
+}
+
+bool comparePdfInfo( GenEvent* e1, GenEvent* e2 ) {
+   // compare pdf info
+   PdfInfo* p1 = e1->pdf_info();
+   PdfInfo* p2 = e2->pdf_info();
+   if( p1 && p2 ) {
+       if( (*p1) != (*p2) ) {
+	   std::cerr << "comparePdfInfo: PDF info differs " << std::endl;
+	   return false;
+       }
+   }
+   return true;
+}
+
 bool compareParticles( GenEvent* e1, GenEvent* e2 ) {
    if( e1->particles_size() != e2->particles_size() ) { 
        std::cerr << "compareParticles: number of particles differs " << std::endl;
@@ -109,7 +129,7 @@ bool compareParticles( GenEvent* e1, GenEvent* e2 ) {
 		 << std::endl; */
        if ( **p1 != **p2 ) {
 	   std::cerr << "compareParticles: particle " 
-	             << (*p1)->barcode() << " differs from " 
+		     << (*p1)->barcode() << " differs from "
 		     << (*p2)->barcode() << std::endl;
 	   return false; 
        }
@@ -125,13 +145,13 @@ bool compareVertices( GenEvent* e1, GenEvent* e2 ) {
    for ( GenEvent::vertex_const_iterator v =  e1->vertices_begin();
          v !=  e1->vertices_end(); ++v ) {
        //std::cout << "compareVertices:  comparing vertex " 
-	//         << (*v)->barcode() << std::endl;
+       //          << (*v)->barcode() << std::endl;
        GenVertex* v1 = (*v);
        GenVertex* v2 = e2->barcode_to_vertex((*v)->barcode());
        compareVertex( (*v), e2->barcode_to_vertex((*v)->barcode()));
        if ( (*v1) != (*v2) ) {
 	   std::cerr << "compareVertices: vertex " 
-	             << (*v)->barcode() << " differs" << std::endl;
+		     << (*v)->barcode() << " differs" << std::endl;
 	   return false; 
        }
    }
@@ -141,13 +161,13 @@ bool compareVertices( GenEvent* e1, GenEvent* e2 ) {
 bool compareVertex( GenVertex* v1, GenVertex* v2 ) {
        if ( v1->position() !=  v2->position() ) {
 	  std::cerr << "compareVertex: position " 
-	            << v1->barcode() << " differs" << std::endl;
+		    << v1->barcode() << " differs" << std::endl;
 	  return false; 
        }
        // if the size of the inlist differs, return false.
        if ( v1->particles_in_size() !=  v2->particles_in_size() ) {
 	  std::cerr << "compareVertex: particles_in_size " 
-	            << v1->barcode() << " differs" << std::endl;
+		    << v1->barcode() << " differs" << std::endl;
 	  return false; 
        }
        // loop over the inlist and ensure particles are identical
@@ -158,7 +178,7 @@ bool compareVertex( GenVertex* v1, GenVertex* v2 ) {
 		ia != v1->particles_in_const_end(); ia++, ib++ ){
 	      if ( **ia != **ib ) {
 		 std::cerr << "compareVertex: incoming particle " 
-	        	   << v1->barcode() << " differs: " 
+			   << v1->barcode() << " differs: "
 			   << (*ia)->barcode() << " " << (*ib)->barcode()
 			   << std::endl;
 		  //return false; 
@@ -168,7 +188,7 @@ bool compareVertex( GenVertex* v1, GenVertex* v2 ) {
        // if the size of the outlist differs, return false.
        if ( v1->particles_out_size() !=  v2->particles_out_size() ) {
 	  std::cerr << "compareVertex: particles_out_size " 
-	            << v1->barcode() << " differs" << std::endl;
+		    << v1->barcode() << " differs" << std::endl;
 	  return false; 
        }
        // loop over the outlist and ensure particles are identical
@@ -179,7 +199,7 @@ bool compareVertex( GenVertex* v1, GenVertex* v2 ) {
 		 ia != v1->particles_out_const_end(); ia++, ib++ ){
 	       if ( **ia != **ib ) {
 		   std::cerr << "compareVertex: outgoing particle " 
-	        	     << v1->barcode() << " differs: " 
+			     << v1->barcode() << " differs: "
 			     << (*ia)->barcode() << " " << (*ib)->barcode()
 			     << std::endl;
 		   //return false; 
