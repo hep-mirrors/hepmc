@@ -19,7 +19,7 @@
 
 namespace HepMC {
 
-WeightContainer::WeightContainer( size_type n, double value ) 
+WeightContainer::WeightContainer( size_type n, double value )
     : m_weights(n,value), m_names()
 { set_default_names(n); }
 
@@ -31,57 +31,70 @@ void WeightContainer::set_default_names( size_type n )
 {
     // internal program used by the constructors
     std::ostringstream name;
-    for ( size_type count = 0; count<n; ++count ) 
-    { 
+    for ( size_type count = 0; count<n; ++count )
+    {
 	name.str(std::string());
 	name << count;
 	m_names[name.str()] = count;
     }
 }
 
-void WeightContainer::push_back( const double& value) 
-{ 
+void WeightContainer::push_back( const double& value)
+{
     size_type count = m_weights.size();
-    m_weights.push_back(value); 
+    m_weights.push_back(value);
     std::ostringstream name;
     name << count;
     m_names[name.str()] = count;
 }
 
-void WeightContainer::pop_back() 
+void WeightContainer::pop_back()
 {
-    // this needs to remove the last entry in the vector 
+    // this needs to remove the last entry in the vector
     // and ALSO the associated map entry
     size_type vit = size() - 1;
-    for ( map_iterator m = m_names.begin(); m != m_names.end(); ++m ) 
-    { 
-        if( m->second == vit ) { 
-	    m_names.erase(m->first); 
+    for ( map_iterator m = m_names.begin(); m != m_names.end(); ++m )
+    {
+        if( m->second == vit ) {
+	    m_names.erase(m->first);
 	    break;
 	}
     }
-    m_weights.pop_back(); 
+    m_weights.pop_back();
 }
 
-double& WeightContainer::operator[]( const std::string& s ) 
-{ 
+
+std::vector<std::string> WeightContainer::weight_names() const
+{
+    std::map<WeightContainer::size_type,std::string> idxs_keys;
+    for (const_map_iterator it = map_begin(); it != map_end(); ++it)
+        idxs_keys[it->second] = it->first;
+    std::vector<std::string> rtn; rtn.reserve(idxs_keys.size());
+    for (std::map<WeightContainer::size_type,std::string>::const_iterator ik = idxs_keys.begin(); ik != idxs_keys.begin(); ++ik)
+        rtn.push_back(ik->second);
+    return rtn;
+}
+
+
+double& WeightContainer::operator[]( const std::string& s )
+{
     const_map_iterator m = m_names.find(s);
     if( m != m_names.end() ) {
-        return m_weights[m->second]; 
+        return m_weights[m->second];
     }
     // doesn't exist - have to create it
     size_type count = m_weights.size();
-    m_weights.push_back(0); 
+    m_weights.push_back(0);
     m_names[s] = count;
-    return m_weights.back(); 
+    return m_weights.back();
 }
 
 
 const double& WeightContainer::operator[]( const std::string& s ) const
-{ 
+{
     const_map_iterator m = m_names.find(s);
     if( m != m_names.end() ) {
-        return m_weights[m->second]; 
+        return m_weights[m->second];
     }
     // doesn't exist and we cannot create it
     // note that std::map does not support this (const) operator
@@ -108,27 +121,28 @@ bool WeightContainer::has_key( const std::string& s ) const
     return m_names.find(s) != m_names.end();
 }
 
-void WeightContainer::print( std::ostream& ostr ) const 
-{ 
+void WeightContainer::print( std::ostream& ostr ) const
+{
     // print a name, weight pair
-    for ( const_map_iterator m = map_begin(); m != map_end(); ++m )
+    const std::vector<std::string> names = weight_names();
+    for ( std::vector<std::string>::const_iterator n = names.begin(); n != names.end(); ++n )
     {
-	ostr << "(" << m->first << "," << m_weights[m->second] << ") ";
+        ostr << "(" << *n << "," << (*this)[*n] << ") ";
     }
-    ostr << std::endl; 
+    ostr << std::endl;
 }
 
-void WeightContainer::write( std::ostream& ostr ) const 
-{ 
+void WeightContainer::write( std::ostream& ostr ) const
+{
     size_type count = 0;
-    for ( const_iterator w = begin(); w != end(); ++w ) 
-    { 
+    for ( const_iterator w = begin(); w != end(); ++w )
+    {
 	std::string name;
 	for ( const_map_iterator m = map_begin(); m != map_end(); ++m )
 	{
 	    if( m->second == count ) name = m->first;
 	}
-	ostr << "Weight " << std::setw(4) << count 
+	ostr << "Weight " << std::setw(4) << count
 	     << " with name " << std::setw(10) <<  name
 	     << " is " << *w << std::endl;
 	++count;
@@ -136,4 +150,3 @@ void WeightContainer::write( std::ostream& ostr ) const
 }
 
 } // HepMC
-

@@ -9,7 +9,7 @@
 //
 // Container for the Weights associated with an event or vertex.
 //
-// This implementation adds a map-like interface in addition to the 
+// This implementation adds a map-like interface in addition to the
 // vector-like interface.
 //////////////////////////////////////////////////////////////////////////
 
@@ -19,6 +19,7 @@
 #include <map>
 
 namespace HepMC {
+
 
     //! Container for the Weights associated with an event or vertex.
 
@@ -36,7 +37,7 @@ namespace HepMC {
 	typedef std::vector<double>::iterator iterator;
         /// const iterator for the weight container
 	typedef std::vector<double>::const_iterator const_iterator;
-	
+
         /// default constructor
 	explicit WeightContainer( size_type n = 0, double value = 0. );
         /// construct from a vector of weights
@@ -45,19 +46,19 @@ namespace HepMC {
 	WeightContainer( const WeightContainer& in );
 	~WeightContainer();
 
-        /// swap
-        void swap( WeightContainer & other);
-        /// copy assignment
+    /// swap
+    void swap( WeightContainer & other);
+    /// copy assignment
 	WeightContainer& operator=( const WeightContainer& );
-        /// alternate assignment using a vector of doubles
+    /// alternate assignment using a vector of doubles
 	WeightContainer& operator=( const std::vector<double>& in );
 
-        /// print weights
+    /// print weights
 	void          print( std::ostream& ostr = std::cout ) const;
-        /// write weights in a readable table
+    /// write weights in a readable table
 	void          write( std::ostream& ostr = std::cout ) const;
 
-        /// size of weight container
+    /// size of weight container
 	size_type     size() const;
 	/// return true if weight container is empty
 	bool          empty() const;
@@ -68,33 +69,41 @@ namespace HepMC {
 	/// clear the weight container
 	void          clear();
 
-	/// check to see if a name exists in the map
+    /// the list of weight values
+    std::vector<double>& weights() { return m_weights; }
+    /// the list of weight values (const)
+    const std::vector<double>& weights() const { return m_weights; }
+
+    /// the weight names, ordered to match the values
+    /// @warning This computation is not efficient, and should be avoided in tight loops
+    std::vector<std::string> weight_names() const;
+    /// check to see if a name exists in the map
 	bool          has_key( const std::string& s ) const;
 
-        /// access the weight container
+    /// access the weight container
 	double&       operator[]( size_type n );  // unchecked access
-        /// access the weight container
+    /// access the weight container
 	const double& operator[]( size_type n ) const;
-        /// access the weight container
+    /// access the weight container
 	double&       operator[]( const std::string& s );  // unchecked access
-        /// access the weight container
+    /// access the weight container
 	const double& operator[]( const std::string& s ) const;
 
-        /// equality
+    /// equality
 	bool operator==( const WeightContainer & ) const;
-        /// inequality
+    /// inequality
 	bool operator!=( const WeightContainer & ) const;
- 	
+
 	/// returns the first element
 	double&       front();
 	/// returns the first element
-	const double& front() const;   
+	const double& front() const;
 	/// returns the last element
 	double&       back();
 	/// returns the last element
 	const double& back() const;
 
-	/// begining of the weight container
+	/// beginning of the weight container
 	iterator            begin();
 	/// end of the weight container
 	iterator            end();
@@ -124,11 +133,11 @@ namespace HepMC {
 	/// end of the weight container
 	/// for internal use only
 	const_map_iterator      map_end() const;
-	
+
 	/// used by the constructors to set initial names
 	/// for internal use only
 	void set_default_names( size_type n );
-	
+
     private:
 	std::vector<double>          m_weights;
 	std::map<std::string,size_type> m_names;
@@ -145,9 +154,9 @@ namespace HepMC {
     inline WeightContainer::~WeightContainer() {}
 
     inline void WeightContainer::swap( WeightContainer & other)
-    { 
-        m_weights.swap( other.m_weights ); 
-        m_names.swap( other.m_names ); 
+    {
+        m_weights.swap( other.m_weights );
+        m_names.swap( other.m_names );
     }
 
     inline WeightContainer& WeightContainer::operator=
@@ -170,13 +179,13 @@ namespace HepMC {
 
     inline bool WeightContainer::empty() const { return m_weights.empty(); }
 
-    inline void WeightContainer::clear() 
-    { 
-	m_weights.clear(); 
-	m_names.clear(); 
+    inline void WeightContainer::clear()
+    {
+	m_weights.clear();
+	m_names.clear();
     }
 
-    inline double& WeightContainer::operator[]( size_type n ) 
+    inline double& WeightContainer::operator[]( size_type n )
     { return m_weights[n]; }
 
     inline const double& WeightContainer::operator[]( size_type n ) const
@@ -184,42 +193,39 @@ namespace HepMC {
 
     inline double& WeightContainer::front() { return m_weights.front(); }
 
-    inline const double& WeightContainer::front() const 
+    inline const double& WeightContainer::front() const
     { return m_weights.front(); }
 
     inline double& WeightContainer::back() { return m_weights.back(); }
 
-    inline const double& WeightContainer::back() const 
+    inline const double& WeightContainer::back() const
     { return m_weights.back(); }
 
-    inline WeightContainer::iterator WeightContainer::begin() 
+    inline WeightContainer::iterator WeightContainer::begin()
     { return m_weights.begin(); }
 
-    inline WeightContainer::iterator WeightContainer::end() 
+    inline WeightContainer::iterator WeightContainer::end()
     { return m_weights.end(); }
 
-    inline WeightContainer::const_iterator WeightContainer::begin() const 
+    inline WeightContainer::const_iterator WeightContainer::begin() const
     { return m_weights.begin(); }
 
-    inline WeightContainer::const_iterator WeightContainer::end() const 
+    inline WeightContainer::const_iterator WeightContainer::end() const
     { return m_weights.end(); }
 
-    inline WeightContainer::map_iterator WeightContainer::map_begin() 
+    inline WeightContainer::map_iterator WeightContainer::map_begin()
     { return m_names.begin(); }
 
-    inline WeightContainer::map_iterator WeightContainer::map_end() 
+    inline WeightContainer::map_iterator WeightContainer::map_end()
     { return m_names.end(); }
 
-    inline WeightContainer::const_map_iterator WeightContainer::map_begin() const 
+    inline WeightContainer::const_map_iterator WeightContainer::map_begin() const
     { return m_names.begin(); }
 
-    inline WeightContainer::const_map_iterator WeightContainer::map_end() const 
+    inline WeightContainer::const_map_iterator WeightContainer::map_end() const
     { return m_names.end(); }
 
 } // HepMC
 
 #endif  // HEPMC_WEIGHT_CONTAINER_H
 //--------------------------------------------------------------------------
-
-
-
