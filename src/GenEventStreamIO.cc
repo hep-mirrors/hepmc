@@ -66,7 +66,7 @@ StreamInfo& get_stream_info(IO& iost)
     }
   return *(StreamInfo*)iost.pword(0);
 }
-	
+
 // ------------------------- GenEvent member functions ----------------
 
 std::ostream& GenEvent::write( std::ostream& os )
@@ -104,32 +104,30 @@ std::ostream& GenEvent::write( std::ostream& os )
     write_beam_particles( os, beam_particles() );
     // random state
     detail::output( os, (int)m_random_states.size() );
-    for ( std::vector<long>::iterator rs = m_random_states.begin(); 
+    for ( std::vector<long>::iterator rs = m_random_states.begin();
 	  rs != m_random_states.end(); ++rs ) {
 	 detail::output( os, *rs );
     }
     // weights
-    // we need to iterate over the map so that the weights printed 
+    // we need to iterate over the map so that the weights printed
     // here will be in the same order as the names printed next
     os << ' ' << (int)weights().size() ;
-    for ( WeightContainer::const_map_iterator w = weights().map_begin(); 
-	  w != weights().map_end(); ++w ) {
-        detail::output( os, m_weights[w->second] );
-    }
+    for ( WeightContainer::const_iterator iw = weights().begin(); iw != weights().end(); ++iw)
+        detail::output( os, *iw );
     detail::output( os,'\n');
     // now add names for weights
     // note that this prints a new line if and only if the weight container
     // is not empty
     if ( ! weights().empty() ) {
-	os << "N " << weights().size() << " " ;
-	for ( WeightContainer::const_map_iterator w = weights().map_begin(); 
-	      w != weights().map_end(); ++w ) {
-	    detail::output( os,'"');
-	    os << w->first;
-	    detail::output( os,'"');
-	    detail::output( os,' ');
-	}
-	detail::output( os,'\n');
+        os << "N " << weights().size() << " " ;
+        const std::vector<std::string> names = weights().weight_names();
+        for ( std::vector<std::string>::const_iterator in = names.begin(); in != names.end(); ++in ) {
+           detail::output( os,'"');
+           os << *in;
+           detail::output( os,'"');
+           detail::output( os,' ');
+        }
+        detail::output( os,'\n');
     }
     //
     // Units
@@ -170,13 +168,13 @@ std::istream& GenEvent::read( std::istream& is )
     if ( !is ) {
 	std::cerr << "streaming input: end of stream found "
 		  << "setting badbit." << std::endl;
-	is.clear(std::ios::badbit); 
+	is.clear(std::ios::badbit);
         return is;
     }
 
     //
     // test to be sure the next entry is of type "E" then ignore it
-    if ( is.peek()!='E' ) { 
+    if ( is.peek()!='E' ) {
 	// if the E is not the next entry, then check to see if it is
 	// the end event listing key - if yes, search for another start key
 	int ioendtype;
@@ -188,7 +186,7 @@ std::istream& GenEvent::read( std::istream& is )
 	} else if ( ioendtype > 0 ) {
 	    std::cerr << "streaming input: end key does not match start key "
 		      << "setting badbit." << std::endl;
-	    is.clear(std::ios::badbit); 
+	    is.clear(std::ios::badbit);
 	    return is;
 	} else if ( !info.has_key() ) {
 	    find_file_type(is);
@@ -197,10 +195,10 @@ std::istream& GenEvent::read( std::istream& is )
 	} else {
 	    std::cerr << "streaming input: end key not found "
 		      << "setting badbit." << std::endl;
-	    is.clear(std::ios::badbit); 
+	    is.clear(std::ios::badbit);
 	    return is;
 	}
-    } 
+    }
 
     int signal_process_vertex = 0;
     int num_vertices = 0, bp1 = 0, bp2 = 0;
@@ -215,7 +213,7 @@ std::istream& GenEvent::read( std::istream& is )
 		process_event_line( is, num_vertices, bp1, bp2, signal_process_vertex );
 	    } break;
 	    case 'N':
-	    {	// get weight names 
+	    {	// get weight names
 	        read_weight_names( is );
 	    } break;
 	    case 'U':
@@ -237,7 +235,7 @@ std::istream& GenEvent::read( std::istream& is )
 		catch (IO_Exception& e) {
         	    detail::find_event_end( is );
 		}
-		if(xs.is_set()) { 
+		if(xs.is_set()) {
 		    set_cross_section( xs );
 		}
             } break;
@@ -253,7 +251,7 @@ std::istream& GenEvent::read( std::istream& is )
 		    catch (IO_Exception& e) {
         		detail::find_event_end( is );
 		    }
-		    if(ion.is_valid()) { 
+		    if(ion.is_valid()) {
 			set_heavy_ion( ion );
 		    }
 		}
@@ -270,13 +268,13 @@ std::istream& GenEvent::read( std::istream& is )
 		    catch (IO_Exception& e) {
         		detail::find_event_end( is );
 		    }
-		    if(pdf.is_valid()) { 
+		    if(pdf.is_valid()) {
 			set_pdf_info( pdf );
 		    }
 		}
 	    } break;
 	    case 'V':
-	    {	
+	    {
 	        // this should be the first vertex line - exit this loop
 	        info.set_reading_event_header(false);
 	    } break;
@@ -292,7 +290,7 @@ std::istream& GenEvent::read( std::istream& is )
     } // while reading_event_header
     // before proceeding - did we find a units line?
     if( !units_line ) {
- 	use_units( info.io_momentum_unit(), 
+ 	use_units( info.io_momentum_unit(),
 	               info.io_position_unit() );
     }
     //
@@ -307,7 +305,7 @@ std::istream& GenEvent::read( std::istream& is )
 	    detail::read_vertex(is,particle_to_end_vertex,v);
 	}
 	catch (IO_Exception& e) {
-	    for( TempParticleMap::orderIterator it = particle_to_end_vertex.order_begin(); 
+	    for( TempParticleMap::orderIterator it = particle_to_end_vertex.order_begin();
 	         it != particle_to_end_vertex.order_end(); ++it ) {
 		GenParticle* p = it->second;
 		// delete particles only if they are not already owned by a vertex
@@ -324,15 +322,15 @@ std::istream& GenEvent::read( std::istream& is )
     }
     // set the signal process vertex
     if ( signal_process_vertex ) {
-	set_signal_process_vertex( 
+	set_signal_process_vertex(
 	    barcode_to_vertex(signal_process_vertex) );
     }
     //
     // last connect particles to their end vertices
     GenParticle* beam1(0);
     GenParticle* beam2(0);
-    for ( TempParticleMap::orderIterator pmap 
-	      = particle_to_end_vertex.order_begin(); 
+    for ( TempParticleMap::orderIterator pmap
+	      = particle_to_end_vertex.order_begin();
 	  pmap != particle_to_end_vertex.order_end(); ++pmap ) {
 	GenParticle* p =  pmap->second;
 	int vtx = particle_to_end_vertex.end_vertex( p );
@@ -367,7 +365,7 @@ std::istream & operator >> (std::istream & is, GenEvent & evt)
 
 // ------------------------- set units ----------------
 
-std::istream & set_input_units(std::istream & is, 
+std::istream & set_input_units(std::istream & is,
                                Units::MomentumUnit mom,
 			       Units::LengthUnit len )
 {
@@ -404,7 +402,7 @@ std::ostream & write_HepMC_IO_block_end(std::ostream & os )
     return os;
 }
 
-std::istream & GenEvent::process_event_line( std::istream & is, 
+std::istream & GenEvent::process_event_line( std::istream & is,
                                              int & num_vertices,
 					     int & bp1, int & bp2,
 					     int & signal_process_vertex )
@@ -414,7 +412,7 @@ std::istream & GenEvent::process_event_line( std::istream & is,
 	std::cerr << "GenEvent::process_event_line setting badbit." << std::endl;
 	is.clear(std::ios::badbit);
 	return is;
-    } 
+    }
     //
     StreamInfo & info = get_stream_info(is);
     std::string line;
@@ -469,7 +467,7 @@ std::istream & GenEvent::process_event_line( std::istream & is,
     }
     // weight names will be added later if they exist
     if( weights_size > 0 ) m_weights = wgt;
-    // 
+    //
     // fill signal_process_id, event_number, random_states, etc.
     set_signal_process_id( signal_process_id );
     set_event_number( event_number );
@@ -488,13 +486,13 @@ std::istream & GenEvent::read_weight_names( std::istream & is )
 	std::cerr << "GenEvent::read_weight_names setting badbit." << std::endl;
 	is.clear(std::ios::badbit);
 	return is;
-    } 
+    }
     // Test to be sure the next entry is of type "N"
     // If we have no named weight line, this is not an error
     // releases prior to 2.06.00 do not have named weights
     if ( is.peek() !='N') {
 	return is;
-    } 
+    }
     // now get this line and process it
     std::string line;
     std::getline(is,line);
@@ -503,13 +501,13 @@ std::istream & GenEvent::read_weight_names( std::istream & is )
     WeightContainer::size_type name_size = 0;
     wline >> firstc >> name_size;
     if(!wline) detail::find_event_end( is );
-    if( firstc != "N") { 
+    if( firstc != "N") {
         std::cout << "debug: first character of named weights is " << firstc << std::endl;
         std::cout << "debug: We should never get here" << std::endl;
 	is.clear(std::ios::badbit);
 	return is;
     }
-    if( m_weights.size() != name_size ) { 
+    if( m_weights.size() != name_size ) {
         std::cout << "debug: weight sizes do not match "<< std::endl;
         std::cout << "debug: weight vector size is " << m_weights.size() << std::endl;
         std::cout << "debug: weight name size is " << name_size << std::endl;
@@ -545,17 +543,17 @@ std::istream & GenEvent::read_units( std::istream & is )
 	std::cerr << "GenEvent::read_units setting badbit." << std::endl;
 	is.clear(std::ios::badbit);
 	return is;
-    } 
+    }
     //
     StreamInfo & info = get_stream_info(is);
     // test to be sure the next entry is of type "U" then ignore it
     // if we have no units, this is not an error
     // releases prior to 2.04.00 did not write unit information
     if ( is.peek() !='U') {
- 	use_units( info.io_momentum_unit(), 
+ 	use_units( info.io_momentum_unit(),
 	               info.io_position_unit() );
 	return is;
-    } 
+    }
     is.ignore();	// ignore the first character in the line
     std::string mom, pos;
     is >> mom >> pos;
@@ -581,7 +579,7 @@ std::istream & GenEvent::find_file_type( std::istream & istr )
 	info.set_has_key(false);
         return istr;
     }
-    
+
     std::string line;
     while ( std::getline(istr,line) ) {
 	//
@@ -646,7 +644,7 @@ std::istream & GenEvent::find_end_key( std::istream & istr, int & iotype )
     //
     // if we get here, then something has gotten badly confused
     std::cerr << "GenEvent::find_end_key: MALFORMED INPUT" << std::endl;
-    istr.clear(std::ios::badbit); 
+    istr.clear(std::ios::badbit);
     return istr;
 }
 
@@ -685,8 +683,8 @@ namespace detail {
 
 // The functions defined here need to use get_stream_info
 
-std::istream & read_particle( std::istream & is, 
-                              TempParticleMap & particle_to_end_vertex, 
+std::istream & read_particle( std::istream & is,
+                              TempParticleMap & particle_to_end_vertex,
 			      GenParticle * p )
 {
     // get the next line
@@ -695,14 +693,14 @@ std::istream & read_particle( std::istream & is,
     std::istringstream iline(line);
     std::string firstc;
     iline >> firstc;
-    if( firstc != "P" ) { 
-	std::cerr << "StreamHelpers::detail::read_particle invalid line type: " 
+    if( firstc != "P" ) {
+	std::cerr << "StreamHelpers::detail::read_particle invalid line type: "
 	          << firstc << std::endl;
-	std::cerr << "StreamHelpers::detail::read_particle setting badbit." 
+	std::cerr << "StreamHelpers::detail::read_particle setting badbit."
 		  << std::endl;
-	is.clear(std::ios::badbit); 
+	is.clear(std::ios::badbit);
 	return is;
-    } 
+    }
     //
     StreamInfo & info = get_stream_info(is);
     //testHepMC.cc
@@ -757,7 +755,7 @@ std::istream & read_particle( std::istream & is,
     }
     p->suggest_barcode( bar_code );
     //
-    // all particles are connected to their end vertex separately 
+    // all particles are connected to their end vertex separately
     // after all particles and vertices have been created - so we keep
     // a map of all particles that have end vertices
     if ( end_vtx_code != 0 ) {
