@@ -1,4 +1,16 @@
   --------------------------  HepMC-2.06.10  --------------------------
+2020-06-02  Andy Buckley
+
+      * HepMC/HepMCDefs.h: Add a HEPMC_HAS_ORDERED_WEIGHTS #define.
+
+      * HepMC/WeightContainer.h: Add weights() and weight_names() public methods.
+
+      * src/WeightContainer.cc: Fix print() to use canonical weight ordering.
+
+      * src/GenEventStreamIO.cc: Fix the I/O streaming to preserve the weight ordering.
+
+
+  --------------------------  HepMC-2.06.10  --------------------------
 2019-07-11  Andy Buckley
 
       * HepMC/HEPEVT_Wrapper.h: increased maximum number of entries for event record
@@ -17,6 +29,7 @@
      * src/GenEventStreamIO.cc: Reorder to fix parsing bug with multiple weights
 
      * HepMC/HeavyIon.h, src/HeavyIon.cc: Backport centrality from 2.07
+
 
   --------------------------  HepMC-2.06.09  --------------------------
 
