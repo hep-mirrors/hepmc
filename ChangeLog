@@ -1,4 +1,4 @@
-  --------------------------  HepMC-2.06.10  --------------------------
+  --------------------------  HepMC-2.06.11  --------------------------
 2020-06-02  Andy Buckley
 
       * HepMC/HepMCDefs.h: Add a HEPMC_HAS_ORDERED_WEIGHTS #define.
@@ -9,7 +9,7 @@
 
       * src/GenEventStreamIO.cc: Fix the I/O streaming to preserve the weight ordering.
 
-
+      * Fixed the tests.
   --------------------------  HepMC-2.06.10  --------------------------
 2019-07-11  Andy Buckley
 
