@@ -70,7 +70,7 @@ std::vector<std::string> WeightContainer::weight_names() const
     for (const_map_iterator it = map_begin(); it != map_end(); ++it)
         idxs_keys[it->second] = it->first;
     std::vector<std::string> rtn; rtn.reserve(idxs_keys.size());
-    for (std::map<WeightContainer::size_type,std::string>::const_iterator ik = idxs_keys.begin(); ik != idxs_keys.begin(); ++ik)
+    for (std::map<WeightContainer::size_type,std::string>::const_iterator ik = idxs_keys.begin(); ik != idxs_keys.end(); ++ik)
         rtn.push_back(ik->second);
     return rtn;
 }
