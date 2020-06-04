@@ -36,7 +36,7 @@ LCG_95_ubuntu1804-gcc8-opt:
     - export
     - mkdir build
     - cd build
-    - cmake ..  -Dmomentum:STRING=MEV  -Dlength:STRING=CM -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
+    - cmake ..  -Dmomentum:STRING=MEV  -Dlength:STRING=CM   -Dbuild_docs=ON -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
     - make -j $(nproc)
     - ctest --output-on-failure 
     
@@ -57,7 +57,7 @@ Fedora23-gcc:
     - yum -y install  gcc gcc-c++
 #    - yum -y install  clang libstdc++ libstdc++-devel  
 #documentation 
-    - yum -y install  doxygen  
+    - yum -y install doxygen texlive-epstopdf-bin  texlive-latex-bin-bin latex2html   
 #examples 
     - yum -y install  gcc-gfortran
   script:
@@ -70,7 +70,7 @@ Fedora23-gcc:
 #    - export CXX=clang++
 #    - export CC=clang
 #    - export FC=gfortran    
-    - cmake ..   -Dmomentum:STRING=MEV  -Dlength:STRING=CM -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
+    - cmake ..   -Dmomentum:STRING=MEV  -Dlength:STRING=CM   -Dbuild_docs=ON -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
     - make -j $(nproc)
     - ctest --output-on-failure 
 
@@ -90,7 +90,7 @@ Fedora23-clang:
     - yum -y install  clang libstdc++ libstdc++-devel 
  
 #documentation 
-    - yum -y install  doxygen  
+    - yum -y install doxygen texlive-epstopdf-bin  texlive-latex-bin-bin latex2html   
 #examples 
 #    - yum -y install  gcc-gfortran
 
@@ -105,7 +105,7 @@ Fedora23-clang:
     - export CXX=clang++
     - export CC=clang
 #    - export FC=gfortran
-    - cmake ..  -Dmomentum:STRING=MEV  -Dlength:STRING=CM -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
+    - cmake ..  -Dmomentum:STRING=MEV  -Dlength:STRING=CM   -Dbuild_docs=ON -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
     - make -j $(nproc)
     - ctest --output-on-failure 
 
@@ -125,7 +125,7 @@ Fedora24-gcc:
 #    - yum -y install  clang libstdc++ libstdc++-devel 
  
 #documentation 
-    - yum -y install  doxygen  
+    - yum -y install doxygen texlive-epstopdf-bin  texlive-latex-bin-bin latex2html   
 #examples 
     - yum -y install  gcc-gfortran
   script:
@@ -138,7 +138,7 @@ Fedora24-gcc:
 #    - export CXX=clang++
 #    - export CC=clang
 #    - export FC=gfortran    
-    - cmake ..   -Dmomentum:STRING=MEV  -Dlength:STRING=CM -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
+    - cmake ..   -Dmomentum:STRING=MEV  -Dlength:STRING=CM   -Dbuild_docs=ON -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
     - make -j $(nproc)
     - ctest --output-on-failure 
 
@@ -158,7 +158,7 @@ Fedora24-clang-noroot:
     - yum -y install  clang libstdc++ libstdc++-devel 
  
 #documentation 
-    - yum -y install  doxygen  
+    - yum -y install doxygen texlive-epstopdf-bin  texlive-latex-bin-bin latex2html   
 #examples 
 #    - yum -y install  gcc-gfortran
   script:
@@ -191,7 +191,7 @@ Fedora25-gcc:
 #    - yum -y install  clang libstdc++ libstdc++-devel 
  
 #documentation 
-    - yum -y install  doxygen  
+    - yum -y install doxygen texlive-epstopdf-bin  texlive-latex-bin-bin latex2html   
 #examples 
     - yum -y install  gcc-gfortran
   script:
@@ -204,7 +204,7 @@ Fedora25-gcc:
 #    - export CXX=clang++
 #    - export CC=clang
 #    - export FC=gfortran    
-    - cmake ..   -Dmomentum:STRING=MEV  -Dlength:STRING=CM -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
+    - cmake ..   -Dmomentum:STRING=MEV  -Dlength:STRING=CM   -Dbuild_docs=ON -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
     - make -j $(nproc)
     - ctest --output-on-failure 
 
@@ -224,7 +224,7 @@ Fedora25-clang:
     - yum -y install  clang libstdc++ libstdc++-devel 
  
 #documentation 
-    - yum -y install  doxygen  
+    - yum -y install doxygen texlive-epstopdf-bin  texlive-latex-bin-bin latex2html   
 #examples 
 #    - yum -y install  gcc-gfortran
 
@@ -238,7 +238,7 @@ Fedora25-clang:
     - export CXX=clang++
     - export CC=clang
 #    - export FC=gfortran
-    - cmake ..   -Dmomentum:STRING=MEV  -Dlength:STRING=CM -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
+    - cmake ..   -Dmomentum:STRING=MEV  -Dlength:STRING=CM   -Dbuild_docs=ON -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
     - make -j $(nproc)
     - ctest --output-on-failure 
 
@@ -258,7 +258,7 @@ Fedora26-gcc:
 #    - yum -y install  clang libstdc++ libstdc++-devel 
  
 #documentation 
-    - yum -y install  doxygen  
+    - yum -y install doxygen texlive-epstopdf-bin  texlive-latex-bin-bin latex2html   
 #examples 
     - yum -y install  gcc-gfortran
 
@@ -272,7 +272,7 @@ Fedora26-gcc:
 #    - export CXX=clang++
 #    - export CC=clang
 #    - export FC=gfortran    
-    - cmake ..   -Dmomentum:STRING=MEV  -Dlength:STRING=CM -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
+    - cmake ..   -Dmomentum:STRING=MEV  -Dlength:STRING=CM   -Dbuild_docs=ON -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
     - make -j $(nproc)
     - ctest --output-on-failure 
 
@@ -293,7 +293,7 @@ Fedora26-clang:
     - yum -y install  clang libstdc++ libstdc++-devel 
  
 #documentation 
-    - yum -y install  doxygen  
+    - yum -y install doxygen texlive-epstopdf-bin  texlive-latex-bin-bin latex2html   
 #examples 
 #    - yum -y install  gcc-gfortran
 
@@ -307,7 +307,7 @@ Fedora26-clang:
     - export CXX=clang++
     - export CC=clang
 #    - export FC=gfortran
-    - cmake ..   -Dmomentum:STRING=MEV  -Dlength:STRING=CM -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
+    - cmake ..   -Dmomentum:STRING=MEV  -Dlength:STRING=CM   -Dbuild_docs=ON -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
     - make -j $(nproc)
     - ctest --output-on-failure 
 
@@ -329,7 +329,7 @@ Fedora27-gcc:
 #    - yum -y install  clang libstdc++ libstdc++-devel 
  
 #documentation 
-    - yum -y install  doxygen  
+    - yum -y install doxygen texlive-epstopdf-bin  texlive-latex-bin-bin latex2html   
 #examples 
     - yum -y install  gcc-gfortran
 
@@ -343,7 +343,7 @@ Fedora27-gcc:
 #    - export CXX=clang++
 #    - export CC=clang
 #    - export FC=gfortran    
-    - cmake ..   -Dmomentum:STRING=MEV  -Dlength:STRING=CM -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
+    - cmake ..   -Dmomentum:STRING=MEV  -Dlength:STRING=CM   -Dbuild_docs=ON -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
     - make -j $(nproc)
     - ctest --output-on-failure 
 
@@ -364,7 +364,7 @@ Fedora27-clang:
     - yum -y install  clang libstdc++ libstdc++-devel 
  
 #documentation 
-    - yum -y install  doxygen  
+    - yum -y install doxygen texlive-epstopdf-bin  texlive-latex-bin-bin latex2html   
 #examples 
 #    - yum -y install  gcc-gfortran
 
@@ -378,7 +378,7 @@ Fedora27-clang:
     - export CXX=clang++
     - export CC=clang
 #    - export FC=gfortran
-    - cmake ..   -Dmomentum:STRING=MEV  -Dlength:STRING=CM -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
+    - cmake ..   -Dmomentum:STRING=MEV  -Dlength:STRING=CM   -Dbuild_docs=ON -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
     - make -j $(nproc)
     - ctest --output-on-failure 
 
@@ -398,7 +398,7 @@ Fedora28-gcc:
 #    - yum -y install  clang libstdc++ libstdc++-devel 
  
 #documentation 
-    - yum -y install  doxygen  
+    - yum -y install doxygen texlive-epstopdf-bin  texlive-latex-bin-bin latex2html   
 #examples 
     - yum -y install  gcc-gfortran
 
@@ -412,7 +412,7 @@ Fedora28-gcc:
 #    - export CXX=clang++
 #    - export CC=clang
 #    - export FC=gfortran    
-    - cmake ..   -Dmomentum:STRING=MEV  -Dlength:STRING=CM -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
+    - cmake ..   -Dmomentum:STRING=MEV  -Dlength:STRING=CM   -Dbuild_docs=ON -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
     - make -j $(nproc)
     - ctest --output-on-failure 
 
@@ -433,7 +433,7 @@ Fedora28-clang:
     - yum -y install  clang libstdc++ libstdc++-devel 
  
 #documentation 
-    - yum -y install  doxygen  
+    - yum -y install doxygen texlive-epstopdf-bin  texlive-latex-bin-bin latex2html   
 #examples 
 #    - yum -y install  gcc-gfortran
 
@@ -447,7 +447,7 @@ Fedora28-clang:
     - export CXX=clang++
     - export CC=clang
 #    - export FC=gfortran
-    - cmake ..   -Dmomentum:STRING=MEV  -Dlength:STRING=CM -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
+    - cmake ..   -Dmomentum:STRING=MEV  -Dlength:STRING=CM   -Dbuild_docs=ON -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
     - make -j $(nproc)
     - ctest --output-on-failure 
 
@@ -469,7 +469,7 @@ Fedora29-gcc:
 #    - yum -y install  clang libstdc++ libstdc++-devel 
  
 #documentation 
-    - yum -y install  doxygen  
+    - yum -y install doxygen texlive-epstopdf-bin  texlive-latex-bin-bin latex2html   
 #examples 
     - yum -y install  gcc-gfortran
 
@@ -483,7 +483,7 @@ Fedora29-gcc:
 #    - export CXX=clang++
 #    - export CC=clang
 #    - export FC=gfortran    
-    - cmake ..   -Dmomentum:STRING=MEV  -Dlength:STRING=CM -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
+    - cmake ..   -Dmomentum:STRING=MEV  -Dlength:STRING=CM    -Dbuild_docs=ON -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
     - make -j $(nproc)
     - ctest --output-on-failure 
 
@@ -504,7 +504,7 @@ Fedora29-clang:
     - yum -y install  clang libstdc++ libstdc++-devel 
  
 #documentation 
-    - yum -y install  doxygen  
+    - yum -y install doxygen texlive-epstopdf-bin  texlive-latex-bin-bin latex2html   
 #examples 
 #    - yum -y install  gcc-gfortran
 
@@ -518,7 +518,7 @@ Fedora29-clang:
     - export CXX=clang++
     - export CC=clang
 #    - export FC=gfortran
-    - cmake ..   -Dmomentum:STRING=MEV  -Dlength:STRING=CM -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
+    - cmake ..   -Dmomentum:STRING=MEV  -Dlength:STRING=CM   -Dbuild_docs=ON -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
     - make -j $(nproc)
     - ctest --output-on-failure 
 
@@ -542,7 +542,7 @@ Fedora30-gcc:
 #    - yum -y install  clang libstdc++ libstdc++-devel 
  
 #documentation 
-    - yum -y install  doxygen  
+    - yum -y install doxygen texlive-epstopdf-bin  texlive-latex-bin-bin latex2html   
 #examples 
     - yum -y install  gcc-gfortran
 
@@ -556,7 +556,7 @@ Fedora30-gcc:
 #    - export CXX=clang++
 #    - export CC=clang
 #    - export FC=gfortran    
-    - cmake ..   -Dmomentum:STRING=MEV  -Dlength:STRING=CM -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
+    - cmake ..   -Dmomentum:STRING=MEV  -Dlength:STRING=CM  -Dbuild_docs=ON -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
     - make -j $(nproc)
     - ctest --output-on-failure 
 
@@ -574,10 +574,10 @@ Fedora30-clang:
 #essentials
     - yum -y install  cmake make binutils sed gawk grep diffutils 
 #    - yum -y install  gcc gcc-c++
-    - yum -y install  clang libstdc++ libstdc++-devel 
+    - yum -y install  clang 
  
 #documentation 
-    - yum -y install  doxygen  
+    - yum -y install doxygen texlive-epstopdf-bin  texlive-latex-bin-bin latex2html   
 #examples 
 #    - yum -y install  gcc-gfortran
 
@@ -613,7 +613,7 @@ Fedora31-gcc:
 #    - yum -y install  clang libstdc++ libstdc++-devel 
  
 #documentation 
-    - yum -y install  doxygen  
+    - yum -y install doxygen texlive-epstopdf-bin  texlive-latex-bin-bin latex2html   
 #examples 
     - yum -y install  gcc-gfortran
 
@@ -648,7 +648,7 @@ Fedora31-clang:
     - yum -y install  clang libstdc++ libstdc++-devel 
  
 #documentation 
-    - yum -y install  doxygen  
+    - yum -y install doxygen texlive-epstopdf-bin  texlive-latex-bin-bin latex2html   
 #examples 
 #    - yum -y install  gcc-gfortran
 
@@ -683,7 +683,7 @@ Fedora32-gcc:
 #    - yum -y install  clang libstdc++ libstdc++-devel 
  
 #documentation 
-    - yum -y install  doxygen  
+    - yum -y install doxygen texlive-epstopdf-bin  texlive-latex-bin-bin latex2html   
 #examples 
     - yum -y install  gcc-gfortran
 
@@ -718,7 +718,7 @@ Fedora32-clang:
     - yum -y install  clang libstdc++ libstdc++-devel 
  
 #documentation 
-    - yum -y install  doxygen  
+    - yum -y install doxygen texlive-epstopdf-bin  texlive-latex-bin-bin latex2html   
 #examples 
 #    - yum -y install  gcc-gfortran
 
@@ -753,7 +753,7 @@ Fedora33-gcc:
 #    - yum -y install  clang libstdc++ libstdc++-devel 
  
 #documentation 
-    - yum -y install  doxygen  
+    - yum -y install doxygen texlive-epstopdf-bin  texlive-latex-bin-bin latex2html   
 #examples 
     - yum -y install  gcc-gfortran
 
@@ -789,7 +789,7 @@ Fedora33-clang:
     - yum -y install  clang libstdc++ libstdc++-devel 
  
 #documentation 
-    - yum -y install  doxygen  
+    - yum -y install doxygen texlive-epstopdf-bin  texlive-latex-bin-bin latex2html   
 #examples 
 #    - yum -y install  gcc-gfortran
 
@@ -828,7 +828,7 @@ CentOS7-gcc:
     - yum -y install  gcc gcc-c++
 #    - yum -y install  clang libstdc++ libstdc++-devel 
 #documentation 
-    - yum -y install  doxygen  
+    - yum -y install doxygen texlive-epstopdf-bin  texlive-latex-bin-bin latex2html   
 #examples 
     - yum -y install  gcc-gfortran
 
@@ -865,7 +865,7 @@ CentOS7-clang:
     - yum -y install  gcc gcc-c++
     - yum -y install  clang libstdc++ libstdc++-devel 
 #documentation 
-    - yum -y install  doxygen  
+    - yum -y install doxygen texlive-epstopdf-bin  texlive-latex-bin-bin latex2html   
 #examples 
 #    - yum -y install  gcc-gfortran
 
@@ -905,7 +905,7 @@ CentOS8-gcc:
 #    - yum -y install  clang libstdc++ libstdc++-devel 
  
 #documentation 
-    - yum -y install  doxygen  --skip-broken
+    - yum -y install doxygen texlive-epstopdf-bin  texlive-latex-bin-bin latex2html   --skip-broken
 #examples 
     - yum -y install  gcc-gfortran
   script:
@@ -946,7 +946,7 @@ CentOS8-clang:
     - yum -y install  clang libstdc++ libstdc++-devel 
  
 #documentation 
-    - yum -y install  doxygen  --skip-broken
+    - yum -y install doxygen texlive-epstopdf-bin  texlive-latex-bin-bin latex2html   --skip-broken
 #examples 
 #    - yum -y install  gcc-gfortran
 
