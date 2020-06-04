@@ -60,6 +60,11 @@
 #define HEPMC_HAS_NAMED_WEIGHTS
 #endif
 
+// the HepMC::HeavyIon class has centrality
+#ifndef HEPMC_HAS_CENTRALITY
+#define HEPMC_HAS_CENTRALITY
+#endif
+
 // the HepMC::WeightContainer class preserves weight order
 #ifndef HEPMC_HAS_ORDERED_WEIGHTS
 #define HEPMC_HAS_ORDERED_WEIGHTS

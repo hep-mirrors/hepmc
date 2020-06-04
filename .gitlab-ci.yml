@@ -1,0 +1,974 @@
+stages:
+  - test
+
+LCG_95_cc7-gcc8-opt:
+  only:
+    variables:
+     - $CI_SERVER_HOST=="gitlab.cern.ch"
+  image: gitlab-registry.cern.ch/sft/docker:lcg-cc7
+  stage: test
+  before_script:
+    - export LCGPLATFORM=x86_64-centos7-gcc8-opt
+    - source /cvmfs/sft.cern.ch/lcg/contrib/gcc/8.2.0/${LCGPLATFORM}/setup.sh
+    - export PATH=/cvmfs/sft.cern.ch/lcg/contrib/CMake/3.13.4/Linux-x86_64/bin/:${PATH}
+  script:
+    - export
+    - mkdir build
+    - cd build
+    - cmake ..  -Dmomentum:STRING=MEV  -Dlength:STRING=CM -Dbuild_docs=ON  -DCMAKE_EXPORT_COMPILE_COMMANDS=ON 
+    - make -j $(nproc)
+    - ctest --output-on-failure 
+
+LCG_95_ubuntu1804-gcc8-opt:
+  only:
+    variables:
+     - $CI_SERVER_HOST=="gitlab.cern.ch"
+  image: gitlab-registry.cern.ch/sft/docker:lcg-ubuntu18
+  stage: test
+  before_script:
+    - export LCGPLATFORM=x86_64-ubuntu1804-gcc8-opt
+    - source /cvmfs/sft.cern.ch/lcg/releases/LCG_95/ROOT/6.16.00/${LCGPLATFORM}/ROOT-env.sh
+    - export PATH=/cvmfs/sft.cern.ch/lcg/contrib/CMake/3.13.4/Linux-x86_64/bin/:${PATH}
+    - export CXX=/usr/bin/g++-8
+    - export CC=/usr/bin/gcc-8
+    - export FC=/usr/bin/gfortran-8
+  script:
+    - export
+    - mkdir build
+    - cd build
+    - cmake ..  -Dmomentum:STRING=MEV  -Dlength:STRING=CM -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
+    - make -j $(nproc)
+    - ctest --output-on-failure 
+    
+
+
+Fedora23-gcc:
+  only:
+    variables:
+     - $CI_SERVER_HOST=="gitlab.cern.ch" && $CI_COMMIT_MESSAGE =~ /FedoraCI/
+  image: fedora:23
+  stage: test
+  before_script:
+    - set -x
+    - uname -a 
+    - cat /etc/issue
+#essentials
+    - yum -y install  cmake make binutils sed gawk grep diffutils 
+    - yum -y install  gcc gcc-c++
+#    - yum -y install  clang libstdc++ libstdc++-devel  
+#documentation 
+    - yum -y install  doxygen  
+#examples 
+    - yum -y install  gcc-gfortran
+  script:
+    - export
+    - mkdir build
+    - cd build
+    - export CXX=g++
+    - export CC=gcc
+    - export FC=gfortran
+#    - export CXX=clang++
+#    - export CC=clang
+#    - export FC=gfortran    
+    - cmake ..   -Dmomentum:STRING=MEV  -Dlength:STRING=CM -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
+    - make -j $(nproc)
+    - ctest --output-on-failure 
+
+Fedora23-clang:
+  only:
+    variables:
+     - $CI_SERVER_HOST=="gitlab.cern.ch" && $CI_COMMIT_MESSAGE =~ /FedoraCI/ 
+  image: fedora:23
+  stage: test
+  before_script:
+    - set -x
+    - uname -a 
+    - cat /etc/issue
+#essentials
+    - yum -y install  cmake make binutils sed gawk grep diffutils 
+#    - yum -y install  gcc gcc-c++
+    - yum -y install  clang libstdc++ libstdc++-devel 
+ 
+#documentation 
+    - yum -y install  doxygen  
+#examples 
+#    - yum -y install  gcc-gfortran
+
+# We have ROOT5 here
+  script:
+    - export
+    - mkdir build
+    - cd build
+#    - export CXX=g++
+#    - export CC=gcc
+#    - export FC=gfortran
+    - export CXX=clang++
+    - export CC=clang
+#    - export FC=gfortran
+    - cmake ..  -Dmomentum:STRING=MEV  -Dlength:STRING=CM -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
+    - make -j $(nproc)
+    - ctest --output-on-failure 
+
+Fedora24-gcc:
+  only:
+    variables:
+     - $CI_SERVER_HOST=="gitlab.cern.ch" && $CI_COMMIT_MESSAGE =~ /FedoraCI/
+  image: fedora:24
+  stage: test
+  before_script:
+    - set -x
+    - uname -a 
+    - cat /etc/issue
+#essentials
+    - yum -y install  cmake make binutils sed gawk grep diffutils 
+    - yum -y install  gcc gcc-c++
+#    - yum -y install  clang libstdc++ libstdc++-devel 
+ 
+#documentation 
+    - yum -y install  doxygen  
+#examples 
+    - yum -y install  gcc-gfortran
+  script:
+    - export
+    - mkdir build
+    - cd build
+    - export CXX=g++
+    - export CC=gcc
+    - export FC=gfortran
+#    - export CXX=clang++
+#    - export CC=clang
+#    - export FC=gfortran    
+    - cmake ..   -Dmomentum:STRING=MEV  -Dlength:STRING=CM -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
+    - make -j $(nproc)
+    - ctest --output-on-failure 
+
+Fedora24-clang-noroot:
+  only:
+    variables:
+     - $CI_SERVER_HOST=="gitlab.cern.ch" && $CI_COMMIT_MESSAGE =~ /FedoraCI/ 
+  image: fedora:24
+  stage: test
+  before_script:
+    - set -x
+    - uname -a 
+    - cat /etc/issue
+#essentials
+    - yum -y install  cmake make binutils sed gawk grep diffutils 
+#    - yum -y install  gcc gcc-c++
+    - yum -y install  clang libstdc++ libstdc++-devel 
+ 
+#documentation 
+    - yum -y install  doxygen  
+#examples 
+#    - yum -y install  gcc-gfortran
+  script:
+    - export
+    - mkdir build
+    - cd build
+#    - export CXX=g++
+#    - export CC=gcc
+#    - export FC=gfortran
+    - export CXX=clang++
+    - export CC=clang
+#    - export FC=gfortran
+    - cmake ..   -Dmomentum:STRING=MEV  -Dlength:STRING=CM -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
+    - make -j $(nproc)
+    - ctest --output-on-failure 
+
+Fedora25-gcc:
+  only:
+    variables:
+     - $CI_SERVER_HOST=="gitlab.cern.ch" && $CI_COMMIT_MESSAGE =~ /FedoraCI/
+  image: fedora:25
+  stage: test
+  before_script:
+    - set -x
+    - uname -a 
+    - cat /etc/issue
+#essentials
+    - yum -y install  cmake make binutils sed gawk grep diffutils 
+    - yum -y install  gcc gcc-c++
+#    - yum -y install  clang libstdc++ libstdc++-devel 
+ 
+#documentation 
+    - yum -y install  doxygen  
+#examples 
+    - yum -y install  gcc-gfortran
+  script:
+    - export
+    - mkdir build
+    - cd build
+    - export CXX=g++
+    - export CC=gcc
+    - export FC=gfortran
+#    - export CXX=clang++
+#    - export CC=clang
+#    - export FC=gfortran    
+    - cmake ..   -Dmomentum:STRING=MEV  -Dlength:STRING=CM -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
+    - make -j $(nproc)
+    - ctest --output-on-failure 
+
+Fedora25-clang:
+  only:
+    variables:
+     - $CI_SERVER_HOST=="gitlab.cern.ch" && $CI_COMMIT_MESSAGE =~ /FedoraCI/ 
+  image: fedora:25
+  stage: test
+  before_script:
+    - set -x
+    - uname -a 
+    - cat /etc/issue
+#essentials
+    - yum -y install  cmake make binutils sed gawk grep diffutils 
+#    - yum -y install  gcc gcc-c++
+    - yum -y install  clang libstdc++ libstdc++-devel 
+ 
+#documentation 
+    - yum -y install  doxygen  
+#examples 
+#    - yum -y install  gcc-gfortran
+
+  script:
+    - export
+    - mkdir build
+    - cd build
+#    - export CXX=g++
+#    - export CC=gcc
+#    - export FC=gfortran
+    - export CXX=clang++
+    - export CC=clang
+#    - export FC=gfortran
+    - cmake ..   -Dmomentum:STRING=MEV  -Dlength:STRING=CM -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
+    - make -j $(nproc)
+    - ctest --output-on-failure 
+
+Fedora26-gcc:
+  only:
+    variables:
+     - $CI_SERVER_HOST=="gitlab.cern.ch" && $CI_COMMIT_MESSAGE =~ /FedoraCI/
+  image: fedora:26
+  stage: test
+  before_script:
+    - set -x
+    - uname -a 
+    - cat /etc/issue
+#essentials
+    - yum -y install  cmake make binutils sed gawk grep diffutils 
+    - yum -y install  gcc gcc-c++
+#    - yum -y install  clang libstdc++ libstdc++-devel 
+ 
+#documentation 
+    - yum -y install  doxygen  
+#examples 
+    - yum -y install  gcc-gfortran
+
+  script:
+    - export
+    - mkdir build
+    - cd build
+    - export CXX=g++
+    - export CC=gcc
+    - export FC=gfortran
+#    - export CXX=clang++
+#    - export CC=clang
+#    - export FC=gfortran    
+    - cmake ..   -Dmomentum:STRING=MEV  -Dlength:STRING=CM -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
+    - make -j $(nproc)
+    - ctest --output-on-failure 
+
+
+Fedora26-clang:
+  only:
+    variables:
+     - $CI_SERVER_HOST=="gitlab.cern.ch" && $CI_COMMIT_MESSAGE =~ /FedoraCI/ 
+  image: fedora:26
+  stage: test
+  before_script:
+    - set -x
+    - uname -a 
+    - cat /etc/issue
+#essentials
+    - yum -y install  cmake make binutils sed gawk grep diffutils 
+#    - yum -y install  gcc gcc-c++
+    - yum -y install  clang libstdc++ libstdc++-devel 
+ 
+#documentation 
+    - yum -y install  doxygen  
+#examples 
+#    - yum -y install  gcc-gfortran
+
+  script:
+    - export
+    - mkdir build
+    - cd build
+#    - export CXX=g++
+#    - export CC=gcc
+#    - export FC=gfortran
+    - export CXX=clang++
+    - export CC=clang
+#    - export FC=gfortran
+    - cmake ..   -Dmomentum:STRING=MEV  -Dlength:STRING=CM -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
+    - make -j $(nproc)
+    - ctest --output-on-failure 
+
+
+
+Fedora27-gcc:
+  only:
+    variables:
+     - $CI_SERVER_HOST=="gitlab.cern.ch" && $CI_COMMIT_MESSAGE =~ /FedoraCI/
+  image: fedora:27
+  stage: test
+  before_script:
+    - set -x
+    - uname -a 
+    - cat /etc/issue
+#essentials
+    - yum -y install  cmake make binutils sed gawk grep diffutils 
+    - yum -y install  gcc gcc-c++
+#    - yum -y install  clang libstdc++ libstdc++-devel 
+ 
+#documentation 
+    - yum -y install  doxygen  
+#examples 
+    - yum -y install  gcc-gfortran
+
+  script:
+    - export
+    - mkdir build
+    - cd build
+    - export CXX=g++
+    - export CC=gcc
+    - export FC=gfortran
+#    - export CXX=clang++
+#    - export CC=clang
+#    - export FC=gfortran    
+    - cmake ..   -Dmomentum:STRING=MEV  -Dlength:STRING=CM -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
+    - make -j $(nproc)
+    - ctest --output-on-failure 
+
+
+Fedora27-clang:
+  only:
+    variables:
+     - $CI_SERVER_HOST=="gitlab.cern.ch" && $CI_COMMIT_MESSAGE =~ /FedoraCI/ 
+  image: fedora:27
+  stage: test
+  before_script:
+    - set -x
+    - uname -a 
+    - cat /etc/issue
+#essentials
+    - yum -y install  cmake make binutils sed gawk grep diffutils 
+#    - yum -y install  gcc gcc-c++
+    - yum -y install  clang libstdc++ libstdc++-devel 
+ 
+#documentation 
+    - yum -y install  doxygen  
+#examples 
+#    - yum -y install  gcc-gfortran
+
+  script:
+    - export
+    - mkdir build
+    - cd build
+#    - export CXX=g++
+#    - export CC=gcc
+#    - export FC=gfortran
+    - export CXX=clang++
+    - export CC=clang
+#    - export FC=gfortran
+    - cmake ..   -Dmomentum:STRING=MEV  -Dlength:STRING=CM -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
+    - make -j $(nproc)
+    - ctest --output-on-failure 
+
+Fedora28-gcc:
+  only:
+    variables:
+     - $CI_SERVER_HOST=="gitlab.cern.ch" && $CI_COMMIT_MESSAGE =~ /FedoraCI/
+  image: fedora:28
+  stage: test
+  before_script:
+    - set -x
+    - uname -a 
+    - cat /etc/issue
+#essentials
+    - yum -y install  cmake make binutils sed gawk grep diffutils 
+    - yum -y install  gcc gcc-c++
+#    - yum -y install  clang libstdc++ libstdc++-devel 
+ 
+#documentation 
+    - yum -y install  doxygen  
+#examples 
+    - yum -y install  gcc-gfortran
+
+  script:
+    - export
+    - mkdir build
+    - cd build
+    - export CXX=g++
+    - export CC=gcc
+    - export FC=gfortran
+#    - export CXX=clang++
+#    - export CC=clang
+#    - export FC=gfortran    
+    - cmake ..   -Dmomentum:STRING=MEV  -Dlength:STRING=CM -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
+    - make -j $(nproc)
+    - ctest --output-on-failure 
+
+
+Fedora28-clang:
+  only:
+    variables:
+     - $CI_SERVER_HOST=="gitlab.cern.ch" && $CI_COMMIT_MESSAGE =~ /FedoraCI/ 
+  image: fedora:28
+  stage: test
+  before_script:
+    - set -x
+    - uname -a 
+    - cat /etc/issue
+#essentials
+    - yum -y install  cmake make binutils sed gawk grep diffutils 
+#    - yum -y install  gcc gcc-c++
+    - yum -y install  clang libstdc++ libstdc++-devel 
+ 
+#documentation 
+    - yum -y install  doxygen  
+#examples 
+#    - yum -y install  gcc-gfortran
+
+  script:
+    - export
+    - mkdir build
+    - cd build
+#    - export CXX=g++
+#    - export CC=gcc
+#    - export FC=gfortran
+    - export CXX=clang++
+    - export CC=clang
+#    - export FC=gfortran
+    - cmake ..   -Dmomentum:STRING=MEV  -Dlength:STRING=CM -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
+    - make -j $(nproc)
+    - ctest --output-on-failure 
+
+
+
+Fedora29-gcc:
+  only:
+    variables:
+     - $CI_SERVER_HOST=="gitlab.cern.ch" && $CI_COMMIT_MESSAGE =~ /FedoraCI/
+  image: fedora:29
+  stage: test
+  before_script:
+    - set -x
+    - uname -a 
+    - cat /etc/issue
+#essentials
+    - yum -y install  cmake make binutils sed gawk grep diffutils 
+    - yum -y install  gcc gcc-c++
+#    - yum -y install  clang libstdc++ libstdc++-devel 
+ 
+#documentation 
+    - yum -y install  doxygen  
+#examples 
+    - yum -y install  gcc-gfortran
+
+  script:
+    - export
+    - mkdir build
+    - cd build
+    - export CXX=g++
+    - export CC=gcc
+    - export FC=gfortran
+#    - export CXX=clang++
+#    - export CC=clang
+#    - export FC=gfortran    
+    - cmake ..   -Dmomentum:STRING=MEV  -Dlength:STRING=CM -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
+    - make -j $(nproc)
+    - ctest --output-on-failure 
+
+
+Fedora29-clang:
+  only:
+    variables:
+     - $CI_SERVER_HOST=="gitlab.cern.ch" && $CI_COMMIT_MESSAGE =~ /FedoraCI/ 
+  image: fedora:29
+  stage: test
+  before_script:
+    - set -x
+    - uname -a 
+    - cat /etc/issue
+#essentials
+    - yum -y install  cmake make binutils sed gawk grep diffutils 
+#    - yum -y install  gcc gcc-c++
+    - yum -y install  clang libstdc++ libstdc++-devel 
+ 
+#documentation 
+    - yum -y install  doxygen  
+#examples 
+#    - yum -y install  gcc-gfortran
+
+  script:
+    - export
+    - mkdir build
+    - cd build
+#    - export CXX=g++
+#    - export CC=gcc
+#    - export FC=gfortran
+    - export CXX=clang++
+    - export CC=clang
+#    - export FC=gfortran
+    - cmake ..   -Dmomentum:STRING=MEV  -Dlength:STRING=CM -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
+    - make -j $(nproc)
+    - ctest --output-on-failure 
+
+
+
+
+
+Fedora30-gcc:
+  only:
+    variables:
+     - $CI_SERVER_HOST=="gitlab.cern.ch" && $CI_COMMIT_MESSAGE =~ /FedoraCI/
+  image: fedora:30
+  stage: test
+  before_script:
+    - set -x
+    - uname -a 
+    - cat /etc/issue
+#essentials
+    - yum -y install  cmake make binutils sed gawk grep diffutils 
+    - yum -y install  gcc gcc-c++
+#    - yum -y install  clang libstdc++ libstdc++-devel 
+ 
+#documentation 
+    - yum -y install  doxygen  
+#examples 
+    - yum -y install  gcc-gfortran
+
+  script:
+    - export
+    - mkdir build
+    - cd build
+    - export CXX=g++
+    - export CC=gcc
+    - export FC=gfortran
+#    - export CXX=clang++
+#    - export CC=clang
+#    - export FC=gfortran    
+    - cmake ..   -Dmomentum:STRING=MEV  -Dlength:STRING=CM -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
+    - make -j $(nproc)
+    - ctest --output-on-failure 
+
+
+Fedora30-clang:
+  only:
+    variables:
+     - $CI_SERVER_HOST=="gitlab.cern.ch" && $CI_COMMIT_MESSAGE =~ /FedoraCI/ 
+  image: fedora:30
+  stage: test
+  before_script:
+    - set -x
+    - uname -a 
+    - cat /etc/issue
+#essentials
+    - yum -y install  cmake make binutils sed gawk grep diffutils 
+#    - yum -y install  gcc gcc-c++
+    - yum -y install  clang libstdc++ libstdc++-devel 
+ 
+#documentation 
+    - yum -y install  doxygen  
+#examples 
+#    - yum -y install  gcc-gfortran
+
+  script:
+    - export
+    - mkdir build
+    - cd build
+#    - export CXX=g++
+#    - export CC=gcc
+#    - export FC=gfortran
+    - export CXX=clang++
+    - export CC=clang
+#    - export FC=gfortran
+    - cmake ..   -Dmomentum:STRING=MEV  -Dlength:STRING=CM -Dbuild_docs=ON  -DCMAKE_EXPORT_COMPILE_COMMANDS=ON 
+    - make -j $(nproc)
+    - ctest --output-on-failure 
+
+
+
+Fedora31-gcc:
+  only:
+    variables:
+     - $CI_SERVER_HOST=="gitlab.cern.ch" && $CI_COMMIT_MESSAGE =~ /FedoraCI/
+  image: fedora:31
+  stage: test
+  before_script:
+    - set -x
+    - uname -a 
+    - cat /etc/issue
+#essentials
+    - yum -y install  cmake make binutils sed gawk grep diffutils 
+    - yum -y install  gcc gcc-c++
+#    - yum -y install  clang libstdc++ libstdc++-devel 
+ 
+#documentation 
+    - yum -y install  doxygen  
+#examples 
+    - yum -y install  gcc-gfortran
+
+  script:
+    - export
+    - mkdir build
+    - cd build
+    - export CXX=g++
+    - export CC=gcc
+    - export FC=gfortran
+#    - export CXX=clang++
+#    - export CC=clang
+#    - export FC=gfortran    
+    - cmake ..   -Dmomentum:STRING=MEV  -Dlength:STRING=CM -Dbuild_docs=ON  -DCMAKE_EXPORT_COMPILE_COMMANDS=ON  
+    - make -j $(nproc)
+    - ctest --output-on-failure 
+
+
+Fedora31-clang:
+  only:
+    variables:
+     - $CI_SERVER_HOST=="gitlab.cern.ch" && $CI_COMMIT_MESSAGE =~ /FedoraCI/ 
+  image: fedora:31
+  stage: test
+  before_script:
+    - set -x
+    - uname -a 
+    - cat /etc/issue
+#essentials
+    - yum -y install  cmake make binutils sed gawk grep diffutils 
+#    - yum -y install  gcc gcc-c++
+    - yum -y install  clang libstdc++ libstdc++-devel 
+ 
+#documentation 
+    - yum -y install  doxygen  
+#examples 
+#    - yum -y install  gcc-gfortran
+
+  script:
+    - export
+    - mkdir build
+    - cd build
+#    - export CXX=g++
+#    - export CC=gcc
+#    - export FC=gfortran
+    - export CXX=clang++
+    - export CC=clang
+#    - export FC=gfortran
+    - cmake ..   -Dmomentum:STRING=MEV  -Dlength:STRING=CM -Dbuild_docs=ON  -DCMAKE_EXPORT_COMPILE_COMMANDS=ON 
+    - make -j $(nproc)
+    - ctest --output-on-failure 
+
+
+Fedora32-gcc:
+  only:
+    variables:
+     - $CI_SERVER_HOST=="gitlab.cern.ch" && $CI_COMMIT_MESSAGE =~ /FedoraCI/
+  image: fedora:32
+  stage: test
+  before_script:
+    - set -x
+    - uname -a 
+    - cat /etc/issue
+#essentials
+    - yum -y install  cmake make binutils sed gawk grep diffutils 
+    - yum -y install  gcc gcc-c++
+#    - yum -y install  clang libstdc++ libstdc++-devel 
+ 
+#documentation 
+    - yum -y install  doxygen  
+#examples 
+    - yum -y install  gcc-gfortran
+
+  script:
+    - export
+    - mkdir build
+    - cd build
+    - export CXX=g++
+    - export CC=gcc
+    - export FC=gfortran
+#    - export CXX=clang++
+#    - export CC=clang
+#    - export FC=gfortran    
+    - cmake ..   -Dmomentum:STRING=MEV  -Dlength:STRING=CM -Dbuild_docs=ON  -DCMAKE_EXPORT_COMPILE_COMMANDS=ON  
+    - make -j $(nproc)
+    - ctest --output-on-failure 
+
+
+Fedora32-clang:
+  only:
+    variables:
+     - $CI_SERVER_HOST=="gitlab.cern.ch" && $CI_COMMIT_MESSAGE =~ /FedoraCI/ 
+  image: fedora:32
+  stage: test
+  before_script:
+    - set -x
+    - uname -a 
+    - cat /etc/issue
+#essentials
+    - yum -y install  cmake make binutils sed gawk grep diffutils 
+#    - yum -y install  gcc gcc-c++
+    - yum -y install  clang libstdc++ libstdc++-devel 
+ 
+#documentation 
+    - yum -y install  doxygen  
+#examples 
+#    - yum -y install  gcc-gfortran
+
+  script:
+    - export
+    - mkdir build
+    - cd build
+#    - export CXX=g++
+#    - export CC=gcc
+#    - export FC=gfortran
+    - export CXX=clang++
+    - export CC=clang
+#    - export FC=gfortran
+    - cmake ..   -Dmomentum:STRING=MEV  -Dlength:STRING=CM -Dbuild_docs=ON  -DCMAKE_EXPORT_COMPILE_COMMANDS=ON 
+    - make -j $(nproc)
+    - ctest --output-on-failure 
+
+
+Fedora33-gcc:
+  only:
+    variables:
+     - $CI_SERVER_HOST=="gitlab.cern.ch" && $CI_COMMIT_MESSAGE =~ /FedoraCI/
+  image: fedora:33
+  stage: test
+  before_script:
+    - set -x
+    - uname -a 
+    - cat /etc/issue
+#essentials
+    - yum -y install  cmake make binutils sed gawk grep diffutils 
+    - yum -y install  gcc gcc-c++
+#    - yum -y install  clang libstdc++ libstdc++-devel 
+ 
+#documentation 
+    - yum -y install  doxygen  
+#examples 
+    - yum -y install  gcc-gfortran
+
+  script:
+    - export
+    - mkdir build
+    - cd build
+    - export CXX=g++
+    - export CC=gcc
+    - export FC=gfortran
+#    - export CXX=clang++
+#    - export CC=clang
+#    - export FC=gfortran    
+    - cmake ..   -Dmomentum:STRING=MEV  -Dlength:STRING=CM -Dbuild_docs=ON  -DCMAKE_EXPORT_COMPILE_COMMANDS=ON  
+    - make -j $(nproc)
+    - ctest --output-on-failure 
+
+
+
+Fedora33-clang:
+  only:
+    variables:
+     - $CI_SERVER_HOST=="gitlab.cern.ch" && $CI_COMMIT_MESSAGE =~ /FedoraCI/ 
+  image: fedora:33
+  stage: test
+  before_script:
+    - set -x
+    - uname -a 
+    - cat /etc/issue
+#essentials
+    - yum -y install  cmake make binutils sed gawk grep diffutils 
+#    - yum -y install  gcc gcc-c++
+    - yum -y install  clang libstdc++ libstdc++-devel 
+ 
+#documentation 
+    - yum -y install  doxygen  
+#examples 
+#    - yum -y install  gcc-gfortran
+
+  script:
+    - export
+    - mkdir build
+    - cd build
+#    - export CXX=g++
+#    - export CC=gcc
+#    - export FC=gfortran
+    - export CXX=clang++
+    - export CC=clang
+#    - export FC=gfortran
+    - cmake ..   -Dmomentum:STRING=MEV  -Dlength:STRING=CM -Dbuild_docs=ON  -DCMAKE_EXPORT_COMPILE_COMMANDS=ON 
+    - make -j $(nproc)
+    - ctest --output-on-failure 
+
+
+
+
+
+CentOS7-gcc:
+  only:
+    variables:
+     - $CI_SERVER_HOST=="gitlab.cern.ch" && $CI_COMMIT_MESSAGE =~ /CentOSCI/
+  image: centos:7
+  stage: test
+  before_script:
+    - set -x
+    - uname -a 
+    - cat /etc/issue
+#essentials
+    - yum -y install epel-release
+    - yum -y install  cmake3    
+    - yum -y install  cmake make binutils sed gawk grep diffutils 
+    - yum -y install  gcc gcc-c++
+#    - yum -y install  clang libstdc++ libstdc++-devel 
+#documentation 
+    - yum -y install  doxygen  
+#examples 
+    - yum -y install  gcc-gfortran
+
+  script:
+    - export
+    - mkdir build
+    - cd build
+    - export CXX=g++
+    - export CC=gcc
+    - export FC=gfortran
+#    - export CXX=clang++
+#    - export CC=clang
+#    - export FC=gfortran    
+    - cmake3 ..   -Dmomentum:STRING=MEV  -Dlength:STRING=CM -Dbuild_docs=ON  -DCMAKE_EXPORT_COMPILE_COMMANDS=ON 
+    - make -j $(nproc)
+    - ctest --output-on-failure 
+
+
+
+CentOS7-clang:
+  only:
+    variables:
+     - $CI_SERVER_HOST=="gitlab.cern.ch" && $CI_COMMIT_MESSAGE =~ /CentOSCI/ 
+  image: centos:7
+  stage: test
+  before_script:
+    - set -x
+    - uname -a 
+    - cat /etc/issue
+#essentials
+    - yum -y install epel-release
+    - yum -y install  cmake3
+    - yum -y install  cmake make binutils sed gawk grep diffutils 
+    - yum -y install  gcc gcc-c++
+    - yum -y install  clang libstdc++ libstdc++-devel 
+#documentation 
+    - yum -y install  doxygen  
+#examples 
+#    - yum -y install  gcc-gfortran
+
+  script:
+    - export
+    - mkdir build
+    - cd build
+#    - export CXX=g++
+#    - export CC=gcc
+#    - export FC=gfortran
+    - export CXX=clang++
+    - export CC=clang
+#    - export FC=gfortran
+    - cmake3 ..   -Dmomentum:STRING=MEV  -Dlength:STRING=CM -Dbuild_docs=ON  -DCMAKE_EXPORT_COMPILE_COMMANDS=ON 
+    - make -j $(nproc)
+    - ctest --output-on-failure 
+
+CentOS8-gcc:
+  only:
+    variables:
+     - $CI_SERVER_HOST=="gitlab.cern.ch" && $CI_COMMIT_MESSAGE =~ /CentOSCI/
+  image: centos:8
+  stage: test
+  before_script:
+    - set -x
+    - uname -a 
+    - cat /etc/issue
+#essentials
+    - yum install -y https://www.elrepo.org/elrepo-release-8.el8.elrepo.noarch.rpm
+    - dnf install -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.noarch.rpm
+    - dnf -y install 'dnf-command(config-manager)'
+    - dnf config-manager --set-enabled PowerTools  
+    - dnf config-manager --set-enabled AppStream  
+    - dnf config-manager --set-enabled epel-testing    
+    - yum -y install  cmake make binutils sed gawk grep diffutils 
+    - yum -y install  gcc gcc-c++
+#    - yum -y install  clang libstdc++ libstdc++-devel 
+ 
+#documentation 
+    - yum -y install  doxygen  --skip-broken
+#examples 
+    - yum -y install  gcc-gfortran
+  script:
+    - export
+    - mkdir build
+    - cd build
+    - export CXX=g++
+    - export CC=gcc
+    - export FC=gfortran
+#    - export CXX=clang++
+#    - export CC=clang
+#    - export FC=gfortran    
+    - cmake ..   -Dmomentum:STRING=MEV  -Dlength:STRING=CM -Dbuild_docs=ON  -DCMAKE_EXPORT_COMPILE_COMMANDS=ON 
+    - make -j $(nproc)
+    - ctest --output-on-failure 
+
+
+
+CentOS8-clang:
+  only:
+    variables:
+     - $CI_SERVER_HOST=="gitlab.cern.ch" && $CI_COMMIT_MESSAGE =~ /CentOSCI/ 
+  image: centos:8
+  stage: test
+  before_script:
+    - set -x
+    - uname -a 
+    - cat /etc/issue
+#essentials
+    - yum install -y https://www.elrepo.org/elrepo-release-8.el8.elrepo.noarch.rpm
+    - dnf install -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.noarch.rpm
+    - dnf -y install 'dnf-command(config-manager)'
+    - dnf config-manager --set-enabled PowerTools  
+    - dnf config-manager --set-enabled AppStream  
+    - dnf config-manager --set-enabled epel-testing  
+    - yum -y install  cmake make binutils sed gawk grep diffutils 
+#    - yum -y install  gcc gcc-c++
+    - yum -y install  clang libstdc++ libstdc++-devel 
+ 
+#documentation 
+    - yum -y install  doxygen  --skip-broken
+#examples 
+#    - yum -y install  gcc-gfortran
+
+  script:
+    - export
+    - mkdir build
+    - cd build
+#    - export CXX=g++
+#    - export CC=gcc
+#    - export FC=gfortran
+    - export CXX=clang++
+    - export CC=clang
+#    - export FC=gfortran
+    - cmake ..   -Dmomentum:STRING=MEV  -Dlength:STRING=CM -Dbuild_docs=ON  -DCMAKE_EXPORT_COMPILE_COMMANDS=ON 
+    - make -j $(nproc)
+    - ctest --output-on-failure 
+
+
+
+
+
+
+
+
+
