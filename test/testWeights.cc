@@ -30,14 +30,14 @@ int main() {
        double x = (double)i + 0.14*(double)i;
        vec.push_back( x );
    }
-   //double v1 = vec[0];
+   double v1 = vec[0];
    w = vec;
    assert( w.size() == 15 );
    w.pop_back();
    assert( w.size() == 14 );
 
    // new functionality
-   //std::size_t vs = vec.size();
+   std::size_t vs = vec.size();
    std::string nm = "tau";
    w[nm] = 3.1;
    assert( w.size() == (vs) );
