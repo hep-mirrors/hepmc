@@ -5,12 +5,16 @@
 // test WeightContainer
 //////////////////////////////////////////////////////////////////////////
 
-#include <assert.h>
+// Make sure that assert actually does something, even if -DNDEBUG was passed
+#ifdef NDEBUG
+#undef NDEBUG
+#endif
+
+#include "HepMC/WeightContainer.h"
+#include <cassert>
 #include <iostream>
 #include <string>
 #include <vector>
-
-#include "HepMC/WeightContainer.h"
 #include <stdexcept>
 
 int main() {
