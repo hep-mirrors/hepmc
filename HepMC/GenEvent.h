@@ -137,6 +137,7 @@ namespace HepMC {
 #include <vector>
 #include <algorithm>
 #include <iostream>
+#include <functional> //needed for std::greater
 
 namespace HepMC {
 
